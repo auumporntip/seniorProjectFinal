@@ -16,6 +16,8 @@ app.use(function (req, res, next) {
 
 app.use('/api/',require('./routes/menu.js'))
 
+app.use('/api/',require('./routes/category'))
+
 app.listen(3000, () => {
   console.log('Example app listening at http://%s:%s');
 })

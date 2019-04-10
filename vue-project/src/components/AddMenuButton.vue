@@ -21,13 +21,7 @@
                 <v-flex xs12>
                   <v-text-field label="Menu Price" v-model="menuPrice" required></v-text-field>
                 </v-flex>
-                <v-flex xs12>
-                   <v-combobox
-                     v-model="select"
-                      :items="items"
-                       
-                     ></v-combobox>
-                </v-flex>
+                <v-select label="Select Category" v-model="selectedItem" :items="category" item-text="categoryName" item-value="categoryId"></v-select>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -45,41 +39,38 @@
 
 <script>
 import axios from "axios";
+
 export default {
   name: "AddMenuButton",
   data: () => ({
     dialog: false,
+    selectedItem:{
+      categoryId:'',
+      categoryName:'',
+    },
+    category: {},
     menuName: "",
     menuPrice: "",
-    categoryId: "",
-    pathImage : "",
-    restaurantId: "1"
+    pathImage: "",
+    restaurantId: "1",
   }),
-  data(){
-  return {
-        select: 'Yakiniku',
-        items: [
-          'Yakiniku',
-          'Sushi',
-          'Sashimi',
-          'ฺBeverage'
-        ]
-        }
-      },
   methods: {
     confirmAdd() {
       axios.post("http://localhost:3000/api/insertmenu", {
         menuName: this.menuName,
         menuPrice: this.menuPrice,
-        categoryId: this.categoryId,
+        categoryId: this.selectedItem,
         pathImage: this.pathImage,
         restaurantId: this.restaurantId
       });
       this.dialog = false;
-      console.log(this.menuName + this.menuPrice + this.categoryId + this.restaurantId);
     }
+  },
+  created() {
+    axios.get("http://localhost:3000/api/getcategory/1").then(response => {
+      this.category = response.data;
+    });
   }
-  
 };
 </script>
 <style>
