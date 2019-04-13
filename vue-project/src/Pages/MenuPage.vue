@@ -36,10 +36,57 @@
       </div>
 
       <br>
-      <b-table :data="menu" :columns="columns" :selected.sync="selected" focusable class="elevation-1"></b-table>
+      <b-table
+        :data="menu"
+        :columns="columns"
+        :selected.sync="selected"
+        focusable
+        class="elevation-1"
+      ></b-table>
       <span id="AddEditDelete">
         <AddMenuButton></AddMenuButton>
-        <EditMenuButton></EditMenuButton>
+        <!-- Edit Button -->
+        <v-layout id="layoutEdit">
+          <v-flex xs2>
+            <v-dialog v-model="dialog" persistent max-width="600px">
+              <template v-slot:activator="{ on }" >
+                <v-btn color="primary" dark v-on="on" @click="categorySelected">Edit Menu</v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Edit Menu</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs5 sm3>
+                        <img src="../assets/1.png" width="80px" height="80px">
+                      </v-flex>
+                      <v-flex xs7 sm6>
+                        <v-text-field label="Menu Name" v-model= selected.menuName required></v-text-field>
+                      </v-flex>
+                      <v-flex xs12>
+                        <v-text-field label="Menu Price" v-model= selected.menuPrice required></v-text-field>
+                      </v-flex>
+                      <v-select
+                        label="Select Category"
+                        v-model="selectedItem"
+                        :items="category"
+                        item-text="categoryName"
+                        item-value="categoryId"
+                      ></v-select>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+                  <v-btn color="blue darken-1" flat @click="confirmEdit">Save</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-flex>
+        </v-layout>
         <v-layout id="layoutDel">
           <v-flex xs2>
             <v-btn color="primary" dark @click="confirmDelete">Delete Menu</v-btn>
@@ -70,18 +117,12 @@ export default {
   data() {
     const menu = [];
     return {
-      data:{
-        id:1,
-        user:{
-          first_name: "tiw",
-          last_name:"tiw"
-        }
+      dialog: false,
+      selectedItem: {
+        categoryId: "",
+        categoryName: ""
       },
-      isPaginated: true,
-      isPaginationSimple: false,
-      defaultSortDirection: "asc",
-      currentPage: 1,
-      perPage: 5,
+      category: [],
       menu: menu,
       selected: {},
       columns: [
@@ -111,6 +152,10 @@ export default {
     };
   },
   methods: {
+    categorySelected(){
+      this.selectedItem = this.selected.categoryId
+      console.log(this.selectedItem)
+    },
     confirmDelete() {
       console.log(this.selected);
       this.$dialog.confirm({
@@ -131,6 +176,14 @@ export default {
         }
       });
     },
+    confirmEdit() {
+      console.log(this.selected)
+        onConfirm: () => {
+          axios.put("http://localhost:3000/api/updatemenu/");
+          this.$toast.open("edit success");
+          this.dialog = false;
+        }
+    },
     arrayRemove(arr, value) {
       return arr.filter(function(ele) {
         return ele != value;
@@ -143,6 +196,9 @@ export default {
       this.selected = response.data[0];
       console.log(response.data);
       // return response.data
+    });
+    axios.get("http://localhost:3000/api/getcategory/1").then(response => {
+      this.category = response.data;
     });
   }
 };
@@ -417,6 +473,11 @@ address {
 }
 #layoutDel {
   margin-left: 600px;
+  margin-top: 20px;
+  position: absolute;
+}
+#layoutEdit {
+  margin-left: 400px;
   margin-top: 20px;
   position: absolute;
 }

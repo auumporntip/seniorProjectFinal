@@ -21,7 +21,13 @@
                 <v-flex xs12>
                   <v-text-field label="Menu Price" v-model="menuPrice" required></v-text-field>
                 </v-flex>
-                <v-select label="Select Category" v-model="selectedItem" :items="category" item-text="categoryName" item-value="categoryId"></v-select>
+                <v-select
+                  label="Select Category"
+                  v-model="selectedItem"
+                  :items="category"
+                  item-text="categoryName"
+                  item-value="categoryId"
+                ></v-select>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -44,15 +50,15 @@ export default {
   name: "AddMenuButton",
   data: () => ({
     dialog: false,
-    selectedItem:{
-      categoryId:'',
-      categoryName:'',
+    selectedItem: {
+      categoryId: "",
+      categoryName: ""
     },
-    category: {},
+    category: [],
     menuName: "",
     menuPrice: "",
     pathImage: "",
-    restaurantId: "1",
+    restaurantId: "1"
   }),
   methods: {
     confirmAdd() {
