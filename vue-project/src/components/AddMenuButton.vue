@@ -21,13 +21,13 @@
                 <v-flex xs12>
                   <v-text-field label="Menu Price" v-model="menuPrice" required></v-text-field>
                 </v-flex>
-<<<<<<< Updated upstream
-                <v-select label="Select Category" v-model="selectedItem" :items="category" item-text="categoryName" item-value="categoryId"></v-select>
-=======
-                <v-flex xs12>
-                  <v-combobox v-model="select" :items="items"></v-combobox>
-                </v-flex>
->>>>>>> Stashed changes
+                <v-select
+                  label="Select Category"
+                  v-model="selectedItem"
+                  :items="category"
+                  item-text="categoryName"
+                  item-value="categoryId"
+                ></v-select>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -50,16 +50,16 @@ export default {
   name: "AddMenuButton",
   data: () => ({
     dialog: false,
-    selectedItem:{
-      categoryId:'',
-      categoryName:'',
+    selectedItem: {
+      categoryId: "",
+      categoryName: ""
     },
-    category: {},
+    category: [],
     menuName: "",
     menuPrice: "",
 <<<<<<< Updated upstream
     pathImage: "",
-    restaurantId: "1",
+    restaurantId: "1"
   }),
 =======
     categoryId: "",
