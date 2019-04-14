@@ -32,7 +32,7 @@ import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 export default {
-  name: "MenuPage",
+  name: "OrderedPage",
   components: {
     Header,
     sidebar
@@ -69,90 +69,22 @@ export default {
           label: "cat"
         }
       ]
-    };
-  },
-  methods: {
-    // test() {
-    //   axios.get(`http://localhost:3000/api/querymenu`).then(response => {
-    //     this.menu = response.data;
-    //     console.log(response.data);
-    //     // return response.data
-    //   });
-    // },
-    confirmCustom() {
-      console.log(this.selected);
-      this.$dialog.confirm({
-        title: "Privacy Politics",
-        message: "จะลบจริงอ่อ",
-        cancelText: "Disagree",
-        confirmText: "Agree",
-        type: "is-success",
-        onConfirm: () => this.$toast.open("delete success")
-      });
     }
-  },
-  created: function() {
-    axios.get(`http://localhost:3000/api/querymenu`).then(response => {
-      this.menu = response.data;
-      this.selected = response.data[0];
-      console.log(response.data);
-      // return response.data
-    });
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/* .Editt {
-  font-family:"Arial Black", Gadget, sans-serif;
-  margin-left: 500px;
-  font-size: 15px;
-  position: absolute;
-  margin-top:20px;
-} */
-
-.list2 {
-  align-items: left;
-  width: 100px;
-  height: 100px;
-  float: right;
-  padding-top: 20px;
-}
-.list1 {
-  width: 100px;
-  height: 100px;
-  float: right;
-  padding-right: 5px;
-  padding-top: 20px;
-}
-
 body {
   padding-left: 11em;
 }
-/* .headerMenu {
-    background-color: salmon;
-    weight: 60px;
-    height: 60px;
-} */
-.form {
-  position: absolute;
-  padding-left: 200px;
-  padding-top: -100px;
-  margin-top: -20px;
-}
 #boxright {
-   background-color: #f0cab1;
+  background-color: #f0cab1;
   width: 1170px;
   height: 100vh;
   margin-top: 0px;
   margin-left: 180px;
-}
-.category {
-  font-family: "Arial Black", Gadget, sans-serif;
-  font-size: 18px;
-  margin-top: 200px;
-  padding-left: 10px;
 }
 .list {
   background-color: #d2b48c;
@@ -161,40 +93,11 @@ body {
   padding-right: 50px;
   margin-top: 15px;
 }
-/* #barcolor{
-    background-color:#DCDCDC;
-    width: 220px;
-    height: 600px;
-    margin-top: 0px;
-    margin-left:-6px;
-    position: fixed;
-} */
-
-/* .navbar{
-    font-family:"Arial Black", Gadget, sans-serif;
-    font-size: 30px;
-    text-align: left;
-}
- ul.navbar {
-    position: absolute;
-    top: 7em;
-    left: 1em;
-    width: 9em }
-.navbar a:hover {
-  background-color: red;
-  
-} */
-address {
-  margin-top: 1em;
-  padding-top: 1em;
-  border-top: thin dotted;
-}
 .head {
   font-family: "Arial Black", Gadget, sans-serif;
   font-size: 18px;
   margin-top: 200px;
   padding-left: 40px;
- 
 }
 #static {
   padding-top: 20px;

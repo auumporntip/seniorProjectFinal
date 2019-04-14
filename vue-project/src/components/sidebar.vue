@@ -20,7 +20,7 @@
   <li><router-link to="/Menu">Menu</router-link></li><br>
   <li><router-link to="/Transaction">Transaction</router-link></li><br>
   <li><router-link to="/Ordered">Ordered</router-link></li><br>
-  <li><router-link to="/Ordered">Type of Service</router-link></li><br>
+  <li><router-link to="/TypeOfService">Type of Service</router-link></li><br>
   <li><router-link to="/Static">Statistic</router-link></li><br>
   <li><router-link to="/Notification">Notification</router-link></li><br>
   <li><router-link to="/Employee">Employee</router-link></li><br>

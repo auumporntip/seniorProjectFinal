@@ -13,6 +13,8 @@ import SignupPage from '@/Pages/SignupPage'
 import CreateRestaurant from '@/Pages/CreateRestaurant'
 import EditProfilePage from '@/Pages/EditProfilePage'
 import TypeOfServicePage from '@/Pages/TypeOfServicePage'
+import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
+import AddCategory from '@/Pages/AddCategory'
 Vue.use(Router)
 
 export default new Router({
@@ -69,7 +71,18 @@ export default new Router({
       path: '/TypeOfService',
       name: 'TypeOfService',
       component: TypeOfServicePage
+    },
+    {
+      path: '/TypeOfServiceMenu',
+      name: 'TypeOfServiceMenu',
+      component: TypeOfServiceMenu
+    },
+    {
+      path: '/AddCategory',
+      name: 'AddCategory',
+      component: AddCategory
     }
+
 
 
   ]

@@ -21,7 +21,13 @@
                 <v-flex xs12>
                   <v-text-field label="Menu Price" v-model="menuPrice" required></v-text-field>
                 </v-flex>
+<<<<<<< Updated upstream
                 <v-select label="Select Category" v-model="selectedItem" :items="category" item-text="categoryName" item-value="categoryId"></v-select>
+=======
+                <v-flex xs12>
+                  <v-combobox v-model="select" :items="items"></v-combobox>
+                </v-flex>
+>>>>>>> Stashed changes
               </v-layout>
             </v-container>
           </v-card-text>
@@ -51,9 +57,22 @@ export default {
     category: {},
     menuName: "",
     menuPrice: "",
+<<<<<<< Updated upstream
     pathImage: "",
     restaurantId: "1",
   }),
+=======
+    categoryId: "",
+    pathImage: "",
+    restaurantId: "1"
+  }),
+  data() {
+    return {
+      select: "Yakiniku",
+      items: ["Yakiniku", "Sushi", "Sashimi", "ฺBeverage"]
+    };
+  },
+>>>>>>> Stashed changes
   methods: {
     confirmAdd() {
       axios.post("http://localhost:3000/api/insertmenu", {
@@ -64,6 +83,12 @@ export default {
         restaurantId: this.restaurantId
       });
       this.dialog = false;
+<<<<<<< Updated upstream
+=======
+      console.log(
+        this.menuName + this.menuPrice + this.categoryId + this.restaurantId
+      );
+>>>>>>> Stashed changes
     }
   },
   created() {
