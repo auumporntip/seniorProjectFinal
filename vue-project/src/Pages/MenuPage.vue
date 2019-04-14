@@ -49,7 +49,7 @@
         <v-layout id="layoutEdit">
           <v-flex xs2>
             <v-dialog v-model="dialog" persistent max-width="600px">
-              <template v-slot:activator="{ on }" >
+              <template v-slot:activator="{ on }">
                 <v-btn color="primary" dark v-on="on" @click="categorySelected">Edit Menu</v-btn>
               </template>
               <v-card>
@@ -63,10 +63,10 @@
                         <img src="../assets/1.png" width="80px" height="80px">
                       </v-flex>
                       <v-flex xs7 sm6>
-                        <v-text-field label="Menu Name" v-model= selected.menuName required></v-text-field>
+                        <v-text-field label="Menu Name" v-model="selected.menuName" required></v-text-field>
                       </v-flex>
                       <v-flex xs12>
-                        <v-text-field label="Menu Price" v-model= selected.menuPrice required></v-text-field>
+                        <v-text-field label="Menu Price" v-model="selected.menuPrice" required></v-text-field>
                       </v-flex>
                       <v-select
                         label="Select Category"
@@ -152,9 +152,8 @@ export default {
     };
   },
   methods: {
-    categorySelected(){
-      this.selectedItem = this.selected.categoryId
-      console.log(this.selectedItem)
+    categorySelected() {
+      this.selectedItem = this.selected.categoryId;
     },
     confirmDelete() {
       console.log(this.selected);
@@ -177,12 +176,18 @@ export default {
       });
     },
     confirmEdit() {
-      console.log(this.selected)
-        onConfirm: () => {
-          axios.put("http://localhost:3000/api/updatemenu/");
-          this.$toast.open("edit success");
-          this.dialog = false;
-        }
+
+      console.log(this.selected + this.selectedItem)
+      axios.put("http://localhost:3000/api/updatemenu/", {
+        menuId: this.selected.menuId,
+        menuName: this.selected.menuName,
+        menuPrice: this.selected.menuPrice,
+        menuPathImage: this.selected.menuPathImage,
+        categoryId: this.selectedItem,
+        restaurantId: this.selected.restaurantId
+      });
+      this.$toast.open("edit success");
+      this.dialog = false;
     },
     arrayRemove(arr, value) {
       return arr.filter(function(ele) {

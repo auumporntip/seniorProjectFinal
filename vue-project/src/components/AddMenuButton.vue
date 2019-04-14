@@ -57,22 +57,9 @@ export default {
     category: [],
     menuName: "",
     menuPrice: "",
-<<<<<<< Updated upstream
     pathImage: "",
     restaurantId: "1"
   }),
-=======
-    categoryId: "",
-    pathImage: "",
-    restaurantId: "1"
-  }),
-  data() {
-    return {
-      select: "Yakiniku",
-      items: ["Yakiniku", "Sushi", "Sashimi", "ฺBeverage"]
-    };
-  },
->>>>>>> Stashed changes
   methods: {
     confirmAdd() {
       axios.post("http://localhost:3000/api/insertmenu", {
@@ -83,12 +70,6 @@ export default {
         restaurantId: this.restaurantId
       });
       this.dialog = false;
-<<<<<<< Updated upstream
-=======
-      console.log(
-        this.menuName + this.menuPrice + this.categoryId + this.restaurantId
-      );
->>>>>>> Stashed changes
     }
   },
   created() {
