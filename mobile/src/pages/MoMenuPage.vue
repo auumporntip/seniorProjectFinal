@@ -1,217 +1,157 @@
 <template>
   <v-content>
-    <v-toolbar dark color="#cd9575">
-      <v-toolbar-title class="headline-text white--text">Menu</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <div>
-        <v-text class="white--text">
-          Buffet 1199.-
-          <br>
-        </v-text>
-        <v-text class="white--text">Bill No: 001</v-text>
-      </div>
-    </v-toolbar>
-    <div>
-      <b-tabs v-model="activeTab" class="bg">
-        <b-tab-item label="YAKINIKU">
-          <v-card color="#cd9575">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-         
-         <v-card color="#cd9575" class="spaceCard">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-          
-          <v-card color="#cd9575" class="spaceCard">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-        </b-tab-item>
+    <BarMoMenu></BarMoMenu>
 
-        <b-tab-item label="SUSHI">
-          <v-card color="#cd9575">
+    <v-tabs v-model="tab" color="white" align-with-title>
+      <v-tabs-slider color="#cd9575"></v-tabs-slider>
+      <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tab">
+      <v-tab-item>
+        <v-card color="white">
           <v-flex xs12>
             <v-layout>
               <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
+                <v-img :src="image_src" class="spacePic" contain></v-img>
               </v-flex>
               <v-flex xs6>
                 <v-content>
                   <div class="title">{{nameMenu}}</div>
                   <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-         
-         <v-card color="#cd9575" class="spaceCard">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-          
-          <v-card color="#cd9575" class="spaceCard">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-        </b-tab-item>
+                  <div class="iconBtn">
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">remove</v-icon>
+                    </v-btn>
 
-        <b-tab-item label="SASHIMI">
-          <v-card color="#cd9575">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-         
-         <v-card color="#cd9575" class="spaceCard">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
-          
-          <v-card color="#cd9575" class="spaceCard">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          </v-card>
+                    <v-text>{{amount}}</v-text>
 
- <v-card color="#cd9575" class="spaceCard">
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">add</v-icon>
+                    </v-btn>
+                  </div>
+                </v-content>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+        </v-card>
+
+        <v-card color="white">
           <v-flex xs12>
             <v-layout>
               <v-flex xs6>
-                <v-img :src="image_src" height="125px" class="spacePic" contain></v-img>
+                <v-img :src="image_src" class="spacePic" contain></v-img>
               </v-flex>
               <v-flex xs6>
                 <v-content>
                   <div class="title">{{nameMenu}}</div>
                   <div class="subheading">{{price}}</div>
+                  <div class="iconBtn">
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">remove</v-icon>
+                    </v-btn>
+
+                    <v-text>{{amount}}</v-text>
+
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">add</v-icon>
+                    </v-btn>
+                  </div>
                 </v-content>
               </v-flex>
             </v-layout>
           </v-flex>
-          </v-card>
-          
-        </b-tab-item>
-      </b-tabs>
-    </div>
+        </v-card>
 
-    <footer>
-      <ButtonNext></ButtonNext>
-    </footer>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card color="white">
+          <v-flex xs12>
+            <v-layout>
+              <v-flex xs6>
+                <v-img :src="image_src" class="spacePic" contain></v-img>
+              </v-flex>
+              <v-flex xs6>
+                <v-content>
+                  <div class="title">{{nameMenu}}</div>
+                  <div class="subheading">{{price}}</div>
+                  <div class="iconBtn">
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">remove</v-icon>
+                    </v-btn>
+
+                    <v-text>{{amount}}</v-text>
+
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">add</v-icon>
+                    </v-btn>
+                  </div>
+                </v-content>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card color="white">
+          <v-flex xs12>
+            <v-layout>
+              <v-flex xs6>
+                <v-img :src="image_src" class="spacePic" contain></v-img>
+              </v-flex>
+              <v-flex xs6>
+                <v-content>
+                  <div class="title">{{nameMenu}}</div>
+                  <div class="subheading">{{price}}</div>
+                  <div class="iconBtn">
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">remove</v-icon>
+                    </v-btn>
+
+                    <v-text>{{amount}}</v-text>
+
+                    <v-btn outline small color="black">
+                      <v-icon class="body-1">add</v-icon>
+                    </v-btn>
+                  </div>
+                </v-content>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+
+    <v-btn href="/MoOrder" class="white--text" color="#cd9575" block fixed>NEXT</v-btn>
+
+    <v-footer>
+      <navBarMoMenu></navBarMoMenu>
+    </v-footer>
   </v-content>
 </template>
 
 <script>
-import Bar from "../components/bar";
-import ButtonNext from "../components/buttonNext";
+import BarMoMenu from "../components/BarMoMenu";
+import NavBarMoMenu from "../components/NavBarMoMenu";
 export default {
   name: "MoMemuPage",
   components: {
-    Bar,
-    ButtonNext
+    BarMoMenu,
+    NavBarMoMenu
   },
   data() {
     return {
-      activeTab: 0,
+      tab: null,
+      items: ["YAKINIKU", "SUSHI", "SASHIMI"],
       image_src: require("../assets/wagyu.jpg"),
-      nameMenu: "Menu: Wagyu",
-      price: "Price: 49.00 Baht"
+      nameMenu: "Wagyu",
+      price: "฿ 49.00",
+      amount: "2"
     };
   }
 };
 </script>
 
 <style scoped>
-.space {
-  margin: 10px;
-}
 .title {
   margin: 0%;
   padding-left: 10%;
@@ -222,15 +162,28 @@ export default {
   padding-left: 10%;
   padding-top: 6%;
 }
-.spacePic{
+.spacePic {
   margin-left: 5%;
+  padding-top: 15%;
+  height: 100%;
 }
-.bg{
-  background-color: #eaddd4;
+.v-layout {
+  text-align: left;
 }
-.spaceCard{
-  margin-top: 4%;
+.v-btn {
+  min-width: 0;
+}
+.v-text-field {
+  min-width: 0;
+}
+.v-card {
+  margin: 5%;
+}
+.v-text {
+  text-align: center;
+}
+.iconBtn{
+  margin: 0%;
+  padding-left: 5%;
 }
 </style>
-
-

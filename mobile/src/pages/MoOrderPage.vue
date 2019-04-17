@@ -1,56 +1,62 @@
 <template>
   <v-content>
-    <BarIcon></BarIcon>
-    <b-table :data="data" mobile-card :columns="columns"></b-table>
- 
-    <v-footer height="auto">
-      <v-card class="flex" flat tile color="#cd9575">
+    <BarMoOrder></BarMoOrder>
+    <div class="wrapper">
+      <b-table :data="data" mobile-card :columns="columns"></b-table>
+      <v-card height="auto" flat>
         <v-card-title>
-          <strong class="title white--text">Total 5 orders</strong>
+          <strong class="subheading black--text">Total Prices : 0 Baht</strong>
           <v-spacer></v-spacer>
-          <v-btn color="white">Confirm</v-btn>
+          <v-btn href="/MoStatus" color="#cd9575" class="white--text">Confirm</v-btn>
         </v-card-title>
       </v-card>
+    </div>
+    <v-footer>
+      <NavBarMoOrder></NavBarMoOrder>
     </v-footer>
   </v-content>
 </template>
 
 <script>
-import Bar from "../components/bar";
-import ButtonNext from "../components/buttonNext";
-import BarIcon from "../components/BarIcon";
+import BarMoOrder from "../components/BarMoOrder";
+import NavBarMoOrder from "../components/NavBarMoOrder";
 export default {
   name: "MoOrderPage",
   components: {
-    Bar,
-    ButtonNext,
-    BarIcon
+    BarMoOrder,
+    NavBarMoOrder
   },
   data() {
     return {
       data: [
-        { menu: "Bacon", price: 50.0, quan: 5 },
-        { menu: "Bacon", price: 50.0, quan: 5 },
-        { menu: "Bacon", price: 50.0, quan: 5 },
-        { menu: "Bacon", price: 50.0, quan: 5 },
-        { menu: "Bacon", price: 50.0, quan: 5 }
+        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
+        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
+        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
+        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
+        { id: 1, menu: "Bacon", amount: 5, price: 50.0 }
       ],
 
       columns: [
+        {
+          field: "id",
+          label: "ID",
+          width: "1000",
+          numeric: true
+        },
         {
           field: "menu",
           label: "Menu"
         },
         {
-          field: "price",
-          label: "Price",
-          width: "1000",
+          field: "amount",
+          label: "Amount",
+          width: "10",
           numeric: true
         },
         {
-          field: "quan",
-          label: "Quantity",
-          width: "10",
+          field: "price",
+          label: "Price per piece",
+          width: "1000",
           numeric: true
         }
       ]
@@ -60,6 +66,7 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  margin: 15px;
+}
 </style>
-
-

@@ -1,43 +1,36 @@
 <template>
   <v-content>
-    <BarStatus></BarStatus>
+    <BarMoStatus></BarMoStatus>
     <div class="wrapper">
-    <b-table :data="data" :columns="columns"></b-table>
+      <b-table :data="data" :columns="columns"></b-table>
     </div>
-    <v-footer height="auto">
-      <v-card class="flex" color="lime darken-4">
-          <v-flex xs12 sm12 text-xs-center>
-       <v-btn color="white">Menu Page</v-btn>
-          
-          <v-btn color="white">Check Bill</v-btn>
-          </v-flex>
-         </v-card>
+
+    <v-footer>
+      <NavBarMoStatus></NavBarMoStatus>
     </v-footer>
   </v-content>
 </template>
 
 <script>
-import Bar from "../components/bar";
-import ButtonNext from "../components/buttonNext";
-import BarStatus from "../components/BarStatus";
+import BarMoStatus from "../components/BarMoStatus";
+import NavBarMoStatus from "../components/NavBarMoStatus";
 export default {
   name: "MoStatusPage",
   components: {
-    Bar,
-    ButtonNext,
-    BarStatus
+    BarMoStatus,
+    NavBarMoStatus
   },
   data() {
     return {
       currentPage: 1,
       perPage: 5,
       data: [
-        {id: 1,menu: "Bacon", status: "Preparing"},
-        {id: 2,menu: "Bacon", status: "Preparing"},
-        {id: 3,menu: "Bacon", status: "Preparing"},
-        {id: 4,menu: "Bacon", status: "Preparing"},
-        {id: 5,menu: "Bacon", status: "Preparing"},
-        {id: 6,menu: "Bacon", status: "Preparing"}
+        { id: 1, menu: "Bacon", status: "Preparing" },
+        { id: 2, menu: "Bacon", status: "Preparing" },
+        { id: 3, menu: "Bacon", status: "Preparing" },
+        { id: 4, menu: "Bacon", status: "Preparing" },
+        { id: 5, menu: "Bacon", status: "Preparing" },
+        { id: 6, menu: "Bacon", status: "Preparing" }
       ],
       columns: [
         {
@@ -54,7 +47,6 @@ export default {
           field: "status",
           label: "Status"
         }
-        
       ]
     };
   }
@@ -62,10 +54,8 @@ export default {
 </script>
 
 <style scoped>
-.wrapper{
-    margin: 15px;
+.wrapper {
+  margin: 15px;
+  padding-bottom: 15px;
 }
 </style>
-
-
-
