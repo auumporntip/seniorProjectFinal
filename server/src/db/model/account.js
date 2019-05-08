@@ -1,6 +1,10 @@
 const knex = require('../knex')
 
-exports.getAccount =async(userName) => {
+exports.getAllAccount=async() => {
+    return await knex('account').select('username')
+}
+
+exports.getAccountByUsername =async(userName) => {
     return await knex('account').where('username', '=', userName).select('password')
 }
 
@@ -9,9 +13,8 @@ exports.getAccountById =async(accountId) => {
 }
 
 exports.insertAccount = async(account)=>{
-    await knex('account').insert({
-        accountId: account.accountId,
-        userName: account.userName,
+    return await knex('account').insert({
+        username: account.username,
         password : account.password,
         email: account.email,
         name: account.name,

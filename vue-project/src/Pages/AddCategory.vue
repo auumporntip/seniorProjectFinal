@@ -20,7 +20,7 @@
       </b-table>
       <v-layout id="layout">
         <v-flex xs2>
-          <v-btn color="primary" dark @click=" ">Add menu</v-btn>
+          <v-btn color="primary" dark>Add menu</v-btn>
         </v-flex>
       </v-layout>
     </div>
@@ -30,9 +30,6 @@
 <script>
 import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
-import AddMenuButton from "@/components/AddMenuButton";
-import EditMenuButton from "@/components/EditMenuButton";
-import DeleteMenuButton from "@/components/DeleteMenuButton";
 import axios from "axios";
 export default {
   name: "AddCategory",

@@ -14,9 +14,16 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use('/api/',require('./routes/account'))
 app.use('/api/',require('./routes/menu.js'))
-
+app.use('/api/',require('./routes/authen'))
 app.use('/api/',require('./routes/category'))
+app.use('/api/',require('./routes/restaurant'))
+app.use('/api/',require('./routes/typeOfRestaurant'))
+app.use('/api/',require('./upload/upload'))
+app.use('/api/',require('./routes/transaction'))
+app.use('/api/',require('./upload/upload'))
+
 
 app.listen(3000, () => {
   console.log('Example app listening at http://%s:%s');

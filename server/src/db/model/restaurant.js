@@ -1,32 +1,36 @@
 const knex = require('../knex')
 
-exports.getRestaurant = async(restaurantId) => {
-    return await knex('menu').where({
-        restaurantId: restaurantId
-    })
+exports.getRestaurant = async (accountId) => {
+    return await knex('restaurant').where('accountId', accountId
+    )
 }
 
-exports.deleteRestaurant = async(restaurantId) => {
-    await knex('menu')
+exports.deleteRestaurant = async (restaurantId) => {
+    await knex('restaurant')
         .Where('restaurantId', restaurantId)
         .del()
 }
 
-exports.insertRestuarant = async(restaurant) => {
-    await knex('menu').insert({
-        restaurantName : restaurant.restaurantName,
-        restaurantLocation : restaurant.restaurantLocation,
-        timeOpenClose : restaurant.timeOpenClose,
-        restaurantPhone : restaurant.restaurantPhone
+exports.insertRestuarant = async (restaurant) => {
+    await knex('restaurant').insert({
+        restaurantName: restaurant.restaurantName,
+        restaurantLocation: restaurant.restaurantLocation,
+        timeOpenClose: restaurant.timeOpenClose,
+        restaurantPhone: restaurant.restaurantPhone,
+        restaurantDescription: restaurant.restaurantDescription,
+        typeResId: restaurant.typeResId,
+        accountId: restaurant.accountId
     })
 }
 
-exports.updateMenu = async(menu) => {
-    await knex('menu').where('menuId', '=', menu.menuId).andWhere('restaurantId', '=', menu.restaurantId)
+exports.updaterestaurant = async (restaurant) => {
+    await knex('restaurant').where('restaurantId', '=', restaurant.restaurantId)
         .update({
-            menuName: menu.menuName,
-            menuPrice: menu.menuPrice,
-            menuPathImage: menu.menuPathImage,
-            categoryId: menu.categoryId,
+            restaurantName: restaurant.restaurantName,
+            restaurantLocation: restaurant.restaurantLocation,
+            timeOpenClose: restaurant.timeOpenClose,
+            restaurantPhone: restaurant.restaurantPhone,
+            restaurantDescription: restaurant.restaurantDescription,
+            typeResId: restaurant.typeResId
         })
 }

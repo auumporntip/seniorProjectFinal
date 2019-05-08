@@ -14,8 +14,6 @@
         class="elevation-1"
       ></b-table>
       <span id="AddEditDelete">
-        <AddMenuButton></AddMenuButton>
-        <EditMenuButton></EditMenuButton>
         <v-layout id="layoutDel">
           <v-flex xs2>
             <v-btn color="primary" dark @click="confirmCustom">Delete Menu</v-btn>
@@ -29,18 +27,12 @@
 <script>
 import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
-import AddMenuButton from "@/components/AddMenuButton";
-import EditMenuButton from "@/components/EditMenuButton";
-import DeleteMenuButton from "@/components/DeleteMenuButton";
 import axios from "axios";
 export default {
   name: "TypeOfServiceMenu",
   components: {
     Header,
-    sidebar,
-    AddMenuButton,
-    EditMenuButton,
-    DeleteMenuButton
+    sidebar
   },
   data() {
     const menu = [];

@@ -11,6 +11,8 @@ import responsive from 'vue-responsive'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueScrollProgress from 'vue-scroll-progress'
+import { store } from './store/store'
+
 Vue.use(VueScrollProgress)
 Vue.use(Vuetify)
 Vue.use(responsive)
@@ -21,8 +23,10 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
+  store,
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
