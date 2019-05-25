@@ -107,7 +107,7 @@ export default {
                 this.account = response.data;
               });
           });
-        document.location.href = "http://localhost:8080/Login";
+        this.$router.push('/');
       }
     },
     checkForm() {

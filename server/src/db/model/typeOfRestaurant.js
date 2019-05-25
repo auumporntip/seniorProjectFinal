@@ -1,7 +1,7 @@
 const knex = require('../knex')
 
 exports.getTypeOfRestaurant = async() => {
-    return await knex('typeOfRestaurant')
+    return await knex('typeofrestaurant')
 }
 
 exports.insertTypeOfRestaurant = async(typeOfRestaurant)=>{

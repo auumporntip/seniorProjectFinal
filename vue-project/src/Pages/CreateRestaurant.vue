@@ -109,7 +109,6 @@ export default {
       close: null,
       timeOpenClose: "",
       restaurantPhone: "",
-      accountId:"1",
 
       check: true
     };
@@ -185,13 +184,13 @@ export default {
         restaurantPhone: this.restaurantPhone,
         restaurantDescription: this.restaurantDescription,
         typeResId: this.selectedTypeOfRes,
-        accountId: this.accountId
+        accountId: $store.getters.accountId
       });
     }
   },
   created() {
     axios
-      .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettypeofrestaurant")
+      .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com::3000/api/gettypeofrestaurant")
       .then(response => {
         this.typeOfRestaurant = response.data;
         console.log(this.typeOfRestaurant);

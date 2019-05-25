@@ -2,7 +2,6 @@
   <div>
     <Header></Header>
     <sidebar></sidebar>
-    <div id="barcolor"></div>
     <div class="boxright">
       <div id="static">
         <section id="dropdown">
@@ -27,9 +26,7 @@
         </section>
       </div>
       <div id="table">
-        <b-field>
-          <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
-        </b-field>
+        <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
 
         <b-table
           :data="items"
@@ -44,7 +41,7 @@
           aria-previous-label="Previous page"
           aria-page-label="Page"
           aria-current-label="Current page"
-          :loading="loading"
+          @click="printselected"
         >
           <template slot-scope="props">
             <b-table-column label="Image" width="150">
@@ -109,7 +106,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" flat @click="dialogAdd = false">Close</v-btn>
+                  <v-btn color="blue darken-1" flat @click="closeDialog">Close</v-btn>
                   <v-btn color="blue darken-1" flat @click="confirmAdd">Save</v-btn>
                 </v-card-actions>
               </v-card>
@@ -131,7 +128,12 @@
                   <v-container grid-list-md>
                     <v-layout wrap>
                       <v-flex xs5 sm3>
-                        <img :src="selected.menuPathImage" width="80px" height="80px">
+                        <div v-if="image==null">
+                          <img :src="selected.menuPathImage" width="80px" height="80px">
+                        </div>
+                        <div v-else>
+                          <img :src="image" width="80px" height="80px">
+                        </div>
                       </v-flex>
                       <b-field class="file">
                         <b-upload v-model="image" v-on:input="onFileChange">
@@ -159,7 +161,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" flat @click="dialogEdit = false">Close</v-btn>
+                  <v-btn color="blue darken-1" flat @click="closeDialog">Close</v-btn>
                   <v-btn color="blue darken-1" flat @click="confirmEdit">Save</v-btn>
                 </v-card-actions>
               </v-card>
@@ -181,9 +183,11 @@
 import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
+import { store } from '../store/store'
 
 export default {
   name: "MenuPage",
+  store,
   components: {
     Header,
     sidebar
@@ -213,13 +217,20 @@ export default {
       menuName: "",
       menuPrice: "",
       pathImage: null,
-      restaurantId: "1",
+      restaurantId: this.$store.getters.restaurantId,
       category: [],
       menu: [],
       selected: {}
     };
   },
   methods: {
+    printselected() {
+      for (let index = 0; index < this.menu.length; index++) {
+        if (this.menu[i].menuId === this.selected.menuId) {
+          this.menu[i].menuPathImage = this.pathImage;
+        }
+      }
+    },
     onFileChange() {
       this.imageForUpload = this.image;
       this.createImage(this.image);
@@ -247,7 +258,7 @@ export default {
             "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/deletemenu/" +
               this.selected.menuId +
               "/" +
-              this.selected.restaurantId
+              this.$store.getters.restaurantId
           );
           this.menu = this.arrayRemove(this.menu, this.selected);
           this.$toast.open("delete success");
@@ -264,26 +275,107 @@ export default {
         var formData = new FormData();
         formData.append("file", this.imageForUpload);
         axios
-          .post("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/uploadFB", formData)
+          .post(
+            "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/uploadFB",
+            formData
+          )
           .then(response => {
             let data = response.data;
             this.pathImage = data.url;
-            this.insertMenu();
+            axios
+              .post(
+                "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/insertmenu",
+                {
+                  menuName: this.menuName,
+                  menuPrice: this.menuPrice,
+                  categoryId: this.selectedItem,
+                  menuPathImage: this.pathImage,
+                  restaurantId: this.$store.getters.restaurantId
+                }
+              )
+              .then(response => {
+                this.menuId = response.data[0];
+                this.menu.push({
+                  menuId: this.menuId,
+                  menuName: this.menuName,
+                  menuPrice: this.menuPrice,
+                  categoryId: this.selectedItem,
+                  categoryName: this.categoryName,
+                  menuPathImage: this.pathImage,
+                  restaurantId: this.$store.getters.restaurantId
+                });
+              });
           });
       } else {
-        this.insertMenu();
+        axios
+          .post(
+            "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/insertmenu",
+            {
+              menuName: this.menuName,
+              menuPrice: this.menuPrice,
+              categoryId: this.selectedItem,
+              menuPathImage: this.pathImage,
+              restaurantId: this.$store.getters.restaurantId
+            }
+          )
+          .then(response => {
+            this.menuId = response.data[0];
+            this.menu.push({
+              menuId: this.menuId,
+              menuName: this.menuName,
+              menuPrice: this.menuPrice,
+              categoryId: this.selectedItem,
+              categoryName: this.categoryName,
+              menuPathImage: this.pathImage,
+              restaurantId: this.$store.getters.restaurantId
+            });
+          });
       }
       this.dialogAdd = false;
     },
     confirmEdit() {
-      axios.put("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/updatemenu/", {
-        menuId: this.selected.menuId,
-        menuName: this.selected.menuName,
-        menuPrice: this.selected.menuPrice,
-        menuPathImage: this.selected.menuPathImage,
-        categoryId: this.selectedItem,
-        restaurantId: this.selected.restaurantId
-      });
+      if (this.image === null) {
+        axios.put(
+          "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/updatemenu/",
+          {
+            menuId: this.selected.menuId,
+            menuName: this.selected.menuName,
+            menuPrice: this.selected.menuPrice,
+            menuPathImage: this.selected.menuPathImage,
+            categoryId: this.selectedItem,
+            restaurantId: this.$store.getters.restaurantId
+          }
+        );
+      } else {
+        var formData = new FormData();
+        formData.append("file", this.imageForUpload);
+        axios
+          .post(
+            "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/uploadFB",
+            formData
+          )
+          .then(response => {
+            let data = response.data;
+            this.pathImage = data.url;
+            for (let index = 0; index < this.menu.length; index++) {
+              if (this.menu[index].menuId === this.selected.menuId) {
+                this.menu[index].menuPathImage = this.pathImage;
+              }
+            }
+            axios.put(
+              "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/updatemenu/",
+              {
+                menuId: this.selected.menuId,
+                menuName: this.selected.menuName,
+                menuPrice: this.selected.menuPrice,
+                menuPathImage: this.pathImage,
+                categoryId: this.selectedItem,
+                restaurantId: this.$store.getters.restaurantId
+              }
+            );
+          });
+      }
+      console.log(this.selected);
       this.$toast.open("edit success");
       this.dialogEdit = false;
     },
@@ -298,7 +390,7 @@ export default {
           "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getmenubycategory/" +
             this.selectedCategory.categoryId +
             "/" +
-            1
+            this.$store.getters.restaurantId
         )
         .then(response => {
           this.menu = response.data;
@@ -306,39 +398,25 @@ export default {
       this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/1").then(response => {
-        this.menu = response.data;
-      });
+      axios
+        .get(
+          "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/"+this.$store.getters.restaurantId
+        )
+        .then(response => {
+          this.menu = response.data;
+        });
       this.checkCategory = false;
     },
-    insertMenu() {
-      axios
-        .post("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/insertmenu", {
-          menuName: this.menuName,
-          menuPrice: this.menuPrice,
-          categoryId: this.selectedItem,
-          menuPathImage: this.pathImage,
-          restaurantId: this.restaurantId
-        })
-        .then(response => {
-          this.menuId = response.data[0];
-          this.menu.push({
-            menuId: this.menuId,
-            menuName: this.menuName,
-            menuPrice: this.menuPrice,
-            categoryId: this.selectedItem,
-            categoryName: this.categoryName,
-            menuPathImage: this.pathImage,
-            restaurantId: this.restaurantId
-          });
-          this.selectedItem = null;
-          this.pathImage = null;
-          this.menuName = null;
-          this.menuPrice = null;
-          this.menuId = null;
-          this.image = null;
-          this.imageForUpload = null;
-        });
+    closeDialog() {
+      this.selectedItem = null;
+      this.pathImage = null;
+      this.menuName = null;
+      this.menuPrice = null;
+      this.menuId = null;
+      this.image = null;
+      this.imageForUpload = null;
+      this.dialogAdd = false;
+      this.dialogEdit = false;
     }
   },
   computed: {
@@ -358,13 +436,21 @@ export default {
     }
   },
   created: function() {
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/1").then(response => {
-      this.menu = response.data;
-      this.selected = response.data[0];
-    });
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/1").then(response => {
-      this.category = response.data;
-    });
+    axios
+      .get(
+        "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/"+this.$store.getters.restaurantId
+      )
+      .then(response => {
+        this.menu = response.data;
+        this.selected = response.data[0];
+      });
+    axios
+      .get(
+        "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/"+this.$store.getters.restaurantId
+      )
+      .then(response => {
+        this.category = response.data;
+      });
   }
 };
 </script>
@@ -612,22 +698,23 @@ address {
   padding-right: 20px;
 }
 #static {
-  padding-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-left: 30px;
 }
 #layoutDel {
   margin-left: 600px;
-  margin-top: 20px;
+  margin-top: 0px;
   position: absolute;
 }
 #layoutEdit {
   margin-left: 400px;
-  margin-top: 20px;
+  margin-top: 0px;
   position: absolute;
 }
 #layoutAdd {
   margin-left: 200px;
-  margin-top: 20px;
+  margin-top: 0px;
   position: absolute;
 }
 #table {
@@ -641,7 +728,7 @@ address {
   text-align: center;
 }
 div.img-resize img {
-  width: 50px;
-  height: auto;
+  width: auto;
+  height: 40px;
 }
 </style>

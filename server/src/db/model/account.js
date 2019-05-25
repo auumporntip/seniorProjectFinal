@@ -5,7 +5,7 @@ exports.getAllAccount=async() => {
 }
 
 exports.getAccountByUsername =async(userName) => {
-    return await knex('account').where('username', '=', userName).select('password')
+    return await knex('account').where('username', '=', userName)
 }
 
 exports.getAccountById =async(accountId) => {

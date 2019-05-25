@@ -5,14 +5,14 @@
         <section id="dropdown">
           <b-dropdown v-model="selectedRestaurant" aria-role="list">
             <button id="dropp" class="button is-light" slot="trigger" align-center>
-              {{selectedRestaurant.restaurantName}}
+              {{$store.getters.restaurantName}}
             </button>
 
             <b-dropdown-item
               v-for="option in restaurant"
               :value="option"
               :key="option.restaurantId"
-              @click="test"
+              @click="changeRestaurant"
             >{{option.restaurantName}}</b-dropdown-item>
             <b-dropdown-item>
                 <router-link to="/CreateRestaurant">Create Restaurant</router-link>
@@ -50,7 +50,7 @@
       </li>
       <br>
       <li>
-        <router-link to="/Login">Logout</router-link>
+        <button @click="clearStore">Logout</button>
       </li>
     </div>
   </div>
@@ -67,12 +67,23 @@ export default {
     };
   },
   methods: {
-    test(){
-      console.log(this.selectedRestaurant)
+    changeRestaurant(){
+      // console.log(this.selectedRestaurant.restaurantId)
+      this.$store.commit('setRestaurantName',this.selectedRestaurant.restaurantName)      
+      this.$store.commit('setRestaurantId',this.selectedRestaurant.restaurantId)
+      this.$router.push('/createrestaurant');
+    },
+    clearStore(){
+      this.$store.commit('setName',"")      
+      this.$store.commit('setAccount',"")
+      this.$store.commit('selectedRestaurant',"")      
+      this.$store.commit('setRestaurantId',"")
+      this.$store.commit('setRestaurantName',"")   
+      this.$router.push('/');
     }
   },
   created() {
-    Axios.get("http://localhost:3000/api/getrestaurant/1").then(response => {
+    Axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com::3000/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
       this.restaurant = response.data;
     });
   }

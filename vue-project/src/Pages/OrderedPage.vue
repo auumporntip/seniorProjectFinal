@@ -73,9 +73,11 @@ import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
+import { store } from '../store/store'
 
 export default {
   name: "MenuPage",
+  store,
   components: {
     Header,
     sidebar
@@ -128,18 +130,22 @@ export default {
       this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/1").then(response => {
+      axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
         this.orders = response.data;
       });
       this.checkCategory = false;
     }
   },
   created: function() {
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/1").then(response => {
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
       this.category = response.data;
     });
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/1").then(response => {
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
       this.orders = response.data;
+      for (let index = 0; index < this.orders.length; index++) {
+        console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))
+        // this.orders[index].transDate = dayjs(this.orders[index].transDate).format("HH:mm")
+      }
     });
   }
 };

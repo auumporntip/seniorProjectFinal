@@ -2,7 +2,7 @@
   <div>
     <Header></Header>
     <div id="header">
-      LOG IN
+      LOG IN{{$store.getters.restaurantId}}
       <form id="login">
         <div id="Username">
           <b-field>
@@ -37,13 +37,17 @@
 <script>
 import Header from "../components/Header";
 import axios from "axios";
+// import { store } from '../store/store'
+
 export default {
   name: "LoginPage",
+  // store,
   components: {
     Header
   },
   data() {
     return {
+      account:[],
       username: "",
       password: "",
     };
@@ -51,14 +55,18 @@ export default {
   methods: {
     login() {
       axios
-        .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getAccountbyusername/" + this.username)
+      .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com::3000/api/getAccountbyusername/" + this.username)
+        // .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getAccountbyusername/" + this.username)
         .then(response => {
-          console.log(response.data)
+          this.account = response.data
           if(this.password === response.data[0].password){
             console.log(true)
-            window.location.href ="http://52.77.249.234/CreateRestaurant"
+            this.$store.commit('setAccount',this.account[0].accountId)
+            this.$store.commit('setName',this.account[0].name)
+            this.$router.push('/createrestaurant');
           }else{
             console.log(false)
+            this.$router.push('/');
           }
         });
     }

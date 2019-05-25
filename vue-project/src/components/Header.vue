@@ -3,7 +3,7 @@
   <div class="bar">
     <div class="head">
     <img class="logo" src="../assets/1.png" width="65px" height="61px">
-   <span class= res> Restaurant Management </span>
+   <span class= res> Restaurant Management</span>
     <a href="/EditProfile">
       <img class="logo2" src="../assets/user.png" width="60px" height="51px">
     </a>
