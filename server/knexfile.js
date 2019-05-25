@@ -2,9 +2,9 @@ module.exports = {
     development: {
         client: 'mysql',
         connection: {
-            host: 'localhost',
+            host: '52.77.249.234',
             user: 'root',
-            password: '123456789',
+            password: 'res3',
             database: 'restaurantmanagement'
         }
     }
