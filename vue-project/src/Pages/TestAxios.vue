@@ -1,56 +1,78 @@
 <template>
   <div>
-    <div>
-      <b-field class="files">
-        <b-upload v-model="file">
-          <a class="button is-primary">
-            <b-icon icon="upload"></b-icon>
-            <span>Click to upload</span>
-          </a>
-        </b-upload>
-        <img src="https://storage.googleapis.com/senior-project-235617.appspot.com/Images/1556881988424_R.png">
-        <span class="file-name" v-if="image">{{ image.name }}</span>
-      </b-field>
-    </div>
-    <v-btn color="primary" dark @click="submit">submit</v-btn>
-    <img :src="file[0]">
-    <div v-if="!image">
-      <input type="file" class="form-control" @change="onFileChange">
-    </div>
-    <div v-else>
-      <img :src="image">
-    </div>
+    <!-- <mdb-datatable :data="data" striped bordered/> -->
+    <b-field>
+      <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
+    </b-field>
+    <b-table
+          :data="items"
+          :selected.sync="selected"
+          focusable
+          class="elevation-1"
+          :paginated="isPaginated"
+          :per-page="perPage"
+          :current-page.sync="currentPage"
+          :pagination-simple="isPaginationSimple"
+          aria-next-label="Next page"
+          aria-previous-label="Previous page"
+          aria-page-label="Page"
+          aria-current-label="Current page"
+          :loading="loading"
+        >
+          <template slot-scope="props">
+            <b-table-column label="Image" width="150" >
+              <div class="img-resize" v-if="props.row.menuPathImage!=null">
+                <img :src="props.row.menuPathImage">
+              </div>
+              <div class="img-resize" v-else>
+                <img src="../assets/1.png">
+              </div>
+            </b-table-column>
+
+            <b-table-column label="Menu Name" width="200">{{ props.row.menuName }}</b-table-column>
+
+            <b-table-column label="Price" width="200">{{ props.row.menuPrice }}</b-table-column>
+
+            <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
+          </template>
+        </b-table>
+    {{menu}}
   </div>
 </template>
 <script>
 import axios from "axios";
+import { mdbDatatable } from "mdbvue";
+
 export default {
   name: "TestAxios",
+  components: {
+    mdbDatatable
+  },
   data() {
     return {
-      file: [],
-      image: ""
+      keyword: "",
+      menu: []
     };
   },
-  methods: {
-    submit(){
-      console.log(this.file)
-      this.createImage(this.file)
-    },
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.createImage(files[0]);
-      console.log("เลือกแล้ว");
-    },
-    createImage(file) {
-      var reader = new FileReader();
-      reader.onload = e => {
-        this.image = e.target.result;
-        console.log(this.image);
-      };
-      reader.readAsDataURL(file);
-    },
+  methods: {},
+  computed: {
+    items() {
+      if(this.keyword!=""){
+        return this.menu.filter(
+            items =>
+              items.menuName.toLowerCase().includes(this.keyword.toLowerCase()) ||
+              items.categoryName.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+      }else{
+        return this.menu
+      }
+    }
+  },
+  created: function() {
+    axios.get("http://localhost:3000/api/getallmenu/1").then(response => {
+      this.menu = response.data;
+      console.log(this.menu);
+    });
   }
 };
 </script>    

@@ -27,15 +27,43 @@
           </b-dropdown>
         </section>
       </div>
-
       <br>
+      
+      <div id="table">
+      <b-field>
+        <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
+      </b-field>
       <b-table
-        :data="orders"
-        :columns="columns"
+        :data="items"
         :selected.sync="selected"
         focusable
         class="elevation-1"
-      ></b-table>
+        :paginated="isPaginated"
+        :per-page="perPage"
+        :current-page.sync="currentPage"
+        :pagination-simple="isPaginationSimple"
+        aria-next-label="Next page"
+        aria-previous-label="Previous page"
+        aria-page-label="Page"
+        aria-current-label="Current page"
+      >
+        <template slot-scope="props">
+          <b-table-column label="Menu">{{ props.row.menuName }}</b-table-column>
+
+          <b-table-column label="Amount">{{ props.row.numOfTrans }}</b-table-column>
+
+          <b-table-column label="Category">{{ props.row.categoryName }}</b-table-column>
+
+          <b-table-column label="Table">{{ props.row.tableNumber }}</b-table-column>
+
+          <b-table-column label="Status">{{ props.row.statusName }}</b-table-column>
+
+          <b-table-column label="Time">{{ props.row.transDate }}</b-table-column>
+        </template>
+      </b-table>
+      </div>
+
+      <br>
     </div>
   </div>
 </template>
@@ -44,6 +72,7 @@
 import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
+import dayjs from "dayjs";
 
 export default {
   name: "MenuPage",
@@ -53,64 +82,65 @@ export default {
   },
   data() {
     return {
-      checkCategory:false,
+      isPaginated: true,
+      isPaginationSimple: false,
+      currentPage: 1,
+      perPage: 9,
+
+      checkCategory: false,
       selectedCategory: "",
       restaurantId: "1",
       category: [],
       selected: {},
-      orders:[],
-      columns: [
-        {
-          field: "transId",
-          label: "ID",
-          width: "40",
-          numeric: true
-        },
-        {
-          field: "menuName",
-          label: "Menu"
-        },
-        {
-          field: "numOfTrans",
-          label: "Amount"
-        },
-        {
-          field: "categoryName",
-          label: "Category"
-        },
-        {
-          field: "tableNumber",
-          label: "Table"
-        },
-        {
-          field: "statusName",
-          label: "Status"
-        }
-      ]
+      orders: [],
+      keyword:""
     };
   },
+  computed: {
+    items() {
+      if(this.keyword!=""){
+        return this.orders.filter(
+            items =>
+              items.menuName.toLowerCase().includes(this.keyword.toLowerCase()) ||
+              items.categoryName.toLowerCase().includes(this.keyword.toLowerCase()) ||
+              items.tableNumber.toString().includes(this.keyword.toLowerCase())||
+              items.transDate.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+      }else{
+        return this.orders
+      }
+    }
+  },
   methods: {
+    formatDate(time) {
+      return dayjs(time).format("HH:mm");
+    },
     changeCategoryMenu() {
-      console.log(this.selectedCategory.categoryId)
-      axios.get("http://localhost:3000/api/gettransactionbycategoryid/1/"+this.selectedCategory.categoryId).then(response=>{
-      this.orders = response.data
-    })
-      this.checkCategory=true
+      console.log(this.selectedCategory.categoryId);
+      axios
+        .get(
+          "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransactionbycategoryid/1/" +
+            this.selectedCategory.categoryId
+        )
+        .then(response => {
+          this.orders = response.data;
+        });
+      this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://localhost:3000/api/gettransaction/1").then(response=>{
-      this.orders = response.data
-    })
-      this.checkCategory = false
+      axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/1").then(response => {
+        this.orders = response.data;
+      });
+      this.checkCategory = false;
     }
   },
   created: function() {
-    axios.get("http://localhost:3000/api/getcategory/1").then(response => {
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/1").then(response => {
       this.category = response.data;
     });
-    axios.get("http://localhost:3000/api/gettransaction/1").then(response=>{
-      this.orders = response.data
-    })
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/1").then(response => {
+      this.orders = response.data;
+    });
   }
 };
 </script>
@@ -361,5 +391,10 @@ address {
 #static {
   padding-top: 20px;
   margin-left: 30px;
+}
+
+#table {
+  margin-left: 50px;
+  margin-right: 50px;
 }
 </style>

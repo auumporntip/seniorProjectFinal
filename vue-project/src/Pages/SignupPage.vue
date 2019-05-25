@@ -92,7 +92,7 @@ export default {
     submitForm() {
       if (this.checkForm()) {
         axios
-          .post("http://localhost:3000/api/register", {
+          .post("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/register", {
             username: this.username,
             password: this.password1,
             name: this.name,
@@ -102,7 +102,7 @@ export default {
           })
           .then(response => {
             axios
-              .get("http://localhost:3000/api/getallaccount/")
+              .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallaccount/")
               .then(response => {
                 this.account = response.data;
               });
@@ -225,7 +225,7 @@ export default {
     
   },
   created() {
-    axios.get("http://localhost:3000/api/getallaccount/").then(response => {
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallaccount/").then(response => {
       this.account = response.data;
     });
   }

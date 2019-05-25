@@ -26,15 +26,45 @@
           </b-dropdown>
         </section>
       </div>
+      <div id="table">
+        <b-field>
+          <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
+        </b-field>
 
-      <br>
-      <b-table
-        :data="menu"
-        :columns="columns"
-        :selected.sync="selected"
-        focusable
-        class="elevation-1"
-      ></b-table>
+        <b-table
+          :data="items"
+          :selected.sync="selected"
+          focusable
+          class="elevation-1"
+          :paginated="isPaginated"
+          :per-page="perPage"
+          :current-page.sync="currentPage"
+          :pagination-simple="isPaginationSimple"
+          aria-next-label="Next page"
+          aria-previous-label="Previous page"
+          aria-page-label="Page"
+          aria-current-label="Current page"
+          :loading="loading"
+        >
+          <template slot-scope="props">
+            <b-table-column label="Image" width="150">
+              <div class="img-resize" v-if="props.row.menuPathImage!=null">
+                <img :src="props.row.menuPathImage">
+              </div>
+              <div class="img-resize" v-else>
+                <img src="../assets/1.png">
+              </div>
+            </b-table-column>
+
+            <b-table-column label="Menu Name" width="200">{{ props.row.menuName }}</b-table-column>
+
+            <b-table-column label="Price" width="200">{{ props.row.menuPrice }}</b-table-column>
+
+            <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
+          </template>
+        </b-table>
+      </div>
+
       <span id="AddEditDelete">
         <!-- Add Button -->
         <v-layout id="layoutAdd">
@@ -160,7 +190,14 @@ export default {
   },
   data() {
     return {
-      imageForUpload:null,
+      keyword: "",
+
+      isPaginated: true,
+      isPaginationSimple: false,
+      currentPage: 1,
+      perPage: 5,
+
+      imageForUpload: null,
       image: null,
       checkCategory: false,
       selectedCategory: "",
@@ -171,39 +208,20 @@ export default {
         categoryId: "",
         categoryName: ""
       },
+      categoryName: "",
       menuId: "",
       menuName: "",
       menuPrice: "",
-      pathImage: "",
+      pathImage: null,
       restaurantId: "1",
       category: [],
       menu: [],
-      selected: {},
-      columns: [
-        {
-          field: "menuId",
-          label: "ID",
-          width: "40",
-          numeric: true
-        },
-        {
-          field: "menuName",
-          label: "Menu"
-        },
-        {
-          field: "menuPrice",
-          label: "Price"
-        },
-        {
-          field: "categoryName",
-          label: "cat"
-        }
-      ]
+      selected: {}
     };
   },
   methods: {
     onFileChange() {
-      this.imageForUpload=this.image
+      this.imageForUpload = this.image;
       this.createImage(this.image);
     },
     createImage(file) {
@@ -215,7 +233,7 @@ export default {
     },
     categorySelected() {
       this.selectedItem = this.selected.categoryId;
-      console.log(this.selected.menuPathImage)
+      console.log(this.selected.menuPathImage);
     },
     confirmDelete() {
       this.$dialog.confirm({
@@ -226,7 +244,7 @@ export default {
         type: "is-success",
         onConfirm: () => {
           axios.delete(
-            "http://localhost:3000/api/deletemenu/" +
+            "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/deletemenu/" +
               this.selected.menuId +
               "/" +
               this.selected.restaurantId
@@ -237,51 +255,28 @@ export default {
       });
     },
     confirmAdd() {
-      var formData = new FormData();
-      formData.append("file", this.imageForUpload);
-      axios
-        .post("http://localhost:3000/api/uploadFB", formData)
-        .then(response => {
-          let data = response.data
-          this.pathImage = data.url;
-
-          var categoryName = "";
-          for (let index = 0; index < this.category.length; index++) {
-            if (this.selectedItem === this.category[index].categoryId) {
-              categoryName = this.category[index].categoryName;
-            }
-          }
-          axios
-            .post("http://localhost:3000/api/insertmenu", {
-              menuName: this.menuName,
-              menuPrice: this.menuPrice,
-              categoryId: this.selectedItem,
-              menuPathImage: this.pathImage,
-              restaurantId: this.restaurantId
-            })
-            .then(response => {
-              this.menuId = response.data[0];
-              this.menu.push({
-                menuId: this.menuId,
-                menuName: this.menuName,
-                menuPrice: this.menuPrice,
-                categoryId: this.selectedItem,
-                categoryName: categoryName,
-                menuPathImage: this.pathImage,
-                restaurantId: this.restaurantId
-              });
-              this.selectedItem=''
-              this.pathImage=''
-              this.menuName=''
-              this.menuPrice=''
-              this.menuId=''
-              this.image=''
-            });
-          this.dialogAdd = false;
-        });
+      for (let index = 0; index < this.category.length; index++) {
+        if (this.selectedItem === this.category[index].categoryId) {
+          this.categoryName = this.category[index].categoryName;
+        }
+      }
+      if (this.imageForUpload != null) {
+        var formData = new FormData();
+        formData.append("file", this.imageForUpload);
+        axios
+          .post("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/uploadFB", formData)
+          .then(response => {
+            let data = response.data;
+            this.pathImage = data.url;
+            this.insertMenu();
+          });
+      } else {
+        this.insertMenu();
+      }
+      this.dialogAdd = false;
     },
     confirmEdit() {
-      axios.put("http://localhost:3000/api/updatemenu/", {
+      axios.put("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/updatemenu/", {
         menuId: this.selected.menuId,
         menuName: this.selected.menuName,
         menuPrice: this.selected.menuPrice,
@@ -300,7 +295,7 @@ export default {
     changeCategoryMenu() {
       axios
         .get(
-          "http://localhost:3000/api/getmenubycategory/" +
+          "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getmenubycategory/" +
             this.selectedCategory.categoryId +
             "/" +
             1
@@ -311,18 +306,63 @@ export default {
       this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://localhost:3000/api/getallmenu/1").then(response => {
+      axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/1").then(response => {
         this.menu = response.data;
       });
       this.checkCategory = false;
+    },
+    insertMenu() {
+      axios
+        .post("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/insertmenu", {
+          menuName: this.menuName,
+          menuPrice: this.menuPrice,
+          categoryId: this.selectedItem,
+          menuPathImage: this.pathImage,
+          restaurantId: this.restaurantId
+        })
+        .then(response => {
+          this.menuId = response.data[0];
+          this.menu.push({
+            menuId: this.menuId,
+            menuName: this.menuName,
+            menuPrice: this.menuPrice,
+            categoryId: this.selectedItem,
+            categoryName: this.categoryName,
+            menuPathImage: this.pathImage,
+            restaurantId: this.restaurantId
+          });
+          this.selectedItem = null;
+          this.pathImage = null;
+          this.menuName = null;
+          this.menuPrice = null;
+          this.menuId = null;
+          this.image = null;
+          this.imageForUpload = null;
+        });
+    }
+  },
+  computed: {
+    items() {
+      if (this.keyword != "") {
+        return this.menu.filter(
+          items =>
+            items.menuName.toLowerCase().includes(this.keyword.toLowerCase()) ||
+            items.categoryName
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase()) ||
+            items.menuPrice.toString().includes(this.keyword.toLowerCase())
+        );
+      } else {
+        return this.menu;
+      }
     }
   },
   created: function() {
-    axios.get("http://localhost:3000/api/getallmenu/1").then(response => {
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/1").then(response => {
       this.menu = response.data;
       this.selected = response.data[0];
     });
-    axios.get("http://localhost:3000/api/getcategory/1").then(response => {
+    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/1").then(response => {
       this.category = response.data;
     });
   }
@@ -589,5 +629,19 @@ address {
   margin-left: 200px;
   margin-top: 20px;
   position: absolute;
+}
+#table {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.div.img-resize {
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  text-align: center;
+}
+div.img-resize img {
+  width: 50px;
+  height: auto;
 }
 </style>
