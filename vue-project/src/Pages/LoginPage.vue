@@ -56,7 +56,7 @@ export default {
           console.log(response.data)
           if(this.password === response.data[0].password){
             console.log(true)
-            window.location.href ="http://localhost:8080/CreateRestaurant"
+            window.location.href ="http://52.77.249.234/CreateRestaurant"
           }else{
             console.log(false)
           }
