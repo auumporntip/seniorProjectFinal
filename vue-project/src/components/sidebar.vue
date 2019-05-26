@@ -95,8 +95,9 @@ export default {
 @media screen and (min-width: 320px) and (max-width: 480px) {
   div.barofcolor {
     background-color: #eec9c9;
+    background-attachment: fixed;  
     width: 110px;
-    height: 100vh;
+    height: 52em;
     padding-top: 40px;
     margin-left: -6px;
 
@@ -127,7 +128,7 @@ export default {
 .barofcolor {
   background-color: #eaddd4;
   width: 190px;
-  height: 100vh;
+  height: 52em;
   padding-top: 5px;
   margin-left: -6px;
   padding-left: 20px;

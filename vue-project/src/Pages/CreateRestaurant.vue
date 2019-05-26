@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div >
     <Header></Header>
     <sidebar></sidebar>
-    <div id="biggest">
+    <div id="biggest" >
       <div id="header">
         CREATE RESTAURANT
         <form id="login">
@@ -214,7 +214,8 @@ export default {
 }
 #biggest {
   background-color: #f0cab1;
-  height: 50em;
+  height: 50%;
+  background-attachment: fixed;  
 }
 #RestaurantName {
   text-align: left;

@@ -54,8 +54,9 @@
           </div>
         </div>
       </form>
-
-      <button @click="submitForm">SIGN UP</button>
+        <div id="button">
+      <button @click="submitForm" id="butto">SIGN UP</button>
+        </div>
     </div>
   </div>
 </template>
@@ -245,39 +246,39 @@ export default {
   text-align: center;
   padding-top: 25px;
   background-color: #f0cab1;
-  height: 100vh;
+  height: 40em;
 }
 
 #Username {
   text-align: left;
-  padding-left: 30em;
+  padding-left: 25em;
   width: 1300px;
 }
 #Surname {
   text-align: left;
-  padding-left: 30em;
+  padding-left: 25em;
   width: 1300px;
 }
 #Name {
   text-align: left;
-  padding-left: 30em;
+  padding-left: 25em;
   width: 1000px;
 }
 #Email {
   text-align: left;
-  padding-left: 30em;
+  padding-left: 25em;
   width: 1000px;
 }
 #Tel {
   text-align: left;
-  padding-left: 30em;
+  padding-left: 25em;
   width: 1300px;
 }
 
 #Password {
   text-align: left;
   width: 1300px;
-  padding-left: 30em;
+  padding-left: 25em;
 }
 #login {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -296,11 +297,15 @@ button {
   color: #e0dada;
   cursor: pointer;
   font-size: 16px;
+  
 }
 button:hover {
   background-color: #711f1b;
 }
 li {
   list-style-type: none;
+}
+#button{
+  padding-left: 5em;
 }
 </style>

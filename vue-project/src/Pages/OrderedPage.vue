@@ -153,7 +153,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@media screen and (min-width: 320px) and (max-width: 374px) {
+/*@media screen and (min-width: 320px) and (max-width: 374px) {
   div.boxright {
     background-color: #f0cab1;
     width: 222px;
@@ -321,7 +321,7 @@ export default {
     margin-right: 30px;
     width: 15%;
   }
-}
+}*/
 #button {
   margin-left: 30px;
   margin-top: 20px;
@@ -360,9 +360,10 @@ h1 {
 .boxright {
   background-color: #f0cab1;
   width: 1180px;
-  height: 100vh;
+  height: 52em;
   margin-top: 0px;
   margin-left: 180px;
+  background-attachment: fixed;  
 }
 .category {
   font-family: "Arial Black", Gadget, sans-serif;

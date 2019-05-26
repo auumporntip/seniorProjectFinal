@@ -158,9 +158,10 @@ body {
 #boxright {
  background-color: #f0cab1;
   width: 1170px;
-  height: 100vh;
+  height: 52em;
   margin-top: 0px;
   margin-left: 180px;
+  background-attachment: fixed;  
 }
 .category {
   font-family: "Arial Black", Gadget, sans-serif;

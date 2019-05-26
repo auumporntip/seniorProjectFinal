@@ -82,7 +82,8 @@ export default {
   text-align: center;
   padding-top: 25px;
   background-color:#f0cab1;
-  height: 100vh;
+  height: 36.5em;
+  background-attachment: fixed;  
 }
 #Username{
   text-align: left;

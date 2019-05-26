@@ -113,11 +113,12 @@ h1 {
 
 }
 #boxright{
-     background-color: #f0cab1;
+  background-color: #f0cab1;
   width: 1170px;
-  height: 100vh;
+  height: 52em;
   margin-top: 0px;
   margin-left: 180px;
+  background-attachment: fixed;  
     
 }
 #big{
