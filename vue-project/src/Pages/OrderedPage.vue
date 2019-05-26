@@ -121,7 +121,7 @@ export default {
       console.log(this.selectedCategory.categoryId);
       axios
         .get(
-          "http://13.228.170.25:7777/api/gettransactionbycategoryid/1/" +
+          "http://13.228.170.25:8443/api/gettransactionbycategoryid/1/" +
             this.selectedCategory.categoryId
         )
         .then(response => {
@@ -134,7 +134,7 @@ export default {
       this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://13.228.170.25:7777/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
+      axios.get("http://13.228.170.25:8443/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
         this.orders = response.data;
         for (let index = 0; index < this.orders.length; index++) {
         console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))
@@ -145,10 +145,10 @@ export default {
     }
   },
   created: function() {
-    axios.get("http://13.228.170.25:7777/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
+    axios.get("http://13.228.170.25:8443/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
       this.category = response.data;
     });
-    axios.get("http://13.228.170.25:7777/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
+    axios.get("http://13.228.170.25:8443/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
       this.orders = response.data;
       for (let index = 0; index < this.orders.length; index++) {
         console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))

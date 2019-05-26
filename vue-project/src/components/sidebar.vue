@@ -83,7 +83,7 @@ export default {
     }
   },
   created() {
-    Axios.get("http://13.228.170.25:7777/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
+    Axios.get("http://13.228.170.25:8443/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
       this.restaurant = response.data;
     });
   }
