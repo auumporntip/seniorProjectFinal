@@ -58,7 +58,7 @@ img.logo2{
   margin-top: 20px;
 }
 }
-@media screen and (min-width:375px) and (max-width: 424px){
+/*@media screen and (min-width:375px) and (max-width: 424px){
 div.head {
     background-color: #cd9575;
     width:337px;
@@ -138,7 +138,7 @@ span.res {
   margin-top:40px;
 }
 } */
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+/*@media screen and (min-width: 768px) and (max-width: 1023px) {
   div.head {
     background-color: #cd9575;
     width:750 px;
@@ -390,7 +390,7 @@ span.res {
 
 .head {
     background-color: #cd9575;
-    width:1390px;
+    width:110%;
     height: 90px;
     margin-top: -10px;
     margin-right:-20px ;
