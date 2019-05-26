@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
         name:'',
         restaurantId:'',
         selectedRestaurant:'',
-        restaurantName:''
+        restaurantName:'Select your restaurant'
     },
     mutations: {
         setAccount(state,accountId){

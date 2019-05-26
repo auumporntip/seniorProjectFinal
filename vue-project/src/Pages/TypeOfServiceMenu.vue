@@ -88,7 +88,7 @@ export default {
         type: "is-success",
         onConfirm: () => {
           axios.delete(
-            "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/deletemenu/" +
+            "http://localhost:3000/api/deletemenu/" +
               this.selected.menuId +
               "/" +
               this.selected.restaurantId
@@ -105,7 +105,7 @@ export default {
     }
   },
   created: function() {
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/1").then(response => {
+    axios.get("http://localhost:3000/api/getallmenu/1").then(response => {
       this.menu = response.data;
       this.selected = response.data[0];
       console.log(response.data);

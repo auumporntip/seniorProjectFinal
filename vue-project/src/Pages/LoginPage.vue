@@ -55,8 +55,8 @@ export default {
   methods: {
     login() {
       axios
-      .get("http://http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getAccountbyusername/" + this.username)
-        // .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getAccountbyusername/" + this.username)
+      .get("http://localhost:3000/api/getAccountbyusername/" + this.username)
+        // .get("http://localhost:3000/api/getAccountbyusername/" + this.username)
         .then(response => {
           this.account = response.data
           if(this.password === response.data[0].password){

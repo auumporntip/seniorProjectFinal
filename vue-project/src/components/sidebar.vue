@@ -4,8 +4,7 @@
       <div class="drop">
         <section id="dropdown">
           <b-dropdown v-model="selectedRestaurant" aria-role="list">
-            <button id="dropp" class="button is-light" slot="trigger" align-center>
-              Your Restaurant
+            <button id="dropp" class="button is-light" slot="trigger" align-center >
               {{$store.getters.restaurantName}}
             </button>
 
@@ -84,7 +83,7 @@ export default {
     }
   },
   created() {
-    Axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
+    Axios.get("http://localhost:3000/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
       this.restaurant = response.data;
     });
   }

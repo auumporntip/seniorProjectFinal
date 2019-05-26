@@ -177,7 +177,7 @@ export default {
       return this.check
     },
     createRestaurant() {
-      axios.post("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/insertrestaurant", {
+      axios.post("http://localhost:3000/api/insertrestaurant", {
         restaurantName: this.restaurantName,
         restaurantLocation: this.restaurantLocation,
         timeOpenClose: this.timeOpenClose,
@@ -190,7 +190,7 @@ export default {
   },
   created() {
     axios
-      .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettypeofrestaurant")
+      .get("http://localhost:3000/api/gettypeofrestaurant")
       .then(response => {
         this.typeOfRestaurant = response.data;
         console.log(this.typeOfRestaurant);

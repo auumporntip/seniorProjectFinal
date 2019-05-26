@@ -121,7 +121,7 @@ export default {
       console.log(this.selectedCategory.categoryId);
       axios
         .get(
-          "http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransactionbycategoryid/1/" +
+          "http://localhost:3000/api/gettransactionbycategoryid/1/" +
             this.selectedCategory.categoryId
         )
         .then(response => {
@@ -130,21 +130,21 @@ export default {
       this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
+      axios.get("http://localhost:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
         this.orders = response.data;
       });
       this.checkCategory = false;
     }
   },
   created: function() {
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
+    axios.get("http://localhost:3000/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
       this.category = response.data;
     });
-    axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
+    axios.get("http://localhost:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
       this.orders = response.data;
       for (let index = 0; index < this.orders.length; index++) {
         console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))
-        // this.orders[index].transDate = dayjs(this.orders[index].transDate).format("HH:mm")
+        this.orders[index].transDate = dayjs(this.orders[index].transDate).format("HH:mm")
       }
     });
   }
