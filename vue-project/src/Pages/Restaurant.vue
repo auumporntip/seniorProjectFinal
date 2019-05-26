@@ -76,7 +76,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:7777/api/getrestaurantbyrestaurantId/"+this.$store.getters.restaurantId)
+      .get("http://13.228.170.25:7777/api/getrestaurantbyrestaurantId/"+this.$store.getters.restaurantId)
       .then(response => {
         this.restaurant = response.data;
         this.restaurantDescription=this.restaurant[0].restaurantDescription
