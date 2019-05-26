@@ -25,7 +25,7 @@ app.use('/api/',require('./routes/transaction'))
 app.use('/api/',require('./upload/upload'))
 
 
-app.listen(8000, () => {
+app.listen(7777, () => {
   console.log('Example app listening at http://%s:%s');
 })
 
