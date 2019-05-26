@@ -20,7 +20,12 @@
           <div id="Password">
             <span>Confirm Password</span>
             <b-field :type="errorPass2[0]" :message="errorPass2[1]" style="width:450px;">
-              <b-input placeholder="Confirm-Password" type="password" v-model="password2" password-reveal></b-input>
+              <b-input
+                placeholder="Confirm-Password"
+                type="password"
+                v-model="password2"
+                password-reveal
+              ></b-input>
             </b-field>
           </div>
           <div id="Name">
@@ -49,14 +54,14 @@
           <div id="Tel">
             <span>PhoneNumber</span>
             <b-field :type="errorPhone[0]" :message="errorPhone[1]" expanded style="width:450px;">
-              <b-input placeholder="xx-xxx-xxxx" type="text" v-model="phone"></b-input>
+              <b-input placeholder="xxxxxxxxx" type="text" v-model="phone"></b-input>
             </b-field>
           </div>
         </div>
       </form>
-        <div id="button">
-      <button @click="submitForm" id="butto">SIGN UP</button>
-        </div>
+      <div id="button">
+        <button @click="submitForm" id="butto">SIGN UP</button>
+      </div>
     </div>
   </div>
 </template>
@@ -107,8 +112,8 @@ export default {
               .then(response => {
                 this.account = response.data;
               });
+            this.$router.push("/");
           });
-        this.$router.push('/');
       }
     },
     checkForm() {
@@ -218,12 +223,11 @@ export default {
       }
       return false;
     },
-    phoneValidator (phoneNumber) {
+    phoneValidator(phoneNumber) {
       var phoneno = /^(([0-9]{3}))([0-9]{3})([0-9]{4})$/;
-      console.log(phoneNumber)
-      return phoneno.test(phoneNumber); 
+      console.log(phoneNumber);
+      return phoneno.test(phoneNumber);
     }
-    
   },
   created() {
     axios.get("http://13.228.170.25:7777/api/getallaccount/").then(response => {
@@ -297,7 +301,6 @@ button {
   color: #e0dada;
   cursor: pointer;
   font-size: 16px;
-  
 }
 button:hover {
   background-color: #711f1b;
@@ -305,7 +308,7 @@ button:hover {
 li {
   list-style-type: none;
 }
-#button{
+#button {
   padding-left: 5em;
 }
 </style>

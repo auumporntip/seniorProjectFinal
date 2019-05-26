@@ -184,7 +184,7 @@ export default {
         restaurantPhone: this.restaurantPhone,
         restaurantDescription: this.restaurantDescription,
         typeResId: this.selectedTypeOfRes,
-        accountId: $store.getters.accountId
+        accountId: this.$store.getters.accountId
       });
     }
   },
