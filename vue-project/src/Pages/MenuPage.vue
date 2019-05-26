@@ -255,7 +255,7 @@ export default {
         type: "is-success",
         onConfirm: () => {
           axios.delete(
-            "http://localhost:3000/api/deletemenu/" +
+            "http://13.228.170.25:7777/api/deletemenu/" +
               this.selected.menuId +
               "/" +
               this.$store.getters.restaurantId
@@ -276,7 +276,7 @@ export default {
         formData.append("file", this.imageForUpload);
         axios
           .post(
-            "http://localhost:3000/api/uploadFB",
+            "http://13.228.170.25:7777/api/uploadFB",
             formData
           )
           .then(response => {
@@ -284,7 +284,7 @@ export default {
             this.pathImage = data.url;
             axios
               .post(
-                "http://localhost:3000/api/insertmenu",
+                "http://13.228.170.25:7777/api/insertmenu",
                 {
                   menuName: this.menuName,
                   menuPrice: this.menuPrice,
@@ -309,7 +309,7 @@ export default {
       } else {
         axios
           .post(
-            "http://localhost:3000/api/insertmenu",
+            "http://13.228.170.25:7777/api/insertmenu",
             {
               menuName: this.menuName,
               menuPrice: this.menuPrice,
@@ -336,7 +336,7 @@ export default {
     confirmEdit() {
       if (this.image === null) {
         axios.put(
-          "http://localhost:3000/api/updatemenu/",
+          "http://13.228.170.25:7777/api/updatemenu/",
           {
             menuId: this.selected.menuId,
             menuName: this.selected.menuName,
@@ -351,7 +351,7 @@ export default {
         formData.append("file", this.imageForUpload);
         axios
           .post(
-            "http://localhost:3000/api/uploadFB",
+            "http://13.228.170.25:7777/api/uploadFB",
             formData
           )
           .then(response => {
@@ -363,7 +363,7 @@ export default {
               }
             }
             axios.put(
-              "http://localhost:3000/api/updatemenu/",
+              "http://13.228.170.25:7777/api/updatemenu/",
               {
                 menuId: this.selected.menuId,
                 menuName: this.selected.menuName,
@@ -387,7 +387,7 @@ export default {
     changeCategoryMenu() {
       axios
         .get(
-          "http://localhost:3000/api/getmenubycategory/" +
+          "http://13.228.170.25:7777/api/getmenubycategory/" +
             this.selectedCategory.categoryId +
             "/" +
             this.$store.getters.restaurantId
@@ -400,7 +400,7 @@ export default {
     allcategory() {
       axios
         .get(
-          "http://localhost:3000/api/getallmenu/"+this.$store.getters.restaurantId
+          "http://13.228.170.25:7777/api/getallmenu/"+this.$store.getters.restaurantId
         )
         .then(response => {
           this.menu = response.data;
@@ -438,7 +438,7 @@ export default {
   created: function() {
     axios
       .get(
-        "http://localhost:3000/api/getallmenu/"+this.$store.getters.restaurantId
+        "http://13.228.170.25:7777/api/getallmenu/"+this.$store.getters.restaurantId
       )
       .then(response => {
         this.menu = response.data;
@@ -446,7 +446,7 @@ export default {
       });
     axios
       .get(
-        "http://localhost:3000/api/getcategory/"+this.$store.getters.restaurantId
+        "http://13.228.170.25:7777/api/getcategory/"+this.$store.getters.restaurantId
       )
       .then(response => {
         this.category = response.data;

@@ -55,8 +55,8 @@ export default {
   methods: {
     login() {
       axios
-      .get("http://localhost:3000/api/getAccountbyusername/" + this.username)
-        // .get("http://localhost:3000/api/getAccountbyusername/" + this.username)
+      .get("http://13.228.170.25:7777/api/getAccountbyusername/" + this.username)
+        // .get("http://13.228.170.25:7777/api/getAccountbyusername/" + this.username)
         .then(response => {
           this.account = response.data
           if(this.password === response.data[0].password){

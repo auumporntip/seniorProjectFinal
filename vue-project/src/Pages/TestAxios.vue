@@ -69,7 +69,7 @@ export default {
     }
   },
   created: function() {
-    axios.get("http://localhost:3000/api/getallmenu/1").then(response => {
+    axios.get("http://13.228.170.25:7777/api/getallmenu/1").then(response => {
       this.menu = response.data;
       console.log(this.menu);
     });

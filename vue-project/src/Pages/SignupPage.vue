@@ -93,7 +93,7 @@ export default {
     submitForm() {
       if (this.checkForm()) {
         axios
-          .post("http://localhost:3000/api/register", {
+          .post("http://13.228.170.25:7777/api/register", {
             username: this.username,
             password: this.password1,
             name: this.name,
@@ -103,7 +103,7 @@ export default {
           })
           .then(response => {
             axios
-              .get("http://localhost:3000/api/getallaccount/")
+              .get("http://13.228.170.25:7777/api/getallaccount/")
               .then(response => {
                 this.account = response.data;
               });
@@ -226,7 +226,7 @@ export default {
     
   },
   created() {
-    axios.get("http://localhost:3000/api/getallaccount/").then(response => {
+    axios.get("http://13.228.170.25:7777/api/getallaccount/").then(response => {
       this.account = response.data;
     });
   }
