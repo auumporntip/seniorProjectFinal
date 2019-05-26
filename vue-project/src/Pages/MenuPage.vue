@@ -41,7 +41,6 @@
           aria-previous-label="Previous page"
           aria-page-label="Page"
           aria-current-label="Current page"
-          @click="printselected"
         >
           <template slot-scope="props">
             <b-table-column label="Image" width="150">

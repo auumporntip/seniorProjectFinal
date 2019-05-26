@@ -19,7 +19,7 @@ exports.deleteRestaurant = async (restaurantId) => {
 }
 
 exports.insertRestuarant = async (restaurant) => {
-    await knex('restaurant').insert({
+    return await knex('restaurant').insert({
         restaurantName: restaurant.restaurantName,
         restaurantLocation: restaurant.restaurantLocation,
         timeOpenClose: restaurant.timeOpenClose,

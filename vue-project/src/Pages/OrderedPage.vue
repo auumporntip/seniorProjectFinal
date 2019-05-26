@@ -126,12 +126,20 @@ export default {
         )
         .then(response => {
           this.orders = response.data;
+          for (let index = 0; index < this.orders.length; index++) {
+        console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))
+        this.orders[index].transDate = dayjs(this.orders[index].transDate).format("HH:mm")
+      }
         });
       this.checkCategory = true;
     },
     allcategory() {
       axios.get("http://13.228.170.25:7777/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
         this.orders = response.data;
+        for (let index = 0; index < this.orders.length; index++) {
+        console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))
+        this.orders[index].transDate = dayjs(this.orders[index].transDate).format("HH:mm")
+      }
       });
       this.checkCategory = false;
     }

@@ -185,7 +185,11 @@ export default {
         restaurantDescription: this.restaurantDescription,
         typeResId: this.selectedTypeOfRes,
         accountId: this.$store.getters.accountId
-      });
+      }).then(response=>{
+        this.$store.commit('setRestaurantId',response.data)
+        this.$store.commit('setRestaurantName',this.restaurantName)
+        this.$router.push('/restaurant');
+      })
     }
   },
   created() {

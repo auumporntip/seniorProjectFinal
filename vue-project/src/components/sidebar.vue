@@ -76,7 +76,7 @@ export default {
     clearStore(){
       this.$store.commit('setName',"")      
       this.$store.commit('setAccount',"")
-      this.$store.commit('selectedRestaurant',"")      
+      this.$store.commit('setSelectedRestaurant',"")      
       this.$store.commit('setRestaurantId',"")
       this.$store.commit('setRestaurantName',"")   
       this.$router.push('/');
