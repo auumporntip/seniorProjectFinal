@@ -4,9 +4,9 @@
     <div class="head">
     <img class="logo" src="../assets/1.png" width="65px" height="61px">
    <span class= res> Restaurant Management</span>
-    <a href="/EditProfile">
+    <router-link to="/Editprofile">
       <img class="logo2" src="../assets/user.png" width="60px" height="51px">
-    </a>
+    </router-link>
    
    
    <!-- <span class= login>LOGIN</span> -->
