@@ -8,19 +8,19 @@
           <div id="Username">
             <span>Username</span>
             <b-field :type="errorUser[0]" :message="errorUser[1]" expanded style="width:450px;">
-              <b-input v-model="username"></b-input>
+              <b-input placeholder="Username" v-model="username"></b-input>
             </b-field>
           </div>
           <div id="Password">
             <span>Password</span>
             <b-field :type="errorPass1[0]" :message="errorPass1[1]" style="width:450px;">
-              <b-input type="password" v-model="password1" password-reveal></b-input>
+              <b-input placeholder="Password" type="password" v-model="password1" password-reveal></b-input>
             </b-field>
           </div>
           <div id="Password">
             <span>Confirm Password</span>
             <b-field :type="errorPass2[0]" :message="errorPass2[1]" style="width:450px;">
-              <b-input type="password" v-model="password2" password-reveal></b-input>
+              <b-input placeholder="Confirm-Password" type="password" v-model="password2" password-reveal></b-input>
             </b-field>
           </div>
           <div id="Name">
@@ -37,7 +37,7 @@
               expanded
               style="width:450px;"
             >
-              <b-input v-model="surname"></b-input>
+              <b-input placeholder="Surname" v-model="surname"></b-input>
             </b-field>
           </div>
           <div id="Email">
@@ -49,7 +49,7 @@
           <div id="Tel">
             <span>PhoneNumber</span>
             <b-field :type="errorPhone[0]" :message="errorPhone[1]" expanded style="width:450px;">
-              <b-input type="text" v-model="phone"></b-input>
+              <b-input placeholder="xx-xxx-xxxx" type="text" v-model="phone"></b-input>
             </b-field>
           </div>
         </div>

@@ -11,4 +11,9 @@ router.get('/getrestaurant/:accountId', async(req,res)=>{
     res.send(await restaurant.getRestaurant(req.params.accountId))
 })
 
+router.get('/getrestaurantByRestaurantId/:restaurantId', async(req,res)=>{
+    res.send(await restaurant.getRestaurantByRestaurantId(req.params.restaurantId))
+})
+
+
 module.exports = router

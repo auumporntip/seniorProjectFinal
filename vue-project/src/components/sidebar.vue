@@ -71,7 +71,7 @@ export default {
       // console.log(this.selectedRestaurant.restaurantId)
       this.$store.commit('setRestaurantName',this.selectedRestaurant.restaurantName)      
       this.$store.commit('setRestaurantId',this.selectedRestaurant.restaurantId)
-      this.$router.push('/createrestaurant');
+      this.$router.push('/restaurant');
     },
     clearStore(){
       this.$store.commit('setName',"")      

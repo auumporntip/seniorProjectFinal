@@ -15,6 +15,7 @@ import EditProfilePage from '@/Pages/EditProfilePage'
 import TypeOfServicePage from '@/Pages/TypeOfServicePage'
 import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
 import AddCategory from '@/Pages/AddCategory'
+import Restaurant from '@/Pages/Restaurant'
 Vue.use(Router)
 
 export default new Router({
@@ -79,6 +80,11 @@ export default new Router({
       path: '/AddCategory',
       name: 'AddCategory',
       component: AddCategory
+    },
+    {
+      path: '/Restaurant',
+      name: 'Restaurant',
+      component: Restaurant
     }
 
 

@@ -73,7 +73,7 @@
         </form>
 
         <button @click="submitForm">
-          <router-link to="/menu">CREATE RESTAURANT</router-link>
+          CREATE RESTAURANT
         </button>
       </div>
     </div>

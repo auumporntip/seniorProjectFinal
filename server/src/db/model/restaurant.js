@@ -5,6 +5,13 @@ exports.getRestaurant = async (accountId) => {
     )
 }
 
+exports.getRestaurantByRestaurantId = async (restaurantId) => {
+    return await knex('restaurant')
+        .join('typeofrestaurant', 'typeofrestaurant.typeResId', '=', 'restaurant.typeResId')
+        .where('restaurantId', restaurantId
+        )
+}
+
 exports.deleteRestaurant = async (restaurantId) => {
     await knex('restaurant')
         .Where('restaurantId', restaurantId)

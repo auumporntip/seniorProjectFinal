@@ -121,7 +121,7 @@ export default {
       console.log(this.selectedCategory.categoryId);
       axios
         .get(
-          "http://localhost:3000/api/gettransactionbycategoryid/1/" +
+          "http://13.228.170.25:7777/api/gettransactionbycategoryid/1/" +
             this.selectedCategory.categoryId
         )
         .then(response => {
@@ -130,17 +130,17 @@ export default {
       this.checkCategory = true;
     },
     allcategory() {
-      axios.get("http://localhost:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
+      axios.get("http://13.228.170.25:7777/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
         this.orders = response.data;
       });
       this.checkCategory = false;
     }
   },
   created: function() {
-    axios.get("http://localhost:3000/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
+    axios.get("http://13.228.170.25:7777/api/getcategory/"+this.$store.getters.restaurantId).then(response => {
       this.category = response.data;
     });
-    axios.get("http://localhost:3000/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
+    axios.get("http://13.228.170.25:7777/api/gettransaction/"+this.$store.getters.restaurantId).then(response => {
       this.orders = response.data;
       for (let index = 0; index < this.orders.length; index++) {
         console.log(dayjs(this.orders[index].transDate).format("HH:mm:ss"))

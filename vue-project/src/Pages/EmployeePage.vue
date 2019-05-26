@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     // test() {
-    //   axios.get(`http://localhost:3000/api/querymenu`).then(response => {
+    //   axios.get(`http://13.228.170.25:3000/api/querymenu`).then(response => {
     //     this.menu = response.data;
     //     console.log(response.data);
     //     // return response.data
@@ -105,7 +105,7 @@ export default {
 //     }
 //   },
 //   created: function() {
-//     axios.get(`http://localhost:3000/api/querymenu`).then(response => {
+//     axios.get(`http://13.228.170.25:3000/api/querymenu`).then(response => {
 //       this.menu = response.data;
 //       this.selected = response.data[0];
 //       console.log(response.data);

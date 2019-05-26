@@ -60,12 +60,10 @@ export default {
         .then(response => {
           this.account = response.data
           if(this.password === response.data[0].password){
-            console.log(true)
             this.$store.commit('setAccount',this.account[0].accountId)
             this.$store.commit('setName',this.account[0].name)
             this.$router.push('/createrestaurant');
           }else{
-            console.log(false)
             this.$router.push('/');
           }
         });

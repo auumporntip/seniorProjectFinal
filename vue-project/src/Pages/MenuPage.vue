@@ -224,13 +224,6 @@ export default {
     };
   },
   methods: {
-    printselected() {
-      for (let index = 0; index < this.menu.length; index++) {
-        if (this.menu[i].menuId === this.selected.menuId) {
-          this.menu[i].menuPathImage = this.pathImage;
-        }
-      }
-    },
     onFileChange() {
       this.imageForUpload = this.image;
       this.createImage(this.image);
@@ -249,7 +242,7 @@ export default {
     confirmDelete() {
       this.$dialog.confirm({
         title: "Privacy Politics",
-        message: "จะลบจริงอ่อ",
+        message: "Are you sure you want to delete?",
         cancelText: "Disagree",
         confirmText: "Agree",
         type: "is-success",
