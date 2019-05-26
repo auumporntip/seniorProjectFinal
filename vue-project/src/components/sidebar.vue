@@ -5,10 +5,11 @@
         <section id="dropdown">
           <b-dropdown v-model="selectedRestaurant" aria-role="list">
             <button id="dropp" class="button is-light" slot="trigger" align-center>
+              Your Restaurant
               {{$store.getters.restaurantName}}
             </button>
 
-            <b-dropdown-item
+            <b-dropdown-item 
               v-for="option in restaurant"
               :value="option"
               :key="option.restaurantId"
