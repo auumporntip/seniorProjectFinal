@@ -83,7 +83,7 @@ export default {
     }
   },
   created() {
-    Axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com::3000/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
+    Axios.get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
       this.restaurant = response.data;
     });
   }

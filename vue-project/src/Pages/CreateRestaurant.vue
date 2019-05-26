@@ -190,7 +190,7 @@ export default {
   },
   created() {
     axios
-      .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com::3000/api/gettypeofrestaurant")
+      .get("http://ec2-54-251-178-30.ap-southeast-1.compute.amazonaws.com:3000/api/gettypeofrestaurant")
       .then(response => {
         this.typeOfRestaurant = response.data;
         console.log(this.typeOfRestaurant);
