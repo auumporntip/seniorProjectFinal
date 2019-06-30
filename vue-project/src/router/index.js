@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import App from '@/App'
-import MenuPage from '@/Pages/MenuPage'
+// import MenuPage from '@/Pages/MenuPage'
 import LoginPage from '@/Pages/LoginPage'
 import TestAxios from '@/Pages/TestAxios'
 import TransactionPage from '@/Pages/TransactionPage'
@@ -16,7 +16,7 @@ import TypeOfServicePage from '@/Pages/TypeOfServicePage'
 import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
 import AddCategory from '@/Pages/AddCategory'
 import Restaurant from '@/Pages/Restaurant'
-import MenuPage1 from '@/Pages/Menu/MenuPage'
+import MenuPage from '@/Pages/Menu/MenuPage'
 
 Vue.use(Router)
 
@@ -88,11 +88,7 @@ export default new Router({
       name: 'Restaurant',
       component: Restaurant
     },
-    {
-      path: '/B',
-      name: 'MenuPage1',
-      component: MenuPage1
-    }
+
 
 
 
