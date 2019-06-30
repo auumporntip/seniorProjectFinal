@@ -177,7 +177,7 @@ export default {
       return this.check
     },
     createRestaurant() {
-      axios.post("http://13.228.170.25:8443/api/insertrestaurant", {
+      axios.post("http://localhost/api/insertrestaurant", {
         restaurantName: this.restaurantName,
         restaurantLocation: this.restaurantLocation,
         timeOpenClose: this.timeOpenClose,
@@ -194,7 +194,7 @@ export default {
   },
   created() {
     axios
-      .get("http://13.228.170.25:8443/api/gettypeofrestaurant")
+      .get("http://localhost/api/gettypeofrestaurant")
       .then(response => {
         this.typeOfRestaurant = response.data;
         console.log(this.typeOfRestaurant);

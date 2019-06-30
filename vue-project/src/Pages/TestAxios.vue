@@ -17,7 +17,6 @@
           aria-previous-label="Previous page"
           aria-page-label="Page"
           aria-current-label="Current page"
-          :loading="loading"
         >
           <template slot-scope="props">
             <b-table-column label="Image" width="150" >
@@ -36,42 +35,43 @@
             <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
           </template>
         </b-table>
-    {{menu}}
   </div>
 </template>
 <script>
 import axios from "axios";
-import { mdbDatatable } from "mdbvue";
 
 export default {
   name: "TestAxios",
-  components: {
-    mdbDatatable
-  },
   data() {
     return {
+      isPaginated: true,
+      isPaginationSimple: false,
+      currentPage: 1,
+      perPage: 5,
+
+      selected:{},
       keyword: "",
-      menu: []
     };
   },
   methods: {},
   computed: {
     items() {
       if(this.keyword!=""){
-        return this.menu.filter(
+        return this.$store.getters.menu.filter(
             items =>
               items.menuName.toLowerCase().includes(this.keyword.toLowerCase()) ||
               items.categoryName.toLowerCase().includes(this.keyword.toLowerCase())
           )
       }else{
-        return this.menu
+        return this.$store.getters.menu
       }
     }
   },
   created: function() {
-    axios.get("http://13.228.170.25:8443/api/getallmenu/1").then(response => {
-      this.menu = response.data;
-      console.log(this.menu);
+    axios.get("http://localhost:3000/api/getallmenu/1").then(response => {
+      this.$store.commit('setMenu',response.data)
+      console.log(this.$store.getters.menu)
+      this.selected =response.data[0]
     });
   }
 };

@@ -1,0 +1,158 @@
+<template>
+  <div>
+    <v-layout >
+      <v-flex xs2>
+        <v-dialog v-model="dialog" persistent max-width="600px">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on" @click="clickButton">Add Menu</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">Add Menu</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <div v-if="image==null">
+                    <img src="../../../assets/1.png" width="100px" height="100px">
+                  </div>
+                  <div v-else>
+                    <img :src="image" width="100px" height="100px">
+                  </div>
+                  <b-field class="file">
+                    <b-upload v-model="image" v-on:input="onFileChange">
+                      <a class="button is-primary">
+                        <b-icon icon="upload"></b-icon>
+                        <span>Click to upload</span>
+                      </a>
+                    </b-upload>
+                  </b-field>
+                  <v-flex xs7 sm6>
+                    <v-text-field label="Menu Name" v-model="menu.menuName" required></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field label="Menu Price" v-model="menu.menuPrice" required></v-text-field>
+                  </v-flex>
+                  <v-select
+                    label="Select Category"
+                    v-model="selectedCategory"
+                    :items="category"
+                    item-text="categoryName"
+                    item-value="categoryId"
+                  ></v-select>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click="closeDialog">Close</v-btn>
+              <v-btn color="blue darken-1" flat @click="confirmAdd">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-flex>
+    </v-layout>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import { store } from "../../../store/store";
+
+export default {
+  name: "AddButton",
+  store,
+  components: {},
+
+  data() {
+    return {
+      menu: {},
+      image: null,
+      dialog: false,
+      imageForUpload: null,
+      pathImage: null,
+      category: {},
+      selectedCategory: ""
+    };
+  },
+  created() {},
+  methods: {
+    clickButton() {
+      axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+        this.category = response.data;
+      });
+    },
+    selected() {
+      console.log(this.selectedCategory);
+    },
+    onFileChange() {
+      this.imageForUpload = this.image;
+      this.createImage(this.image);
+    },
+    createImage(file) {
+      var reader = new FileReader();
+      reader.onload = e => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    confirmAdd() {
+      if (this.imageForUpload != null) {
+        var formData = new FormData();
+        formData.append("file", this.imageForUpload);
+        axios
+          .post("http://localhost:3000/api/uploadFB", formData)
+          .then(response => {
+            this.pathImage = response.data.url;
+            axios
+              .post("http://localhost:3000/api/insertmenu", {
+                menuName: this.menu.menuName,
+                menuPrice: this.menu.menuPrice,
+                categoryId: this.selectedCategory,
+                menuPathImage: this.pathImage,
+                restaurantId: 1
+              })
+              .then(response => {
+                axios
+                  .get("http://localhost:3000/api/getallmenu/" + 1)
+                  .then(response => {
+                    this.$store.commit("setMenu", response.data);
+                  });
+                this.$toast.open("insert success");
+                this.closeDialog();
+              });
+          });
+      } else {
+        axios
+          .post("http://localhost:3000/api/insertmenu", {
+            menuName: this.menu.menuName,
+            menuPrice: this.menu.menuPrice,
+            categoryId: this.selectedCategory,
+            menuPathImage: this.pathImage,
+            restaurantId: 1
+          })
+          .then(response => {
+            axios
+              .get("http://localhost:3000/api/getallmenu/" + 1)
+              .then(response => {
+                this.$store.commit("setMenu", response.data);
+                this.$store.commit("setCheckCategory", false);
+              });
+            this.$toast.open("insert success");
+            this.closeDialog();
+          });
+      }
+    },
+    closeDialog() {
+      this.menu = {};
+      this.image = null;
+      this.dialog = false;
+      this.imageForUpload = null;
+      this.pathImage = null;
+      this.selectedCategory = "";
+      this.$store.commit('setSelectedMenu',null)
+    }
+  }
+};
+</script>
+

@@ -12,6 +12,9 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueScrollProgress from 'vue-scroll-progress'
 import { store } from './store/store'
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue)
 
 Vue.use(VueScrollProgress)
 Vue.use(Vuetify)

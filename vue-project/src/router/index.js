@@ -16,6 +16,8 @@ import TypeOfServicePage from '@/Pages/TypeOfServicePage'
 import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
 import AddCategory from '@/Pages/AddCategory'
 import Restaurant from '@/Pages/Restaurant'
+import MenuPage1 from '@/Pages/Menu/MenuPage'
+
 Vue.use(Router)
 
 export default new Router({
@@ -85,6 +87,11 @@ export default new Router({
       path: '/Restaurant',
       name: 'Restaurant',
       component: Restaurant
+    },
+    {
+      path: '/B',
+      name: 'MenuPage1',
+      component: MenuPage1
     }
 
 

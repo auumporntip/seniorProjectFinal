@@ -27,7 +27,7 @@
       </div>
       <div id="table">
         <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
-
+        <!-- table -->
         <b-table
           :data="items"
           :selected.sync="selected"
@@ -60,7 +60,7 @@
           </template>
         </b-table>
       </div>
-
+<!-- //table -->
       <span id="AddEditDelete">
         <!-- Add Button -->
         <v-layout id="layoutAdd">
@@ -183,23 +183,25 @@ import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import { store } from '../store/store'
-
+ 
 export default {
   name: "MenuPage",
   store,
   components: {
     Header,
-    sidebar
+    sidebar,
   },
   data() {
     return {
-      keyword: "",
-
+      // table
       isPaginated: true,
       isPaginationSimple: false,
       currentPage: 1,
       perPage: 5,
 
+      selected:{},
+      keyword: "",
+      //
       imageForUpload: null,
       image: null,
       checkCategory: false,
@@ -247,7 +249,7 @@ export default {
         type: "is-success",
         onConfirm: () => {
           axios.delete(
-            "http://13.228.170.25:8443/api/deletemenu/" +
+            "http://localhost/api/deletemenu/" +
               this.selected.menuId +
               "/" +
               this.$store.getters.restaurantId
@@ -268,7 +270,7 @@ export default {
         formData.append("file", this.imageForUpload);
         axios
           .post(
-            "http://13.228.170.25:8443/api/uploadFB",
+            "http://localhost/api/uploadFB",
             formData
           )
           .then(response => {
@@ -276,7 +278,7 @@ export default {
             this.pathImage = data.url;
             axios
               .post(
-                "http://13.228.170.25:8443/api/insertmenu",
+                "http://localhost/api/insertmenu",
                 {
                   menuName: this.menuName,
                   menuPrice: this.menuPrice,
@@ -301,7 +303,7 @@ export default {
       } else {
         axios
           .post(
-            "http://13.228.170.25:8443/api/insertmenu",
+            "http://localhost/api/insertmenu",
             {
               menuName: this.menuName,
               menuPrice: this.menuPrice,
@@ -328,7 +330,7 @@ export default {
     confirmEdit() {
       if (this.image === null) {
         axios.put(
-          "http://13.228.170.25:8443/api/updatemenu/",
+          "http://localhost/api/updatemenu/",
           {
             menuId: this.selected.menuId,
             menuName: this.selected.menuName,
@@ -343,7 +345,7 @@ export default {
         formData.append("file", this.imageForUpload);
         axios
           .post(
-            "http://13.228.170.25:8443/api/uploadFB",
+            "http://localhost/api/uploadFB",
             formData
           )
           .then(response => {
@@ -355,7 +357,7 @@ export default {
               }
             }
             axios.put(
-              "http://13.228.170.25:8443/api/updatemenu/",
+              "http://localhost/api/updatemenu/",
               {
                 menuId: this.selected.menuId,
                 menuName: this.selected.menuName,
@@ -379,7 +381,7 @@ export default {
     changeCategoryMenu() {
       axios
         .get(
-          "http://13.228.170.25:8443/api/getmenubycategory/" +
+          "http://localhost/api/getmenubycategory/" +
             this.selectedCategory.categoryId +
             "/" +
             this.$store.getters.restaurantId
@@ -392,7 +394,7 @@ export default {
     allcategory() {
       axios
         .get(
-          "http://13.228.170.25:8443/api/getallmenu/"+this.$store.getters.restaurantId
+          "http://localhost/api/getallmenu/"+this.$store.getters.restaurantId
         )
         .then(response => {
           this.menu = response.data;
@@ -412,33 +414,39 @@ export default {
     }
   },
   computed: {
+    //table
     items() {
-      if (this.keyword != "") {
-        return this.menu.filter(
-          items =>
-            items.menuName.toLowerCase().includes(this.keyword.toLowerCase()) ||
-            items.categoryName
-              .toLowerCase()
-              .includes(this.keyword.toLowerCase()) ||
-            items.menuPrice.toString().includes(this.keyword.toLowerCase())
-        );
-      } else {
-        return this.menu;
+      if(this.keyword!=""){
+        return this.$store.getters.menu.filter(
+            items =>
+              items.menuName.toLowerCase().includes(this.keyword.toLowerCase()) ||
+              items.categoryName.toLowerCase().includes(this.keyword.toLowerCase())
+          )
+      }else{
+        return this.$store.getters.menu
       }
     }
+    //
   },
   created: function() {
+    //table
+    axios.get("http://localhost:3000/api/getallmenu/"+1).then(response => {
+      this.$store.commit('setMenu',response.data)
+      this.selected =response.data[0]
+    });
+    //
+
     axios
       .get(
-        "http://13.228.170.25:8443/api/getallmenu/"+this.$store.getters.restaurantId
+        "http://localhost/api/getallmenu/"+this.$store.getters.restaurantId
       )
       .then(response => {
-        this.menu = response.data;
+        this.$store.getters.menu = response.data;
         this.selected = response.data[0];
       });
     axios
       .get(
-        "http://13.228.170.25:8443/api/getcategory/"+this.$store.getters.restaurantId
+        "http://localhost/api/getcategory/"+this.$store.getters.restaurantId
       )
       .then(response => {
         this.category = response.data;
