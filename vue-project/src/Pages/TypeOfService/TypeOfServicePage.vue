@@ -9,7 +9,103 @@
   
       <xp:table id="table" width="700" height="650" cellspacing="0" >
          <tr>
-            <td><a href="/TypeOfServiceMenu"><img class="Row1col1" src="../../assets/yakiniku1.png" width="300px" height="350px"></a></td>
+           <!-- dialog แรก-->
+            <td>
+              <template>
+                  <v-layout row justify-center>
+                    <v-dialog v-model="dialog" persistent max-width="600px">
+             <template v-slot:activator="{ on }">
+                  <img class="Row1col1" src="../../assets/yakiniku1.png" width="300px" height="350px" v-on="on">
+              </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">YAKINIKU</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <section>
+                <b-field>
+                  <b-upload v-model="dropFiles" drag-drop>
+                <section class="section">
+                    <div class="content has-text-centered">
+                        <p>
+                            <b-icon icon="upload" size="is-large"></b-icon>
+                        </p>
+                        <p>Drop your files here or click to upload</p>
+                    </div>
+                </section>
+            </b-upload>
+        </b-field>
+        <div class="tags">
+            <span v-for="(file, index) in dropFiles"
+                :key="index"
+                class="tag is-primary" >
+                {{file.name}}
+                <button class="delete is-small"
+                    type="button"
+                    @click="deleteDropFile(index)">
+                </button>
+            </span>
+        </div>
+    </section>
+
+              <v-flex xs12 sm6 md4 class="name">
+                <v-text-field label="Name" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4 class="time">
+                <v-text-field label="Time" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4 class="price">
+                <v-text-field label="Price" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4 class="chooseMenuBtn"><!-- dialog choose menu-->
+              <template>
+                <v-layout row justify-center>
+                  <v-dialog v-model="dialog" scrollable max-width="500px">
+      <template v-slot:activator="{ on }">
+        <v-btn medium color="#B22222" dark v-on="on"><v-icon dark>book</v-icon>Choose menu to YAKINIKU</v-btn>
+      </template>
+      <v-card>
+        <v-card-title>Menu</v-card-title>
+        <v-card-text style="height: 400px;">
+          <v-container fluid v-model="selected" column>
+    <v-checkbox v-model="selected" label="John" value="John"></v-checkbox>
+    <v-checkbox v-model="selected" label="Jacob" value="Jacob"></v-checkbox>
+  </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout></template>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Add Menu</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
+</template>
+</td>
+
+
+
+
+
+
+
+
+
+
             <td><a href="/"><img class="Row1col2" src="../../assets/sushi11.png" width="300px" height="350px"></a> </td>
             <td><a href="/"><img class="Row1col3" src="../../assets/sashimi11.png" width="300px" height="350px"></a> </td>
             <!-- <td>Row 1, Column 2</td>
@@ -40,7 +136,25 @@ export default {
   components: {
     Header,
     sidebar
-  }
+  },
+  data: () => ({
+      dialog: false
+    }),
+    data() {
+            return {
+                dropFiles: []
+            }
+        },
+        methods: {
+            deleteDropFile(index) {
+                this.dropFiles.splice(index, 1)
+            }
+        },
+        data1() {
+      return {
+        selected: ['']
+      }
+    }
 }
 </script>
 
@@ -88,5 +202,24 @@ export default {
 }
 .Row2col11{
   margin-top: 50px;
+}
+
+.name{
+  margin-left: 60%;
+  margin-top: -40%;
+}
+
+.time{
+  margin-left: 60%;
+  margin-top: -30%;
+}
+
+.price{
+  margin-left: 60%;
+  margin-top: -20%;
+}
+
+.chooseMenuBtn{
+  margin-left: 7%;
 }
 </style>
