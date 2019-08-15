@@ -1,152 +1,82 @@
 <template>
   <v-content>
     <BarMoMenu></BarMoMenu>
-
     <v-tabs v-model="tab" color="white" align-with-title>
       <v-tabs-slider color="#cd9575"></v-tabs-slider>
-      <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+      <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
-      <v-tab-item>
-        <v-card color="white">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                  <div class="iconBtn">
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">remove</v-icon>
-                    </v-btn>
 
-                    <v-text>{{amount}}</v-text>
-
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">add</v-icon>
-                    </v-btn>
-                  </div>
-                </v-content>
-              </v-flex>
-            </v-layout>
+    <v-card color="white">
+      <v-flex xs12 v-for="menu in items" :key="menu.menuId">
+        <v-layout>
+          <v-flex xs6>
+            <v-img :src="menu.menuPathImage" class="spacePic" contain></v-img>
           </v-flex>
-        </v-card>
+          <v-flex xs6>
+            <v-content>
+              <div class="title">{{menu.menuName}}</div>
+              <div class="subheading">{{menu.menuPrice}}</div>
+              <div class="iconBtn">
+                <v-btn outline small color="black">
+                  <v-icon class="body-1">remove</v-icon>
+                </v-btn>
 
-        <v-card color="white">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                  <div class="iconBtn">
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">remove</v-icon>
-                    </v-btn>
+                <v-text>{{amount}}</v-text>
 
-                    <v-text>{{amount}}</v-text>
-
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">add</v-icon>
-                    </v-btn>
-                  </div>
-                </v-content>
-              </v-flex>
-            </v-layout>
+                <v-btn outline small color="black">
+                  <v-icon class="body-1">add</v-icon>
+                </v-btn>
+              </div>
+            </v-content>
           </v-flex>
-        </v-card>
-
-      </v-tab-item>
-      <v-tab-item>
-        <v-card color="white">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                  <div class="iconBtn">
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">remove</v-icon>
-                    </v-btn>
-
-                    <v-text>{{amount}}</v-text>
-
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">add</v-icon>
-                    </v-btn>
-                  </div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card color="white">
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs6>
-                <v-img :src="image_src" class="spacePic" contain></v-img>
-              </v-flex>
-              <v-flex xs6>
-                <v-content>
-                  <div class="title">{{nameMenu}}</div>
-                  <div class="subheading">{{price}}</div>
-                  <div class="iconBtn">
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">remove</v-icon>
-                    </v-btn>
-
-                    <v-text>{{amount}}</v-text>
-
-                    <v-btn outline small color="black">
-                      <v-icon class="body-1">add</v-icon>
-                    </v-btn>
-                  </div>
-                </v-content>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-
+        </v-layout>
+      </v-flex>
+    </v-card>
     <v-btn href="/MoOrder" class="white--text" color="#cd9575" block fixed>NEXT</v-btn>
-
-    <v-footer>
-      <navBarMoMenu></navBarMoMenu>
-    </v-footer>
+    <navBarMoMenu></navBarMoMenu>
   </v-content>
 </template>
 
 <script>
 import BarMoMenu from "../components/BarMoMenu";
 import NavBarMoMenu from "../components/NavBarMoMenu";
+import axios from "axios";
+
 export default {
-  name: "MoMemuPage",
+  name: "MoMenuPage",
   components: {
     BarMoMenu,
     NavBarMoMenu
   },
   data() {
     return {
-      tab: null,
-      items: ["YAKINIKU", "SUSHI", "SASHIMI"],
+      tab: 0,
+      menu: {},
+      category: {},
       image_src: require("../assets/wagyu.jpg"),
       nameMenu: "Wagyu",
       price: "฿ 49.00",
-      amount: "2"
+      amount: "2",
+      selectCategory: ""
     };
+  },
+  methods: {},
+  computed: {
+    items() {
+      return this.menu.filter(
+        items => items.categoryId === this.category[this.tab].categoryId
+      );
+    }
+  },
+  created() {
+    console.log(this.tab);
+    axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
+      this.menu = response.data;
+    });
+    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+      this.category = response.data;
+      console.log(this.category);
+    });
   }
 };
 </script>
@@ -182,7 +112,7 @@ export default {
 .v-text {
   text-align: center;
 }
-.iconBtn{
+.iconBtn {
   margin: 0%;
   padding-left: 5%;
 }

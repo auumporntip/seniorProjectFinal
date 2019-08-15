@@ -9,7 +9,7 @@ exports.getTransaction = async (restaurantId) => {
         .where('menu.restaurantId', '=', restaurantId)
 }
 
-exports.getTransactionByCategory = async (restaurantId,categoryId) => {
+exports.getTransactionByCategory = async (restaurantId, categoryId) => {
     return await knex('transaction')
         .join('menu', 'menu.menuId', '=', 'transaction.menuId')
         .join('status', 'status.statusId', '=', 'transaction.statusId')
@@ -17,4 +17,8 @@ exports.getTransactionByCategory = async (restaurantId,categoryId) => {
         .join('category', 'category.categoryId', '=', 'menu.categoryId')
         .where('menu.restaurantId', '=', restaurantId)
         .andWhere('category.categoryId', '=', categoryId)
+}
+
+exports.changeStatus = async (transactionId, statusId) => {
+        return await knex('transaction').where('transId', '=', transactionId).update({ statusId: statusId })
 }
