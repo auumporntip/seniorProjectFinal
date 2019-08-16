@@ -4,7 +4,7 @@
     <sidebar></sidebar>
     <section class="space">
       <b-tabs>
-        <b-tab-item label="Table">
+        <b-tab-item label="Ordered">
           <b-table
             :data="ordered"
             :columns="columns"
@@ -25,9 +25,10 @@
                 <v-card-text class="headline">
                   What status do you want to change?
                   <v-radio-group v-model="radioGroup">
-                    <v-radio label="Preparing" value="preparing"></v-radio>
-                    <v-radio label="Cooking" value="cooking"></v-radio>
-                    <v-radio label="Serving" value="serving"></v-radio>
+                    <v-radio label="Preparing" value="1"></v-radio>
+                    <v-radio label="Cooking" value="2"></v-radio>
+                    <v-radio label="Serving" value="3"></v-radio>
+                    <v-radio label="Cancel" value="4"></v-radio>
                   </v-radio-group>
                 </v-card-text>
                 <v-card-actions>
@@ -40,9 +41,7 @@
           </div>
         </b-tab-item>
 
-        <b-tab-item label="Checked rows">
-          <pre>{{ checkedRows }}</pre>
-        </b-tab-item>
+        
       </b-tabs>
     </section>
   </div>
@@ -102,7 +101,25 @@ export default {
     test() {
       this.dialog = true;
     },
-    clickSave() {
+    async clickSave() {
+      console.log(this.radioGroup);
+      const promiseArr = []
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        
+        promiseArr.push(axios.put(
+          "http://localhost:3000/api/changestatus/" +
+            this.checkedRows[index].transId +
+            "/" +
+            this.radioGroup
+        ))
+        
+      }
+      await Promise.all(promiseArr)
+
+      axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
+        this.ordered = response.data;
+      });
+      this.checkedRows = []
       this.dialog = false;
     }
   },

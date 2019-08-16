@@ -10,7 +10,8 @@ router.get('/gettransactionbycategoryid/:restaurantId/:categoryId', async(req, r
     res.send(await transaction.getTransactionByCategory(req.params.restaurantId,req.params.categoryId))
 })
 router.put('/changestatus/:transactionId/:statusId', async(req, res) => {
-    res.send(await transaction.changeStatus(req.params.transactionId,req.params.statusId))
+    await transaction.changeStatus(req.params.transactionId,req.params.statusId)
+    res.end('update success')
 })
 
 module.exports = router
