@@ -116,4 +116,7 @@ export default {
   margin: 0%;
   padding-left: 5%;
 }
+#spaceNext{
+  margin-bottom: 3%
+}
 </style>
