@@ -17,7 +17,20 @@ import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
 import AddCategory from '@/Pages/AddCategory'
 import Restaurant from '@/Pages/Restaurant'
 import MenuPage from '@/Pages/Menu/MenuPage'
-
+import Superadmin from '@/Superadmin/Superadmin'
+import accountsuper from '@/Superadmin/page/accountsuper'
+import billsuper from '@/Superadmin/page/billsuper'
+import catsuper from '@/Superadmin/page/catsuper'
+import empsuper from '@/Superadmin/page/empsuper'
+import menusuper from '@/Superadmin/page/menusuper'
+import menuservicesuper from '@/Superadmin/page/menuservicesuper'
+import notificationsuper from '@/Superadmin/page/notificationsuper'
+import positionsuper from '@/Superadmin/page/positionsuper'
+import restaurantsuper from '@/Superadmin/page/restaurantsuper'
+import statussuper from '@/Superadmin/page/statussuper'
+import transactionsuper from '@/Superadmin/page/transactionsuper'
+import typeofressuper from '@/Superadmin/page/typeofressuper'
+import typeofservicesuper from '@/Superadmin/page/typeofservicesuper'
 Vue.use(Router)
 
 export default new Router({
@@ -88,9 +101,77 @@ export default new Router({
       name: 'Restaurant',
       component: Restaurant
     },
-
-
-
+    {
+      path: '/Superadmin',
+      name: 'Superadmin',
+      component: Superadmin
+    },
+    {
+      path: '/accountsuper',
+      name: 'accountsuper',
+      component: accountsuper
+    },
+    {
+      path: '/billsuper',
+      name: 'billsuper',
+      component: billsuper
+    },
+    {
+      path: '/catsuper',
+      name: 'catsuper',
+      component: catsuper
+    },
+    {
+      path: '/empsuper',
+      name: 'empsuper',
+      component: empsuper
+    },
+    {
+      path: '/menusuper',
+      name: 'menusuper',
+      component: menusuper
+    },
+    {
+      path: '/menuservicesuper',
+      name: 'menuservicesuper',
+      component: menuservicesuper
+    },
+    {
+      path: '/notificationsuper',
+      name: 'notificationsuper',
+      component: notificationsuper
+    },
+    {
+      path: '/positionsuper',
+      name: 'positionsuper',
+      component: positionsuper
+    },
+    {
+      path: '/restaurantsuper',
+      name: 'restaurantsuper',
+      component: restaurantsuper
+    },
+    {
+      path: '/statussuper',
+      name: 'statussuper',
+      component: statussuper
+    },
+    {
+      path: '/transactionsuper',
+      name: 'transactionsuper',
+      component: transactionsuper
+    },
+    {
+      path: '/typeofressuper',
+      name: 'typeofressuper',
+      component: typeofressuper
+    },
+    {
+      path: '/typeofservicesuper',
+      name: 'typeofservicesuper',
+      component: typeofservicesuper
+    },
+    
 
   ]
 })
