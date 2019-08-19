@@ -2,17 +2,24 @@
   <div>
     <Header></Header>
     <sidebarsuper></sidebarsuper>
-    <div id= "bigbox">
+    <div id="bigbox">
       <section>
         <b-tabs>
-            <b-tab-item label="Table">
-                <b-table
-                    :data="data"
-                    :columns="columns"
-                    :checked-rows.sync="checkedRows"
-                    :is-row-checkable="(row) => row.id"
-                    checkable
-                    :checkbox-position="checkboxPosition">
+          <b-tab-item label="Table">
+            <b-table
+              :data="menuSerData"
+              :columns="columns"
+              :checked-rows.sync="checkedRows"
+              :is-row-checkable="(row) => row.id !== 3"
+              checkable
+              :checkbox-position="checkboxPosition"
+            >
+              <template slot="bottom-left">
+                <b>Total checked</b>
+                : {{ checkedRows.length }}
+              </template>
+            </b-table>
+          </b-tab-item>
 
                     <template slot="bottom-left">
                         <b>Total checked</b>: {{ checkedRows.length }}
@@ -96,7 +103,7 @@
                 <pre>{{ checkedRows }}</pre>
             </b-tab-item>
         </b-tabs>
-    </section>
+      </section>
     </div>
   </div>
 </template>
@@ -104,7 +111,8 @@
 <script>
 import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
- 
+import axios from "axios";
+
 export default {
   name: "menuservicesuper",
   components: {
@@ -112,64 +120,54 @@ export default {
     sidebarsuper
   },
   data() {
-            return {
-                data: [],
-                dialog:false,
-                dialog2:false,
-                checkboxPosition: 'left',
-                checkedRows: [],
-                columns: [
-                    {
-                        field: 'menuServiceId',
-                        label: 'menuServiceId',
-                        width: '40',
-                        numeric: true
-                    },
-                    {
-                        field: 'typeId',
-                        label: 'typeId',
-                    },
-                    {
-                        field: 'menuId',
-                        label: 'menuId',
-                    },
-                    {
-                        field: 'created_at',
-                        label: 'created_at',
-                    },
-                    {
-                        field: 'update_at',
-                        label: 'update_at',
-                    }
-                ]
-            }
+    return {
+      menuSerData: [],
+      checkboxPosition: "left",
+      checkedRows: [],
+      columns: [
+        {
+          field: "menuServiceId",
+          label: "menuServiceId",
+          width: "40",
+          numeric: true
         },
-        methods: {
-              test() {
-            this.dialog = true;
-            },
-            test2(){
-              this.dialog2=true;
-            },
+        {
+          field: "typeId",
+          label: "typeId"
         },
-        create: function(){
-            axios.get("http://localhost:3000/api/gettransaction/1").then(response=>{
-                this.data=response.data;
-            })
+        {
+          field: "menuId",
+          label: "menuId"
+        },
+        {
+          field: "created_at",
+          label: "created_at"
+        },
+        {
+          field: "update_at",
+          label: "update_at"
         }
+      ]
+    };
+  },
+  methods: {},
+  created() {
+    axios.get("http://localhost:3000/api/getallmenuservice").then(response => {
+      this.menuSerData = response.data;
+    });
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox{
+#bigbox {
   background-color: #f0cab1;
   width: 1170px;
   height: 52em;
   margin-top: 0px;
   margin-left: 180px;
-  background-attachment: fixed;  
-    
+  background-attachment: fixed;
 }
 #Addeditdelete {
   margin-top: 50px;

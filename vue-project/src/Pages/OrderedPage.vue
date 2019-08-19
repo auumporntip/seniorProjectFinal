@@ -5,9 +5,15 @@
     <section class="space">
       <b-tabs>
         <b-tab-item label="Ordered">
+          <b-input placeholder="Search..."
+                type="search"
+                icon="magnify">
+            </b-input>
           <b-table
             :data="ordered"
             :columns="columns"
+            :paginated="isPaginated"
+            :per-page="perPage"
             :checked-rows.sync="checkedRows"
             :is-row-checkable="(row) => row.id !== 3"
             checkable
@@ -62,7 +68,9 @@ export default {
     return {
       ordered: [],
       dialog: false,
+      isPaginated: true,
       radioGroup: 1,
+      perPage: 10,
       checkboxPosition: "left",
       checkedRows: [],
       columns: [
