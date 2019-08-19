@@ -7,8 +7,8 @@ router.post('/insertTypeOfRestaurant', async(req,res)=>{
     res.send(await typeOfRestaurant.insertTypeOfRestaurant(req.body))
 })
 
-router.get('/getTypeOfRestaurant',async(req,res)=>{
-    res.send(await typeOfRestaurant.getTypeOfRestaurant())
+router.get('/getAllTypeOfRestaurant',async(req,res)=>{
+    res.send(await typeOfRestaurant.getAllTypeOfRestaurant())
 })
 
 module.exports = router

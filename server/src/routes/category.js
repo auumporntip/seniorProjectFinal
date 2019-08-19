@@ -3,6 +3,10 @@ const category = require('../db/model/category')
 const express = require('express')
 const router = express.Router()
 
+router.get('/getallcategory', async(req,res)=>{
+    res.send(await category.getAllCategory())
+})
+
 router.get('/getcategory/:restaurantId', async(req,res)=>{
     res.send(await category.getCategory(req.params.restaurantId))
 })

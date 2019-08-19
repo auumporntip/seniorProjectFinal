@@ -40,9 +40,8 @@
             </v-dialog>
           </div>
         </b-tab-item>
-
-        
       </b-tabs>
+
     </section>
   </div>
 </template>
@@ -103,23 +102,23 @@ export default {
     },
     async clickSave() {
       console.log(this.radioGroup);
-      const promiseArr = []
+      const promiseArr = [];
       for (let index = 0; index < this.checkedRows.length; index++) {
-        
-        promiseArr.push(axios.put(
-          "http://localhost:3000/api/changestatus/" +
-            this.checkedRows[index].transId +
-            "/" +
-            this.radioGroup
-        ))
-        
+        promiseArr.push(
+          axios.put(
+            "http://localhost:3000/api/changestatus/" +
+              this.checkedRows[index].transId +
+              "/" +
+              this.radioGroup
+          )
+        );
       }
-      await Promise.all(promiseArr)
+      await Promise.all(promiseArr);
 
       axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
         this.ordered = response.data;
       });
-      this.checkedRows = []
+      this.checkedRows = [];
       this.dialog = false;
     }
   },

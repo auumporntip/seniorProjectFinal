@@ -1,5 +1,9 @@
 const knex = require('../knex')
 
+exports.getAllTransaction=async() => {
+    return await knex('transaction')
+}
+
 exports.getTransaction = async (restaurantId) => {
     return await knex('transaction')
         .join('menu', 'menu.menuId', '=', 'transaction.menuId')

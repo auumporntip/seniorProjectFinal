@@ -7,6 +7,10 @@ router.post('/insertrestaurant', async(req,res)=>{
     res.send(await restaurant.insertRestuarant(req.body))
 })
 
+router.get('/getallrestaurant/', async(req,res)=>{
+    res.send(await restaurant.getAllRestaurant())
+})
+
 router.get('/getrestaurant/:accountId', async(req,res)=>{
     res.send(await restaurant.getRestaurant(req.params.accountId))
 })

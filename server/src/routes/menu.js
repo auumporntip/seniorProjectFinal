@@ -3,8 +3,13 @@ const menu = require('../db/model/menu')
 const express = require('express')
 const router = express.Router()
 
+router.get('/getallmenu', async(req, res) => {
+    res.send(await menu.getAllMenu())
+    // });
+})
+
 router.get('/getallmenu/:restaurantId', async(req, res) => {
-    res.send(await menu.getAllMenu(req.params.restaurantId))
+    res.send(await menu.getAllMenuByRestuarantId(req.params.restaurantId))
     // menu.getAllMenu(req.params.restaurantId, (result) => {
     //     res.send(result)
     // });

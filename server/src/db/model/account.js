@@ -1,7 +1,7 @@
 const knex = require('../knex')
 
 exports.getAllAccount=async() => {
-    return await knex('account').select('username')
+    return await knex('account')
 }
 
 exports.getAccountByUsername =async(userName) => {

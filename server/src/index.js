@@ -17,14 +17,19 @@ app.use(function (req, res, next) {
 
 app.use('/api/',require('./routes/account'))
 app.use('/api/',require('./routes/menu.js'))
-app.use('/api/',require('./routes/authen'))
 app.use('/api/',require('./routes/category'))
 app.use('/api/',require('./routes/restaurant'))
 app.use('/api/',require('./routes/typeOfRestaurant'))
-app.use('/api/',require('./upload/upload'))
 app.use('/api/',require('./routes/transaction'))
-app.use('/api/',require('./upload/upload'))
+app.use('/api/',require('./routes/bill'))
+app.use('/api/',require('./routes/employee'))
+app.use('/api/',require('./routes/status'))
+app.use('/api/',require('./routes/notification'))
+app.use('/api/',require('./routes/typeOfService'))
+app.use('/api/',require('./routes/employee'))
 
+app.use('/api/',require('./routes/authen'))
+app.use('/api/',require('./upload/upload'))
 
 app.listen(3000, () => {
   console.log('Example app listening at http://localhost:3000');

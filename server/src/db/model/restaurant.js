@@ -1,5 +1,9 @@
 const knex = require('../knex')
 
+exports.getAllRestaurant = async () => {
+    return await knex('restaurant')
+}
+
 exports.getRestaurant = async (accountId) => {
     return await knex('restaurant').where('accountId', accountId
     )

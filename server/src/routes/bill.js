@@ -1,0 +1,10 @@
+const bill = require('../db/model/bill')
+
+const express = require('express')
+const router = express.Router()
+
+router.get('/getallbill', async(req,res)=>{
+    res.send(await bill.getAllBill())
+})
+
+module.exports = router

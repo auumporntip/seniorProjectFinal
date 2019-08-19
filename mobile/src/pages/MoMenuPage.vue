@@ -32,7 +32,7 @@
         </v-layout>
       </v-flex>
     </v-card>
-    <v-btn href="/MoOrder" class="white--text" color="#cd9575" block fixed>NEXT</v-btn>
+    <v-btn href="/MoOrder" class="white--text" color="#cd9575" block id="spaceNext">NEXT</v-btn>
     <navBarMoMenu></navBarMoMenu>
   </v-content>
 </template>

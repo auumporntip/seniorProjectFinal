@@ -3,6 +3,10 @@ const transaction = require('../db/model/transaction')
 const express = require('express')
 const router = express.Router()
 
+router.get('/getalltransaction', async(req, res) => {
+    res.send(await transaction.getAllTransaction())
+})
+
 router.get('/gettransaction/:restaurantId', async(req, res) => {
     res.send(await transaction.getTransaction(req.params.restaurantId))
 })

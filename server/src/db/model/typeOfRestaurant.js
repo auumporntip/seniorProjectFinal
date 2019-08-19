@@ -1,6 +1,6 @@
 const knex = require('../knex')
 
-exports.getTypeOfRestaurant = async() => {
+exports.getAllTypeOfRestaurant = async() => {
     return await knex('typeofrestaurant')
 }
 
