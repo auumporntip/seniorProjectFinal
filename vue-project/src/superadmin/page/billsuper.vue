@@ -20,12 +20,6 @@
               </template>
             </b-table>
           </b-tab-item>
-
-                    <template slot="bottom-left">
-                        <b>Total checked</b>: {{ checkedRows.length }}
-                    </template>
-                </b-table>
-            </b-tab-item>
                 <span id = "Addeditdelete" >
               <!--Add-->
                <v-layout id="layoutAdd">
