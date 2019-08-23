@@ -23,12 +23,16 @@ exports.insertAccount = async(account)=>{
     })
 }
 
-exports.updateAccount = async(Account) => {
-    await knex('menu').where('menuId', '=', account.accountId)
+exports.updateAccount = async(account) => {
+    return await knex('account').where('accountId', '=', account.accountId)
         .update({
             email: account.email,
             name: account.name,
             surname : account.surname,
             phone : account.phone
         })
+}
+
+exports.deleteAccount = async(accountId) =>{
+    return await knex('account').where('accountId',accountId).del()
 }

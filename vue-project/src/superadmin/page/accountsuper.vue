@@ -21,54 +21,35 @@
                 : {{ checkedRows.length }}
               </template>
             </b-table>
-          </b-tab-item>
           <span id="Addeditdelete">
             <!--Add-->
             <v-layout id="layoutAdd">
               <v-flex xs2>
-                <v-btn color="primary" dark @click.stop="test" class="add">Add</v-btn>
-                <v-dialog v-model="dialog" max-width="490">
+                <v-btn color="primary" dark @click="addDialog=true" class="add">Add</v-btn>
+                <v-dialog v-model="addDialog" max-width="490">
                   <v-card>
                     <v-card-text class="headline">
                       Add Account
                       <v-form>
                         <v-container fluid>
-                          <v-row>
-                            <v-col cols="12">
-                              <v-text-field label="AccountId" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-text-field label="Username" required></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-text-field label="Password" required></v-text-field>
-                            </v-col>
-                            <v-col>
-                              <v-text-field label="Email"></v-text-field>
-                            </v-col>
-                            <v-col>
-                              <v-text-field label="Name"></v-text-field>
-                            </v-col>
-                            <v-col>
-                              <v-text-field label="Surname"></v-text-field>
-                            </v-col>
-                            <v-col>
-                              <v-text-field label="Phone"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Created_at"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Update_at"></v-text-field>
-                            </v-col>
-                          </v-row>
+                          <v-text-field label="Username" v-model="account.username" required></v-text-field>
+
+                          <v-text-field label="Password" v-model="account.password" required></v-text-field>
+
+                          <v-text-field label="Email" v-model="account.email"></v-text-field>
+
+                          <v-text-field label="Name" v-model="account.name"></v-text-field>
+
+                          <v-text-field label="Surname" v-model="account.surname"></v-text-field>
+
+                          <v-text-field label="Phone" v-model="account.phone"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                      <v-btn color="green darken-1" text @click="addDialog = false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="addClick">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -77,49 +58,31 @@
             <!--Edit-->
             <v-layout id="layoutEdit">
               <v-flex xs2>
-                <v-btn color="primary" dark @click.stop="test2" class="add">Edit</v-btn>
-                <v-dialog v-model="dialog2" max-width="490">
+                <v-btn color="primary" dark class="add" @click="editDialog=true">Edit</v-btn>
+                <v-dialog v-model="editDialog" max-width="490">
                   <v-card>
                     <v-card-text class="headline">
                       Edit Account
-                      <v-form>
+                      <v-form v-for="account in checkedRows" :key="account.accountId">
                         <v-container>
-                          <v-row>
-                            <v-col>
-                              <v-text-field label="AccountId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Username"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Password"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Email"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Name"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Surname"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Phone"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Created_at"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Update_at"></v-text-field>
-                            </v-col>
-                          </v-row>
+                          <v-text-field label="AccountId" v-model="account.accountId"></v-text-field>
+                          <v-text-field label="Username" v-model="account.username"></v-text-field>
+                          <v-text-field label="Password" v-model="account.password"></v-text-field>
+
+                          <v-text-field label="Email" v-model="account.email"></v-text-field>
+
+                          <v-text-field label="Name" v-model="account.name"></v-text-field>
+
+                          <v-text-field label="Surname" v-model="account.surname"></v-text-field>
+
+                          <v-text-field label="Phone" v-model="account.phone"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                      <v-btn color="green darken-1" @click="editDialog = false" text>Cancel</v-btn>
+                      <v-btn color="green darken-1" @click="editClick">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -128,11 +91,11 @@
             <!--Delete-->
             <v-layout id="layoutDelete">
               <v-flex xs2>
-                <v-btn color="primary" dark v-on="on" class="clear">Delete</v-btn>
-                <v-dialog v-model="dialog" max-width="490"></v-dialog>
+                <v-btn color="primary" dark @click="deleteClick">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
+          </b-tab-item>
           <b-tab-item label="Checked rows">
             <pre>{{ checkedRows }}</pre>
           </b-tab-item>
@@ -155,9 +118,16 @@ export default {
   },
   data() {
     return {
+      //Add
+      addDialog: false,
+      account: [],
+
+      //Edit
+      editDialog: false,
+
+      //Delete
+
       accountData: [],
-      dialog: false,
-      dialog2: false,
       isPaginated: true,
       perPage: 10,
       checkboxPosition: "left",
@@ -193,23 +163,71 @@ export default {
           field: "phone",
           label: "Phone"
         },
-        {
-          field: "created_at",
-          label: "Created_at"
-        },
-        {
-          field: "update_at",
-          label: "Update_at"
-        }
       ]
     };
   },
   methods: {
-    test() {
-      this.dialog = true;
+    addClick() {
+      console.log(this.account);
+      axios
+        .post("http://localhost:3000/api/register", {
+          username: this.account.username,
+          password: this.account.password,
+          email: this.account.email,
+          name: this.account.name,
+          surname: this.account.surname,
+          phone: this.account.phone
+        })
+        .then(response => {
+          this.refreshAccount();
+          this.account = [];
+        });
+      this.addDialog = false;
     },
-    test2() {
-      this.dialog2 = true;
+    editClick() {
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios.put("http://localhost:3000/api/updateaccount/",this.checkedRows[index]).then(()=>{
+          this.refreshAccount()
+        })
+      }
+      this.editDialog = false;
+    },
+    deleteClick() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != "") {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deleteaccount/" +
+                    this.checkedRows[index].accountId
+                )
+                .then(() => {
+                  this.refreshAccount();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
+    },
+    refreshAccount() {
+      axios.get("http://localhost:3000/api/getallaccount").then(response => {
+        this.accountData = response.data;
+      });
     }
   },
   created() {
