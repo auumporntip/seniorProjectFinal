@@ -21,37 +21,31 @@
             </b-table>
           </b-tab-item>
 
-                    <template slot="bottom-left">
-                        <b>Total checked</b>: {{ checkedRows.length }}
-                    </template>
-                </b-table>
-            </b-tab-item>
+                   
               <span id = "Addeditdelete" >
               <!--Add-->
                <v-layout id="layoutAdd">
                 <v-flex xs2>
-           <v-btn color="primary" dark @click.stop="test" class="add">Add</v-btn>
-            <v-dialog v-model="dialog" max-width="490">
+           <v-btn color="primary" dark  class="add" @click="AddDialog=true">Add</v-btn>
+            <v-dialog  v-model="AddDialog" max-width="490">
               <v-card>
                 <v-card-text class="headline">
                   Add TypeOfRestaurant
                   <v-form>
                     <v-container fluid>
-                      <v-row>
+                   
                         
-                  <v-col ><v-text-field label="TypeResId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="TypeResName"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Created_at"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Update_at"></v-text-field></v-col>
-                 
-                      </v-row>
+                  
+                  <v-text-field label="TypeResName" v-model="newType.typeResName" type="text"></v-text-field>
+                  
+            
                     </v-container>
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                  <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
+                  <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -60,28 +54,27 @@
                <!--Edit-->
                <v-layout id="layoutEdit">
                 <v-flex xs2>
-            <v-btn color="primary" dark @click.stop="test2" class="add">Edit</v-btn>
-            <v-dialog v-model="dialog2" max-width="490">
+            <v-btn color="primary" dark  class="add" @click="EditDialog=true">Edit</v-btn>
+            <v-dialog  max-width="490" v-model="EditDialog">
               <v-card>
                 <v-card-text class="headline">
                   Edit TypeOfRestaurant
-                  <v-form>
+                  <v-form v-for="Edit in checkedRows" :key="Edit.typeResId">
                     <v-container>
-                      <v-row>
+                     
                         
-                  <v-col ><v-text-field label="TypeResId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="TypeResName"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Created_at"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Update_at"></v-text-field></v-col>
+                  <v-text-field label="TypeResId" v-model="Edit.typeResId" disabled></v-text-field>
+                  <v-text-field label="TypeResName" v-model="Edit.typeResName" type="text"></v-text-field>
+                  
                  
-                      </v-row>
+                     
                     </v-container>
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                  <v-btn color="green darken-1" text @click="EditDialog=false">Cancel</v-btn>
+                  <v-btn color="green darken-1" text @click="EditSave">Save</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -90,9 +83,8 @@
                <!--Delete-->
               <v-layout id="layoutDelete">
                 <v-flex xs2>
-            <v-btn color="primary" dark v-on="on" class="clear">Delete</v-btn>
-            <v-dialog v-model="dialog3" max-width="490">
-            </v-dialog>
+            <v-btn color="primary" dark @click="deleteClick">Delete</v-btn>
+            
                 </v-flex>
                 </v-layout>
             </span>
@@ -118,7 +110,15 @@ export default {
   },
   data() {
     return {
+      
+      //Add
+      AddDialog: false,
+      newType:[],
+      //Edit
+      EditDialog:false,
+      //Delete
       typeOfResData: [],
+      isPaginated: true,
       checkboxPosition: "left",
       checkedRows: [],
       columns: [
@@ -143,7 +143,58 @@ export default {
       ]
     };
   },
-  methods: {},
+  methods: {
+    addCancel(){
+      this.AddDialog=false;
+      this.newType=[];
+    },
+    addSave(){
+      console.log(this.newType);
+      this.AddDialog=false;
+      this.newType=[];
+    },
+    EditSave(){
+      console.log(this.checkedRows);
+      this.EditDialog=false;
+    },
+    deleteClick(){
+        console.log(this.checkedRows);
+        if(this.checkedRows != "") {
+          this.$dialog.confirm({
+              title: "Privacy Politics",
+              message: "Are you sure you want to delete?",
+              cancelText: "Disagree",
+              confirmText: "Agree",
+              type: "is-success",
+              onConfirm: () => {
+                for (let index=0; index < this.checkedRows.length; index++){
+                  axios
+                  .delete(
+                    "http://localhost:3000/api/deletetypeofrestaurant/"+
+                    this.checkedRows[index].accountId
+                  )
+                  .then(() => {
+                    this.refreshAccount();
+                  });
+                }
+                this.$toast.open("delete success");
+              }
+          });
+        } else {
+          this.$dialog.alert({
+            title: "Error",
+            message:"Please selected some menu row",
+            type: "is-warning"
+          });
+        }
+    },
+    refreshAccount(){
+      axios.get("http://localhost:3000/api/getalltypeofrestaurant").then(response =>{
+        this.typeOfResData=response.data;
+      });
+    }
+    
+  },
   created() {
     axios.get("http://localhost:3000/api/getalltypeofrestaurant").then(response => {
       this.typeOfResData = response.data;
