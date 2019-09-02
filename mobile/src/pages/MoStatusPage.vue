@@ -1,24 +1,25 @@
 <template>
   <v-content>
-    <BarMoStatus></BarMoStatus>
+    <Bar></Bar>
     <div class="wrapper">
       <b-table :data="data" :columns="columns"></b-table>
     </div>
 
     <v-footer>
-      <NavBarMoStatus></NavBarMoStatus>
+      <NavBar></NavBar>
     </v-footer>
   </v-content>
 </template>
 
 <script>
-import BarMoStatus from "../components/BarMoStatus";
-import NavBarMoStatus from "../components/NavBarMoStatus";
+import Bar from "../components/Bar";
+import NavBar from "../components/NavBar";
+import { store } from "../store/store";
 export default {
   name: "MoStatusPage",
   components: {
-    BarMoStatus,
-    NavBarMoStatus
+    Bar,
+    NavBar
   },
   data() {
     return {
@@ -49,6 +50,9 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    this.$store.commit("setNamePages", "Status");
   }
 };
 </script>

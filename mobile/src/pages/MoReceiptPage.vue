@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <BarMoReceipt></BarMoReceipt>
+    <Bar></Bar>
 
     <v-layout class="space">
       <v-flex xs6>
@@ -17,18 +17,19 @@
       <b-table :data="data" :columns="columns"></b-table>
     </div>
 
-    <NavBarMoReceipt></NavBarMoReceipt>
+    <NavBar></NavBar>
   </v-content>
 </template>
 
 <script>
-import BarMoReceipt from "../components/BarMoReceipt";
-import NavBarMoReceipt from "../components/NavBarMoReceipt";
+import Bar from "../components/Bar";
+import NavBar from "../components/NavBar";
+import { store } from "../store/store";
 export default {
   name: "MoReceiptPage",
   components: {
-    BarMoReceipt,
-    NavBarMoReceipt
+    Bar,
+    NavBar
   },
   data() {
     return {
@@ -59,7 +60,10 @@ export default {
         }
       ]
     };
-  }
+  },
+  created() {
+      this.$store.commit("setNamePages", "Receipt");
+  },
 };
 </script>
 

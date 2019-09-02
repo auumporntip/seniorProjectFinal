@@ -15,6 +15,9 @@ router.post('/insertcategory', async(req,res)=>{
     res.send(await category.getCategory(req.body))
 })
 
+router.post('/updatecategory', async(req,res)=>{
+    res.send(await category.updateCategory(req.body))
+})
 
 router.delete('/deletecategory', async(req,res)=>{
     res.send(await category.getCategory(req.body))

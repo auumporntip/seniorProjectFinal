@@ -1,51 +1,41 @@
 <template>
   <v-content>
-    <BarMoOrder></BarMoOrder>
+    <Bar></Bar>
     <div class="wrapper">
-      <b-table :data="data" mobile-card :columns="columns"></b-table>
+      <b-table :data="orders" mobile-card :columns="columns"></b-table>
       <v-card height="auto" flat>
         <v-card-title>
-          <strong class="subheading black--text">Total Prices : 0 Baht</strong>
-          <v-spacer></v-spacer>
-          <v-btn href="/MoStatus" color="#cd9575" class="white--text">Confirm</v-btn>
+          <strong class="subheading black--text">Total Prices : {{sumTotalPrice}} Baht</strong>
+          <v-btn @click="confirm" color="#cd9575" class="white--text">Confirm</v-btn>
         </v-card-title>
       </v-card>
     </div>
-    <v-footer>
-      <NavBarMoOrder></NavBarMoOrder>
-    </v-footer>
+      <NavBar></NavBar>
+
   </v-content>
 </template>
 
 <script>
-import BarMoOrder from "../components/BarMoOrder";
-import NavBarMoOrder from "../components/NavBarMoOrder";
+import Bar from "../components/Bar";
+import NavBar from "../components/NavBar";
+import { store } from "../store/store";
+
 export default {
   name: "MoOrderPage",
   components: {
-    BarMoOrder,
-    NavBarMoOrder
+    Bar,
+    NavBar
   },
   data() {
     return {
-      data: [
-        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
-        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
-        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
-        { id: 1, menu: "Bacon", amount: 5, price: 50.0 },
-        { id: 1, menu: "Bacon", amount: 5, price: 50.0 }
-      ],
-
+      orders:null,
+      sum:0,
       columns: [
         {
-          field: "id",
-          label: "ID",
+          field: "menuName",
+          label: "Menu",
           width: "1000",
           numeric: true
-        },
-        {
-          field: "menu",
-          label: "Menu"
         },
         {
           field: "amount",
@@ -54,14 +44,34 @@ export default {
           numeric: true
         },
         {
-          field: "price",
+          field: "menuPrice",
           label: "Price per piece",
           width: "1000",
           numeric: true
         }
       ]
     };
-  }
+  },
+  methods: {
+    confirm(){
+      console.log(this.$store.getters.orders)
+      // href="/MoStatus"
+    }
+  },
+  computed: {
+    sumTotalPrice(){
+      console.log(this.orders.length)
+      for (let index = 0; index < this.orders.length ; index++) {
+        this.sum += this.orders[index].amount * this.orders[index].menuPrice
+      }
+      return this.sum
+    }
+  },
+  created() {
+      this.$store.commit("setNamePages", "Order");
+    this.orders = JSON.parse(localStorage.getItem("orders"));
+    // console.log(this.$store.getters.orders)
+  },
 };
 </script>
 

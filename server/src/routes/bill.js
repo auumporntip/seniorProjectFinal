@@ -15,4 +15,8 @@ router.put('/updatebill', async (req, res) => {
     res.send(await bill.updateBill(req.body))
 })
 
+router.post('/insertbill', async (req, res) => {
+    res.send(await bill.insertBill(req.body))
+})
+
 module.exports = router

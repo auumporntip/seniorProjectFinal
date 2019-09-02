@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "NavBarMoMenu",
+  name: "NavBar",
   components: {
     
   }

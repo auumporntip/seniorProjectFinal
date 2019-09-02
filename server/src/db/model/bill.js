@@ -9,7 +9,19 @@ exports.updateBill = async(bill) => {
         .update({
             totalPrice: bill.totalPrice,
             eatTime: bill.eatTime,
-            billDate : bill.billDate,
+            numOfCust:bill.numOfCust,
+            typeId:bill.typeId,
+            tableNumber : bill.tableNumber
+        })
+}
+
+exports.insertBill = async(bill) => {
+    return await knex('bill').insert({
+            totalPrice: bill.totalPrice,
+            eatTimeEnd: bill.eatTimeEnd,
+            eatTimeStart: bill.eatTimeStart,
+            numOfCust: bill.numOfCust,
+            typeId:bill.typeId,
             tableNumber : bill.tableNumber
         })
 }

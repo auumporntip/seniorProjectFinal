@@ -11,6 +11,7 @@ import responsive from 'vue-responsive'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VImageInput from 'vuetify-image-input';
+import { store } from './store/store'
  
 Vue.component(VImageInput.name, VImageInput);
 Vue.use(Vuetify)
@@ -22,6 +23,7 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
+  store,
   el: '#app',
   router,
   components: { App },

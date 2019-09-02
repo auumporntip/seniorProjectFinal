@@ -7,7 +7,15 @@ router.post('/insertrestaurant', async(req,res)=>{
     res.send(await restaurant.insertRestuarant(req.body))
 })
 
-router.get('/getallrestaurant/', async(req,res)=>{
+router.delete('/deleterestaurant/:restaurantId', async(req,res)=>{
+    res.send(await restaurant.deleteRestaurant(req.params.restaurantId))
+})
+
+router.put('/updaterestaurant', async(req,res)=>{
+    res.send(await restaurant.updaterestaurant(req.body))
+})
+
+router.get('/getallrestaurant', async(req,res)=>{
     res.send(await restaurant.getAllRestaurant())
 })
 

@@ -1,29 +1,37 @@
 <template>
   <v-content>
-    <BarMoMenu></BarMoMenu>
+    <Bar></Bar>
     <v-tabs v-model="tab" color="white" align-with-title>
       <v-tabs-slider color="#cd9575"></v-tabs-slider>
       <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
     </v-tabs>
 
     <v-card color="white">
-      <v-flex xs12 v-for="menu in items" :key="menu.menuId">
+      <v-flex xs12 v-for="(menu) in items" :key="menu.menuId">
         <v-layout>
-          <v-flex xs6>
-            <v-img :src="menu.menuPathImage" class="spacePic" contain></v-img>
+          <v-flex xs6 class="box">
+            <div v-if="menu.menuPathImage!=null">
+              <img :src="menu.menuPathImage" class="spacePic" contain />
+              <img />
+            </div>
+            <div v-else>
+              <img src="../assets/1.png" class="spacePic" contain />
+              <img />
+            </div>
           </v-flex>
           <v-flex xs6>
             <v-content>
               <div class="title">{{menu.menuName}}</div>
-              <div class="subheading">{{menu.menuPrice}}</div>
+              <div class="subheading">{{menu.menuPrice}} ฿</div>
               <div class="iconBtn">
-                <v-btn outline small color="black">
+                <v-btn v-if="menu.amount>0" @click="menu.amount--" outline small color="black">
                   <v-icon class="body-1">remove</v-icon>
                 </v-btn>
-
-                <v-text>{{amount}}</v-text>
-
-                <v-btn outline small color="black">
+                <v-btn v-else outline small disabled color="black">
+                  <v-icon class="body-1">remove</v-icon>
+                </v-btn>
+                {{menu.amount}}
+                <v-btn @click="addMenu(menu.menuId)" outline small color="black">
                   <v-icon class="body-1">add</v-icon>
                 </v-btn>
               </div>
@@ -32,50 +40,80 @@
         </v-layout>
       </v-flex>
     </v-card>
-    <v-btn href="/MoOrder" class="white--text" color="#cd9575" block id="spaceNext">NEXT</v-btn>
-    <navBarMoMenu></navBarMoMenu>
+    <v-btn @click="next" class="white--text" color="#cd9575" block id="spaceNext">NEXT</v-btn>
+    <navBar></navBar>
   </v-content>
 </template>
 
 <script>
-import BarMoMenu from "../components/BarMoMenu";
-import NavBarMoMenu from "../components/NavBarMoMenu";
+import Vue from "vue";
+import Bar from "../components/Bar";
+import NavBar from "../components/NavBar";
 import axios from "axios";
+import { store } from "../store/store";
 
 export default {
   name: "MoMenuPage",
   components: {
-    BarMoMenu,
-    NavBarMoMenu
+    Bar,
+    NavBar
   },
   data() {
     return {
+      item: [],
       tab: 0,
-      menu: {},
-      category: {},
-      image_src: require("../assets/wagyu.jpg"),
-      nameMenu: "Wagyu",
-      price: "฿ 49.00",
-      amount: "2",
-      selectCategory: ""
+      foodMenu: [],
+      category: null,
+      order: []
     };
   },
-  methods: {},
+  methods: {
+    addMenu(menuId) {
+      //หาindex ของmenu ในArray
+      const index = this.foodMenu.findIndex(
+        foodMenu => foodMenu.menuId === menuId
+      );
+
+      const menu = {
+        ...this.foodMenu[index],
+        amount: this.foodMenu[index].amount + 1
+      };
+      this.$set(this.foodMenu, index, menu);
+    },
+    next() {
+      localStorage.setItem(
+        "orders",
+        JSON.stringify(this.foodMenu.filter(food => food.amount > 0))
+      );
+      localStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
+      console.log(JSON.parse(localStorage.getItem("orders")));
+      this.$router.push("/Moorder");
+    }
+  },
   computed: {
     items() {
-      return this.menu.filter(
-        items => items.categoryId === this.category[this.tab].categoryId
-      );
+      if (this.category != null) {
+        return this.foodMenu.filter(item => {
+          return item.categoryId === this.category[this.tab].categoryId;
+        });
+      }
     }
   },
   created() {
-    console.log(this.tab);
-    axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
-      this.menu = response.data;
-    });
+    this.$store.commit("setNamePages", "Menu");
+
+    if (JSON.parse(localStorage.getItem("foodMenu")) != undefined) {
+      this.foodMenu = JSON.parse(localStorage.getItem("foodMenu"));
+    } else {
+      axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
+        this.foodMenu = response.data;
+        this.foodMenu.forEach(element => {
+          element.amount = 0;
+        });
+      });
+    }
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
-      console.log(this.category);
     });
   }
 };
@@ -93,9 +131,12 @@ export default {
   padding-top: 6%;
 }
 .spacePic {
-  margin-left: 5%;
-  padding-top: 15%;
-  height: 100%;
+  /* margin-left: 5%;
+  padding-top: 15%; */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80px;
 }
 .v-layout {
   text-align: left;
@@ -103,20 +144,17 @@ export default {
 .v-btn {
   min-width: 0;
 }
-.v-text-field {
-  min-width: 0;
-}
 .v-card {
   margin: 5%;
-}
-.v-text {
-  text-align: center;
 }
 .iconBtn {
   margin: 0%;
   padding-left: 5%;
 }
-#spaceNext{
-  margin-bottom: 3%
+#spaceNext {
+  margin-bottom: 3%;
+}
+.box {
+  height: 120px;
 }
 </style>

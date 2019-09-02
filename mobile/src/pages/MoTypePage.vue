@@ -16,6 +16,7 @@
 
 <script>
 import BarMoType from "../components/BarMoType";
+import { store } from "../store/store";
 export default {
   name: "MoTypePage",
   components: {
