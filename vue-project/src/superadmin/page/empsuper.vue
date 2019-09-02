@@ -24,52 +24,27 @@
             <!--Add-->
             <v-layout id="layoutAdd">
               <v-flex xs2>
-                <v-btn color="primary" dark @click.stop="test" class="add">Add</v-btn>
-                <v-dialog v-model="dialog" max-width="490">
+                <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
+                <v-dialog max-width="490" v-model="addDialog">
                   <v-card>
                     <v-card-text class="headline">
                       Add Employee
                       <v-form>
                         <v-container fluid>
-                          <v-row>
-                            <v-col>
-                              <v-text-field label="EmployeeId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpUsername"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpPassword"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpName"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpPhone"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpEmail"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="PositionId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="RestaurantId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Created_at"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Update_at"></v-text-field>
-                            </v-col>
-                          </v-row>
+                          <v-text-field label="EmpUsername" v-model="newEmp.empUsername"></v-text-field>
+                          <v-text-field label="EmpPassword" v-model="newEmp.empPassword"></v-text-field>
+                          <v-text-field label="EmpName" v-model="newEmp.empName"></v-text-field>
+                          <v-text-field label="EmpPhone" v-model="newEmp.empPhone"></v-text-field>
+                          <v-text-field label="EmpEmail" v-model="newEmp.empEmail"></v-text-field>
+                          <v-text-field label="PositionId" v-model="newEmp.positionId"></v-text-field>
+                          <v-text-field label="RestaurantId" v-model="newEmp.restaurantId"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                      <v-btn color="green darken-1" text @click="empCancel">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="empSave">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -78,52 +53,28 @@
             <!--Edit-->
             <v-layout id="layoutEdit">
               <v-flex xs2>
-                <v-btn color="primary" dark @click.stop="test2" class="add">Edit</v-btn>
-                <v-dialog v-model="dialog2" max-width="490">
+                <v-btn color="primary" dark class="add" @click="editDialog=true">Edit</v-btn>
+                <v-dialog max-width="490" v-model="editDialog">
                   <v-card>
                     <v-card-text class="headline">
                       Edit Employee
-                      <v-form>
+                      <v-form v-for="emp in checkedRows" :key="emp.employeeId">
                         <v-container>
-                          <v-row>
-                            <v-col>
-                              <v-text-field label="EmployeeId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpUsername"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpPassword"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpName"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpPhone"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="EmpEmail"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="PositionId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="RestaurantId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Created_at"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Update_at"></v-text-field>
-                            </v-col>
-                          </v-row>
+                          <v-text-field label="EmployeeId" disabled v-model="emp.employeeId"></v-text-field>
+                          <v-text-field label="EmpUsername" v-model="emp.empUsername"></v-text-field>
+                          <v-text-field label="EmpPassword" v-model="emp.empPassword"></v-text-field>
+                          <v-text-field label="EmpName" v-model="emp.empName"></v-text-field>
+                          <v-text-field label="EmpPhone" v-model="emp.empPhone"></v-text-field>
+                          <v-text-field label="EmpEmail" v-model="emp.empEmail"></v-text-field>
+                          <v-text-field label="PositionId" v-model="emp.positionId"></v-text-field>
+                          <v-text-field label="RestaurantId" v-model="emp.restaurantId"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                      <v-btn color="green darken-1" text @click="editDialog=false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="editSave">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -132,8 +83,7 @@
             <!--Delete-->
             <v-layout id="layoutDelete">
               <v-flex xs2>
-                <v-btn color="primary" dark v-on="on" class="clear">Delete</v-btn>
-                <v-dialog v-model="dialog3" max-width="490"></v-dialog>
+                <v-btn color="primary" dark class="clear">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
@@ -159,9 +109,14 @@ export default {
   },
   data() {
     return {
+      //Add
+      addDialog: false,
+      newEmp: [],
+
+      //Edit
+      editDialog: false,
+
       empData: [],
-      dialog: false,
-      dialog2: false,
       checkboxPosition: "left",
       checkedRows: [],
       columns: [
@@ -211,11 +166,18 @@ export default {
     };
   },
   methods: {
-    test() {
-      this.dialog = true;
+    empCancel() {
+      this.addDialog = false;
+      this.newEmp = [];
     },
-    test2() {
-      this.dialog2 = true;
+    empSave() {
+      console.log(this.newEmp);
+      this.addDialog = false;
+      this.newEmp = [];
+    },
+    editSave() {
+      console.log(this.checkedRows);
+      this.editDialog = false;
     }
   },
   created() {

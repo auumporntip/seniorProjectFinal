@@ -5,10 +5,7 @@
     <section class="space">
       <b-tabs>
         <b-tab-item label="Ordered">
-          <b-input placeholder="Search..."
-                type="search"
-                icon="magnify">
-            </b-input>
+          <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
           <b-table
             :data="ordered"
             :columns="columns"
@@ -18,6 +15,10 @@
             :is-row-checkable="(row) => row.id !== 3"
             checkable
             :checkbox-position="checkboxPosition"
+            aria-next-label="Next page"
+            aria-previous-label="Previous page"
+            aria-page-label="Page"
+            aria-current-label="Current page"
           >
             <template slot="bottom-left">
               <b>Total checked</b>
@@ -47,7 +48,6 @@
           </div>
         </b-tab-item>
       </b-tabs>
-
     </section>
   </div>
 </template>
@@ -71,6 +71,8 @@ export default {
       isPaginated: true,
       radioGroup: 1,
       perPage: 10,
+      sortIcon: "arrow-up",
+      sortIconSize: "is-small",
       checkboxPosition: "left",
       checkedRows: [],
       columns: [

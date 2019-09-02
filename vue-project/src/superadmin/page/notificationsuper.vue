@@ -7,7 +7,7 @@
         <b-tabs>
           <b-tab-item label="Table">
             <b-table
-              :data="NotiData"
+              :data="notiData"
               :columns="columns"
               :checked-rows.sync="checkedRows"
               :is-row-checkable="(row) => row.id !== 3"
@@ -20,89 +20,68 @@
               </template>
             </b-table>
           </b-tab-item>
-
-                    <template slot="bottom-left">
-                        <b>Total checked</b>: {{ checkedRows.length }}
-                    </template>
-                </b-table>
-            </b-tab-item>
-                 <span id = "Addeditdelete" >
-              <!--Add-->
-               <v-layout id="layoutAdd">
-                <v-flex xs2>
-           <v-btn color="primary" dark @click.stop="test" class="add">Add</v-btn>
-            <v-dialog v-model="dialog" max-width="490">
-              <v-card>
-                <v-card-text class="headline">
-                  Add Notification
-                  <v-form>
-                    <v-container fluid>
-                      <v-row>
-                        
-                  <v-col ><v-text-field label="NotiId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="NotiMessage"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="RestaurantId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="BillId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Created_at"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Update_at"></v-text-field></v-col>
-                 
-                      </v-row>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-                </v-flex>
-               </v-layout>
-               <!--Edit-->
-               <v-layout id="layoutEdit">
-                <v-flex xs2>
-            <v-btn color="primary" dark @click.stop="test2" class="add">Edit</v-btn>
-            <v-dialog v-model="dialog2" max-width="490">
-              <v-card>
-                <v-card-text class="headline">
-                  Edit Notification
-                  <v-form>
-                    <v-container>
-                      <v-row>
-                        
-                    <v-col ><v-text-field label="NotiId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="NotiMessage"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="RestaurantId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="BillId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Created_at"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Update_at"></v-text-field></v-col>
-                 
-                      </v-row>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-                </v-flex>
-               </v-layout>
-               <!--Delete-->
-              <v-layout id="layoutDelete">
-                <v-flex xs2>
-            <v-btn color="primary" dark v-on="on" class="clear">Delete</v-btn>
-            <v-dialog v-model="dialog3" max-width="490">
-            </v-dialog>
-                </v-flex>
-                </v-layout>
-            </span>
-            <b-tab-item label="Checked rows">
-                <pre>{{ checkedRows }}</pre>
-            </b-tab-item>
+          <span id="Addeditdelete">
+            <!--Add-->
+            <v-layout id="layoutAdd">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
+                <v-dialog max-width="490" v-model="addDialog">
+                  <v-card>
+                    <v-card-text class="headline">
+                      Add Notification
+                      <v-form>
+                        <v-container fluid>
+                          <v-text-field label="NotiMessage" v-model="newNoti.notiMessage"></v-text-field>
+                          <v-text-field label="RestaurantId" v-model="newNoti.restaurantId"></v-text-field>
+                          <v-text-field label="BillId" v-model="newNoti.billId"></v-text-field>
+                        </v-container>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+            <!--Edit-->
+            <v-layout id="layoutEdit">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="add" @click="editDialog=true">Edit</v-btn>
+                <v-dialog max-width="490" v-model="editDialog">
+                  <v-card>
+                    <v-card-text class="headline">
+                      Edit Notification
+                      <v-form>
+                        <v-container v-for="noti in checkedRows" :key="noti.notiId">
+                          <v-text-field label="NotiId" disabled v-model="noti.notiId"></v-text-field>
+                          <v-text-field label="NotiMessage" v-model="noti.notiMessage"></v-text-field>
+                          <v-text-field label="RestaurantId" v-model="noti.restaurantId"></v-text-field>
+                          <v-text-field label="BillId" v-model="noti.billId"></v-text-field>
+                        </v-container>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" text @click="editDialog=false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="editSave">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+            <!--Delete-->
+            <v-layout id="layoutDelete">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="clear">Delete</v-btn>
+              </v-flex>
+            </v-layout>
+          </span>
+          <b-tab-item label="Checked rows">
+            <pre>{{ checkedRows }}</pre>
+          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -122,6 +101,13 @@ export default {
   },
   data() {
     return {
+      //Add
+      addDialog: false,
+      newNoti: [],
+
+      //Edit
+      editDialog: false,
+
       notiData: [],
       checkboxPosition: "left",
       checkedRows: [],
@@ -155,7 +141,21 @@ export default {
       ]
     };
   },
-  methods: {},
+  methods: {
+    addSave() {
+      console.log(this.newNoti);
+      this.addDialog = false;
+      this.newNoti = [];
+    },
+    addCancel(){
+      this.addDialog = false;
+      this.newNoti = [];
+    },
+    editSave(){
+      console.log(this.checkedRows)
+      this.editDialog = false;
+    }
+  },
   created() {
     axios.get("http://localhost:3000/api/getallnotification").then(response => {
       this.notiData = response.data;
@@ -183,7 +183,6 @@ export default {
 #layoutDelete {
   margin-left: 600px;
   margin-top: 0px;
-
 }
 #layoutEdit {
   margin-left: 400px;

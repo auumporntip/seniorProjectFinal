@@ -20,94 +20,72 @@
               </template>
             </b-table>
           </b-tab-item>
-
-                    <template slot="bottom-left">
-                        <b>Total checked</b>: {{ checkedRows.length }}
-                    </template>
-                </b-table>
-            </b-tab-item>
-                  <span id = "Addeditdelete" >
-              <!--Add-->
-               <v-layout id="layoutAdd">
-                <v-flex xs2>
-           <v-btn color="primary" dark @click.stop="test" class="add">Add</v-btn>
-            <v-dialog v-model="dialog" max-width="490">
-              <v-card>
-                <v-card-text class="headline">
-                  Add Menu
-                  <v-form>
-                    <v-container fluid>
-                      <v-row>
-                        
-                  <v-col ><v-text-field label="MenuId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="MenuName"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="MenuPrice"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="MenuPathImage"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="RestaurantId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="CategoryId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Created_at"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Update_at"></v-text-field></v-col>
-                  
-                 
-                      </v-row>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-                </v-flex>
-               </v-layout>
-               <!--Edit-->
-               <v-layout id="layoutEdit">
-                <v-flex xs2>
-            <v-btn color="primary" dark @click.stop="test2" class="add">Edit</v-btn>
-            <v-dialog v-model="dialog2" max-width="490">
-              <v-card>
-                <v-card-text class="headline">
-                  Edit Menu
-                  <v-form>
-                    <v-container>
-                      <v-row>
-                        
-                 <v-col ><v-text-field label="MenuId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="MenuName"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="MenuPrice"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="MenuPathImage"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="RestaurantId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="CategoryId"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Created_at"></v-text-field></v-col>
-                  <v-col cols="12" sm="6" md="3"><v-text-field label="Update_at"></v-text-field></v-col>
-                 
-                      </v-row>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-                </v-flex>
-               </v-layout>
-               <!--Delete-->
-              <v-layout id="layoutDelete">
-                <v-flex xs2>
-            <v-btn color="primary" dark v-on="on" class="clear">Delete</v-btn>
-            <v-dialog v-model="dialog3" max-width="490">
-            </v-dialog>
-                </v-flex>
-                </v-layout>
-            </span>
-            <b-tab-item label="Checked rows">
-                <pre>{{ checkedRows }}</pre>
-            </b-tab-item>
+          <span id="Addeditdelete">
+            <!--Add-->
+            <v-layout id="layoutAdd">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
+                <v-dialog max-width="490" v-model="addDialog">
+                  <v-card>
+                    <v-card-text class="headline">
+                      Add Menu
+                      <v-form>
+                        <v-container fluid>
+                          <v-text-field label="MenuName" v-model="newMenu.menuName"></v-text-field>
+                          <v-text-field label="MenuPrice" v-model="newMenu.menuPrice"></v-text-field>
+                          <v-text-field label="MenuPathImage" v-model="newMenu.menuPathImage"></v-text-field>
+                          <v-text-field label="RestaurantId" v-model="newMenu.restaurantId"></v-text-field>
+                          <v-text-field label="CategoryId" v-model="newMenu.categoryId"></v-text-field>
+                        </v-container>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+            <!--Edit-->
+            <v-layout id="layoutEdit">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="add" @click="editDialog=true">Edit</v-btn>
+                <v-dialog max-width="490" v-model="editDialog">
+                  <v-card>
+                    <v-card-text class="headline">
+                      Edit Menu
+                      <v-form v-for="menu in checkedRows" :key="menu.menuId">
+                        <v-container>
+                          <v-text-field label="MenuId" disabled v-model="menu.menuId"></v-text-field>
+                          <v-text-field label="MenuName" v-model="menu.menuName"></v-text-field>
+                          <v-text-field label="MenuPrice" v-model="menu.menuPrice"></v-text-field>
+                          <v-text-field label="MenuPathImage" v-model="menu.menuPathImage"></v-text-field>
+                          <v-text-field label="RestaurantId" v-model="menu.restaurantId"></v-text-field>
+                          <v-text-field label="CategoryId" v-model="menu.categoryId"></v-text-field>
+                        </v-container>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" text @click="editDialog=false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="editSave">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+            <!--Delete-->
+            <v-layout id="layoutDelete">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="clear">Delete</v-btn>
+              </v-flex>
+            </v-layout>
+          </span>
+          <b-tab-item label="Checked rows">
+            <pre>{{ checkedRows }}</pre>
+          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -127,6 +105,13 @@ export default {
   },
   data() {
     return {
+      //Add
+      newMenu: [],
+      addDialog: false,
+
+      //Edit
+      editDialog: false,
+
       menuData: [],
       checkboxPosition: "left",
       checkedRows: [],
@@ -168,7 +153,21 @@ export default {
       ]
     };
   },
-  methods: {},
+  methods: {
+    addCancel() {
+      this.addDialog = false;
+      this.newMenu = [];
+    },
+    addSave() {
+      console.log(this.newMenu);
+      this.addDialog = false;
+      this.newMenu = [];
+    },
+    editSave() {
+      console.log(this.checkedRows);
+      this.editDialog = false;
+    }
+  },
   created() {
     axios.get("http://localhost:3000/api/getallmenu").then(response => {
       this.menuData = response.data;
@@ -196,7 +195,6 @@ export default {
 #layoutDelete {
   margin-left: 600px;
   margin-top: 0px;
-
 }
 #layoutEdit {
   margin-left: 400px;
