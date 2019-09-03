@@ -7,15 +7,15 @@ router.get('/getallstatus', async(req,res)=>{
     res.send(await status.getAllStatus())
 })
 
-router.get('/insertstatus', async(req,res)=>{
+router.post('/insertstatus', async(req,res)=>{
     res.send(await status.insertStatus(req.body))
 })
 
-router.get('/updatestatus', async(req,res)=>{
+router.put('/updatestatus', async(req,res)=>{
     res.send(await status.updateStatus(req.body))
 })
 
-router.get('/deletestatus/:statusId', async(req,res)=>{
+router.delete('/deletestatus/:statusId', async(req,res)=>{
     res.send(await status.deleteStatus(req.params.statusId))
 })
 
