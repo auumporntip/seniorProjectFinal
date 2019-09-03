@@ -18,7 +18,7 @@ exports.deleteCategory = async (categoryId, restaurantId) => {
 }
 
 exports.insertCategory = async (category) => {
-    await knex('menu').insert({
+    return await knex('menu').insert({
         categoryName: category.categoryName,
         restaurantId: category.restaurantId
     })

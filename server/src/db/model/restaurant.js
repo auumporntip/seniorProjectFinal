@@ -17,7 +17,7 @@ exports.getRestaurantByRestaurantId = async (restaurantId) => {
 }
 
 exports.deleteRestaurant = async (restaurantId) => {
-    await knex('restaurant')
+    knex('restaurant')
         .Where('restaurantId', restaurantId)
         .del()
 }
@@ -35,7 +35,7 @@ exports.insertRestuarant = async (restaurant) => {
 }
 
 exports.updaterestaurant = async (restaurant) => {
-    await knex('restaurant').where('restaurantId', '=', restaurant.restaurantId)
+    knex('restaurant').where('restaurantId', '=', restaurant.restaurantId)
         .update({
             restaurantName: restaurant.restaurantName,
             restaurantLocation: restaurant.restaurantLocation,

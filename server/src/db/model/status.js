@@ -10,11 +10,11 @@ exports.insertStatus = async (status) => {
     })
 }
 exports.updateStatus = async (status) => {
-    return await knex('status').where('statusId', '=', status.statusId).update({
+    await knex('status').where('statusId', '=', status.statusId).update({
 
         statusName: status.statusName
     })
 }
 exports.deleteStatus = async (statusId) => {
-    return await knex('status').where('statusId', '=', statusId).del()
+    await knex('status').where('statusId', '=', statusId).del()
 }

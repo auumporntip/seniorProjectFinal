@@ -5,7 +5,7 @@ exports.getAllBill=async() => {
 }
 
 exports.updateBill = async(bill) => {
-    return await knex('bill').where('billId', '=', bill.billId)
+    await knex('bill').where('billId', '=', bill.billId)
         .update({
             totalPrice: bill.totalPrice,
             eatTime: bill.eatTime,
@@ -27,7 +27,7 @@ exports.insertBill = async(bill) => {
 }
 
 exports.deleteBill = async (billId) => {
-    return await knex('bill')
+    await knex('bill')
         .where('billId', billId)
         .del()
 }
