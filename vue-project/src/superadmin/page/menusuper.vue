@@ -1,41 +1,60 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="menuData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">MENU</v-card-title>
+          <b-table
+            :data="menuData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
+
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
                 <v-dialog max-width="490" v-model="addDialog">
                   <v-card>
                     <v-card-text class="headline">
                       Add Menu
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-text-field label="MenuName" v-model="newMenu.menuName"></v-text-field>
-                          <v-text-field label="MenuPrice" v-model="newMenu.menuPrice"></v-text-field>
+                          <v-text-field
+                            label="MenuName"
+                            v-model="newMenu.menuName"
+                            :rules="nameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="MenuPrice"
+                            type="number"
+                            suffix="Baht"
+                            v-model="newMenu.menuPrice"
+                            :rules="priceRules"
+                          ></v-text-field>
                           <v-text-field label="MenuPathImage" v-model="newMenu.menuPathImage"></v-text-field>
-                          <v-text-field label="RestaurantId" v-model="newMenu.restaurantId"></v-text-field>
-                          <v-text-field label="CategoryId" v-model="newMenu.categoryId"></v-text-field>
+                          <v-text-field
+                            label="RestaurantId"
+                            type="number"
+                            v-model="newMenu.restaurantId"
+                            :rules="resIdRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="CategoryId"
+                            type="number"
+                            v-model="newMenu.categoryId"
+                            :rules="catIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -77,15 +96,12 @@
               </v-flex>
             </v-layout>
             <!--Delete-->
-            <v-layout id="layoutDelete">
+            <v-layout>
               <v-flex xs2>
-                <v-btn color="primary" dark class="clear">Delete</v-btn>
+                <v-btn color="primary" dark class="clear" @click="clickDelete">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -93,14 +109,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "menusuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -108,6 +122,13 @@ export default {
       //Add
       newMenu: [],
       addDialog: false,
+      nameRules: [
+        v => !!v || "Menu name is required",
+        v => (v && v.length <= 15) || "Max 15 characters"
+      ],
+      priceRules: [v => !!v || "Price is required"],
+      resIdRules: [v => !!v || "Restaurant Id is required"],
+      catIdRules: [v => !!v || "Category Id is required"],
 
       //Edit
       editDialog: false,
@@ -118,29 +139,29 @@ export default {
       columns: [
         {
           field: "menuId",
-          label: "menuId",
+          label: "Id",
           width: "40",
           numeric: true
         },
         {
           field: "menuName",
-          label: "menuName"
+          label: "Name"
         },
         {
           field: "menuPrice",
-          label: "menuPrice"
+          label: "Price"
         },
         {
           field: "menuPathImage",
-          label: "menuPathImage"
+          label: "Path Image"
         },
         {
           field: "restaurantId",
-          label: "restaurantId"
+          label: "Restaurant Id"
         },
         {
           field: "categoryId",
-          label: "categoryId"
+          label: "Category Id"
         },
         {
           field: "created_at",
@@ -159,13 +180,78 @@ export default {
       this.newMenu = [];
     },
     addSave() {
-      console.log(this.newMenu);
-      this.addDialog = false;
-      this.newMenu = [];
+      if (this.$refs.form.validate()) {
+        console.log(this.newMenu);
+        axios
+          .post("http://localhost:3000/api/insertmenu", {
+            menuId: this.newMenu.menuId,
+            menuName: this.newMenu.menuName,
+            menuPrice: this.newMenu.menuPrice,
+            menuPathImage: this.newMenu.menuPathImage,
+            restaurantId: this.newMenu.restaurantId,
+            categoryId: this.newMenu.categoryId
+          })
+          .then(response => {
+            this.reMenu();
+            this.newMenu = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
     },
     editSave() {
-      console.log(this.checkedRows);
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put("http://localhost:3000/api/updateMenu/", this.checkedRows[index])
+          .then(() => {
+            this.reMenu();
+          });
+      }
       this.editDialog = false;
+    },
+    reMenu() {
+      axios.get("http://localhost:3000/api/getallMenu").then(response => {
+        this.billData = response.data;
+      });
+    },
+    clickDelete() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != null) {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deleteMenu/" +
+                    this.checkedRows[index].menuId +
+                    "/" +
+                    this.checkedRows[index].restaurantId
+                )
+                .then(() => {
+                  this.reMenu();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
+    },
+    reMenu() {
+      axios.get("http://localhost:3000/api/getallmenu").then(response => {
+        this.menuData = response.data;
+      });
     }
   },
   created() {
@@ -178,33 +264,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
-</style>
 </style>

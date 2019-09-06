@@ -1,43 +1,65 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="empData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">EMPLOYEE</v-card-title>
+          <b-table
+            :data="empData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
+
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
                 <v-dialog max-width="490" v-model="addDialog">
                   <v-card>
                     <v-card-text class="headline">
                       Add Employee
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-text-field label="EmpUsername" v-model="newEmp.empUsername"></v-text-field>
-                          <v-text-field label="EmpPassword" v-model="newEmp.empPassword"></v-text-field>
-                          <v-text-field label="EmpName" v-model="newEmp.empName"></v-text-field>
-                          <v-text-field label="EmpPhone" v-model="newEmp.empPhone"></v-text-field>
-                          <v-text-field label="EmpEmail" v-model="newEmp.empEmail"></v-text-field>
-                          <v-text-field label="PositionId" v-model="newEmp.positionId"></v-text-field>
-                          <v-text-field label="RestaurantId" v-model="newEmp.restaurantId"></v-text-field>
+                          <v-text-field
+                            label="Username"
+                            v-model="newEmp.empUsername"
+                            :rules="usernameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Password"
+                            v-model="newEmp.empPassword"
+                            :rules="passwordRules"
+                          ></v-text-field>
+                          <v-text-field label="Name" v-model="newEmp.empName" :rules="nameRules"></v-text-field>
+                          <v-text-field
+                            label="Mobile Phone"
+                            mask="### ### ####"
+                            v-model="newEmp.empPhone"
+                            :rules="phoneRules"
+                          ></v-text-field>
+                          <v-text-field label="Email" v-model="newEmp.empEmail" :rules="emailRules"></v-text-field>
+                          <v-text-field
+                            label="Position Id"
+                            type="number"
+                            v-model="newEmp.positionId"
+                            :rules="poIdRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Restaurant Id"
+                            type="number"
+                            v-model="newEmp.restaurantId"
+                            :rules="resIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -83,13 +105,10 @@
             <!--Delete-->
             <v-layout id="layoutDelete">
               <v-flex xs2>
-                <v-btn color="primary" dark class="clear">Delete</v-btn>
+                <v-btn color="primary" dark class="clear" @click="clickDelete">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -97,14 +116,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "empsuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -112,6 +129,22 @@ export default {
       //Add
       addDialog: false,
       newEmp: [],
+      usernameRules: [
+        v => !!v || "Username is required",
+        v => (v && v.length <= 15) || "Max 15 characters"
+      ],
+      passwordRules: [
+        v => !!v || "Password is required",
+        v => (v && v.length >= 8) || "Min 8 characters"
+      ],
+      nameRules: [v => !!v || "Name is required"],
+      phoneRules: [v => !!v || "Phone Number is required"],
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "Invalid Email address"
+      ],
+      poIdRules: [v => !!v || "Position Id is required"],
+      resIdRules: [v => !!v || "Restaurant Id is required"],
 
       //Edit
       editDialog: false,
@@ -122,29 +155,29 @@ export default {
       columns: [
         {
           field: "employeeId",
-          label: "employeeId",
+          label: "Id",
           width: "40",
           numeric: true
         },
         {
           field: "empUsername",
-          label: "empUsername"
+          label: "Username"
         },
         {
           field: "empPassword",
-          label: "empPassword"
+          label: "Password"
         },
         {
           field: "empName",
-          label: "empName"
+          label: "Name"
         },
         {
           field: "empPhone",
-          label: "empPhone"
+          label: "Phone"
         },
         {
           field: "empEmail",
-          label: "empEmail"
+          label: "Email"
         },
         {
           field: "positionId",
@@ -171,13 +204,76 @@ export default {
       this.newEmp = [];
     },
     empSave() {
-      console.log(this.newEmp);
-      this.addDialog = false;
-      this.newEmp = [];
+      if (this.$refs.form.validate()) {
+        console.log(this.newEmp);
+        axios
+          .post("http://localhost:3000/api/insertBill", {
+            employeeId: this.newEmp.employeeId,
+            empUsername: this.newEmp.empUsername,
+            empPassword: this.newEmp.empPassword,
+            empName: this.newEmp.empName,
+            empPhone: this.newEmp.empPhone,
+            empEmail: this.newEmp.empEmail,
+            positionId: this.newEmp.positionId,
+            restaurantId: this.newEmp.restaurantId
+          })
+          .then(response => {
+            this.reEmployee();
+            this.newEmp = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
     },
     editSave() {
-      console.log(this.checkedRows);
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put(
+            "http://localhost:3000/api/updateEmployee/",
+            this.checkedRows[index]
+          )
+          .then(() => {
+            this.reEmployee();
+          });
+      }
       this.editDialog = false;
+    },
+    reEmployee() {
+      axios.get("http://localhost:3000/api/getallemployee").then(response => {
+        this.billData = response.data;
+      });
+    },
+    clickDelete() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != null) {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deleteEmployee/" +
+                    this.checkedRows[index].billId
+                )
+                .then(() => {
+                  this.reBill();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
     }
   },
   created() {
@@ -190,32 +286,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

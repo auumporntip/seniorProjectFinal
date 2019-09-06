@@ -1,46 +1,72 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="resData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
-
+          <v-card-title class="title">Restaurant</v-card-title>
+          <b-table
+            :data="resData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
                 <v-dialog max-width="490" v-model="addDialog">
                   <v-card>
                     <v-card-text class="headline">
                       Add Restaurant
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-text-field label="RestaurantName" v-model="newRes.restaurantName"></v-text-field>
+                          <v-text-field
+                            label="RestaurantName"
+                            v-model="newRes.restaurantName"
+                            :rules="nameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantDescription"
+                            v-model="newRes.restaurantDescription"
+                            :rules="descriptionRules"
+                          ></v-text-field>
                           <v-text-field
                             label="RestaurantLocation"
                             v-model="newRes.restaurantLocation"
+                            :rules="locationRules"
                           ></v-text-field>
-                          <v-text-field label="TimeOpenClose" v-model="newRes.timeOpenClose"></v-text-field>
-                          <v-text-field label="RestaurantPhone" v-model="newRes.restaurantPhone"></v-text-field>
-                          <v-text-field label="TypeResId" v-model="newRes.typeResId"></v-text-field>
-                          <v-text-field label="AccountId" v-model="newRes.accountId"></v-text-field>
+                          <v-text-field
+                            label="TimeOpenClose"
+                            v-model="newRes.timeOpenClose"
+                            :rules="timeRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantPhone"
+                            v-model="newRes.restaurantPhone"
+                            :rules="phoneRules"
+                            mask="### ### ####"
+                          ></v-text-field>
+                          <v-text-field
+                            label="TypeResId"
+                            type="number"
+                            v-model="newRes.typeResId"
+                            :rules="typeResIdRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="AccountId"
+                            type="number"
+                            v-model="newRes.accountId"
+                            :rules="accountIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -65,6 +91,10 @@
                         <v-container>
                           <v-text-field label="RestaurantId" disabled v-model="res.restaurantId"></v-text-field>
                           <v-text-field label="RestaurantName" v-model="res.restaurantName"></v-text-field>
+                          <v-text-field
+                            label="RestaurantDescription"
+                            v-model="res.restaurantDescription"
+                          ></v-text-field>
                           <v-text-field label="RestaurantLocation" v-model="res.restaurantLocation"></v-text-field>
                           <v-text-field label="TimeOpenClose" v-model="res.timeOpenClose"></v-text-field>
                           <v-text-field label="RestaurantPhone" v-model="res.restaurantPhone"></v-text-field>
@@ -75,7 +105,7 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="editDialog=true">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="editDialog=false">Cancel</v-btn>
                       <v-btn color="green darken-1" text @click="editSave">Save</v-btn>
                     </v-card-actions>
                   </v-card>
@@ -83,15 +113,12 @@
               </v-flex>
             </v-layout>
             <!--Delete-->
-            <v-layout id="layoutDelete">
+            <v-layout>
               <v-flex xs2>
-                <v-btn color="primary" dark class="clear">Delete</v-btn>
+                <v-btn color="primary" dark class="clear" @click="clickDelete">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -99,14 +126,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "restaurantsuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -114,6 +139,13 @@ export default {
       //Add
       addDialog: false,
       newRes: [],
+      nameRules: [v => !!v || "Restaurant name is required"],
+      descriptionRules: [v => !!v || "Restaurant description is required"],
+      locationRules: [v => !!v || "Location is required"],
+      timeRules: [v => !!v || "Time open and close is required"],
+      phoneRules: [v => !!v || "Phone number is required"],
+      typeResIdRules: [v => !!v || "Type of restaurant Id is required"],
+      accountIdRules: [v => !!v || "account Id is required"],
 
       //Edit
       editDialog: false,
@@ -124,17 +156,21 @@ export default {
       columns: [
         {
           field: "restaurantId",
-          label: "restaurantId",
+          label: "Id",
           width: "40",
           numeric: true
         },
         {
           field: "restaurantName",
-          label: "restaurantName"
+          label: "Name"
+        },
+        {
+          field: "restaurantDescription",
+          label: "Description"
         },
         {
           field: "restaurantLocation",
-          label: "restaurantLocation"
+          label: "Location"
         },
         {
           field: "timeOpenClose",
@@ -142,7 +178,7 @@ export default {
         },
         {
           field: "restaurantPhone",
-          label: "restaurantPhone"
+          label: "Phone"
         },
         {
           field: "typeResId",
@@ -165,17 +201,81 @@ export default {
   },
   methods: {
     addSave() {
-      console.log(this.newRes);
-      this.addDialog = false;
-      this.newRes = [];
+      if (this.$refs.form.validate()) {
+        console.log(this.newRes);
+        axios
+          .post("http://localhost:3000/api/insertRestaurant", {
+            restaurantId: this.newRes.restaurantId,
+            restaurantName: this.newRes.restaurantName,
+            restaurantDescription: this.newRes.restaurantDescription,
+            restaurantLocation: this.newRes.restaurantLocation,
+            timeOpenClose: this.newRes.timeOpenClose,
+            restaurantPhone: this.newRes.restaurantPhone,
+            typeResId: this.newRes.typeResId,
+            accountId: this.newRes.accountId
+          })
+          .then(response => {
+            this.reRestaurant();
+            this.newRes = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
     },
     addCancel() {
       this.addDialog = false;
       this.newRes = [];
     },
     editSave() {
-      console.log(this.checkedRows);
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios.put(
+            "http://localhost:3000/api/updateRestaurant",
+            this.checkedRows[index]
+          )
+          .then(() => {
+            console.log(this.checkedRows);
+            this.checkedRows = [];
+            this.reRestaurant();
+          });
+      }
       this.editDialog = false;
+    },
+    clickDelete() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != null) {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deleteRestaurant/" +
+                    this.checkedRows[index].restaurantId
+                )
+                .then(() => {
+                  this.reRestaurant();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
+    },
+    reRestaurant() {
+      axios.get("http://localhost:3000/api/getallrestaurant").then(response => {
+        this.resData = response.data;
+      });
     }
   },
   created() {
@@ -188,32 +288,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

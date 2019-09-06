@@ -1,28 +1,26 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="menuSerData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">MENU SERVICE</v-card-title>
+          <b-table
+            :data="menuSerData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="addDialod=true">Add</v-btn>
                 <v-dialog max-width="490" v-model="addDialog">
@@ -73,16 +71,13 @@
               </v-flex>
             </v-layout>
             <!--Delete-->
-            <v-layout id="layoutDelete">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="clear">Delete</v-btn>
                 <v-dialog max-width="490"></v-dialog>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -90,14 +85,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "menuservicesuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -152,32 +145,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

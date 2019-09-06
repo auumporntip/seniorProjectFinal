@@ -1,38 +1,46 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="notiData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">NOTIFICATION</v-card-title>
+          <b-table
+            :data="notiData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
+
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
                 <v-dialog max-width="490" v-model="addDialog">
                   <v-card>
                     <v-card-text class="headline">
                       Add Notification
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-text-field label="NotiMessage" v-model="newNoti.notiMessage"></v-text-field>
-                          <v-text-field label="RestaurantId" v-model="newNoti.restaurantId"></v-text-field>
+                          <v-text-field
+                            label="NotiMessage"
+                            v-model="newNoti.notiMessage"
+                            :rules="messageRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantId"
+                            type="number"
+                            v-model="newNoti.restaurantId"
+                            :rules="resIdRules"
+                          ></v-text-field>
                           <v-text-field label="BillId" v-model="newNoti.billId"></v-text-field>
                         </v-container>
                       </v-form>
@@ -73,15 +81,12 @@
               </v-flex>
             </v-layout>
             <!--Delete-->
-            <v-layout id="layoutDelete">
+            <v-layout>
               <v-flex xs2>
-                <v-btn color="primary" dark class="clear">Delete</v-btn>
+                <v-btn color="primary" dark class="clear" @click="clickDelete">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -89,14 +94,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "notificationsuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -104,6 +107,8 @@ export default {
       //Add
       addDialog: false,
       newNoti: [],
+      messageRules: [v => !!v || "Notification Message is required"],
+      resIdRules: [v => !!v || "Restaurant Id is required"],
 
       //Edit
       editDialog: false,
@@ -114,21 +119,21 @@ export default {
       columns: [
         {
           field: "notiId",
-          label: "notiId",
+          label: "Notification Id",
           width: "40",
           numeric: true
         },
         {
           field: "notiMessage",
-          label: "notiMessage"
+          label: "Notification Message"
         },
         {
           field: "restaurantId",
-          label: "restaurantId"
+          label: "Restaurant Id"
         },
         {
           field: "billId",
-          label: "billId"
+          label: "Bill Id"
         },
         {
           field: "created_at",
@@ -143,17 +148,80 @@ export default {
   },
   methods: {
     addSave() {
-      console.log(this.newNoti);
+      if (this.$refs.form.validate()) {
+        console.log(this.newNoti);
+        axios
+          .post("http://localhost:3000/api/insertNotification", {
+            notiId: this.newNoti.notiId,
+            notiMessage: this.newNoti.notiMessage,
+            resId: this.newNoti.resId,
+            billId: this.newNoti.billId
+          })
+          .then(response => {
+            this.reNotification();
+            this.newNoti = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
+    },
+    addCancel() {
       this.addDialog = false;
       this.newNoti = [];
     },
-    addCancel(){
-      this.addDialog = false;
-      this.newNoti = [];
-    },
-    editSave(){
-      console.log(this.checkedRows)
+    editSave() {
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put(
+            "http://localhost:3000/api/updateNotification/",
+            this.checkedRows[index]
+          )
+          .then(() => {
+            this.reNotification();
+          });
+      }
       this.editDialog = false;
+    },
+    reNotification() {
+      axios
+        .get("http://localhost:3000/api/getallnotification")
+        .then(response => {
+          this.notiData = response.data;
+        });
+    },
+    clickDelete() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != null) {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deleteMenu/" +
+                    this.checkedRows[index].menuId +
+                    "/" +
+                    this.checkedRows[index].restaurantId
+                )
+                .then(() => {
+                  this.reMenu();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
     }
   },
   created() {
@@ -166,32 +234,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

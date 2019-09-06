@@ -1,99 +1,123 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="typeOfSerData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">TYPE OF SERVICE</v-card-title>
+          <b-table
+            :data="typeOfSerData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
 
-                   
-                <span id = "Addeditdelete" >
-              <!--Add-->
-               <v-layout id="layoutAdd">
-                <v-flex xs2>
-           <v-btn color="primary" dark class="add" @click="AddDialog=true">Add</v-btn>
-            <v-dialog  max-width="490" v-model="AddDialog">
-              <v-card>
-                <v-card-text class="headline">
-                  Add TypeOfService
-                  <v-form>
-                    <v-container fluid>
-                      
-                
-                  <v-text-field label="TypeName" v-model="newTypeOfSer.typeName" type="text" :rules="TypeNameRules"></v-text-field>
-                  <v-text-field label="TypeTime" v-model="newTypeOfSer.typeTime" type="text" ></v-text-field>
-                  <v-text-field label="TypePrice" v-model="newTypeOfSer.typePrice" type="number" min ="0.1" step="0.1" :rules="TypePriceRules"></v-text-field>
-                  <v-text-field label="RestaurantId" v-model="newTypeOfSer.restaurantId" type="number" :rules="ResIdRules"></v-text-field>
-                  
-                     
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-                </v-flex>
-               </v-layout>
-               <!--Edit-->
-               <v-layout id="layoutEdit">
-                <v-flex xs2>
-            <v-btn color="primary" dark class="add" @click="EditDialog=true">Edit</v-btn>
-            <v-dialog  max-width="490" v-model="EditDialog">
-              <v-card>
-                <v-card-text class="headline">
-                  Edit TypeOfService
-                  <v-form v-for="Edit in checkedRows" :key="Edit.typeId">
-                    <v-container>
-                      
-                        
-                   <v-text-field label="TypeId" disabled v-model="Edit.typeId" disabled ></v-text-field>
-                  <v-text-field label="TypeName" v-model="Edit.typeName" type="text" :rules="TypeNameRules2"></v-text-field>
-                  <v-text-field label="TypeTime" v-model="Edit.typeTime" ></v-text-field>
-                  <v-text-field label="TypePrice" v-model="Edit.typePrice" type="number" min ="0.1" step="0.1" :rules="TypePriceRules2"></v-text-field>
-                  <v-text-field label="RestaurantId" v-model="Edit.restaurantId" type="number" :rules="ResIdRules2"></v-text-field>
-                 
-                 
-                      
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="EditDialog=false" >Cancel</v-btn>
-                  <v-btn color="green darken-1" text @click="EditSave">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-                </v-flex>
-               </v-layout>
-               <!--Delete-->
-              <v-layout id="layoutDelete">
-                <v-flex xs2>
-            <v-btn color="primary" dark @click="deleteClick">Delete</v-btn>
-           
-                </v-flex>
-                </v-layout>
-            </span>
-          
+          <span id="Addeditdelete">
+            <!--Add-->
+            <v-layout>
+              <v-flex xs2>
+                <v-btn color="primary" dark class="add" @click="AddDialog=true">Add</v-btn>
+                <v-dialog max-width="490" v-model="AddDialog">
+                  <v-card>
+                    <v-card-text class="headline">
+                      Add TypeOfService
+                      <v-form>
+                        <v-container fluid>
+                          <v-text-field
+                            label="TypeName"
+                            v-model="newTypeOfSer.typeName"
+                            type="text"
+                            :rules="TypeNameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="TypeTime"
+                            v-model="newTypeOfSer.typeTime"
+                            type="text"
+                          ></v-text-field>
+                          <v-text-field
+                            label="TypePrice"
+                            v-model="newTypeOfSer.typePrice"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="TypePriceRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantId"
+                            v-model="newTypeOfSer.restaurantId"
+                            type="number"
+                            :rules="ResIdRules"
+                          ></v-text-field>
+                        </v-container>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+            <!--Edit-->
+            <v-layout id="layoutEdit">
+              <v-flex xs2>
+                <v-btn color="primary" dark class="add" @click="EditDialog=true">Edit</v-btn>
+                <v-dialog max-width="490" v-model="EditDialog">
+                  <v-card>
+                    <v-card-text class="headline">
+                      Edit TypeOfService
+                      <v-form v-for="Edit in checkedRows" :key="Edit.typeId">
+                        <v-container>
+                          <v-text-field label="TypeId" disabled v-model="Edit.typeId"></v-text-field>
+                          <v-text-field
+                            label="TypeName"
+                            v-model="Edit.typeName"
+                            type="text"
+                            :rules="TypeNameRules2"
+                          ></v-text-field>
+                          <v-text-field label="TypeTime" v-model="Edit.typeTime"></v-text-field>
+                          <v-text-field
+                            label="TypePrice"
+                            v-model="Edit.typePrice"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="TypePriceRules2"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantId"
+                            v-model="Edit.restaurantId"
+                            type="number"
+                            :rules="ResIdRules2"
+                          ></v-text-field>
+                        </v-container>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" text @click="EditDialog=false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="EditSave">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+            <!--Delete-->
+            <v-layout>
+              <v-flex xs2>
+                <v-btn color="primary" dark @click="deleteClick">Delete</v-btn>
+              </v-flex>
+            </v-layout>
+          </span>
         </b-tabs>
       </section>
     </div>
@@ -101,46 +125,31 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "typeofservicesuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
     return {
-      
       //Add
-      AddDialog:false,
+      AddDialog: false,
       newTypeOfSer: [],
-      TypeNameRules:[
-           v => !!v || "Name is required",
-      ],
-      TypePriceRules:[
-          v => !!v || "Price is required",
-      ],
-      ResIdRules:[
-          v => !!v || "Price is required",
-      ],
+      TypeNameRules: [v => !!v || "Name is required"],
+      TypePriceRules: [v => !!v || "Price is required"],
+      ResIdRules: [v => !!v || "Price is required"],
       //Edit
       EditDialog: false,
-      TypeNameRules2:[
-           v => !!v || "Name is required",
-      ],
-      TypePriceRules2:[
-          v => !!v || "Price is required",
-      ],
-      ResIdRules2:[
-          v => !!v || "Price is required",
-      ],
+      TypeNameRules2: [v => !!v || "Name is required"],
+      TypePriceRules2: [v => !!v || "Price is required"],
+      ResIdRules2: [v => !!v || "Price is required"],
       //Delete
       typeOfSerData: [],
       isPaginated: true,
-      perPage:10,
+      perPage: 10,
       checkboxPosition: "left",
       checkedRows: [],
       columns: [
@@ -178,36 +187,41 @@ export default {
     };
   },
   methods: {
-    addCancel(){
-      this.AddDialog=false;
-      this.newTypeOfSer=[];
+    addCancel() {
+      this.AddDialog = false;
+      this.newTypeOfSer = [];
     },
-    addSave(){
+    addSave() {
       console.log(this.newTypeOfSer);
       axios
-      .post("http://localhost:3000/api/inserttypeofservice",{
-        typeName: this.newTypeOfSer.typeName,
-        typeTime: this.newTypeOfSer.typeTime,
-        typePrice: this.newTypeOfSer.typePrice,
-        restaurantId: this.newTypeOfSer.restaurantId
-      })
-      .then(response => {
-        this.retype();
-        this.newTypeOfSer=[];
-      })
-      this.AddDialog=false;
-    },
-    EditSave(){
-      for(let index=0; index < this.checkedRows.length; index++){
-        axios.put("http://localhost:3000/api/updatetypeofservice/",this.checkedRows[index]).then(()=>{
-          this.retype()
+        .post("http://localhost:3000/api/insertTypeofservice", {
+          typeName: this.newTypeOfSer.typeName,
+          typeTime: this.newTypeOfSer.typeTime,
+          typePrice: this.newTypeOfSer.typePrice,
+          restaurantId: this.newTypeOfSer.restaurantId
         })
-      }
-      this.EditDialog=false;
+        .then(response => {
+          this.retype();
+          this.newTypeOfSer = [];
+        });
+      this.AddDialog = false;
     },
-    deleteClick(){
+    EditSave() {
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put(
+            "http://localhost:3000/api/updatetypeofservice/",
+            this.checkedRows[index]
+          )
+          .then(() => {
+            this.retype();
+          });
+      }
+      this.EditDialog = false;
+    },
+    deleteClick() {
       console.log(this.checkedRows);
-      if(this.checkedRows != ""){
+      if (this.checkedRows != "") {
         this.$dialog.confirm({
           title: "Privacy Politics",
           message: "Are you sure you want to delete?",
@@ -215,20 +229,20 @@ export default {
           confirmText: "Agree",
           type: "is-success",
           onConfirm: () => {
-            for (let index=0; index <this.checkedRows.length; index++) {
+            for (let index = 0; index < this.checkedRows.length; index++) {
               axios
-              .delete(
-                "http://localhost:3000/api/deletetypeofservice/"+
-                this.checkedRows[index].accountId
-              )
-              .then(() => {
-                this.retype();
-              });
+                .delete(
+                  "http://localhost:3000/api/deletetypeofservice/" +
+                    this.checkedRows[index].accountId
+                )
+                .then(() => {
+                  this.retype();
+                });
             }
             this.$toast.open("delete success");
           }
         });
-      }else{
+      } else {
         this.$dialog.alert({
           title: "Error",
           message: "Please selected some menu row",
@@ -236,49 +250,47 @@ export default {
         });
       }
     },
-    retype(){
-      axios.get("http://localhost:3000/api/getalltypeofservice").then(response => {
-        this.typeOfSerData=response.data;
-      });
+    retype() {
+      axios
+        .get("http://localhost:3000/api/getalltypeofservice")
+        .then(response => {
+          this.typeOfSerData = response.data;
+        });
     }
   },
   created() {
-    axios.get("http://localhost:3000/api/getalltypeofservice").then(response => {
-      this.typeOfSerData = response.data;
-    });
+    axios
+      .get("http://localhost:3000/api/getalltypeofservice")
+      .then(response => {
+        this.typeOfSerData = response.data;
+      });
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
-
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

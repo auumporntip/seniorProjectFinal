@@ -1,29 +1,27 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="transData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">TRANSACTION</v-card-title>
+          <b-table
+            :data="transData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
 
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="AddDialog=true">Add</v-btn>
                 <v-dialog v-model="AddDialog" max-width="490">
@@ -32,12 +30,50 @@
                       Add Transaction
                       <v-form>
                         <v-container fluid>
-                          <v-text-field label="menuName" v-model="newTrans.menuName" type="text" :rules="nameRules" ></v-text-field>
-                          <v-text-field label="transPrice" v-model="newTrans.transPrice" type="number"  min="0.1" step="0.1" :rules="priceRules" ></v-text-field>
-                          <v-text-field label="totalPrice" v-model="newTrans.totalPrice" type="number" min="0.1" step="0.1" :rules="totalRules"></v-text-field>
-                          <v-text-field label="amount" v-model="newTrans.amount" type="number"  min="0.1" step="0.1" :rules="amountRules"></v-text-field>
-                          <v-text-field label="statusName" v-model="newTrans.statusName" type="text"  min="0.1" step="0.1" :rules="statusRules"></v-text-field>
-                          <v-text-field label="billId" v-model="newTrans.billId" type="number"  :rules="billIdRules"></v-text-field>
+                          <v-text-field
+                            label="menuName"
+                            v-model="newTrans.menuName"
+                            type="text"
+                            :rules="nameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="transPrice"
+                            v-model="newTrans.transPrice"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="priceRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="totalPrice"
+                            v-model="newTrans.totalPrice"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="totalRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="amount"
+                            v-model="newTrans.amount"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="amountRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="statusName"
+                            v-model="newTrans.statusName"
+                            type="text"
+                            min="0.1"
+                            step="0.1"
+                            :rules="statusRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="billId"
+                            v-model="newTrans.billId"
+                            type="number"
+                            :rules="billIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -60,13 +96,51 @@
                       Edit Transaction
                       <v-form v-for="Edit in checkedRows" :key="Edit.transId">
                         <v-container>
-                          <v-text-field label="transId" v-model="Edit.transId" disabled> </v-text-field>
-                          <v-text-field label="menuName" v-model="Edit.menuName" type="text" :rules="nameRules" ></v-text-field>
-                          <v-text-field label="transPrice" v-model="Edit.transPrice" type="number"  min="0.1" step="0.1" :rules="priceRules" ></v-text-field>
-                          <v-text-field label="totalPrice" v-model="Edit.totalPrice" type="number" min="0.1" step="0.1" :rules="totalRules"></v-text-field>
-                          <v-text-field label="amount" v-model="Edit.amount" type="number"  min="0.1" step="0.1" :rules="amountRules"></v-text-field>
-                           <v-text-field label="statusName" v-model="Edit.statusName" type="text"  min="0.1" step="0.1" :rules="statusRules"></v-text-field>
-                          <v-text-field label="billId" v-model="Edit.billId" type="number"  :rules="billIdRules"></v-text-field>
+                          <v-text-field label="transId" v-model="Edit.transId" disabled></v-text-field>
+                          <v-text-field
+                            label="menuName"
+                            v-model="Edit.menuName"
+                            type="text"
+                            :rules="nameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="transPrice"
+                            v-model="Edit.transPrice"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="priceRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="totalPrice"
+                            v-model="Edit.totalPrice"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="totalRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="amount"
+                            v-model="Edit.amount"
+                            type="number"
+                            min="0.1"
+                            step="0.1"
+                            :rules="amountRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="statusName"
+                            v-model="Edit.statusName"
+                            type="text"
+                            min="0.1"
+                            step="0.1"
+                            :rules="statusRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="billId"
+                            v-model="Edit.billId"
+                            type="number"
+                            :rules="billIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -80,13 +154,12 @@
               </v-flex>
             </v-layout>
             <!--Delete-->
-            <v-layout id="layoutDelete">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark @click="deleteClick">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-         
         </b-tabs>
       </section>
     </div>
@@ -94,14 +167,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "transactionsuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -109,46 +180,20 @@ export default {
       //Add
       AddDialog: false,
       newTrans: [],
-      nameRules: [
-        v => !!v || "Name is required",
-      ],
-      priceRules: [
-        v => !!v || "Price is required",
-      ],
-      totalRules:[
-        v => !!v || "Total price is required",
-      ],
-      amountRules:[
-        v => !!v || "Amount is required",
-      ],
-      statusRules:[
-        v => !!v || "Amount is required",
-      ],
-      billIdRules:[
-        v => !!v || "BillId is required",
-       
-      ],
+      nameRules: [v => !!v || "Name is required"],
+      priceRules: [v => !!v || "Price is required"],
+      totalRules: [v => !!v || "Total price is required"],
+      amountRules: [v => !!v || "Amount is required"],
+      statusRules: [v => !!v || "Amount is required"],
+      billIdRules: [v => !!v || "BillId is required"],
       //Edit
       EditDialog: false,
-      nameRules: [
-        v => !!v || "Name is required",
-      ],
-      priceRules: [
-        v => !!v || "Price is required",
-      ],
-      totalRules:[
-        v => !!v || "Total price is required",
-      ],
-      amountRules:[
-        v => !!v || "Amount is required",
-      ],
-      statusRules:[
-        v => !!v || "Amount is required",
-      ],
-      billIdRules:[
-        v => !!v || "BillId is required",
-       
-      ],
+      nameRules: [v => !!v || "Name is required"],
+      priceRules: [v => !!v || "Price is required"],
+      totalRules: [v => !!v || "Total price is required"],
+      amountRules: [v => !!v || "Amount is required"],
+      statusRules: [v => !!v || "Amount is required"],
+      billIdRules: [v => !!v || "BillId is required"],
       //Delete
       transData: [],
       isPaginated: true,
@@ -197,27 +242,31 @@ export default {
     addSave() {
       console.log(this.newTrans);
       axios
-      .post("http://localhost:3000/api/insertTransaction",{
-        menuName: this.newTrans.menuName,
-        transPrice: this.newTrans.transPrice,
-        totalPrice: this.newTrans.totalPrice,
-        amount: this.newTrans.amount,
-        billId: this.newTrans.billId
-      })
-      .then(response => {
-        this.reTrans();
-        this.newTrans= [];
-      })
+        .post("http://localhost:3000/api/insertTransaction", {
+          menuName: this.newTrans.menuName,
+          transPrice: this.newTrans.transPrice,
+          totalPrice: this.newTrans.totalPrice,
+          amount: this.newTrans.amount,
+          billId: this.newTrans.billId
+        })
+        .then(response => {
+          this.reTrans();
+          this.newTrans = [];
+        });
       this.AddDialog = false;
-     
     },
-    edit(){
-        for(let index = 0; index < this.checkedRows.length; index++){
-          axios.put("http://localhost:3000/api/updateTransaction/",this.checkedRows[index]).then(()=>{
-            this.reTrans()
-          })
-        }
-        this.EditDialog=false;
+    edit() {
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put(
+            "http://localhost:3000/api/updateTransaction/",
+            this.checkedRows[index]
+          )
+          .then(() => {
+            this.reTrans();
+          });
+      }
+      this.EditDialog = false;
     },
     deleteClick() {
       console.log(this.checkedRows);
@@ -250,10 +299,12 @@ export default {
         });
       }
     },
-    reTrans(){
-      axios.get("http://localhost:3000/api/getalltransaction").then(response => {
-        this.transData = response.data;
-      })
+    reTrans() {
+      axios
+        .get("http://localhost:3000/api/getalltransaction")
+        .then(response => {
+          this.transData = response.data;
+        });
     }
   },
   created() {
@@ -266,32 +317,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

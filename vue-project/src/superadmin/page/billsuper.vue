@@ -1,25 +1,24 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Bill Table">
-            <b-table
-              :data="billData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">BILL</v-card-title>
+          <b-table
+            :data="billData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
+
           <span id="Addeditdelete">
             <!--Add-->
             <v-layout>
@@ -34,14 +33,12 @@
                           <v-text-field
                             label="Table no."
                             type="string"
-                            color="purple darken-2"
                             v-model="bill.tableNumber"
                             :rules="tableRules"
                           ></v-text-field>
                           <v-text-field
                             label="Number of customer"
                             type="number"
-                            class="inputNumber"
                             v-model="bill.numOfCust"
                             :rules="amountRules"
                           ></v-text-field>
@@ -53,15 +50,15 @@
                           ></v-text-field>
                           <v-text-field
                             label="Select time"
-                            value="12:00:00"
                             type="time"
-                            suffix="PST"
+                            value="00:00:00"
                             v-model="bill.eatTimeStart"
                             :rules="eatTimeStartRules"
                           ></v-text-field>
                           <v-text-field
                             label="Time End"
-                            type="string"
+                            type="time"
+                            value="00:00:00"
                             v-model="bill.eatTimeEnd"
                             :rules="endTimeStartRules"
                           ></v-text-field>
@@ -126,14 +123,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "billsuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -208,10 +203,22 @@ export default {
     addSave() {
       if (this.$refs.form.validate()) {
         console.log(this.bill);
+        axios
+          .post("http://localhost:3000/api/insertBill", {
+            billId: this.bill.billId,
+            tableNumber: this.bill.tableNumber,
+            numOfCust: this.bill.numOfCust,
+            totalPrice: this.bill.totalPrice,
+            eatTimeStart: this.bill.eatTimeStart,
+            eatTimeEnd: this.bill.eatTimeEnd,
+            typeId: this.bill.typeId
+          })
+          .then(response => {
+            this.reBill();
+            this.bill = [];
+            this.$refs.form.resetValidation();
+          });
         this.addDialog = false;
-        this.reBill();
-        this.$refs.form.resetValidation();
-        this.bill = [];
       }
     },
     addCancel() {
@@ -220,9 +227,14 @@ export default {
       this.bill = [];
     },
     editSave() {
-      console.log(this.checkedRows);
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put("http://localhost:3000/api/updateBill/", this.checkedRows[index])
+          .then(() => {
+            this.reBill();
+          });
+      }
       this.editDialog = false;
-      this.reBill();
     },
     clickDelete() {
       console.log(this.checkedRows);
@@ -237,8 +249,8 @@ export default {
             for (let index = 0; index < this.checkedRows.length; index++) {
               axios
                 .delete(
-                  "http://localhost:3000/api/deletebill/" +
-                    this.checkedRows[index].accountId
+                  "http://localhost:3000/api/deleteBill/" +
+                    this.checkedRows[index].billId
                 )
                 .then(() => {
                   this.reBill();
@@ -257,13 +269,13 @@ export default {
       }
     },
     reBill() {
-      axios.get("http://localhost:3000/api/getallbill").then(response => {
+      axios.get("http://localhost:3000/api/getAllbill").then(response => {
         this.billData = response.data;
       });
     }
   },
   created() {
-    axios.get("http://localhost:3000/api/getallbill").then(response => {
+    axios.get("http://localhost:3000/api/getAllBill").then(response => {
       this.billData = response.data;
     });
   }
@@ -272,12 +284,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  background-size: 100%;
-  height: auto;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {

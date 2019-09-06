@@ -1,38 +1,46 @@
 <template>
   <div>
-    <Header></Header>
     <sidebarsuper></sidebarsuper>
     <div id="bigbox">
-      <section>
+      <section class="bg">
         <b-tabs>
-          <b-tab-item label="Table">
-            <b-table
-              :data="catData"
-              :columns="columns"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
-            >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
-            </b-table>
-          </b-tab-item>
+          <v-card-title class="title">Category of menu</v-card-title>
+          <b-table
+            :data="catData"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
           <span id="Addeditdelete">
             <!--Add-->
-            <v-layout id="layoutAdd">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
                 <v-dialog v-model="addDialog" max-width="490">
                   <v-card>
                     <v-card-text class="headline">
                       Add Category
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-text-field label="CategoryName" v-model="newCat.categoryName"></v-text-field>
-                          <v-text-field label="RestaurantId" v-model="newCat.restaurantId"></v-text-field>
+                          <v-text-field
+                            label="CategoryName"
+                            type="String"
+                            v-model="newCat.categoryName"
+                            :rules="nameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantId"
+                            type="number"
+                            v-model="newCat.restaurantId"
+                            :rules="idRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -71,15 +79,12 @@
               </v-flex>
             </v-layout>
             <!--Delete-->
-            <v-layout id="layoutDelete">
+            <v-layout>
               <v-flex xs2>
                 <v-btn color="primary" dark class="clear" @click="catDelete">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -87,14 +92,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebarsuper from "@/superadmin/component/sidebarsuper";
 import axios from "axios";
 
 export default {
   name: "catsuper",
   components: {
-    Header,
     sidebarsuper
   },
   data() {
@@ -102,6 +105,8 @@ export default {
       // Add
       addDialog: false,
       newCat: [],
+      nameRules: [v => !!v || "Name of category  is required"],
+      idRules: [v => !!v || "Restaurant ID is required"],
 
       //Edit
       editDialog: false,
@@ -137,21 +142,37 @@ export default {
   },
   methods: {
     addSave() {
-      console.log(this.newCat);
-      this.addDialog = false;
-      this.newCat = [];
+      if (this.$refs.form.validate()) {
+        console.log(this.newCat);
+        axios
+          .post("http://localhost:3000/api/insertBill", {
+            categoryId: this.newCat.categoryId,
+            categoryName: this.newCat.categoryName,
+            restaurantId: this.newCat.restaurantId
+          })
+          .then(response => {
+            this.reCategory();
+            this.newCat = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
     },
     addCancel() {
       this.addDialog = false;
       this.newCat = [];
     },
     editSave() {
-      console.log(this.checkedRows);
-      this.editDialog = false;
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put("http://localhost:3000/api/updateCategory/", this.checkedRows[index])
+          .then(() => {
+            this.reCategory();
+          });
+      }
+       this.editDialog = false;
     },
-    catDelete(){
-      
-    }
+    catDelete() {}
   },
   created() {
     axios.get("http://localhost:3000/api/getallcategory").then(response => {
@@ -163,32 +184,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#bigbox {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
+  border-radius: 20px;
+}
+#bigbox {
+  background-color: #eeeeee;
+  padding: 2%;
+  height: 800px;
+  margin-top: -800px;
+  margin-left: 20%;
   background-attachment: fixed;
 }
 #Addeditdelete {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-right: 20px;
-  float: center;
-}
-#layoutDelete {
-  margin-left: 600px;
-  margin-top: 0px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 #layoutEdit {
-  margin-left: 400px;
-  margin-top: 0px;
-  position: absolute;
+  margin: 0 50px 0 50px;
 }
-#layoutAdd {
-  margin-left: 200px;
-  margin-top: 0px;
-  position: absolute;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>
