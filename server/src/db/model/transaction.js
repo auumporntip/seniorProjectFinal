@@ -15,7 +15,7 @@ exports.insertTransaction = async (transaction) => {
     })
 }
 exports.updateTransaction = async (transaction) => {
-    await knex('transaction').where('transactionId', '=', transaction.transactionId).update({
+    await knex('transaction').where('transId', '=', transaction.transId).update({
         menuName: transaction.menuName,
         transPrice: transaction.transPrice,
         totalPrice:transaction.totalPrice,
@@ -24,5 +24,5 @@ exports.updateTransaction = async (transaction) => {
     })
 }
 exports.deleteTransaction = async (transactionId) => {
-    await knex('transaction').where('transactionId', '=', transactionId).del()
+    await knex('transaction').where('transId', '=', transId).del()
 }
