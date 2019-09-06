@@ -32,24 +32,12 @@
                       Add Transaction
                       <v-form>
                         <v-container fluid>
-                          <v-text-field
-                            label="TransPrice"
-                            v-model="newTrans.transPrice"
-                            type="number"
-                            min="0.1"
-                            step="0.1"
-                            :rules="nameRules"
-                          ></v-text-field>
-                          <v-text-field
-                            label="NumOfTrans"
-                            v-model="newTrans.numOfTrans"
-                            type="number"
-                            :rules="numberRules"
-                          ></v-text-field>
-                          <v-text-field label="TransDate" v-model="newTrans.transDate" type="date"></v-text-field>
-                          <v-text-field label="MenuId" v-model="newTrans.menuId" type="number" :rules="menuIdRules"></v-text-field>
-                          <v-text-field label="StatusId" v-model="newTrans.statusId" type="number"  :rules="statusIdRules"></v-text-field>
-                          <v-text-field label="BillId" v-model="newTrans.billId" type="number"  :rules="billIdRules"></v-text-field>
+                          <v-text-field label="menuName" v-model="newTrans.menuName" type="text" :rules="nameRules" ></v-text-field>
+                          <v-text-field label="transPrice" v-model="newTrans.transPrice" type="number"  min="0.1" step="0.1" :rules="priceRules" ></v-text-field>
+                          <v-text-field label="totalPrice" v-model="newTrans.totalPrice" type="number" min="0.1" step="0.1" :rules="totalRules"></v-text-field>
+                          <v-text-field label="amount" v-model="newTrans.amount" type="number"  min="0.1" step="0.1" :rules="amountRules"></v-text-field>
+                          <v-text-field label="statusName" v-model="newTrans.statusName" type="text"  min="0.1" step="0.1" :rules="statusRules"></v-text-field>
+                          <v-text-field label="billId" v-model="newTrans.billId" type="number"  :rules="billIdRules"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -72,27 +60,20 @@
                       Edit Transaction
                       <v-form v-for="Edit in checkedRows" :key="Edit.transId">
                         <v-container>
-                          <v-text-field label="TransId" v-model="Edit.transId" disabled></v-text-field>
-                          <v-text-field
-                            label="TransPrice"
-                            v-model="Edit.transPrice"
-                            type="number"
-                            min="0.1"
-                            step="0.1"
-                            :rules="transRules"
-                          ></v-text-field>
-                          <v-text-field label="NumOfTrans" v-model="Edit.numOfTrans" type="number" :rules="numOfTransRules"></v-text-field>
-                          <v-text-field label="TransDate" v-model="Edit.transDate" ></v-text-field>
-                          <v-text-field label="MenuId" v-model="Edit.menuId" type="number" :rules="menuIdRules">></v-text-field>
-                          <v-text-field label="StatusId" v-model="Edit.statusId" type="number" :rules="statusIdRules">></v-text-field>
-                          <v-text-field label="BillId" v-model="Edit.billId" type="number" :rules="billIdRules">></v-text-field>
+                          <v-text-field label="transId" v-model="Edit.transId" disabled> </v-text-field>
+                          <v-text-field label="menuName" v-model="Edit.menuName" type="text" :rules="nameRules" ></v-text-field>
+                          <v-text-field label="transPrice" v-model="Edit.transPrice" type="number"  min="0.1" step="0.1" :rules="priceRules" ></v-text-field>
+                          <v-text-field label="totalPrice" v-model="Edit.totalPrice" type="number" min="0.1" step="0.1" :rules="totalRules"></v-text-field>
+                          <v-text-field label="amount" v-model="Edit.amount" type="number"  min="0.1" step="0.1" :rules="amountRules"></v-text-field>
+                           <v-text-field label="statusName" v-model="Edit.statusName" type="text"  min="0.1" step="0.1" :rules="statusRules"></v-text-field>
+                          <v-text-field label="billId" v-model="Edit.billId" type="number"  :rules="billIdRules"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="green darken-1" text @click="EditDialog=false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="EditSave">Save</v-btn>
+                      <v-btn color="green darken-1" text @click="edit">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -105,9 +86,7 @@
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
+         
         </b-tabs>
       </section>
     </div>
@@ -132,45 +111,43 @@ export default {
       newTrans: [],
       nameRules: [
         v => !!v || "Name is required",
-        v => (v && v.length <= 5) || "Name must be less than 5 characters"
       ],
-      numberRules: [
-        v => !!v || "number is required",
-        v => (v && v.length <= 5) || "number must be less than 5 characters"
+      priceRules: [
+        v => !!v || "Price is required",
       ],
-      menuIdRules:[
-        v => !!v || "menuId is required",
-        v => (v && v.length <= 5) || "menuId must be less than 5 characters"
+      totalRules:[
+        v => !!v || "Total price is required",
       ],
-      statusIdRules:[
-        v => !!v || "statusId is required",
-        v => (v && v.length <= 5) || "statusId must be less than 5 characters"
+      amountRules:[
+        v => !!v || "Amount is required",
+      ],
+      statusRules:[
+        v => !!v || "Amount is required",
       ],
       billIdRules:[
-        v => !!v || "billId is required",
-        v => (v && v.length <= 5) || "billId must be less than 5 characters"
+        v => !!v || "BillId is required",
+       
       ],
       //Edit
       EditDialog: false,
-      transRules: [
-        v => !!v || "Transaction is required",
-        v => (v && v.length <= 5) || "Transaction must be less than 5 characters"
+      nameRules: [
+        v => !!v || "Name is required",
       ],
-      numOfTransRules:[
-        v => !!v || "Number of Transaction is required",
-        v => (v && v.length <= 5) || "Number of Transaction must be less than 5 characters"
+      priceRules: [
+        v => !!v || "Price is required",
       ],
-      menuIdRules: [
-        v => !!v || "MenuId is required",
-        v => (v && v.length <= 5) || "MenuId must be less than 5 characters"
+      totalRules:[
+        v => !!v || "Total price is required",
       ],
-      statusIdRules: [
-        v => !!v || "StatusId is required",
-        v => (v && v.length <= 5) || "StatusId must be less than 5 characters"
+      amountRules:[
+        v => !!v || "Amount is required",
       ],
-      billIdRules: [
+      statusRules:[
+        v => !!v || "Amount is required",
+      ],
+      billIdRules:[
         v => !!v || "BillId is required",
-        v => (v && v.length <= 5) || "BillId must be less than 5 characters"
+       
       ],
       //Delete
       transData: [],
@@ -186,36 +163,28 @@ export default {
           numeric: true
         },
         {
+          field: "menuName",
+          label: "menuName"
+        },
+        {
           field: "transPrice",
-          label: "transPrice"
+          label: "Price"
         },
         {
-          field: "numOfTrans",
-          label: "numOfTrans"
+          field: "totalPrice",
+          label: "totalPrice"
         },
         {
-          field: "transDate",
-          label: "transDate"
+          field: "amount",
+          label: "amount"
         },
         {
-          field: "menuId",
-          label: "menuId"
-        },
-        {
-          field: "statusId",
-          label: "statusId"
+          field: "statusName",
+          label: "status"
         },
         {
           field: "billId",
           label: "billId"
-        },
-        {
-          field: "created_at",
-          label: "created_at"
-        },
-        {
-          field: "update_at",
-          label: "update_at"
         }
       ]
     };
@@ -227,12 +196,28 @@ export default {
     },
     addSave() {
       console.log(this.newTrans);
+      axios
+      .post("http://localhost:3000/api/insertTransaction",{
+        menuName: this.newTrans.menuName,
+        transPrice: this.newTrans.transPrice,
+        totalPrice: this.newTrans.totalPrice,
+        amount: this.newTrans.amount,
+        billId: this.newTrans.billId
+      })
+      .then(response => {
+        this.reTrans();
+        this.newTrans= [];
+      })
       this.AddDialog = false;
-      this.newTrans = [];
+     
     },
-    EditSave() {
-      console.log(this.checkedRows);
-      this.EditDialog = false;
+    edit(){
+        for(let index = 0; index < this.checkedRows.length; index++){
+          axios.put("http://localhost:3000/api/updateTransaction/",this.checkedRows[index]).then(()=>{
+            this.reTrans()
+          })
+        }
+        this.EditDialog=false;
     },
     deleteClick() {
       console.log(this.checkedRows);
@@ -247,11 +232,11 @@ export default {
             for (let index = 0; index < this.checkedRows.length; index++) {
               axios
                 .delete(
-                  "http://localhost:3000/api/deletetransaction" +
+                  "http://localhost:3000/api/deletetransaction/" +
                     this.checkedRows[index].transId
                 )
                 .then(() => {
-                  this.refreshAccount();
+                  this.reTrans();
                 });
             }
             this.$toast.open("delete success");
@@ -265,10 +250,10 @@ export default {
         });
       }
     },
-    refreshAccount() {
-      axios.get("http://localhost:3000/api/getallaccount").then(response => {
+    reTrans(){
+      axios.get("http://localhost:3000/api/getalltransaction").then(response => {
         this.transData = response.data;
-      });
+      })
     }
   },
   created() {

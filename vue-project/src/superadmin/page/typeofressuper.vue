@@ -36,7 +36,7 @@
                    
                         
                   
-                  <v-text-field label="TypeResName" v-model="newType.typeResName" type="text"></v-text-field>
+                  <v-text-field label="TypeResName" v-model="newType.typeResName" type="text" :rules="TypeResRules"></v-text-field>
                   
             
                     </v-container>
@@ -64,7 +64,7 @@
                      
                         
                   <v-text-field label="TypeResId" v-model="Edit.typeResId" disabled></v-text-field>
-                  <v-text-field label="TypeResName" v-model="Edit.typeResName" type="text"></v-text-field>
+                  <v-text-field label="TypeResName" v-model="Edit.typeResName" type="text" :rules="TypeResRules2"></v-text-field>
                   
                  
                      
@@ -88,9 +88,8 @@
                 </v-flex>
                 </v-layout>
             </span>
-            <b-tab-item label="Checked rows">
-                <pre>{{ checkedRows }}</pre>
-            </b-tab-item>
+            
+            
         </b-tabs>
       </section>
     </div>
@@ -114,8 +113,14 @@ export default {
       //Add
       AddDialog: false,
       newType:[],
+      TypeResRules:[
+           v => !!v || "Type Restaurant Name is required",
+      ],
       //Edit
       EditDialog:false,
+      TypeResRules2:[
+           v => !!v || "Type Restaurant Name is required",
+      ],
       //Delete
       typeOfResData: [],
       isPaginated: true,
@@ -150,11 +155,23 @@ export default {
     },
     addSave(){
       console.log(this.newType);
+      axios
+      .post("http://localhost:3000/api/inserttypeofres",{
+        typeResName: this.newType.typeResName
+      })
+      .then(response => {
+        this.reType();
+        this.newType=[];
+      })
       this.AddDialog=false;
-      this.newType=[];
+      
     },
     EditSave(){
-      console.log(this.checkedRows);
+      for(let index=0; index < this.checkedRows.length; index++){
+        axios.put("http://localhost:3000/api/updatetypeofrestaurant/",this.checkedRows[index]).then(()=>{
+          this.reType()
+        })
+      }
       this.EditDialog=false;
     },
     deleteClick(){
@@ -171,10 +188,10 @@ export default {
                   axios
                   .delete(
                     "http://localhost:3000/api/deletetypeofrestaurant/"+
-                    this.checkedRows[index].accountId
+                    this.checkedRows[index].typeResId
                   )
                   .then(() => {
-                    this.refreshAccount();
+                    this.reType();
                   });
                 }
                 this.$toast.open("delete success");
@@ -188,10 +205,10 @@ export default {
           });
         }
     },
-    refreshAccount(){
-      axios.get("http://localhost:3000/api/getalltypeofrestaurant").then(response =>{
+    reType(){
+      axios.get("http://localhost:3000/api/getalltypeofrestaurant").then(response => {
         this.typeOfResData=response.data;
-      });
+      })
     }
     
   },

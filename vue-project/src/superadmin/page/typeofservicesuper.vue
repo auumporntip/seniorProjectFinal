@@ -35,10 +35,10 @@
                     <v-container fluid>
                       
                 
-                  <v-text-field label="TypeName" v-model="newTypeOfSer.typeName" type="text"></v-text-field>
-                  <v-text-field label="TypeTime" v-model="newTypeOfSer.typeTime" type="text"></v-text-field>
-                  <v-text-field label="TypePrice" v-model="newTypeOfSer.typePrice" type="number" min ="0.1" step="0.1"></v-text-field>
-                  <v-text-field label="RestaurantId" v-model="newTypeOfSer.restaurantId" type="number"></v-text-field>
+                  <v-text-field label="TypeName" v-model="newTypeOfSer.typeName" type="text" :rules="TypeNameRules"></v-text-field>
+                  <v-text-field label="TypeTime" v-model="newTypeOfSer.typeTime" type="text" ></v-text-field>
+                  <v-text-field label="TypePrice" v-model="newTypeOfSer.typePrice" type="number" min ="0.1" step="0.1" :rules="TypePriceRules"></v-text-field>
+                  <v-text-field label="RestaurantId" v-model="newTypeOfSer.restaurantId" type="number" :rules="ResIdRules"></v-text-field>
                   
                      
                     </v-container>
@@ -66,10 +66,10 @@
                       
                         
                    <v-text-field label="TypeId" disabled v-model="Edit.typeId" disabled ></v-text-field>
-                  <v-text-field label="TypeName" v-model="Edit.typeName" type="text"></v-text-field>
+                  <v-text-field label="TypeName" v-model="Edit.typeName" type="text" :rules="TypeNameRules2"></v-text-field>
                   <v-text-field label="TypeTime" v-model="Edit.typeTime" ></v-text-field>
-                  <v-text-field label="TypePrice" v-model="Edit.typePrice" type="number" min ="0.1" step="0.1"></v-text-field>
-                  <v-text-field label="RestaurantId" v-model="Edit.restaurantId" type="number"></v-text-field>
+                  <v-text-field label="TypePrice" v-model="Edit.typePrice" type="number" min ="0.1" step="0.1" :rules="TypePriceRules2"></v-text-field>
+                  <v-text-field label="RestaurantId" v-model="Edit.restaurantId" type="number" :rules="ResIdRules2"></v-text-field>
                  
                  
                       
@@ -93,9 +93,7 @@
                 </v-flex>
                 </v-layout>
             </span>
-            <b-tab-item label="Checked rows">
-                <pre>{{ checkedRows }}</pre>
-            </b-tab-item>
+          
         </b-tabs>
       </section>
     </div>
@@ -119,8 +117,26 @@ export default {
       //Add
       AddDialog:false,
       newTypeOfSer: [],
+      TypeNameRules:[
+           v => !!v || "Name is required",
+      ],
+      TypePriceRules:[
+          v => !!v || "Price is required",
+      ],
+      ResIdRules:[
+          v => !!v || "Price is required",
+      ],
       //Edit
       EditDialog: false,
+      TypeNameRules2:[
+           v => !!v || "Name is required",
+      ],
+      TypePriceRules2:[
+          v => !!v || "Price is required",
+      ],
+      ResIdRules2:[
+          v => !!v || "Price is required",
+      ],
       //Delete
       typeOfSerData: [],
       isPaginated: true,
@@ -168,11 +184,25 @@ export default {
     },
     addSave(){
       console.log(this.newTypeOfSer);
+      axios
+      .post("http://localhost:3000/api/insertTypeofservice",{
+        typeName: this.newTypeOfSer.typeName,
+        typeTime: this.newTypeOfSer.typeTime,
+        typePrice: this.newTypeOfSer.typePrice,
+        restaurantId: this.newTypeOfSer.restaurantId
+      })
+      .then(response => {
+        this.retype();
+        this.newTypeOfSer=[];
+      })
       this.AddDialog=false;
-      this.newTypeOfSer=[];
     },
     EditSave(){
-      console.log(this.checkedRows);
+      for(let index=0; index < this.checkedRows.length; index++){
+        axios.put("http://localhost:3000/api/updatetypeofservice/",this.checkedRows[index]).then(()=>{
+          this.retype()
+        })
+      }
       this.EditDialog=false;
     },
     deleteClick(){
@@ -192,7 +222,7 @@ export default {
                 this.checkedRows[index].accountId
               )
               .then(() => {
-                this.refreshAccount();
+                this.retype();
               });
             }
             this.$toast.open("delete success");
@@ -206,9 +236,9 @@ export default {
         });
       }
     },
-    refreshAccount(){
+    retype(){
       axios.get("http://localhost:3000/api/getalltypeofservice").then(response => {
-          this.typeOfSerData=response.data;
+        this.typeOfSerData=response.data;
       });
     }
   },

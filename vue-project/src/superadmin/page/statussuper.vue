@@ -14,10 +14,7 @@
               checkable
               :checkbox-position="checkboxPosition"
             >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
-              </template>
+              
             </b-table>
           </b-tab-item>
 
@@ -36,7 +33,7 @@
                       
                         
                   
-                 <v-text-field label="StatusName" v-model="newStatus.statusName" type="text" rules="nameRules"></v-text-field>
+                 <v-text-field label="StatusName" v-model="newStatus.statusName" type="text" :rules="nameRules"></v-text-field>
                  
                  
               
@@ -65,7 +62,7 @@
                       
                         
                   <v-text-field label="StatusId" v-model="Edit.statusId" disabled></v-text-field>
-                 <v-text-field label="StatusName" v-model="Edit.statusName"></v-text-field>
+                 <v-text-field label="StatusName" v-model="Edit.statusName" :rules="nameRules"></v-text-field>
                  
                  
                       
@@ -90,9 +87,7 @@
                 </v-flex>
                 </v-layout>
             </span>
-            <b-tab-item label="Checked rows">
-                <pre>{{ checkedRows }}</pre>
-            </b-tab-item>
+           
         </b-tabs>
       </section>
     </div>
@@ -112,15 +107,19 @@ export default {
   },
   data() {
     return {
-      statusData: [],
-      checkboxPosition: "left",
-      checkedRows: [],
       //Add
       AddDialog: false,
       newStatus:[],
-      
+      nameRules: [
+        v => !!v || 'Name is required',
+        
+      ],
       //Edit
       EditDialog: false,
+      nameRules: [
+        v => !!v || 'Name is required',
+        
+      ],
       //Delete
       statusData:[],
       isPaginated: true,
@@ -156,11 +155,23 @@ export default {
     },
     addSave(){
       console.log(this.newStatus);
+      axios
+      .post("http://localhost:3000/api/insertStatus",{
+        statusName: this.newStatus.statusName,
+      })
+      .then(response => {
+        this.reStatus();
+        this.newStatus=[];
+      });
       this.AddDialog=false;
-      this.newStatus=[];
+     
     },
     EditSave(){
-      console.log(this.checkedRows);
+      for(let index = 0; index < this.checkedRows.length; index++) {
+        axios.put("http://localhost:3000/api/updatestatus/",this.checkedRows[index]).then(()=>{
+          this.reStatus()
+        })
+      }
       this.EditDialog=false;
       
     },
@@ -181,7 +192,7 @@ export default {
                   this.checkedRows[index].statusId
               )
               .then(()=>{
-                this.refreshAccount();
+                this.reStatus();
               });
             }
             this.$toast.open("delete success");
@@ -195,10 +206,10 @@ export default {
         }); 
     }
   },
-  refreshAccount(){
-    axios.get("http://localhost:3000/api/getallstatus").then(response => {
-      this.statusData=response.data;
-    })
+ reStatus(){
+   axios.get("http://localhost:3000/api/getallstatus").then(response => {
+     this.statusData = response.data;
+   });
   }
   },
   created() {
