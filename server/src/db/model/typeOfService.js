@@ -5,7 +5,7 @@ exports.getAllTypeOfService=async() => {
 }
 
 
-exports.updatetypeOfService = async(typeOfService) => {
+exports.updateTypeOfService = async(typeOfService) => {
     await knex('typeOfService').where('typeId', '=', typeOfService.typeId)
         .update({
             typeName:typeOfService.typeName,
@@ -14,7 +14,7 @@ exports.updatetypeOfService = async(typeOfService) => {
         })
 }
 
-exports.inserttypeOfService = async(typeOfService) => {
+exports.insertTypeOfService = async(typeOfService) => {
     return await knex('typeOfService').insert({
         typeName:typeOfService.typeName,
         typeTime:typeOfService.typeName,
@@ -23,7 +23,7 @@ exports.inserttypeOfService = async(typeOfService) => {
         })
 }
 
-exports.deletetypeOfService = async (typeOfServiceId) => {
+exports.deleteTypeOfService = async (typeOfServiceId) => {
     await knex('typeOfService')
         .where('typeOfServiceId', typeOfServiceId)
         .del()
