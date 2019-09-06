@@ -34,7 +34,7 @@ exports.insertRestuarant = async (restaurant) => {
     })
 }
 
-exports.updaterestaurant = async (restaurant) => {
+exports.updateRestaurant = async (restaurant) => {
     knex('restaurant').where('restaurantId', '=', restaurant.restaurantId)
         .update({
             restaurantName: restaurant.restaurantName,

@@ -4,25 +4,25 @@ exports.getAllTransaction=async() => {
     return await knex('transaction')
 }
 
-exports.getTransaction = async (restaurantId) => {
-    return await knex('transaction')
-        .join('menu', 'menu.menuId', '=', 'transaction.menuId')
-        .join('status', 'status.statusId', '=', 'transaction.statusId')
-        .join('bill', 'bill.billId', '=', 'transaction.billId')
-        .join('category', 'category.categoryId', '=', 'menu.categoryId')
-        .where('menu.restaurantId', '=', restaurantId)
+exports.insertTransaction = async (transaction) => {
+    return await knex('transaction').insert({
+        menuName: transaction.menuName,
+        transPrice: transaction.transPrice,
+        totalPrice:transaction.totalPrice,
+        amount: transaction.amount,
+        statusName:transaction.statusName,
+        billId:transaction.billId
+    })
 }
-
-exports.getTransactionByCategory = async (restaurantId, categoryId) => {
-    return await knex('transaction')
-        .join('menu', 'menu.menuId', '=', 'transaction.menuId')
-        .join('status', 'status.statusId', '=', 'transaction.statusId')
-        .join('bill', 'bill.billId', '=', 'transaction.billId')
-        .join('category', 'category.categoryId', '=', 'menu.categoryId')
-        .where('menu.restaurantId', '=', restaurantId)
-        .andWhere('category.categoryId', '=', categoryId)
+exports.updateTransaction = async (transaction) => {
+    await knex('transaction').where('transactionId', '=', transaction.transactionId).update({
+        menuName: transaction.menuName,
+        transPrice: transaction.transPrice,
+        totalPrice:transaction.totalPrice,
+        amount: transaction.amount,
+        statusName:transaction.statusName
+    })
 }
-
-exports.changeStatus = async (transactionId, statusId) => {
-        return await knex('transaction').where('transId', '=', transactionId).update({ statusId: statusId })
+exports.deleteTransaction = async (transactionId) => {
+    await knex('transaction').where('transactionId', '=', transactionId).del()
 }

@@ -12,7 +12,7 @@ router.delete('/deleterestaurant/:restaurantId', async(req,res)=>{
 })
 
 router.put('/updaterestaurant', async(req,res)=>{
-    res.send(await restaurant.updaterestaurant(req.body))
+    res.send(await restaurant.updateRestaurant(req.body))
 })
 
 router.get('/getallrestaurant', async(req,res)=>{

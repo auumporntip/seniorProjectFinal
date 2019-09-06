@@ -7,15 +7,16 @@ router.get('/getalltransaction', async(req, res) => {
     res.send(await transaction.getAllTransaction())
 })
 
-router.get('/gettransaction/:restaurantId', async(req, res) => {
-    res.send(await transaction.getTransaction(req.params.restaurantId))
+router.post('/inserttransaction', async(req,res)=>{
+    res.send(await transaction.insertTransaction(req.body))
 })
-router.get('/gettransactionbycategoryid/:restaurantId/:categoryId', async(req, res) => {
-    res.send(await transaction.getTransactionByCategory(req.params.restaurantId,req.params.categoryId))
+
+router.put('/updatetransaction', async(req,res)=>{
+    res.send(await transaction.updateTransaction(req.body))
 })
-router.put('/changestatus/:transactionId/:statusId', async(req, res) => {
-    await transaction.changeStatus(req.params.transactionId,req.params.statusId)
-    res.end('update success')
+
+router.delete('/deletetransaction/:transactionId', async(req,res)=>{
+    res.send(await transaction.deleteTransaction(req.params.transactionId))
 })
 
 module.exports = router
