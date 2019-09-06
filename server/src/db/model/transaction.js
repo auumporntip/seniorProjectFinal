@@ -24,5 +24,5 @@ exports.updateTransaction = async (transaction) => {
     })
 }
 exports.deleteTransaction = async (transactionId) => {
-    await knex('transaction').where('transId', '=', transId).del()
+    await knex('transaction').where('transId', '=', transactionId).del()
 }

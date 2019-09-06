@@ -188,6 +188,8 @@ export default {
       billIdRules: [v => !!v || "BillId is required"],
       //Edit
       EditDialog: false,
+      checkboxPosition: "left",
+      checkedRows:[],
       nameRules: [v => !!v || "Name is required"],
       priceRules: [v => !!v || "Price is required"],
       totalRules: [v => !!v || "Total price is required"],
@@ -264,6 +266,7 @@ export default {
           )
           .then(() => {
             this.reTrans();
+            this.checkedRows=[]
           });
       }
       this.EditDialog = false;
@@ -279,6 +282,7 @@ export default {
           type: "is-success",
           onConfirm: () => {
             for (let index = 0; index < this.checkedRows.length; index++) {
+              console.log(this.checkedRows[index].transId)
               axios
                 .delete(
                   "http://localhost:3000/api/deletetransaction/" +

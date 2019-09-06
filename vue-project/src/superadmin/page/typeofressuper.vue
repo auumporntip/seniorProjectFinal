@@ -161,6 +161,7 @@ export default {
           )
           .then(() => {
             this.reType();
+            this.checkedRows=[]
           });
       }
       this.EditDialog = false;

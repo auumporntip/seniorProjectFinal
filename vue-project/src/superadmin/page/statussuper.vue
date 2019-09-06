@@ -106,6 +106,8 @@ export default {
       nameRules: [v => !!v || "Name is required"],
       //Edit
       EditDialog: false,
+      checkboxPosition:"left",
+      checkedRows:[],
       nameRules: [v => !!v || "Name is required"],
       //Delete
       statusData: [],
@@ -161,6 +163,7 @@ export default {
           )
           .then(() => {
             this.reStatus();
+            this.checkedRows=[]
           });
       }
       this.EditDialog = false;
