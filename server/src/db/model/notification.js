@@ -5,7 +5,7 @@ exports.getAllNotification=async() => {
 }
 
 exports.updateNotification = async(notification) => {
-    await knex('notification').where('notificationId', '=', notification.notificationId)
+    await knex('notification').where('notiId', '=', notification.notiId)
         .update({
             notiMessage: notification.notiMessage,
             restuarantId: notification.restuarantId,
