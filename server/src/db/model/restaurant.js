@@ -42,6 +42,7 @@ exports.updateRestaurant = async (restaurant) => {
             timeOpenClose: restaurant.timeOpenClose,
             restaurantPhone: restaurant.restaurantPhone,
             restaurantDescription: restaurant.restaurantDescription,
-            typeResId: restaurant.typeResId
+            typeResId: restaurant.typeResId,
+            accountId: restaurant.accountId
         })
 }
