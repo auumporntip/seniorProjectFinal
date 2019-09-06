@@ -27,6 +27,7 @@ app.use('/api/',require('./routes/status'))
 app.use('/api/',require('./routes/notification'))
 app.use('/api/',require('./routes/typeOfService'))
 app.use('/api/',require('./routes/employee'))
+app.use('/api/',require('./routes/menuservice'))
 
 app.use('/api/',require('./routes/authen'))
 app.use('/api/',require('./upload/upload'))
