@@ -12,7 +12,7 @@ exports.insertTypeOfRestaurant = async(typeOfRestaurant)=>{
 
 exports.updateTypeOfRestaurant = async (typeOfRestaurant) => {
     await knex('typeOfRestaurant').where('typeResId', '=', typeOfRestaurant.typeResId).update({
-        typeOfRestaurantName: typeOfRestaurant.typeOfRestaurantName
+        typeResName: typeOfRestaurant.typeResName
     })
 }
 exports.deleteTypeOfRestaurant = async (typeOfRestaurantId) => {
