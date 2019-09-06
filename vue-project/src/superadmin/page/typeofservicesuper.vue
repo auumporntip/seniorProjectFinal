@@ -185,7 +185,7 @@ export default {
     addSave(){
       console.log(this.newTypeOfSer);
       axios
-      .post("http://localhost:3000/api/insertTypeofservice",{
+      .post("http://localhost:3000/api/inserttypeofservice",{
         typeName: this.newTypeOfSer.typeName,
         typeTime: this.newTypeOfSer.typeTime,
         typePrice: this.newTypeOfSer.typePrice,
