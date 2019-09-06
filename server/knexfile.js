@@ -4,7 +4,7 @@ module.exports = {
         connection: {
             host: 'localhost',
             user: 'root',
-            password: '',
+            password: '123456789',
             database: 'RestaurantManagement'
         }
     }
