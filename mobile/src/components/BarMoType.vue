@@ -4,8 +4,8 @@
   <v-toolbar-title class="headline-text white--text">{{nameRes}}</v-toolbar-title>
      <v-spacer></v-spacer>
     <div>
-     <v-text class="white--text" >{{namePro}}<br/></v-text>
-    <v-text class="white--text" >{{billNo}}</v-text>
+     <h3 class="white--text" >{{namePro}}<br/></h3>
+    <h3 class="white--text" >{{billNo}}</h3>
     </div>
   </v-toolbar>
 </template>

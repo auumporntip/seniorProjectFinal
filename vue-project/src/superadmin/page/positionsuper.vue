@@ -23,34 +23,26 @@
             <!--Add-->
             <v-layout>
               <v-flex xs2>
-                <v-btn color="primary" dark @click.stop="test" class="add">Add</v-btn>
-                <v-dialog v-model="dialog" max-width="490">
+                <v-btn color="primary" dark @click="addDialog=true" class="add">Add</v-btn>
+                <v-dialog v-model="addDialog" max-width="490">
                   <v-card>
                     <v-card-text class="headline">
                       Add Position
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-row>
-                            <v-col>
-                              <v-text-field label="PositionId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="PositionName"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Created_at"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Update_at"></v-text-field>
-                            </v-col>
-                          </v-row>
+                          <v-text-field
+                            label="PositionName"
+                            type="String"
+                            v-model="newPo.positionName"
+                            :rules="nameRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                      <v-btn color="green darken-1" text @click="addDialog = false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -59,34 +51,22 @@
             <!--Edit-->
             <v-layout id="layoutEdit">
               <v-flex xs2>
-                <v-btn color="primary" dark @click.stop="test2" class="add">Edit</v-btn>
-                <v-dialog v-model="dialog2" max-width="490">
+                <v-btn color="primary" dark @click="editDialog=true" class="add">Edit</v-btn>
+                <v-dialog v-model="editDialog" max-width="490">
                   <v-card>
                     <v-card-text class="headline">
                       Edit Position
                       <v-form>
-                        <v-container>
-                          <v-row>
-                            <v-col>
-                              <v-text-field label="PositionId"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="PositionName"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Created_at"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field label="Update_at"></v-text-field>
-                            </v-col>
-                          </v-row>
+                        <v-container v-for="position in checkedRows" :key="position.positionId">
+                          <v-text-field label="PositionId" v-model="position.positionId" disabled></v-text-field>
+                          <v-text-field label="PositionName" v-model="position.positionName"></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                      <v-btn color="green darken-1" text @click="editDialog=false">Cancel</v-btn>
+                      <v-btn color="green darken-1" text @click="editSave">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -95,14 +75,10 @@
             <!--Delete-->
             <v-layout>
               <v-flex xs2>
-                <v-btn color="primary" dark v-on="on" class="clear">Delete</v-btn>
-                <v-dialog v-model="dialog3" max-width="490"></v-dialog>
+                <v-btn color="primary" dark @click="clickDelete" class="clear">Delete</v-btn>
               </v-flex>
             </v-layout>
           </span>
-          <b-tab-item label="Checked rows">
-            <pre>{{ checkedRows }}</pre>
-          </b-tab-item>
         </b-tabs>
       </section>
     </div>
@@ -120,6 +96,13 @@ export default {
   },
   data() {
     return {
+      //Add
+      newPo: [],
+      addDialog: false,
+      nameRules: [v => !!v || "Position name is required"],
+
+      //Edit
+      editDialog: false,
       positionData: [],
       checkboxPosition: "left",
       checkedRows: [],
@@ -145,7 +128,80 @@ export default {
       ]
     };
   },
-  methods: {},
+  methods: {
+    addSave() {
+      if (this.$refs.form.validate()) {
+        console.log(this.newPo);
+        axios
+          .post("http://localhost:3000/api/insertPosition", {
+            positionId: this.newPo.positionId,
+            positionName: this.newPo.positionName,
+          })
+          .then(response => {
+            this.rePosition();
+            this.newPo = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
+    },
+    addCancel() {
+      this.addDialog = false;
+      this.newPo = [];
+    },
+    editSave() {
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        axios
+          .put(
+            "http://localhost:3000/api/updatePosition/",
+            this.checkedRows[index]
+          )
+          .then(() => {
+            this.rePosition();
+          });
+      }
+      this.editDialog = false;
+    },
+    rePosition() {
+      axios
+        .get("http://localhost:3000/api/getallposition")
+        .then(response => {
+          this.positionData = response.data;
+        });
+    },
+    clickDelete() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != null) {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deletePosition/" +
+                    this.checkedRows[index].positionId
+                )
+                .then(() => {
+                  this.rePosition();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
+    }
+  },
   created() {
     axios.get("http://localhost:3000/api/getallposition").then(response => {
       this.positionData = response.data;

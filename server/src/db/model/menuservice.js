@@ -16,6 +16,6 @@ exports.updateMenuService = async (menuservice) => {
         menuId: menuservice.menuId
     })
 }
-exports.deleteMenuService = async (menuserviceId) => {
+exports.deleteMenuService = async (menuServiceId) => {
     await knex('menuservice').where('menuServiceId', '=', menuServiceId).del()
 }

@@ -125,6 +125,15 @@
             <v-list-tile-title>Employee</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        
+        <v-list-tile :to="{name: 'positionsuper'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Position</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
         <div class="pa-2">
           <v-btn block color="grey darken-1">Logout</v-btn>
