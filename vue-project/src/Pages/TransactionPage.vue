@@ -19,15 +19,17 @@
 </div>
           </div>
           <br>
-  <b-table :data="menu" :columns="columns" :selected.sync="selected" focusable></b-table>
+  <b-table :data="transData" :columns="columns" :selected.sync="selected" focusable></b-table>
      </div>
   </div>
   
 </template>
 
 <script>
-import Header from '@/components/Header'
-import sidebar from '@/components/sidebar'
+import axios from "axios";
+import Header from '@/components/Header';
+import sidebar from '@/components/sidebar';
+
 export default {
   name: 'TransactionPage', 
   components: {
@@ -35,11 +37,9 @@ export default {
     sidebar
   },
   data() {
-    const menu = [];
-    // this.test();
-    // this.test()
-    // console.log(data)
+     const menu = [];
     return {
+      transData :[],
       menu: menu,
       selected: {},
       columns: [
@@ -58,17 +58,33 @@ export default {
           label: "Price"
         },
         {
-          field: "restaurantId",
-          label: "res"
+          field: "totalPrice",
+          label: "totalPrice"
         },
         {
-          field: "categoryId",
-          label: "cat"
+          field: "amount",
+          label: "amount"
+        },
+        {
+          field: "statusName",
+          label: "statusName"
+        },
+        {
+          field: "billId",
+          label: "billId"
         }
       ]
     };
   },
-}
+  methods:{
+    
+  },
+  created(){
+      axios.get("http://localhost:3000/api/getalltransaction").then(response => {
+        this.transData=response.data;
+      });
+    }
+};
  
 </script>
 
