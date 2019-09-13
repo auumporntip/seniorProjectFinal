@@ -1,7 +1,6 @@
 
 <template>
   <div>
-    <Header></Header>
     <sidebar></sidebar>
     <div id="barcolor"></div>
     <div id="boxright">
@@ -128,13 +127,11 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 export default {
   name: "TypeOfServicePage",
   components: {
-    Header,
     sidebar
   },
   data: () => ({

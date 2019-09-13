@@ -1,32 +1,19 @@
 <template>
   <div>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <Header></Header>
-      </v-flex>
-      <v-flex xs2>
-        <sidebar></sidebar>
-      </v-flex>
-      <v-flex xs9>
+    <sidebar></sidebar>
+    <div id="bigBox">
+      <section class="bg">
+        <v-card-title class="title">MENU</v-card-title>
         <MenuTable></MenuTable>
-        <v-layout row wrap>
-          <v-flex xs4>
-            <AddButton></AddButton>
-          </v-flex>
-          <v-flex xs4>
-            <EditButton></EditButton>
-          </v-flex>
-          <v-flex xs4>
-            <DeleteButton></DeleteButton>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+        <AddButton></AddButton>
+        <EditButton></EditButton>
+        <DeleteButton></DeleteButton>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import { store } from "../../store/store";
@@ -39,7 +26,6 @@ export default {
   name: "MenuPage",
   store,
   components: {
-    Header,
     sidebar,
     AddButton,
     MenuTable,
@@ -57,3 +43,17 @@ export default {
 };
 </script>
 
+<style scoped>
+.bg {
+  background-color: #f0cab1;
+  border-radius: 20px;
+}
+#bigBox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
+  background-attachment: fixed;
+}
+</style>

@@ -5,7 +5,6 @@ import Router from 'vue-router'
 import App from '@/App'
 // import MenuPage from '@/Pages/MenuPage'
 import LoginPage from '@/Pages/LoginPage'
-import TestAxios from '@/Pages/TestAxios'
 import TransactionPage from '@/Pages/TransactionPage'
 import NotificationPage from '@/Pages/NotificationPage'
 import StaticPage from '@/Pages/StaticPage'
@@ -16,7 +15,6 @@ import CreateRestaurant from '@/Pages/CreateRestaurant'
 import EditProfilePage from '@/Pages/EditProfilePage'
 import TypeOfServicePage from '@/Pages/TypeOfServicePage'
 import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
-import AddCategory from '@/Pages/AddCategory'
 import Restaurant from '@/Pages/Restaurant'
 import MenuPage from '@/Pages/Menu/MenuPage'
 import Superadmin from '@/Superadmin/Superadmin'
@@ -46,11 +44,7 @@ export default new Router({
       path: '/Menu',
       name: 'MenuPage',
       component: MenuPage
-    }, {
-      path: '/test',
-      name: 'TestAxios',
-      component: TestAxios
-    }, {
+    },  {
       path: '/Transaction',
       name: 'TransactionPage',
       component: TransactionPage
@@ -93,11 +87,7 @@ export default new Router({
       name: 'TypeOfServiceMenu',
       component: TypeOfServiceMenu
     },
-    {
-      path: '/AddCategory',
-      name: 'AddCategory',
-      component: AddCategory
-    },
+    
     {
       path: '/Restaurant',
       name: 'Restaurant',

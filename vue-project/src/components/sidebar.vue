@@ -1,150 +1,117 @@
 <template>
-  <div id="bar">
-    <div class="barofcolor">
-      <div class="drop">
-        <section id="dropdown">
-          <b-dropdown v-model="selectedRestaurant" aria-role="list">
-            <button id="dropp" class="button is-light" slot="trigger" align-center >
-              {{$store.getters.restaurantName}}
-            </button>
+  <v-card class="sidebar">
+    <v-navigation-drawer v-model="drawer" permanent dark>
+      <v-toolbar flat class="transparent">
+        <v-list class="pa-0">
+          <v-list-tile avatar>
+            <v-list-tile-avatar class="logo">
+              <img src="../assets/1.png" />
+            </v-list-tile-avatar>
 
-            <b-dropdown-item 
-              v-for="option in restaurant"
-              :value="option"
-              :key="option.restaurantId"
-              @click="changeRestaurant"
-            >{{option.restaurantName}}</b-dropdown-item>
-            <b-dropdown-item>
-                <router-link to="/CreateRestaurant">Create Restaurant</router-link>
-            </b-dropdown-item>
-          </b-dropdown>
-        </section>
-      </div>
-      <br>
-      <li>
-        <router-link to="/Menu">Menu</router-link>
-      </li>
-      <br>
-      <li>
-        <router-link to="/Transaction">Transaction</router-link>
-      </li>
-      <br>
-      <li>
-        <router-link to="/Ordered">Ordered</router-link>
-      </li>
-      <br>
-      <li>
-        <router-link to="/TypeOfService">Type of Service</router-link>
-      </li>
-      <br>
-      <li>
-        <router-link to="/Static">Statistic</router-link>
-      </li>
-      <br>
-      <li>
-        <router-link to="/Notification">Notification</router-link>
-      </li>
-      <br>
-      <li>
-        <router-link to="/Employee">Employee</router-link>
-      </li>
-      <br>
-      <li>
-        <button @click="clearStore">Logout</button>
-      </li>
-    </div>
-  </div>
+            <v-list-tile-content>
+              <v-list-tile-title class="name">Restaurant Management</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+
+        <v-list-tile :to="{name: 'MenuPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Menu</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'TransactionPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Transaction</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'OrderedPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Ordered</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'TypeOfServiceMenu'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Type of Service</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'StaticPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Statistics</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'NotificationPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Notification</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'EmployeePage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Employee</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <div class="pa-2">
+          <v-btn block color="grey darken-1">Logout</v-btn>
+        </div>
+      </v-list>
+    </v-navigation-drawer>
+  </v-card>
 </template>
 
 <script>
-import Axios from "axios";
 export default {
   name: "sidebar",
   data() {
     return {
-      selectedRestaurant:'',
-      restaurant: []
+      drawer: true,
+      right: null
     };
-  },
-  methods: {
-    changeRestaurant(){
-      // console.log(this.selectedRestaurant.restaurantId)
-      this.$store.commit('setRestaurantName',this.selectedRestaurant.restaurantName)      
-      this.$store.commit('setRestaurantId',this.selectedRestaurant.restaurantId)
-      this.$router.push('/restaurant');
-    },
-    clearStore(){
-      this.$store.commit('setName',"")      
-      this.$store.commit('setAccount',"")
-      this.$store.commit('setSelectedRestaurant',"")      
-      this.$store.commit('setRestaurantId',"")
-      this.$store.commit('setRestaurantName',"")   
-      this.$router.push('/');
-    }
-  },
-  created() {
-    Axios.get("http://localhost:3000/api/getrestaurant/"+this.$store.getters.accountId).then(response => {
-      this.restaurant = response.data;
-    });
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped >
-@media screen and (min-width: 320px) and (max-width: 480px) {
-  div.barofcolor {
-    background-color: #eec9c9;
-    background-attachment: fixed;  
-    width: 110px;
-    height: 52em;
-    padding-top: 40px;
-    margin-left: -6px;
-
-    padding-left: 20px;
-  }
-  div.drop {
-    padding-top: 10px;
-    margin-left: -5px;
-    margin-top: -30px;
-    width: 20px;
-  }
-  button#dropp {
-    width: 90px;
-  }
+<style scoped>
+.sidebar {
+  height: 800px;
+  width: 20%;
 }
-#dropp {
-  width: 170px;
+.logo {
+  margin-top: 7%;
 }
-#bar {
-  float: left;
-  position: absolute;
-  margin-top: 0px;
-}
-#navbar {
-  font-family: "Arial Black", Gadget, sans-serif;
-  font-size: 18;
-}
-.barofcolor {
-  background-color: #eaddd4;
-  width: 190px;
-  height: 52em;
-  padding-top: 5px;
-  margin-left: -6px;
-  padding-left: 20px;
-}
-/* ul :hover{
-    background-color:white	;
-    width: 200px;
-    height: 40px;
-    margin-left: -5px;
-    
-} */
-li {
-  list-style-type: none;
-}
-.drop {
-  padding-top: 10px;
-  margin-left: -7px;
+.name {
+  font-size: 110%;
+  margin-left: 5%;
+  margin-top: 7%;
 }
 </style>
