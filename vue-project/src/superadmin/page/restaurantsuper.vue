@@ -87,7 +87,7 @@
                   <v-card>
                     <v-card-text class="headline">
                       Edit Restaurant
-                      <v-form v-for="res in checkedRows" :key="res.restaurantId">
+                      <v-form v-for="res in checkedRows" :key="res.restaurantId" ref="form">
                         <v-container>
                           <v-text-field label="RestaurantId" disabled v-model="res.restaurantId"></v-text-field>
                           <v-text-field label="RestaurantName" v-model="res.restaurantName"></v-text-field>
@@ -226,15 +226,15 @@ export default {
       this.addDialog = false;
       this.newRes = [];
     },
-    editSave() {
+    editSave() {                    
       for (let index = 0; index < this.checkedRows.length; index++) {
-        axios.put(
+        axios
+          .put(
             "http://localhost:3000/api/updateRestaurant",
             this.checkedRows[index]
           )
           .then(() => {
             console.log(this.checkedRows);
-            this.checkedRows = [];
             this.reRestaurant();
           });
       }

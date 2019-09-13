@@ -19,9 +19,9 @@ Vue.use(BootstrapVue)
 Vue.use(VueScrollProgress)
 Vue.use(Vuetify)
 Vue.use(responsive)
- 
+
 Vue.prototype.$http = axios
-Vue.use(Buefy)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -33,3 +33,27 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+// internal icons
+import {
+  faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
+  faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
+  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload, fas
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
+  faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
+  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload, fas);
+Vue.component('vue-fontawesome', FontAwesomeIcon);
+
+// ...
+
+
+Vue.use(Buefy, {
+  defaultIconComponent: 'vue-fontawesome',
+  defaultIconPack: 'fas'
+});
+

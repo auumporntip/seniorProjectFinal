@@ -165,14 +165,53 @@ export default {
     editSave() {
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .put("http://localhost:3000/api/updateCategory/", this.checkedRows[index])
+          .put(
+            "http://localhost:3000/api/updateCategory/",
+            this.checkedRows[index]
+          )
           .then(() => {
             this.reCategory();
           });
       }
-       this.editDialog = false;
+      this.editDialog = false;
     },
-    catDelete() {}
+    catDelete() {
+      console.log(this.checkedRows);
+      if (this.checkedRows != "") {
+        this.$dialog.confirm({
+          title: "Privacy Politics",
+          message: "Are you sure you want to delete?",
+          cancelText: "Disagree",
+          confirmText: "Agree",
+          type: "is-success",
+          onConfirm: () => {
+            for (let index = 0; index < this.checkedRows.length; index++) {
+              axios
+                .delete(
+                  "http://localhost:3000/api/deletecategory/" +
+                    this.checkedRows[index].categoryId
+                )
+                .then(() => {
+                  this.refreshCategory();
+                });
+            }
+
+            this.$toast.open("delete success");
+          }
+        });
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please selected some menu row",
+          type: "is-warning"
+        });
+      }
+    },
+    reCategory() {
+      axios.get("http://localhost:3000/api/getallcategory").then(response => {
+        this.catData = response.data;
+      });
+    }
   },
   created() {
     axios.get("http://localhost:3000/api/getallcategory").then(response => {

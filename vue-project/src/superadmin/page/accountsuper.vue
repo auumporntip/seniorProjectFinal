@@ -6,6 +6,7 @@
         <b-tabs>
           <v-card-title class="title">ACCOUNT</v-card-title>
           <b-table
+            :icon-pack="iconPack"
             :data="accountData"
             :columns="columns"
             :paginated="isPaginated"
@@ -14,6 +15,8 @@
             :is-row-checkable="(row) => row.id !== 3"
             checkable
             :checkbox-position="checkboxPosition"
+            :icon-prev="prevIcon"
+            :icon-next="nextIcon"
           >
             <template slot="bottom-left">
               <b>Total checked</b>
@@ -29,19 +32,37 @@
                   <v-card>
                     <v-card-text class="headline">
                       Add Account
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
-                          <v-text-field label="Username" v-model="account.username" required></v-text-field>
-
-                          <v-text-field label="Password" v-model="account.password" required></v-text-field>
-
-                          <v-text-field label="Email" v-model="account.email"></v-text-field>
-
-                          <v-text-field label="Name" v-model="account.name"></v-text-field>
-
-                          <v-text-field label="Surname" v-model="account.surname"></v-text-field>
-
-                          <v-text-field label="Phone" v-model="account.phone"></v-text-field>
+                          <v-text-field
+                            label="Username"
+                            v-model="account.username"
+                            required
+                            :rules="userRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Password"
+                            v-model="account.password"
+                            required
+                            :rules="passwordRules"
+                          ></v-text-field>
+                          <v-text-field label="Email" v-model="account.email" :rules="emailRules"></v-text-field>
+                          <v-text-field
+                            label="Name"
+                            v-model="account.name"
+                            :rules="accountNameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Surname"
+                            v-model="account.surname"
+                            :rules="surnameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Phone"
+                            mask="### ### ####"
+                            v-model="account.phone"
+                            :rules="phoneRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -64,17 +85,34 @@
                       Edit Account
                       <v-form v-for="account in checkedRows" :key="account.accountId">
                         <v-container>
-                          <v-text-field label="AccountId" v-model="account.accountId"></v-text-field>
-                          <v-text-field label="Username" v-model="account.username"></v-text-field>
-                          <v-text-field label="Password" v-model="account.password"></v-text-field>
-
-                          <v-text-field label="Email" v-model="account.email"></v-text-field>
-
-                          <v-text-field label="Name" v-model="account.name"></v-text-field>
-
-                          <v-text-field label="Surname" v-model="account.surname"></v-text-field>
-
-                          <v-text-field label="Phone" v-model="account.phone"></v-text-field>
+                          <v-text-field label="AccountId" v-model="account.accountId" disabled></v-text-field>
+                          <v-text-field
+                            label="Username"
+                            v-model="account.userName"
+                            :rules="userRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Password"
+                            v-model="account.password"
+                            :rules="passwordRules"
+                          ></v-text-field>
+                          <v-text-field label="Email" v-model="account.email" :rules="emailRules"></v-text-field>
+                          <v-text-field
+                            label="Name"
+                            v-model="account.name"
+                            :rules="accountNameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Surname"
+                            v-model="account.surname"
+                            :rules="surnameRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="Phone"
+                            mask="### ### ####"
+                            v-model="account.phone"
+                            :rules="phoneRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -114,6 +152,15 @@ export default {
       //Add
       addDialog: false,
       account: [],
+      userRules: [v => !!v || "Username is required"],
+      passwordRules: [v => !!v || "Password is required"],
+      emailRules: [
+        v => !!v || "Email is required",
+        v => /.+@.+/.test(v) || "Invalid Email address"
+      ],
+      accountNameRules: [v => !!v || "Name is required"],
+      surnameRules: [v => !!v || "Surname is required"],
+      phoneRules: [v => !!v || "Phone number is required"],
 
       //Edit
       editDialog: false,
@@ -122,7 +169,11 @@ export default {
 
       accountData: [],
       isPaginated: true,
-      perPage: 10,
+      perPage: 15,
+      prevIcon: "chevron-left",
+      nextIcon: "chevron-right",
+      isPaginated: true,
+      iconPack: "fas",
       checkboxPosition: "left",
       checkedRows: [],
       columns: [
@@ -133,7 +184,7 @@ export default {
           numeric: true
         },
         {
-          field: "username",
+          field: "userName",
           label: "Username"
         },
         {
@@ -161,33 +212,37 @@ export default {
   },
   methods: {
     addClick() {
-      console.log(this.account);
-      axios
-        .post("http://localhost:3000/api/register", {
-          username: this.account.username,
-          password: this.account.password,
-          email: this.account.email,
-          name: this.account.name,
-          surname: this.account.surname,
-          phone: this.account.phone
-        })
-        .then(response => {
-          this.refreshAccount();
-          this.account = [];
-        });
-      this.addDialog = false;
+      if (this.$refs.form.validate()) {
+        console.log(this.account);
+        axios
+          .post("http://localhost:3000/api/register", {
+            username: this.account.username,
+            password: this.account.password,
+            email: this.account.email,
+            name: this.account.name,
+            surname: this.account.surname,
+            phone: this.account.phone
+          })
+          .then(response => {
+            this.refreshAccount();
+            this.account = [];
+            this.$refs.form.resetValidation();
+          });
+        this.addDialog = false;
+      }
     },
     editClick() {
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
           .put(
-            "http://localhost:3000/api/updateaccount/",
+            "http://localhost:3000/api/updateAccount/",
             this.checkedRows[index]
           )
           .then(() => {
             this.refreshAccount();
           });
       }
+      this.checkedRows = [];
       this.editDialog = false;
     },
     deleteClick() {
