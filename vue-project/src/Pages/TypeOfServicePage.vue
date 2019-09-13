@@ -15,7 +15,7 @@
                   <v-layout row justify-center>
                     <v-dialog v-model="dialog" persistent max-width="600px">
              <template v-slot:activator="{ on }">
-                  <img class="Row1col1" src="../../assets/yakiniku1.png" width="300px" height="350px" v-on="on">
+                  <img class="Row1col1" src="assets/yakiniku1.png" width="300px" height="350px" v-on="on">
               </template>
       <v-card>
         <v-card-title>
@@ -106,14 +106,14 @@
 
 
 
-            <td><a href="/"><img class="Row1col2" src="../../assets/sushi11.png" width="300px" height="350px"></a> </td>
-            <td><a href="/"><img class="Row1col3" src="../../assets/sashimi11.png" width="300px" height="350px"></a> </td>
+            <td><a href="/"><img class="Row1col2" src="assets/sushi11.png" width="300px" height="350px"></a> </td>
+            <td><a href="/"><img class="Row1col3" src="assets/sashimi11.png" width="300px" height="350px"></a> </td>
             <!-- <td>Row 1, Column 2</td>
             <td>Row 1, Column 3</td> -->
          </tr>
          <tr>
            <td><a href="../AddCategory"><div class="Row2col1">
-             <center><img class="Row2col11" src="../../assets/add.png" width="100px" height="250px"></center>
+             <center><img class="Row2col11" src="assets/add.png" width="100px" height="250px"></center>
              </div></a>
           </td>
          </tr>
