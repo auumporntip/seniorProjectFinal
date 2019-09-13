@@ -28,7 +28,7 @@
                   <v-card>
                     <v-card-text class="headline">
                       Add TypeOfRestaurant
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
                           <v-text-field
                             label="TypeResName"
@@ -138,19 +138,23 @@ export default {
   methods: {
     addCancel() {
       this.AddDialog = false;
+      this.$refs.form.resetValidation();
       this.newType = [];
     },
     addSave() {
+      if(this.$refs.form.validate()){
       console.log(this.newType);
       axios
-        .post("http://localhost:3000/api/inserttypeofres", {
+        .post("http://localhost:3000/api/inserttypeofrestaurant", {
           typeResName: this.newType.typeResName
         })
         .then(response => {
           this.reType();
           this.newType = [];
+          this.$refs.form.resetValidation();
         });
       this.AddDialog = false;
+      }
     },
     EditSave() {
       for (let index = 0; index < this.checkedRows.length; index++) {

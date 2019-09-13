@@ -28,7 +28,7 @@
                   <v-card>
                     <v-card-text class="headline">
                       Add TypeOfService
-                      <v-form>
+                      <v-form ref="form">
                         <v-container fluid>
                           <v-text-field
                             label="TypeName"
@@ -189,9 +189,11 @@ export default {
   methods: {
     addCancel() {
       this.AddDialog = false;
+      this.$refs.form.resetValidation();
       this.newTypeOfSer = [];
     },
     addSave() {
+      if(this.$refs.form.validate()){
       console.log(this.newTypeOfSer);
       axios
         .post("http://localhost:3000/api/insertTypeofservice", {
@@ -203,8 +205,10 @@ export default {
         .then(response => {
           this.retype();
           this.newTypeOfSer = [];
+          this.$refs.form.resetValidation();
         });
       this.AddDialog = false;
+      }
     },
     EditSave() {
       for (let index = 0; index < this.checkedRows.length; index++) {

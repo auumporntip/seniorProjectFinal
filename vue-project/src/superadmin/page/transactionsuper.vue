@@ -28,7 +28,7 @@
                   <v-card>
                     <v-card-text class="headline">
                       Add Transaction
-                      <v-form>
+                      <v-form ref="form"> 
                         <v-container fluid>
                           <v-text-field
                             label="menuName"
@@ -239,9 +239,11 @@ export default {
   methods: {
     addCancel() {
       this.AddDialog = false;
+      this.$refs.form.resetValidation();
       this.newTrans = [];
     },
     addSave() {
+      if(this.$refs.form.validate()){
       console.log(this.newTrans);
       axios
         .post("http://localhost:3000/api/insertTransaction", {
@@ -254,8 +256,10 @@ export default {
         .then(response => {
           this.reTrans();
           this.newTrans = [];
+          this.$refs.form.resetValidation();
         });
       this.AddDialog = false;
+      }
     },
     edit() {
       for (let index = 0; index < this.checkedRows.length; index++) {
