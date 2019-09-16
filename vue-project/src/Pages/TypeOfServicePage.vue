@@ -28,11 +28,11 @@
                           v-model="newType.typePrice"
                           :rules="priceRules"
                         ></v-text-field>
-                        <!-- <v-text-field
+                        <v-text-field
                           label="Restaurant ID"
                           v-model="newType.typeResId"
                           :rules="resIdRules"
-                        ></v-text-field> -->
+                        ></v-text-field>
                         <b-field class="file">
                           <b-upload v-model="file">
                             <a class="button">
