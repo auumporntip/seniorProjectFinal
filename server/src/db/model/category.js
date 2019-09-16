@@ -18,14 +18,14 @@ exports.deleteCategory = async (categoryId, restaurantId) => {
 }
 
 exports.insertCategory = async (category) => {
-    return await knex('menu').insert({
+    return await knex('category').insert({
         categoryName: category.categoryName,
         restaurantId: category.restaurantId
     })
 }
 
 exports.updateCategory = async (category) => {
-    await knex('menu').where('categoryId', '=', category.categoryId).update({
+    await knex('category').where('categoryId', '=', category.categoryId).update({
         categoryName: category.categoryName,
         restaurantId: category.restaurantId
     })

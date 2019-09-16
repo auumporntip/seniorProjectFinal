@@ -145,7 +145,7 @@ export default {
       if (this.$refs.form.validate()) {
         console.log(this.newCat);
         axios
-          .post("http://localhost:3000/api/insertBill", {
+          .post("http://localhost:3000/api/insertcategory", {
             categoryId: this.newCat.categoryId,
             categoryName: this.newCat.categoryName,
             restaurantId: this.newCat.restaurantId
@@ -155,8 +155,8 @@ export default {
             this.newCat = [];
             this.$refs.form.resetValidation();
           });
-        this.addDialog = false;
       }
+      this.addDialog = false;
     },
     addCancel() {
       this.addDialog = false;
@@ -173,6 +173,7 @@ export default {
             this.reCategory();
           });
       }
+      this.checkedRows = [];
       this.editDialog = false;
     },
     catDelete() {

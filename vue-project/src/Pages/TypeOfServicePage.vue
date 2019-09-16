@@ -1,127 +1,118 @@
-
 <template>
   <div>
     <sidebar></sidebar>
-    <div id="barcolor"></div>
-    <div id="boxright">
-      <span id="typeofservice"> Type Of Service </span>
-  
-      <xp:table id="table" width="700" height="650" cellspacing="0" >
-         <tr>
-           <!-- dialog แรก-->
-            <td>
-              <template>
-                  <v-layout row justify-center>
-                    <v-dialog v-model="dialog" persistent max-width="600px">
-             <template v-slot:activator="{ on }">
-                  <img class="Row1col1" src="assets/yakiniku1.png" width="300px" height="350px" v-on="on">
-              </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">YAKINIKU</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <section>
-                <b-field>
-                  <b-upload v-model="dropFiles" drag-drop>
-                <section class="section">
-                    <div class="content has-text-centered">
-                        <p>
-                            <b-icon icon="upload" size="is-large"></b-icon>
-                        </p>
-                        <p>Drop your files here or click to upload</p>
-                    </div>
-                </section>
-            </b-upload>
-        </b-field>
-        <div class="tags">
-            <span v-for="(file, index) in dropFiles"
-                :key="index"
-                class="tag is-primary" >
-                {{file.name}}
-                <button class="delete is-small"
-                    type="button"
-                    @click="deleteDropFile(index)">
-                </button>
-            </span>
-        </div>
-    </section>
+    <div id="bigbox">
+      <section class="bg">
+        <v-card-title class="headline font-weight-medium">TYPE OF SERVICE</v-card-title>
+        <v-layout justify-space-around>
+          <v-flex xs3>
+            <v-card class="card">
+              <v-img :src="require('../assets/add.png')" aspect-ratio="1.5"></v-img>
+              <v-btn
+                class="subheading font-weight-medium"
+                block
+                id="text"
+                @click="newDialog=true"
+              >ADD TYPE OF SERVICE</v-btn>
+              <v-dialog max-width="350" v-model="newDialog">
+                <v-card>
+                  <v-card-text class="title">
+                    New type of service
+                    <v-form ref="form">
+                      <v-container>
+                        <v-text-field label="Name" v-model="newType.typeName" :rules="nameRules"></v-text-field>
+                        <v-text-field label="Time" v-model="newType.typeTime" :rules="timeRules"></v-text-field>
+                        <v-text-field
+                          label="Price"
+                          type="number"
+                          v-model="newType.typePrice"
+                          :rules="priceRules"
+                        ></v-text-field>
+                        <v-text-field
+                          label="Restaurant ID"
+                          v-model="newType.typeResId"
+                          :rules="resIdRules"
+                        ></v-text-field>
+                        <b-field class="file">
+                          <b-upload v-model="file">
+                            <a class="button">
+                              <b-icon icon="upload"></b-icon>
+                              <span>Click to upload image</span>
+                            </a>
+                          </b-upload>
+                        </b-field>
+                        <div class="tags">
+                          <span class="tag is-dark" v-if="file" color="blue lighten-2">{{file.name}}</span>
+                        </div>
+                      </v-container>
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="red" @click="newDialog=false">Cancel</v-btn>
+                    <v-btn flat color="darkgrey" @click="clickSaveNew">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-card>
+          </v-flex>
+          <v-flex xs3>
+            <v-card class="card">
+              <v-img :src="require('../assets/yakiniku2.jpg')" aspect-ratio="1.5"></v-img>
+              <v-btn
+                class="subheading font-weight-medium"
+                block
+                id="text"
+                @click="showMenu"
+              >Premium Buffet</v-btn>
+              <v-dialog max-width="490" v-model="menuDialog">
+                <v-card>
+                  <v-card-text class="title">
+                    Choose menu for Premium Buffet
+                    <v-form>
+                      <v-container>
+                        <b-table
+                          :data="menuData"
+                          :columns="columns"
+                          :checked-rows.sync="checkedRows"
+                          :is-row-checkable="(row) => row.id !== 3"
+                          checkable
+                          :checkbox-position="checkboxPosition"
+                          class="textTable"
+                        >
+                          <template slot="bottom-left">
+                            <b>Total checked</b>
+                            : {{ checkedRows.length }}
+                          </template>
+                        </b-table>
+                      </v-container>
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="red" @click="menuDialog=false">Cancel</v-btn>
+                    <v-btn flat color="darkgrey">Add</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-card>
+          </v-flex>
 
-              <v-flex xs12 sm6 md4 class="name">
-                <v-text-field label="Name" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4 class="time">
-                <v-text-field label="Time" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4 class="price">
-                <v-text-field label="Price" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4 class="chooseMenuBtn"><!-- dialog choose menu-->
-              <template>
-                <v-layout row justify-center>
-                  <v-dialog v-model="dialog" scrollable max-width="500px">
-      <template v-slot:activator="{ on }">
-        <v-btn medium color="#B22222" dark v-on="on"><v-icon dark>book</v-icon>Choose menu to YAKINIKU</v-btn>
-      </template>
-      <v-card>
-        <v-card-title>Menu</v-card-title>
-        <v-card-text style="height: 400px;">
-          <v-container fluid v-model="selected" column>
-    <v-checkbox v-model="selected" label="John" value="John"></v-checkbox>
-    <v-checkbox v-model="selected" label="Jacob" value="Jacob"></v-checkbox>
-  </v-container>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Add</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-layout></template>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Add Menu</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-layout>
-</template>
-</td>
+          <v-flex xs3>
+            <v-card class="card">
+              <v-img :src="require('../assets/sushi2.jpg')" aspect-ratio="1.5"></v-img>
+              <v-btn class="subheading font-weight-medium" block id="text">Platinum Buffet</v-btn>
+            </v-card>
+          </v-flex>
 
-
-
-
-
-
-
-
-
-
-            <td><a href="/"><img class="Row1col2" src="assets/sushi11.png" width="300px" height="350px"></a> </td>
-            <td><a href="/"><img class="Row1col3" src="assets/sashimi11.png" width="300px" height="350px"></a> </td>
-            <!-- <td>Row 1, Column 2</td>
-            <td>Row 1, Column 3</td> -->
-         </tr>
-         <tr>
-           <td><a href="../AddCategory"><div class="Row2col1">
-             <center><img class="Row2col11" src="assets/add.png" width="100px" height="250px"></center>
-             </div></a>
-          </td>
-         </tr>
-         <!-- <tr> แถวสองซ้ายสุด
-            <td>Row 2, Column 1</td>
-            <td>Row 2, Column 2</td>
-         </tr> -->
-      </xp:table>
-      
+          <v-flex xs3>
+            <v-card class="card">
+              <v-img :src="require('../assets/sashimi2.jpg')" aspect-ratio="1.5"></v-img>
+              <v-btn class="subheading font-weight-medium" block id="text">A-La-Carte</v-btn>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </section>
     </div>
   </div>
 </template>
@@ -134,89 +125,104 @@ export default {
   components: {
     sidebar
   },
-  data: () => ({
-      dialog: false
-    }),
-    data() {
-            return {
-                dropFiles: []
-            }
+  data() {
+    return {
+      typeData: [],
+      newType: [],
+      nameRules: [v => !!v || "Menu name is required"],
+      timeRules: [v => !!v || "Time is required"],
+      priceRules: [v => !!v || "Price is required"],
+      resIdRules: [v => !!v || "Restaurant ID is required"],
+      newDialog: false,
+      file: null,
+      menuDialog: false,
+      menuData: [],
+      checkboxPosition: "left",
+      checkedRows: [],
+      columns: [
+        {
+          field: "menuId",
+          label: "Id",
+          numeric: true
         },
-        methods: {
-            deleteDropFile(index) {
-                this.dropFiles.splice(index, 1)
-            }
+        {
+          field: "menuName",
+          label: "Name"
         },
-        data1() {
-      return {
-        selected: ['']
+        {
+          field: "menuPrice",
+          label: "Price"
+        }
+      ]
+    };
+  },
+  methods: {
+    showMenu() {
+      this.menuDialog = true;
+      axios.get("http://localhost:3000/api/getallMenu").then(response => {
+        this.menuData = response.data;
+      });
+    },
+    clickSaveNew() {
+      if (this.$refs.form.validate()) {
+        console.log(this.newType);
+        axios
+          .post("http://localhost:3000/api/insertTypeOfService", {
+            typeName: this.newType.typeName,
+            typeTime: this.newType.typeTime,
+            typePrice: this.newType.typePrice,
+            restaurantId: this.newType.restaurantId
+          })
+          .then(response => {
+            this.newType = [];
+            this.$refs.form.resetValidation();
+          });
+        this.newDialog = false;
       }
+    },
+    created() {
+      axios
+        .get("http://localhost:3000/api/getallTypeOfService")
+        .then(response => {
+          this.typeData = response.data;
+        });
     }
-}
+  }
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#boxright {
+.bg {
   background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
-  background-attachment: fixed;  
+  border-radius: 20px;
+  padding: 1%;
 }
-#typeofservice{
-  font-family: "Arial Black", Gadget, sans-serif;
-  font-size: 18px;
-   padding-left: 40px;
-  padding-top: 10px;
-  float:left;
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
+  background-attachment: fixed;
 }
-.Row1col1{
-  margin-left: 50px;
-  margin-top: 50px;
-  float: left;
+.card {
+  margin: 5%;
+  border-radius: 20px;
+  text-align: center;
 }
-.Row1col2{
-
-  float: center;
-  margin-left: 50px;
-  margin-top: 50px;
+#text {
+  padding: 2%;
+  background: #eeeeee;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
-.Row1col3{
-  
-  float: center;
-  margin-left: 50px;
-  margin-top: 50px;
+.title {
+  text-align: left;
 }
-.Row2col1{
-  margin-left: 50px;
-  margin-top: 60px;
-  float: left;
-  background-color: gray;
-  width:300px;
-  height:200px;
+.textTable {
+  font-size: 15px;
 }
-.Row2col11{
-  margin-top: 50px;
-}
-
-.name{
-  margin-left: 60%;
-  margin-top: -40%;
-}
-
-.time{
-  margin-left: 60%;
-  margin-top: -30%;
-}
-
-.price{
-  margin-left: 60%;
-  margin-top: -20%;
-}
-
-.chooseMenuBtn{
-  margin-left: 7%;
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

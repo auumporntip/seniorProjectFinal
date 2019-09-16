@@ -45,7 +45,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile :to="{name: 'TypeOfServiceMenu'}">
+        <v-list-tile :to="{name: 'TypeOfService'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>
           </v-list-tile-action>

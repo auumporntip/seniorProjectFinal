@@ -89,12 +89,12 @@
                           <v-text-field
                             label="Username"
                             v-model="account.userName"
-                            :rules="userRules"
+                            disabled
                           ></v-text-field>
                           <v-text-field
                             label="Password"
                             v-model="account.password"
-                            :rules="passwordRules"
+                            disabled
                           ></v-text-field>
                           <v-text-field label="Email" v-model="account.email" :rules="emailRules"></v-text-field>
                           <v-text-field

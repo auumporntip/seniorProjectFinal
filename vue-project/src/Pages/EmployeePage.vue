@@ -1,12 +1,10 @@
 
 <template>
   <div>
-    <Header></Header>
     <sidebar></sidebar>
-    <div id="barcolor"></div>
-    <div id="boxright">
-      <div id="static">
-        <span class="head">Employee:</span>
+    <div id="bigbox">
+      <section class="bg">
+        <v-card-title class="headline font-weight-medium">EMPLOYEE</v-card-title>
         <!-- <section id="dropdown">
           <b-dropdown aria-role="list">
             <button class="button is-dark" slot="trigger">
@@ -20,7 +18,7 @@
             <b-dropdown-item aria-role="listitem">Buffet499</b-dropdown-item>
           </b-dropdown>
         </section> -->
-      </div>
+      <!-- </div> -->
       <!-- <b-table :data="data" :columns="columns" >
       </b-table>-->
       <br>
@@ -36,18 +34,17 @@
           <img class="Edit" src="../assets/edit.png" width="50px" height="50px">
         </div>
       </div>-->
+      </section>
     </div>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 export default {
   name: "MenuPage",
   components: {
-    Header,
     sidebar
   },
   data() {
@@ -117,6 +114,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.bg {
+  background-color: #f0cab1;
+  border-radius: 20px;
+  padding: 1%;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
+  background-attachment: fixed;
+}
 /* .Editt {
   font-family:"Arial Black", Gadget, sans-serif;
   margin-left: 500px;

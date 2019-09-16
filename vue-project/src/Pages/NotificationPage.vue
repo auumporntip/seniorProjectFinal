@@ -2,13 +2,11 @@
 <template>
 
   <div>
-   <Header></Header>
    <sidebar></sidebar>
-   <div id="boxright">
-     <div id = "big">
-   <div id="all">
-    <h1> Notification !!</h1><br>
-    </div><br>
+       <div id="bigbox">
+      <section class="bg">
+        <v-card-title class="headline font-weight-medium">NOTIFICATION</v-card-title>
+   
 <!-- <div class="notibox">
 <div class="noti">
   <div class="noti2"> 
@@ -33,20 +31,19 @@
     <img class="Edit2" src="../assets/notification (2).png" width="50px" height="50px">
    </div> 
 </div> -->
-</div>
+
 <br>
     <b-table :data="menu" :columns="columns" :selected.sync="selected" focusable></b-table>
+</section>
 </div>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header'
 import sidebar from '@/components/sidebar'
 export default {
   name: 'NotificationPage', 
   components: {
-    Header,
     sidebar
   },data() {
     const menu = [];
@@ -81,8 +78,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body{
-    padding-left: 11em;
+.bg {
+  background-color: #f0cab1;
+  border-radius: 20px;
+  padding: 1%;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
+  background-attachment: fixed;
 }
 
 h1 {

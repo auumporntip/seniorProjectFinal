@@ -90,16 +90,41 @@
                       <v-form v-for="res in checkedRows" :key="res.restaurantId" ref="form">
                         <v-container>
                           <v-text-field label="RestaurantId" disabled v-model="res.restaurantId"></v-text-field>
-                          <v-text-field label="RestaurantName" v-model="res.restaurantName"></v-text-field>
+                          <v-text-field
+                            label="RestaurantName"
+                            v-model="res.restaurantName"
+                            :rules="nameRules"
+                          ></v-text-field>
                           <v-text-field
                             label="RestaurantDescription"
                             v-model="res.restaurantDescription"
+                            :rules="descriptionRules"
                           ></v-text-field>
-                          <v-text-field label="RestaurantLocation" v-model="res.restaurantLocation"></v-text-field>
-                          <v-text-field label="TimeOpenClose" v-model="res.timeOpenClose"></v-text-field>
-                          <v-text-field label="RestaurantPhone" v-model="res.restaurantPhone"></v-text-field>
-                          <v-text-field label="TypeResId" v-model="res.typeResId"></v-text-field>
-                          <v-text-field label="AccountId" v-model="res.accountId"></v-text-field>
+                          <v-text-field
+                            label="RestaurantLocation"
+                            v-model="res.restaurantLocation"
+                            :rules="locationRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="TimeOpenClose"
+                            v-model="res.timeOpenClose"
+                            :rules="timeRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantPhone"
+                            v-model="res.restaurantPhone"
+                            :rules="phoneRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="TypeResId"
+                            v-model="res.typeResId"
+                            :rules="typeResIdRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="AccountId"
+                            v-model="res.accountId"
+                            :rules="accountIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -226,7 +251,7 @@ export default {
       this.addDialog = false;
       this.newRes = [];
     },
-    editSave() {                    
+    editSave() {
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
           .put(
@@ -238,6 +263,7 @@ export default {
             this.reRestaurant();
           });
       }
+      this.checkedRows = [];
       this.editDialog = false;
     },
     clickDelete() {

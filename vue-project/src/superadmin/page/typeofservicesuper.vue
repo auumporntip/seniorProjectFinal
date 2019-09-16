@@ -193,21 +193,21 @@ export default {
       this.newTypeOfSer = [];
     },
     addSave() {
-      if(this.$refs.form.validate()){
-      console.log(this.newTypeOfSer);
-      axios
-        .post("http://localhost:3000/api/insertTypeofservice", {
-          typeName: this.newTypeOfSer.typeName,
-          typeTime: this.newTypeOfSer.typeTime,
-          typePrice: this.newTypeOfSer.typePrice,
-          restaurantId: this.newTypeOfSer.restaurantId
-        })
-        .then(response => {
-          this.retype();
-          this.newTypeOfSer = [];
-          this.$refs.form.resetValidation();
-        });
-      this.AddDialog = false;
+      if (this.$refs.form.validate()) {
+        console.log(this.newTypeOfSer);
+        axios
+          .post("http://localhost:3000/api/insertTypeofservice", {
+            typeName: this.newTypeOfSer.typeName,
+            typeTime: this.newTypeOfSer.typeTime,
+            typePrice: this.newTypeOfSer.typePrice,
+            restaurantId: this.newTypeOfSer.restaurantId
+          })
+          .then(response => {
+            this.retype();
+            this.newTypeOfSer = [];
+            this.$refs.form.resetValidation();
+          });
+        this.AddDialog = false;
       }
     },
     EditSave() {
@@ -219,9 +219,9 @@ export default {
           )
           .then(() => {
             this.retype();
-            this.checkedRows=[]
           });
       }
+      this.checkedRows = [];
       this.EditDialog = false;
     },
     deleteClick() {

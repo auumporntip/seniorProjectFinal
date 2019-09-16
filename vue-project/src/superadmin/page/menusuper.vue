@@ -42,7 +42,11 @@
                             v-model="newMenu.menuPrice"
                             :rules="priceRules"
                           ></v-text-field>
-                          <v-text-field label="MenuPathImage" v-model="newMenu.menuPathImage"></v-text-field>
+                          <v-text-field
+                            label="MenuPathImage"
+                            v-model="newMenu.menuPathImage"
+                            :rules="pathRules"
+                          ></v-text-field>
                           <v-text-field
                             label="RestaurantId"
                             type="number"
@@ -78,11 +82,27 @@
                       <v-form v-for="menu in checkedRows" :key="menu.menuId">
                         <v-container>
                           <v-text-field label="MenuId" disabled v-model="menu.menuId"></v-text-field>
-                          <v-text-field label="MenuName" v-model="menu.menuName"></v-text-field>
-                          <v-text-field label="MenuPrice" v-model="menu.menuPrice"></v-text-field>
-                          <v-text-field label="MenuPathImage" v-model="menu.menuPathImage"></v-text-field>
-                          <v-text-field label="RestaurantId" v-model="menu.restaurantId"></v-text-field>
-                          <v-text-field label="CategoryId" v-model="menu.categoryId"></v-text-field>
+                          <v-text-field label="MenuName" v-model="menu.menuName" :rules="nameRules"></v-text-field>
+                          <v-text-field
+                            label="MenuPrice"
+                            v-model="menu.menuPrice"
+                            :rules="priceRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="MenuPathImage"
+                            v-model="menu.menuPathImage"
+                            :rules="pathRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="RestaurantId"
+                            v-model="menu.restaurantId"
+                            :rules="resIdRules"
+                          ></v-text-field>
+                          <v-text-field
+                            label="CategoryId"
+                            v-model="menu.categoryId"
+                            :rules="catIdRules"
+                          ></v-text-field>
                         </v-container>
                       </v-form>
                     </v-card-text>
@@ -126,6 +146,7 @@ export default {
         v => !!v || "Menu name is required",
         v => (v && v.length <= 15) || "Max 15 characters"
       ],
+      pathRules: [v => !!v || "Path Image is required"],
       priceRules: [v => !!v || "Price is required"],
       resIdRules: [v => !!v || "Restaurant Id is required"],
       catIdRules: [v => !!v || "Category Id is required"],
@@ -207,6 +228,7 @@ export default {
             this.reMenu();
           });
       }
+      this.checkedRows = [];
       this.editDialog = false;
     },
     reMenu() {

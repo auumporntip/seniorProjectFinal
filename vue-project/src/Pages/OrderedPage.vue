@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header></Header>
     <sidebar></sidebar>
     <section class="space">
       <b-tabs>
@@ -54,14 +53,12 @@
           
 
 <script>
-import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 
 export default {
   name: "OrderedPage",
   components: {
-    Header,
     sidebar
   },
   data() {
@@ -165,8 +162,18 @@ export default {
 </script>
 
 <style scoped>
-.space {
-  margin-left: 15%;
+.bg {
+  background-color: #f0cab1;
+  border-radius: 20px;
+  padding: 1%;
+}
+#bigbox {
+  background-color: #eeeeee;
+  height: 800px;
+  padding: 2%;
+  margin-top: -800px;
+  margin-left: 20%;
+  background-attachment: fixed;
 }
 .space-btn {
   margin-left: 85%;
