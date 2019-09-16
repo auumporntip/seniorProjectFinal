@@ -4,6 +4,9 @@ exports.getAllTypeOfService=async() => {
     return await knex('typeofservice')
 }
 
+exports.getTypeOfServiceByRestaurantId=async(restaurantId) => {
+    return await knex('typeofservice').where('restaurantId','=',restaurantId)
+}
 
 exports.updateTypeOfService = async(typeOfService) => {
     await knex('typeOfService').where('typeId', '=', typeOfService.typeId)

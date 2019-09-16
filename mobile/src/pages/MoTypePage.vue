@@ -2,7 +2,7 @@
   <v-content>
     <BarMoType></BarMoType>
     <v-flex class="space">
-      <v-dialog max-width="490" v-model="openDialog">
+      <v-dialog max-width="490" v-model="dialog">
         <v-card>
           <v-form ref="form">
             <v-container fluid>
@@ -22,14 +22,15 @@
           </v-form>
         </v-card>
       </v-dialog>
-      <v-img :src="image_src1"></v-img>
-      <v-btn block color="#cd9575" class="white--text" @click="openDialog=true">Buffet 1199.-</v-btn>
-      <v-img :src="image_src2" class="white--text"></v-img>
-      <v-btn block color="#cd9575" class="white--text" @click="openDialog=true">Buffet 799.-</v-btn>
-      <v-img :src="image_src3"></v-img>
-      <v-btn block color="#cd9575" class="white--text" @click="openDialog=true">Buffet 499.-</v-btn>
-      <v-img :src="image_src4"></v-img>
-      <v-btn block color="#cd9575" class="white--text" @click="openDialog=true">A-La-Carte</v-btn>
+      <div v-for="service in typeOfService" :key="service.typeId">
+        <v-img :src="image_src1"></v-img>
+        <v-btn
+          block
+          color="#cd9575"
+          class="white--text"
+          @click="openDialog(service.typeId,service.typePrice)"
+        >{{service.typeName}} {{service.typePrice}}</v-btn>
+      </div>
     </v-flex>
   </v-content>
 </template>
@@ -37,6 +38,8 @@
 <script>
 import BarMoType from "../components/BarMoType";
 import { store } from "../store/store";
+import axios from "axios";
+
 export default {
   name: "MoTypePage",
   components: {
@@ -44,30 +47,60 @@ export default {
   },
   data() {
     return {
+      typeOfService: [],
+      typeId:0,
+      typePrice:0,
+
       newCust: [],
-      openDialog: false,
+      dialog: false,
       numRules: [v => !!v || "Number of Customers is required"],
       tableRules: [v => !!v || "Table number is required"],
-      image_src1: require("../assets/prestige.png"),
-      image_src2: require("../assets/prestige.png"),
-      image_src3: require("../assets/prestige.png"),
-      image_src4: require("../assets/prestige.png")
+      image_src1: require("../assets/prestige.png")
     };
   },
   methods: {
+    openDialog(typeId,typePrice) {
+      this.dialog = true;
+      this.typeId = typeId
+      this.typePrice = typePrice
+    },
     clickBack() {
       this.newCust = [];
-      this.openDialog = false;
+      this.dialog = false;
       this.$refs.form.resetValidation();
     },
     clickNext() {
+      const totalPrice = 0;
       if (this.$refs.form.validate()) {
-        console.log(this.newCust);
-        this.newCust = [];
-        this.openDialog = false;
-        this.$refs.form.resetValidation();
+        if(this.typePrice != 0){
+          this.totalPrice = this.typePrice*this.newCust.numOfCust
+        }else{
+          this.totalPrice = 0
+        }
+        axios.post("http://localhost:3000/api/insertbill",{
+          totalPrice: this.totalPrice,
+          eatTimeEnd: new Date(),
+          eatTimeStart: new Date(),
+          numOfCust: this.newCust.numOfCust,
+          typeId: this.typeId,
+          tableNumber : this.newCust.tableNumber
+        }).then(response=>{
+          localStorage.setItem('billId',response.data)
+          console.log(response.data)
+          this.dialog = false;
+          this.$refs.form.resetValidation();
+          this.$router.push("/Momenu");
+        })
+        
       }
     }
+  },
+  created() {
+    axios
+      .get("http://localhost:3000/api/gettypeofservice/" + 1)
+      .then(response => {
+        this.typeOfService = response.data;
+      });
   }
 };
 </script>

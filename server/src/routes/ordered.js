@@ -1,0 +1,30 @@
+const ordered = require('../db/model/ordered')
+
+const express = require('express')
+const router = express.Router()
+
+router.get('/getallordered', async (req, res) => {
+    res.send(await ordered.getAllOrdered())
+})
+
+router.get('/getorderbybillId/:billId', async (req, res) => {
+    res.send(await ordered.getOrderedByBillId(req.params.billId))
+})
+
+router.get('/getorderbyrestaurantId/:restaurantId', async (req, res) => {
+    res.send(await ordered.getOrderedByResturantId(req.params.restaurantId))
+})
+
+router.delete('/deleteordered/:orderId', async (req, res) => {
+    res.send(await ordered.deleteOrdered(req.params.orderId))
+})
+
+router.put('/updateordered', async (req, res) => {
+    res.send(await ordered.updateOrdered(req.body))
+})
+
+router.post('/insertordered', async (req, res) => {
+    res.send(await ordered.insertOrdered(req.body))
+})
+
+module.exports = router

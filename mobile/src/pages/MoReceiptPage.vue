@@ -1,7 +1,6 @@
 <template>
   <v-content>
     <Bar></Bar>
-
     <v-layout class="space">
       <v-flex xs6>
         <p class="subheading">{{billNo}}</p>

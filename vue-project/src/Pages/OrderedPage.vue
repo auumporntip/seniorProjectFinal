@@ -26,7 +26,7 @@
             </template>
           </b-table>
           <div class="space-btn">
-            <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
+            <v-btn color="primary" dark @click="openDialog">Change Status</v-btn>
             <v-dialog v-model="dialog" max-width="290">
               <v-card>
                 <v-card-text class="headline">
@@ -91,11 +91,11 @@ export default {
           label: "Menu Name"
         },
         {
-          field: "numOfTrans",
+          field: "amount",
           label: "Amount"
         },
         {
-          field: "transDate",
+          field: "orderDate",
           label: "Date",
           centered: true
         },
@@ -107,35 +107,59 @@ export default {
     };
   },
   methods: {
-    test() {
-      this.dialog = true;
+    openDialog() {
+      if (this.checkedRows.lenght != 0) {
+        this.dialog = true;
+      }
     },
     async clickSave() {
-      console.log(this.radioGroup);
-      const promiseArr = [];
       for (let index = 0; index < this.checkedRows.length; index++) {
-        promiseArr.push(
-          axios.put(
-            "http://localhost:3000/api/changestatus/" +
-              this.checkedRows[index].transId +
-              "/" +
-              this.radioGroup
-          )
-        );
+        await axios.put("http://localhost:3000/api/updateordered", {
+          orderId: this.checkedRows[index].orderId,
+          pricePerPiece: this.checkedRows[index].pricePerPiece,
+          amount: this.checkedRows[index].amount,
+          menuId: this.checkedRows[index].menuId,
+          statusId: this.radioGroup,
+          billId: this.checkedRows[index].billId
+        });
       }
-      await Promise.all(promiseArr);
 
-      axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
-        this.ordered = response.data;
-      });
-      this.checkedRows = [];
+      axios
+        .get("http://localhost:3000/api/getorderbyrestaurantId/1")
+        .then(response => {
+          this.ordered = response.data;
+        });
       this.dialog = false;
+      this.checkedRows = [];
     }
+    // async clickSave() {
+    //   console.log(this.radioGroup);
+    //   const promiseArr = [];
+    //   for (let index = 0; index < this.checkedRows.length; index++) {
+    //     promiseArr.push(
+    //       axios.put(
+    //         "http://localhost:3000/api/changestatus/" +
+    //           this.checkedRows[index].transId +
+    //           "/" +
+    //           this.radioGroup
+    //       )
+    //     );
+    //   }
+    //   await Promise.all(promiseArr);
+
+    //   axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
+    //     this.ordered = response.data;
+    //   });
+    //   this.checkedRows = [];
+    //   this.dialog = false;
+    // }
   },
   created: function() {
-    axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
-      this.ordered = response.data;
-    });
+    axios
+      .get("http://localhost:3000/api/getorderbyrestaurantId/1")
+      .then(response => {
+        this.ordered = response.data;
+      });
   }
 };
 </script>

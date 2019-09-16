@@ -1,46 +1,45 @@
 
 <template>
-
   <div>
-   <Header></Header>
-   <sidebar></sidebar>
-   <div id="boxright">
-     <div id="big">
-   <div id="all">
-    <h1> All of the menu ordered: </h1>
-    <div id="date"> 
-    <b-field>
-        <b-datepicker
-            placeholder="Click to select date"
-            icon="calendar-today"><br>
-        </b-datepicker>
-    </b-field>
-</div><br><br>
-</div>
+    <Header></Header>
+    <sidebar></sidebar>
+    <div id="boxright">
+      <div id="big">
+        <div id="all">
+          <h1>All of the menu ordered:</h1>
+          <div id="date">
+            <b-field>
+              <b-datepicker placeholder="Click to select date" icon="calendar-today">
+                <br />
+              </b-datepicker>
+            </b-field>
           </div>
-          <br>
-  <b-table :data="transData" :columns="columns" :selected.sync="selected" focusable></b-table>
-     </div>
+          <br />
+          <br />
+        </div>
+      </div>
+      <br />
+      <b-table :data="transData" :columns="columns" :selected.sync="selected" focusable></b-table>
+    </div>
   </div>
-  
 </template>
 
 <script>
 import axios from "axios";
-import Header from '@/components/Header';
-import sidebar from '@/components/sidebar';
+import Header from "@/components/Header";
+import sidebar from "@/components/sidebar";
 
 
 export default {
-  name: 'TransactionPage', 
+  name: "TransactionPage",
   components: {
     Header,
     sidebar
   },
   data() {
-     const menu = [];
+    const menu = [];
     return {
-      transData :[],
+      ordered: [],
       menu: menu,
       selected: {},
       columns: [
@@ -77,31 +76,28 @@ export default {
       ]
     };
   },
-  methods:{
-    
-  },
-  created(){
-      axios.get("http://localhost:3000/api/getalltransaction").then(response => {
-        this.transData=response.data;
-      });
-    }
+  methods: {},
+  created() {
+    axios.get("http://localhost:3000/api/getalltransaction").then(response => {
+      this.ordered = response.data;
+    });
+  }
 };
- 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body{
-    padding-left: 11em;
+body {
+  padding-left: 11em;
 }
 h1 {
   font-family: "Arial Black", Gadget, sans-serif;
   font-size: 20px;
-  float:left;
+  float: left;
   padding-left: 40px;
   padding-top: 10px;
 }
-#date{
+#date {
   width: 350px;
   height: 100px;
   position: absolute;
@@ -110,27 +106,25 @@ h1 {
   margin-top: 5px;
 }
 
-#info{
-  background-color: #D2B48C;
-    width: 1500px;
-    height: 100px;
-    margin-left: 5px;
-    margin-bottom: 10px;
-   
+#info {
+  background-color: #d2b48c;
+  width: 1500px;
+  height: 100px;
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
-#allbox{
+#allbox {
   margin-top: 60px;
 }
-#boxright{
-     background-color: #f0cab1;
+#boxright {
+  background-color: #f0cab1;
   width: 1170px;
   height: 52em;
   margin-top: 0px;
   margin-left: 180px;
-  background-attachment: fixed;  
-
+  background-attachment: fixed;
 }
-#big{
-    padding-top: 5px;
+#big {
+  padding-top: 5px;
 }
 </style>

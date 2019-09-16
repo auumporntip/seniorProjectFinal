@@ -7,6 +7,10 @@ router.get('/getalltypeofservice', async(req,res)=>{
     res.send(await typeOfService.getAllTypeOfService())
 })
 
+router.get('/gettypeofservice/:restaurantId', async(req,res)=>{
+    res.send(await typeOfService.getTypeOfServiceByRestaurantId(req.params.restaurantId))
+})
+
 router.delete('/deletetypeOfService/:typeOfServiceId', async (req, res) => {
     res.send(await typeOfService.deleteTypeOfService(req.params.typeOfServiceId))
 })

@@ -10,8 +10,7 @@
         </v-card-title>
       </v-card>
     </div>
-      <NavBar></NavBar>
-
+    <NavBar></NavBar>
   </v-content>
 </template>
 
@@ -19,6 +18,7 @@
 import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
+import axios from "axios";
 
 export default {
   name: "MoOrderPage",
@@ -28,8 +28,8 @@ export default {
   },
   data() {
     return {
-      orders:null,
-      sum:0,
+      orders: null,
+      sum: 0,
       columns: [
         {
           field: "menuName",
@@ -53,25 +53,38 @@ export default {
     };
   },
   methods: {
-    confirm(){
-      console.log(this.$store.getters.orders)
-      // href="/MoStatus"
+    confirm() {
+      for (let index = 0; index < this.orders.length; index++) {
+        axios
+          .post("http://localhost:3000/api/insertordered", {
+            pricePerPiece: this.orders[index].menuPrice,
+            amount: this.orders[index].amount,
+            menuId: this.orders[index].menuId,
+            statusId: 1,
+            billId: localStorage.getItem("billId")
+          })
+          .then(response => {
+            console.log(response.data);
+            this.$router.push("/Mostatus");
+            localStorage.setItem('foodMenu',null)
+          });
+      }
     }
   },
   computed: {
-    sumTotalPrice(){
-      console.log(this.orders.length)
-      for (let index = 0; index < this.orders.length ; index++) {
-        this.sum += this.orders[index].amount * this.orders[index].menuPrice
+    sumTotalPrice() {
+      console.log(this.orders.length);
+      for (let index = 0; index < this.orders.length; index++) {
+        this.sum += this.orders[index].amount * this.orders[index].menuPrice;
       }
-      return this.sum
+      return this.sum;
     }
   },
   created() {
-      this.$store.commit("setNamePages", "Order");
+    this.$store.commit("setNamePages", "Order");
     this.orders = JSON.parse(localStorage.getItem("orders"));
     // console.log(this.$store.getters.orders)
-  },
+  }
 };
 </script>
 

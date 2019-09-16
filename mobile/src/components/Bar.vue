@@ -23,7 +23,12 @@ export default {
   },
   methods: {
     goBack(){
-      this.$router.push("/Momenu");
+      console.log( this.$store.getters.namePages)
+      if(this.$store.getters.namePages === 'Order' || this.$store.getters.namePages === 'Status'  || this.$store.getters.namePages === 'Receipt' ){
+        this.$router.push("/Momenu");
+      }else if (this.$store.getters.namePages === 'Menu') {
+        this.$router.push("/MoType");
+      }
     }
   },
   created() {

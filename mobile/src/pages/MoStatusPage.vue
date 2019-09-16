@@ -2,7 +2,7 @@
   <v-content>
     <Bar></Bar>
     <div class="wrapper">
-      <b-table :data="data" :columns="columns"></b-table>
+      <b-table :data="orders" :columns="columns"></b-table>
     </div>
 
     <v-footer>
@@ -15,6 +15,7 @@
 import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
+import axios from "axios";
 export default {
   name: "MoStatusPage",
   components: {
@@ -25,27 +26,14 @@ export default {
     return {
       currentPage: 1,
       perPage: 5,
-      data: [
-        { id: 1, menu: "Bacon", status: "Preparing" },
-        { id: 2, menu: "Bacon", status: "Preparing" },
-        { id: 3, menu: "Bacon", status: "Preparing" },
-        { id: 4, menu: "Bacon", status: "Preparing" },
-        { id: 5, menu: "Bacon", status: "Preparing" },
-        { id: 6, menu: "Bacon", status: "Preparing" }
-      ],
+      orders:[],
       columns: [
         {
-          field: "id",
-          label: "ID",
-          width: "1000",
-          numeric: true
-        },
-        {
-          field: "menu",
+          field: "menuName",
           label: "Menu"
         },
         {
-          field: "status",
+          field: "statusName",
           label: "Status"
         }
       ]
@@ -53,6 +41,9 @@ export default {
   },
   created() {
     this.$store.commit("setNamePages", "Status");
+    axios.get("http://localhost:3000/api/getorderbybillid/"+localStorage.getItem('billId')).then(response=>{
+      this.orders = response.data
+    })
   }
 };
 </script>

@@ -5,7 +5,7 @@
       <v-tabs-slider color="#cd9575"></v-tabs-slider>
       <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
     </v-tabs>
-
+    
     <v-card color="white">
       <v-flex xs12 v-for="(menu) in items" :key="menu.menuId">
         <v-layout>
@@ -39,8 +39,8 @@
           </v-flex>
         </v-layout>
       </v-flex>
+      <v-btn @click="next" class="white--text" color="#cd9575" block id="spaceNext">NEXT</v-btn>
     </v-card>
-    <v-btn @click="next" class="white--text" color="#cd9575" block id="spaceNext">NEXT</v-btn>
     <navBar></navBar>
   </v-content>
 </template>
@@ -101,8 +101,8 @@ export default {
   },
   created() {
     this.$store.commit("setNamePages", "Menu");
-
-    if (JSON.parse(localStorage.getItem("foodMenu")) != undefined) {
+    console.log(JSON.parse(localStorage.getItem("foodMenu")))
+    if (JSON.parse(localStorage.getItem("foodMenu")) != null) {
       this.foodMenu = JSON.parse(localStorage.getItem("foodMenu"));
     } else {
       axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
