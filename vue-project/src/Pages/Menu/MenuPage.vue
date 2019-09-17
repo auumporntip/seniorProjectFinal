@@ -4,10 +4,20 @@
     <div id="bigBox">
       <section class="bg">
         <v-card-title class="title">MENU</v-card-title>
-        <MenuTable></MenuTable>
-        <AddButton></AddButton>
-        <EditButton></EditButton>
-        <DeleteButton></DeleteButton>
+       
+          <MenuTable></MenuTable>
+          <v-layout row wrap id="button">
+            <v-flex xs4>
+              <AddButton></AddButton>
+            </v-flex>
+            <v-flex xs4>
+              <EditButton></EditButton>
+            </v-flex>
+            <v-flex xs4>
+              <DeleteButton></DeleteButton>
+            </v-flex>
+          </v-layout>
+        </v-flex>
       </section>
     </div>
   </div>
@@ -55,5 +65,8 @@ export default {
   margin-top: -800px;
   margin-left: 20%;
   background-attachment: fixed;
+}
+#button{
+  margin-left: 120px;
 }
 </style>

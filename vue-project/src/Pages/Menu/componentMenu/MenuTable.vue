@@ -1,12 +1,13 @@
 <template>
   <div>
     <span class="head">Category of Food:</span>
+
     <b-dropdown v-model="selectedCategory">
       <button class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
         {{selectedCategory.categoryName}}
         <b-icon icon="menu-down"></b-icon>
       </button>
-      <button class="button is-dark" slot="trigger" v-else>
+      <button class="button is-dark" slot="trigger" v-else id="button">
         All Category
         <b-icon icon="menu-down"></b-icon>
       </button>
@@ -17,42 +18,73 @@
         :key="option.categoryId"
         @click="changeCategoryMenu"
       >{{option.categoryName}}</b-dropdown-item>
+    <v-layout>
+      <v-flex xs2>
+      <v-btn  class="add" @click="AddDialog=true">Add Category</v-btn>
+      <v-dialog v-model="AddDialog" max-width="490">
+        <v-card>
+          <v-card-text class="headline">
+            Add Category
+            <v-form ref="form">
+              <v-container fluid>
+                <v-text-field
+                label="CategoryName"
+                v-model="newCat.categoryName"
+                type="text"
+                :rules="nameRules">
+                </v-text-field>
+              </v-container>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
+            <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      </v-flex>
+    </v-layout>
+      
     </b-dropdown>
-    <b-field>
-      <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
-    </b-field>
-    <b-table
-      :data="items"
-      :selected.sync="selectedMenu"
-      focusable
-      class="elevation-1"
-      :paginated="isPaginated"
-      :per-page="perPage"
-      :current-page.sync="currentPage"
-      :pagination-simple="isPaginationSimple"
-      aria-next-label="Next page"
-      aria-previous-label="Previous page"
-      aria-page-label="Page"
-      aria-current-label="Current page"
-      @select="selected"
-    >
-      <template slot-scope="props">
-        <b-table-column label="Image" width="80">
-          <div class="img-resize" v-if="props.row.menuPathImage!=null">
-            <img :src="props.row.menuPathImage">
-          </div>
-          <div class="img-resize" v-else>
-            <img src="../../../assets/1.png">
-          </div>
-        </b-table-column>
 
-        <b-table-column label="Menu Name" width="200">{{ props.row.menuName }}</b-table-column>
+    <div class="search">
+      <b-field>
+        <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
+      </b-field>
+      <b-table
+        :data="items"
+        :selected.sync="selectedMenu"
+        focusable
+        class="elevation-1"
+        :paginated="isPaginated"
+        :per-page="perPage"
+        :current-page.sync="currentPage"
+        :pagination-simple="isPaginationSimple"
+        aria-next-label="Next page"
+        aria-previous-label="Previous page"
+        aria-page-label="Page"
+        aria-current-label="Current page"
+        @select="selected"
+      >
+        <template slot-scope="props">
+          <b-table-column label="Image" width="80">
+            <div class="img-resize" v-if="props.row.menuPathImage!=null">
+              <img :src="props.row.menuPathImage" />
+            </div>
+            <div class="img-resize" v-else>
+              <img src="../../../assets/1.png" />
+            </div>
+          </b-table-column>
 
-        <b-table-column label="Price" width="200">{{ props.row.menuPrice }}</b-table-column>
+          <b-table-column label="Menu Name" width="200">{{ props.row.menuName }}</b-table-column>
 
-        <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
-      </template>
-    </b-table>
+          <b-table-column label="Price" width="200">{{ props.row.menuPrice }}</b-table-column>
+
+          <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
+        </template>
+      </b-table>
+    </div>
   </div>
 </template>
 <script>
@@ -63,6 +95,10 @@ export default {
   name: "TestAxios",
   data() {
     return {
+      //Add
+      AddDialog: false,
+      newCat: [],
+      nameRules: [v => !!v || "Name is required"],
       isPaginated: true,
       isPaginationSimple: false,
       currentPage: 1,
@@ -72,10 +108,35 @@ export default {
       keyword: "",
 
       category: {},
-      selectedCategory: "",
+      selectedCategory: ""
     };
   },
   methods: {
+    addCancel(){
+      this.AddDialog=false;
+      this.$refs.form.resetValidation();
+      this.newCat= [];
+    },
+    addSave(){
+      if(this.$refs.form.validate()){
+        console.log(this.newCat);
+        axios
+        .post("http://localhost:3000/api/insertCategory",{
+          categoryName: this.newCat.categoryName
+        })
+        .then(response => {
+          this.reCat();
+          this.newCat = [],
+          this.$refs.form.resetValidation();
+        });
+        this.AddDialog=false;
+      }
+    },
+    reCat(){
+      axios.get("http://localhost:3000/api/getcategory").then(response => {
+        this.items = response.data;
+      })
+    },
     changeCategoryMenu() {
       axios
         .get(
@@ -87,21 +148,21 @@ export default {
         .then(response => {
           this.$store.commit("setMenu", response.data);
         });
-    this.$store.commit('setCheckCategory',true)
+      this.$store.commit("setCheckCategory", true);
     },
     allCategory() {
-      axios.get("http://localhost:3000/api/getallmenu/" + 1)
-        .then(response => {
-          this.$store.commit("setMenu", response.data);
-        });
-    this.$store.commit('setCheckCategory',false)
+      axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
+        this.$store.commit("setMenu", response.data);
+      });
+      this.$store.commit("setCheckCategory", false);
     },
     selected() {
       setTimeout(() => {
         this.$store.commit("setSelectedMenu", this.selectedMenu);
         console.log(this.selectedMenu);
       }, 1);
-    }
+    },
+   
   },
   computed: {
     items() {
@@ -127,10 +188,21 @@ export default {
     });
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
-      console.log(this.category)
+      console.log(this.category);
     });
 
-    this.$store.commit('setCheckCategory',false)
+    this.$store.commit("setCheckCategory", false);
   }
 };
 </script>    
+<style >
+.head {
+  margin-left: 20px;
+}
+.search {
+  margin-top: 20px;
+}
+#button {
+  margin-left: 10px;
+}
+</style>
