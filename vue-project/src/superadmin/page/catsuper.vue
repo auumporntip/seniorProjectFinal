@@ -146,7 +146,6 @@ export default {
         console.log(this.newCat);
         axios
           .post("http://localhost:3000/api/insertcategory", {
-            categoryId: this.newCat.categoryId,
             categoryName: this.newCat.categoryName,
             restaurantId: this.newCat.restaurantId
           })

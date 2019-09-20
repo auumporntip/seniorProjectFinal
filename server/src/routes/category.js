@@ -12,7 +12,7 @@ router.get('/getcategory/:restaurantId', async(req,res)=>{
 })
 
 router.post('/insertcategory', async(req,res)=>{
-    res.send(await category.getCategory(req.body))
+    res.send(await category.insertCategory(req.body))
 })
 
 router.post('/updatecategory', async(req,res)=>{

@@ -1,8 +1,13 @@
 <template>
   <div>
-    <span class="head">Category of Food:</span>
-
+    <span id="test">
+      <v-flex xs12>
+      <v-card-title>
+      Category of food
+      
+    <!-- <span class="head">Category of Food:</span> -->
     <b-dropdown v-model="selectedCategory">
+      
       <button class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
         {{selectedCategory.categoryName}}
         <b-icon icon="menu-down"></b-icon>
@@ -28,7 +33,7 @@
             <v-form ref="form">
               <v-container fluid>
                 <v-text-field
-                label="CategoryName"
+                label="categoryName"
                 v-model="newCat.categoryName"
                 type="text"
                 :rules="nameRules">
@@ -38,20 +43,31 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
-            <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
+            <v-btn  text @click="addCancel">Cancel</v-btn>
+            <v-btn  text @click="addSave">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       </v-flex>
     </v-layout>
-      
+     
     </b-dropdown>
+    <v-text-field
+        class="search"
+        v-model="keyword"
+        append-icon="search"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title></v-flex></span>
 
-    <div class="search">
-      <b-field>
+    <!-- <div class="search"> -->
+      <!-- <b-field>
         <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
-      </b-field>
+      </b-field> -->
+         
+      
       <b-table
         :data="items"
         :selected.sync="selectedMenu"
@@ -84,8 +100,9 @@
           <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
         </template>
       </b-table>
+    
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 <script>
 import axios from "axios";
@@ -119,10 +136,11 @@ export default {
     },
     addSave(){
       if(this.$refs.form.validate()){
-        console.log(this.newCat);
+        console.log(this.newCat.categoryName);
         axios
         .post("http://localhost:3000/api/insertCategory",{
-          categoryName: this.newCat.categoryName
+          categoryName: this.newCat.categoryName,
+          restaurantId: 1
         })
         .then(response => {
           this.reCat();
@@ -133,8 +151,8 @@ export default {
       }
     },
     reCat(){
-      axios.get("http://localhost:3000/api/getcategory").then(response => {
-        this.items = response.data;
+      axios.get("http://localhost:3000/api/getallcategory").then(response => {
+        this.category = response.data;
       })
     },
     changeCategoryMenu() {
@@ -200,9 +218,12 @@ export default {
   margin-left: 20px;
 }
 .search {
-  margin-top: 20px;
+  margin-left: 800px;
+  position: absolute;
+
 }
 #button {
   margin-left: 10px;
 }
+
 </style>
