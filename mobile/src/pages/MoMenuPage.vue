@@ -1,12 +1,18 @@
 <template>
   <v-content>
-    <Bar></Bar>
-    <v-tabs v-model="tab" color="white" align-with-title>
-      <v-tabs-slider color="#cd9575"></v-tabs-slider>
-      <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
-    </v-tabs>
-    
-    <v-card color="white">
+    <div class="header">
+      <Bar></Bar>
+      <v-tabs
+        v-model="tab"
+        color="white"
+        align-with-title
+      >
+        <v-tabs-slider color="#cd9575"></v-tabs-slider>
+        <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
+      </v-tabs>
+    </div>
+
+    <v-card color="white" class="cardMenu">
       <v-flex xs12 v-for="(menu) in items" :key="menu.menuId">
         <v-layout>
           <v-flex xs6 class="box">
@@ -19,9 +25,9 @@
               <img />
             </div>
           </v-flex>
-          <v-flex xs6>
+          <v-flex xs6 class="spaceText">
             <v-content>
-              <div class="title">{{menu.menuName}}</div>
+              <div class="subheading">{{menu.menuName}}</div>
               <div class="subheading">{{menu.menuPrice}} ฿</div>
               <div class="iconBtn">
                 <v-btn v-if="menu.amount>0" @click="menu.amount--" outline small color="black">
@@ -60,6 +66,7 @@ export default {
   },
   data() {
     return {
+      typeOfService: [],
       item: [],
       tab: 0,
       foodMenu: [],
@@ -81,13 +88,18 @@ export default {
       this.$set(this.foodMenu, index, menu);
     },
     next() {
-      localStorage.setItem(
-        "orders",
-        JSON.stringify(this.foodMenu.filter(food => food.amount > 0))
-      );
-      localStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
-      console.log(JSON.parse(localStorage.getItem("orders")));
-      this.$router.push("/Moorder");
+      this.order = this.foodMenu.filter(food => food.amount > 0);
+      if (this.order.length != 0) {
+        sessionStorage.setItem("orders", JSON.stringify(this.order));
+        sessionStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
+        this.$router.push("/Moorder");
+      } else {
+        this.$dialog.alert({
+          title: "Error",
+          message: "Please add some menu at lease one",
+          type: "is-warning"
+        });
+      }
     }
   },
   computed: {
@@ -101,16 +113,33 @@ export default {
   },
   created() {
     this.$store.commit("setNamePages", "Menu");
-    console.log(JSON.parse(localStorage.getItem("foodMenu")))
-    if (JSON.parse(localStorage.getItem("foodMenu")) != null) {
-      this.foodMenu = JSON.parse(localStorage.getItem("foodMenu"));
+    this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
+
+    if (JSON.parse(sessionStorage.getItem("foodMenu")) != null) {
+      this.foodMenu = JSON.parse(sessionStorage.getItem("foodMenu"));
     } else {
-      axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
-        this.foodMenu = response.data;
-        this.foodMenu.forEach(element => {
-          element.amount = 0;
-        });
-      });
+      if (this.typeOfService.typePrice != null) {
+        axios
+          .get(
+            "http://localhost:3000/api/getmenubytypeofserviceid/" +
+              this.typeOfService.typeId
+          )
+          .then(response => {
+            this.foodMenu = response.data;
+            this.foodMenu.forEach(element => {
+              element.amount = 0;
+            });
+          });
+      } else {
+        axios
+          .get("http://localhost:3000/api/getallmenu/" + 1)
+          .then(response => {
+            this.foodMenu = response.data;
+            this.foodMenu.forEach(element => {
+              element.amount = 0;
+            });
+          });
+      }
     }
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
@@ -152,9 +181,23 @@ export default {
   padding-left: 5%;
 }
 #spaceNext {
-  margin-bottom: 3%;
+  margin-bottom: 20%;
 }
 .box {
   height: 120px;
+  margin-left: 5%;
+}
+.header {
+  /* position: fixed; */
+  z-index: 10;
+}
+.cardMenu {
+  padding-top: 35%;
+  margin: 0px;
+  padding-bottom: 5%;
+  overscroll-behavior-y: inherit;
+}
+.spaceText{
+  margin-right: 5%;
 }
 </style>

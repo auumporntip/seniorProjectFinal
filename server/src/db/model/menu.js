@@ -11,6 +11,13 @@ exports.getAllMenuByRestuarantId = async (restaurantId) => {
         .where('menu.restaurantId', '=', restaurantId)
 }
 
+exports.getMenuByTypeOfServiceId = async (typeId) => {
+    return await knex('menuservice')
+        .join('menu','menu.menuId','=','menuservice.menuId')
+        .join('typeofservice','typeofservice.typeId','=','menuservice.typeId')
+        .where('menuservice.typeId', '=', typeId)
+}
+
 exports.getMenuById = async (menuId, restaurantId) => {
     return await knex('menu').where('menuId', '=', menuId)
         .andWhere('restaurantId', '=', restaurantId)

@@ -15,6 +15,10 @@ router.get('/getallmenu/:restaurantId', async(req, res) => {
     // });
 })
 
+router.get('/getMenuByTypeOfServiceId/:typeId', async(req, res) => {
+    res.send(await menu.getMenuByTypeOfServiceId(req.params.typeId))
+})
+
 router.get('/getmenubyid/:menuId/:restaurantId', async(req, res) => {
     res.send(await menu.getAllMenu(req.params.menuId, req.params.restaurantId))
 })
@@ -22,6 +26,7 @@ router.get('/getmenubyid/:menuId/:restaurantId', async(req, res) => {
 router.get('/getmenubycategory/:categoryId/:restaurantId', async(req, res) => {
     res.send(await menu.getMenuByCategory(req.params.categoryId, req.params.restaurantId))
 })
+
 
 
 router.delete('/deletemenu/:menuId/:restaurantId', async(req, res) => {

@@ -7,6 +7,10 @@ router.get('/getallbill', async (req, res) => {
     res.send(await bill.getAllBill())
 })
 
+router.get('/getbillbybillId/:billId', async (req, res) => {
+    res.send(await bill.getBillByBillId(req.params.billId))
+})
+
 router.delete('/deletebill/:billId', async (req, res) => {
     res.send(await bill.deleteBill(req.params.billId))
 })

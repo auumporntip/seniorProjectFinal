@@ -3,12 +3,12 @@
     <Bar></Bar>
     <v-layout class="space">
       <v-flex xs6>
-        <p class="subheading">{{billNo}}</p>
-        <p class="subheading">{{tableNo}}</p>
+        <p class="subheading">Bill : {{bill[0].billId}}</p>
+        <p class="subheading">Table : {{bill[0].tableNumber}}</p>
       </v-flex>
       <v-flex xs6>
-        <p class="subheading">{{date}}</p>
-        <p class="subheading">{{time}}</p>
+        <p class="subheading">Date : {{bill[0].created_at}}</p>
+        <p class="subheading">Time Start : {{bill[0].eatTimeStart}}</p>
       </v-flex>
     </v-layout>
 
@@ -24,6 +24,8 @@
 import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
+import axios from "axios";
+
 export default {
   name: "MoReceiptPage",
   components: {
@@ -32,10 +34,10 @@ export default {
   },
   data() {
     return {
-      billNo: "Bill No : 001",
-      tableNo: "Table No : 1A",
-      date: "Date : 01/10/2019",
-      time: "Time : 11.30 A.M.",
+      bill: '',
+      typeOfService: [],
+      tableNumber: "",
+
       data: [{ id: 1, ordered: "Buffet 1199.-", amount: "2", price: "2,398" }],
       columns: [
         {
@@ -61,8 +63,20 @@ export default {
     };
   },
   created() {
-      this.$store.commit("setNamePages", "Receipt");
-  },
+    this.$store.commit("setNamePages", "Receipt");
+    this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
+
+    axios
+      .get(
+        "http://localhost:3000/api/getbillbybillid/" +
+          sessionStorage.getItem("billId")
+      )
+      .then(response => {
+        this.bill = response.data;
+        
+    console.log(this.bill);
+      });
+  }
 };
 </script>
 

@@ -61,19 +61,18 @@ export default {
             amount: this.orders[index].amount,
             menuId: this.orders[index].menuId,
             statusId: 1,
-            billId: localStorage.getItem("billId")
+            billId: sessionStorage.getItem("billId")
           })
           .then(response => {
             console.log(response.data);
             this.$router.push("/Mostatus");
-            localStorage.setItem('foodMenu',null)
+            sessionStorage.setItem('foodMenu',null)
           });
       }
     }
   },
   computed: {
     sumTotalPrice() {
-      console.log(this.orders.length);
       for (let index = 0; index < this.orders.length; index++) {
         this.sum += this.orders[index].amount * this.orders[index].menuPrice;
       }
@@ -82,7 +81,7 @@ export default {
   },
   created() {
     this.$store.commit("setNamePages", "Order");
-    this.orders = JSON.parse(localStorage.getItem("orders"));
+    this.orders = JSON.parse(sessionStorage.getItem("orders"));
     // console.log(this.$store.getters.orders)
   }
 };

@@ -3,6 +3,7 @@
     <Bar></Bar>
     <div class="wrapper">
       <b-table :data="orders" :columns="columns"></b-table>
+      
     </div>
 
     <v-footer>
@@ -26,7 +27,7 @@ export default {
     return {
       currentPage: 1,
       perPage: 5,
-      orders:[],
+      orders: [],
       columns: [
         {
           field: "menuName",
@@ -41,9 +42,14 @@ export default {
   },
   created() {
     this.$store.commit("setNamePages", "Status");
-    axios.get("http://localhost:3000/api/getorderbybillid/"+localStorage.getItem('billId')).then(response=>{
-      this.orders = response.data
-    })
+    axios
+      .get(
+        "http://localhost:3000/api/getorderbybillid/" +
+          sessionStorage.getItem("billId")
+      )
+      .then(response => {
+        this.orders = response.data;
+      });
   }
 };
 </script>

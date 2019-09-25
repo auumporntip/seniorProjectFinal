@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <BarMoType></BarMoType>
+    <Bar></Bar>
     <v-flex class="space">
       <v-dialog max-width="490" v-model="dialog">
         <v-card>
@@ -28,7 +28,7 @@
           block
           color="#cd9575"
           class="white--text"
-          @click="openDialog(service.typeId,service.typePrice)"
+          @click="openDialog(service)"
         >{{service.typeName}} {{service.typePrice}}</v-btn>
       </div>
     </v-flex>
@@ -36,33 +36,32 @@
 </template>
 
 <script>
-import BarMoType from "../components/BarMoType";
+import Bar from "../components/Bar";
 import { store } from "../store/store";
 import axios from "axios";
 
 export default {
   name: "MoTypePage",
   components: {
-    BarMoType
+    Bar
   },
   data() {
     return {
       typeOfService: [],
-      typeId:0,
-      typePrice:0,
+      selectService: [],
 
       newCust: [],
       dialog: false,
+
       numRules: [v => !!v || "Number of Customers is required"],
       tableRules: [v => !!v || "Table number is required"],
       image_src1: require("../assets/prestige.png")
     };
   },
   methods: {
-    openDialog(typeId,typePrice) {
+    openDialog(service) {
       this.dialog = true;
-      this.typeId = typeId
-      this.typePrice = typePrice
+      this.selectService = service;
     },
     clickBack() {
       this.newCust = [];
@@ -72,30 +71,28 @@ export default {
     clickNext() {
       const totalPrice = 0;
       if (this.$refs.form.validate()) {
-        if(this.typePrice != 0){
-          this.totalPrice = this.typePrice*this.newCust.numOfCust
-        }else{
-          this.totalPrice = 0
-        }
-        axios.post("http://localhost:3000/api/insertbill",{
-          totalPrice: this.totalPrice,
-          eatTimeEnd: new Date(),
-          eatTimeStart: new Date(),
-          numOfCust: this.newCust.numOfCust,
-          typeId: this.typeId,
-          tableNumber : this.newCust.tableNumber
-        }).then(response=>{
-          localStorage.setItem('billId',response.data)
-          console.log(response.data)
-          this.dialog = false;
-          this.$refs.form.resetValidation();
-          this.$router.push("/Momenu");
-        })
-        
+        axios
+          .post("http://localhost:3000/api/insertbill", {
+            totalPrice: 0,
+            eatTimeEnd: new Date(),
+            eatTimeStart: new Date(),
+            numOfCust: this.newCust.numOfCust,
+            typeId: this.selectService.typeId,
+            tableNumber: this.newCust.tableNumber
+          })
+          .then(response => {
+            sessionStorage.setItem("billId", response.data);
+            sessionStorage.setItem("typeOfService", JSON.stringify(this.selectService));
+            sessionStorage.setItem("tableNumber", this.newCust.tableNumber);
+            this.dialog = false;
+            this.$refs.form.resetValidation();
+            this.$router.push("/Momenu");
+          });
       }
     }
   },
   created() {
+    this.$store.commit("setNamePages", "TypeOfService");
     axios
       .get("http://localhost:3000/api/gettypeofservice/" + 1)
       .then(response => {
