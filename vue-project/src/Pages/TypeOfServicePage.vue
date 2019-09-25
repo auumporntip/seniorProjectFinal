@@ -5,112 +5,209 @@
       <section class="bg">
         <v-card-title class="headline font-weight-medium">TYPE OF SERVICE</v-card-title>
         <v-layout justify-space-around>
-          <v-flex xs3>
-            <v-card class="card">
-              <v-img :src="require('../assets/add.png')" aspect-ratio="1.5"></v-img>
-              <v-btn
-                class="subheading font-weight-medium"
-                block
-                id="text"
-                @click="newDialog=true"
-              >ADD TYPE OF SERVICE</v-btn>
-              <v-dialog max-width="350" v-model="newDialog">
-                <v-card>
-                  <v-card-text class="title">
-                    New type of service
-                    <v-form ref="form">
-                      <v-container>
-                        <v-text-field label="Name" v-model="newType.typeName" :rules="nameRules"></v-text-field>
-                        <v-text-field label="Time" v-model="newType.typeTime" :rules="timeRules"></v-text-field>
-                        <v-text-field
-                          label="Price"
-                          type="number"
-                          v-model="newType.typePrice"
-                          :rules="priceRules"
-                        ></v-text-field>
-                        <v-text-field
-                          label="Restaurant ID"
-                          v-model="newType.typeResId"
-                          :rules="resIdRules"
-                        ></v-text-field>
-                        <b-field class="file">
-                          <b-upload v-model="file">
-                            <a class="button">
-                              <b-icon icon="upload"></b-icon>
-                              <span>Click to upload image</span>
-                            </a>
-                          </b-upload>
-                        </b-field>
-                        <div class="tags">
-                          <span class="tag is-dark" v-if="file" color="blue lighten-2">{{file.name}}</span>
-                        </div>
-                      </v-container>
-                    </v-form>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="red" @click="newDialog=false">Cancel</v-btn>
-                    <v-btn flat color="darkgrey" @click="clickSaveNew">Save</v-btn>
-                  </v-card-actions>
+          <!-- add new type -->
+
+          <!-- type -->
+          <v-container fluid>
+            <v-layout wrap>
+              <v-flex xs3>
+                <v-card class="card">
+                  <v-img :src="require('../assets/add.png')" aspect-ratio="1.5"></v-img>
+                  <v-btn
+                    class="subheading font-weight-medium"
+                    block
+                    id="text"
+                    @click="newTypeDialog=true"
+                  >ADD TYPE OF SERVICE</v-btn>
+                  <v-dialog max-width="600" v-model="newTypeDialog">
+                    <v-card>
+                      <v-card-text class="title">
+                        New type of service
+                        <v-form>
+                          <v-container>
+                            <v-layout row>
+                              <v-flex>
+                                <div v-if="image === null">
+                                  <v-img :src="require('../assets/add.png')" class="imageSize"></v-img>
+                                  <!-- <img src="../assets/1.png" class="imageSize" /> -->
+                                </div>
+                                <div v-else>
+                                  <v-img :src="image" class="imageSize"></v-img>
+                                </div>
+                                <b-field class="file">
+                                  <b-upload
+                                    v-model="image"
+                                    v-on:input="fileChange"
+                                    accept="image/*"
+                                  >
+                                    <a class="button">
+                                      <b-icon icon="upload"></b-icon>
+                                      <span>Click to upload image</span>
+                                    </a>
+                                  </b-upload>
+                                </b-field>
+                              </v-flex>
+                              <v-flex xs6 order-md3 order-xs2>
+                                <v-text-field label="Name" v-model="newType.typeName" :rules="rules.typeName"></v-text-field>
+                                <v-layout row>
+                                  <v-flex xs6 order-md1 order-xs3>
+                                    <v-text-field
+                                      label="Time Limit"
+                                      type="number"
+                                      suffix="Hr."
+                                      placeholder="1"
+                                      v-model="hour"
+                                    ></v-text-field>
+                                  </v-flex>
+                                  <v-flex xs6 order-md3 order-xs2>
+                                    <v-text-field
+                                      label="Time Limit"
+                                      type="number"
+                                      suffix="Min."
+                                      placeholder="30"
+                                      v-model="minute"
+                                    ></v-text-field>
+                                  </v-flex>
+                                </v-layout>
+                                <v-text-field
+                                  label="Price"
+                                  type="number"
+                                  v-model="newType.typePrice"
+                                ></v-text-field>
+                              </v-flex>
+                            </v-layout>
+                          </v-container>
+                        </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="red" @click="newTypeCancel">Cancel</v-btn>
+                        <v-btn flat color="darkgrey" @click="newTypeSave">Save</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
                 </v-card>
-              </v-dialog>
-            </v-card>
-          </v-flex>
-          <v-flex xs3>
-            <v-card class="card">
-              <v-img :src="require('../assets/yakiniku2.jpg')" aspect-ratio="1.5"></v-img>
-              <v-btn
-                class="subheading font-weight-medium"
-                block
-                id="text"
-                @click="showMenu"
-              >Premium Buffet</v-btn>
-              <v-dialog max-width="490" v-model="menuDialog">
+              </v-flex>
+
+              <v-flex xs3 v-for="type in typeData" :key="type.typeId">
+                <v-card class="card">
+                  <v-img v-if="type.typePathImage != null" :src="type.typePathImage" aspect-ratio="1.5"></v-img>
+                  <v-img v-else :src="require('../assets/nophoto.png')" aspect-ratio="1.5"></v-img>
+                  <v-btn
+                    class="subheading font-weight-medium"
+                    block
+                    id="text"
+                    @click="clickType(type)"
+                  >{{type.typeName}}</v-btn>
+                </v-card>
+              </v-flex>
+              <v-dialog max-width="600" v-model="editTypeDialog">
                 <v-card>
                   <v-card-text class="title">
-                    Choose menu for Premium Buffet
+                    Edit type of service
                     <v-form>
                       <v-container>
-                        <b-table
-                          :data="menuData"
-                          :columns="columns"
-                          :checked-rows.sync="checkedRows"
-                          :is-row-checkable="(row) => row.id !== 3"
-                          checkable
-                          :checkbox-position="checkboxPosition"
-                          class="textTable"
-                        >
-                          <template slot="bottom-left">
-                            <b>Total checked</b>
-                            : {{ checkedRows.length }}
-                          </template>
-                        </b-table>
+                        <v-layout row>
+                          <v-flex>
+                            <div v-if="image != null">
+                              <v-img :src="image" class="imageSize"></v-img>
+                            </div>
+                            <div v-else-if="typeOfServiceForDialog.typePathImage==null">
+                              <v-img :src="require('../assets/add.png')" class="imageSize"></v-img>
+                            </div>
+                            <div v-else>
+                              <v-img :src="typeOfServiceForDialog.typePathImage" class="imageSize"></v-img>
+                            </div>
+                            <b-field class="file">
+                              <b-upload v-model="image" v-on:input="fileChange" accept="image/*">
+                                <a class="button">
+                                  <b-icon icon="upload"></b-icon>
+                                  <span>Click to upload image</span>
+                                </a>
+                              </b-upload>
+                            </b-field>
+                          </v-flex>
+                          <v-flex xs6 order-md3 order-xs2>
+                            <v-text-field label="Name" v-model="typeOfServiceForDialog.typeName"></v-text-field>
+                            <v-layout row>
+                              <v-flex xs6 order-md1 order-xs3>
+                                <v-text-field
+                                  label="Time Limit"
+                                  type="number"
+                                  suffix="Hr."
+                                  placeholder="1"
+                                  v-model="typeOfServiceForDialog.hour"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex xs6 order-md3 order-xs2>
+                                <v-text-field
+                                  label="Time Limit"
+                                  type="number"
+                                  suffix="Min."
+                                  placeholder="30"
+                                  v-model="typeOfServiceForDialog.minute"
+                                ></v-text-field>
+                              </v-flex>
+                            </v-layout>
+                            <v-text-field
+                              label="Price"
+                              type="number"
+                              v-model="typeOfServiceForDialog.typePrice"
+                            ></v-text-field>
+
+                            <!-- dialog add menu -->
+                            <a class="button" id="buttonAdd" @click="showMenu">
+                              <b-icon icon="plus"></b-icon>
+                              <span>Add menu for this type of service</span>
+                            </a>
+                            <v-dialog width="700" v-model="menuDialog">
+                              <v-card>
+                                <v-card-text class="title">
+                                  Choose menu for this type of service
+                                  <v-form>
+                                    <v-container>
+                                      <b-table
+                                        :data="menuData"
+                                        :columns="columns"
+                                        :checked-rows.sync="checkedRows"
+                                        :is-row-checkable="(row) => row.id !== 3"
+                                        checkable
+                                        :checkbox-position="checkboxPosition"
+                                        :paginated="isPaginated"
+                                        :per-page="perPage"
+                                        :icon-prev="prevIcon"
+                                        :icon-next="nextIcon"
+                                        class="textTable"
+                                      >
+                                        <template slot="bottom-left">
+                                          <b>Total checked</b>
+                                          : {{ checkedRows.length }}
+                                        </template>
+                                      </b-table>
+                                    </v-container>
+                                  </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn flat color="red" @click="menuDialog=false">Cancel</v-btn>
+                                  <v-btn flat color="darkgrey" @click="addMenu">Add</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-flex>
+                        </v-layout>
                       </v-container>
                     </v-form>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="red" @click="menuDialog=false">Cancel</v-btn>
-                    <v-btn flat color="darkgrey">Add</v-btn>
+                    <v-btn flat color="red" @click="editTypeCancel">Cancel</v-btn>
+                    <v-btn flat color="darkgrey" @click="editTypeSave">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs3>
-            <v-card class="card">
-              <v-img :src="require('../assets/sushi2.jpg')" aspect-ratio="1.5"></v-img>
-              <v-btn class="subheading font-weight-medium" block id="text">Platinum Buffet</v-btn>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs3>
-            <v-card class="card">
-              <v-img :src="require('../assets/sashimi2.jpg')" aspect-ratio="1.5"></v-img>
-              <v-btn class="subheading font-weight-medium" block id="text">A-La-Carte</v-btn>
-            </v-card>
-          </v-flex>
+            </v-layout>
+          </v-container>
         </v-layout>
       </section>
     </div>
@@ -127,18 +224,44 @@ export default {
   },
   data() {
     return {
-      typeData: [],
       newType: [],
-      nameRules: [v => !!v || "Menu name is required"],
-      timeRules: [v => !!v || "Time is required"],
-      priceRules: [v => !!v || "Price is required"],
-      resIdRules: [v => !!v || "Restaurant ID is required"],
-      newDialog: false,
-      file: null,
+      typeData: [],
+
+      rules:{
+        typeName:[]
+      },
+
+      //add new type
+      image: null,
+      newTypeDialog: false,
+      minute: null,
+      hour: null,
+
+      //uploadFile
+      imageForUpload: null,
+      pathImage: null,
+
+      //edit type
+      editTypeDialog: false,
+      selectedType: {},
+      editType: [],
+      typeOfServiceForDialog: [],
+
+      //loop
+      type: [],
+      types: {
+        typePrice:null
+      },
+
+      //add menu dialog
       menuDialog: false,
       menuData: [],
       checkboxPosition: "left",
       checkedRows: [],
+      isPaginated: true,
+      perPage: 10,
+      prevIcon: "chevron-left",
+      nextIcon: "chevron-right",
       columns: [
         {
           field: "menuId",
@@ -157,36 +280,155 @@ export default {
     };
   },
   methods: {
+    fileChange() {
+      this.imageForUpload = this.image;
+      this.createImage(this.image);
+    },
+    createImage(file) {
+      var reader = new FileReader();
+      reader.onload = e => {
+        this.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    newTypeSave() {
+      console.log(this.newType);
+      if (this.imageForUpload != null) {
+        var formData = new FormData();
+        formData.append("file", this.imageForUpload);
+        axios
+          .post("http://localhost:3000/api/uploadFB", formData)
+          .then(response => {
+            this.pathImage = response.data.url;
+            axios
+              .post("http://localhost:3000/api/insertTypeOfService", {
+                typeName: this.newType.typeName,
+                typeTime: this.hour + "." + this.minute,
+                typePrice: this.newType.typePrice,
+                typePathImage: this.pathImage,
+                restaurantId: 1
+              })
+              .then(response => {
+                this.newTypeCancel();
+                this.refreshPage();
+              });
+          });
+      } else {
+        axios
+          .post("http://localhost:3000/api/insertTypeOfService", {
+            typeName: this.newType.typeName,
+            typeTime: this.newType.typeTime,
+            typePrice: this.newType.typePrice,
+            typePathImage: this.imageForUpload,
+            restaurantId: 1
+          })
+          .then(response => {
+            this.newTypeCancel();
+            this.refreshPage();
+          });
+      }
+    },
+    newTypeCancel() {
+      this.newType = [];
+      this.image = null;
+      this.newTypeDialog = false;
+      this.imageForUpload = null;
+      this.pathImage = null;
+      this.minute = null;
+      this.hour = null;
+    },
+    editTypeCancel() {
+      // axios
+      //   .get("http://localhost:3000/api/getalltypeofservice")
+      //   .then(response => {
+      //     this.selectedMenu = {};
+      //     this.image = null;
+      //     this.imageForUpload = null;
+      //   });
+      this.editTypeDialog = false;
+    },
+    editTypeSave() {
+      console.log(this.typeOfServiceForDialog);
+      this.typeOfServiceForDialog.typeTime =
+        this.typeOfServiceForDialog.hour +
+        "." +
+        this.typeOfServiceForDialog.minute;
+      if (this.image == null) {
+        axios
+          .put(
+            "http://localhost:3000/api/updatetypeofservice/",
+            this.typeOfServiceForDialog
+          )
+          .then(() => {
+            this.editTypeCancel();
+          });
+      } else {
+        var formData = new FormData();
+        formData.append("file", this.imageForUpload);
+        axios
+          .post("http://localhost:3000/api/uploadFB", formData)
+          .then(response => {
+            this.selectedType.typePathImage = response.data.url;
+            axios
+              .put(
+                "http://localhost:3000/api/updatetypeofservice/",
+                this.typeOfServiceForDialog
+              )
+              .then(() => {
+                this.editTypeCancel();
+              });
+          });
+      }
+    },
     showMenu() {
       this.menuDialog = true;
       axios.get("http://localhost:3000/api/getallMenu").then(response => {
         this.menuData = response.data;
       });
     },
-    clickSaveNew() {
-      if (this.$refs.form.validate()) {
-        console.log(this.newType);
+    addMenu() {
+      console.log(this.checkedRows);
+      console.log(this.typeOfServiceForDialog);
+      for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .post("http://localhost:3000/api/insertTypeOfService", {
-            typeName: this.newType.typeName,
-            typeTime: this.newType.typeTime,
-            typePrice: this.newType.typePrice,
-            restaurantId: this.newType.restaurantId
-          })
-          .then(response => {
-            this.newType = [];
-            this.$refs.form.resetValidation();
+          .post(
+            "http://localhost:3000/api/insertMenuService/",
+            this.checkedRows[index],
+            {
+              typeId: this.typeOfServiceForDialog.typeId,
+              menuId: this.checkedRows.menuId
+            }
+          )
+          .then(() => {
+            this.checkedRows = [];
           });
-        this.newDialog = false;
       }
+      this.menuDialog = false;
     },
-    created() {
+    refreshPage() {
       axios
-        .get("http://localhost:3000/api/getallTypeOfService")
+        .get("http://localhost:3000/api/getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
         });
+    },
+    clickType(type) {
+      this.typeOfServiceForDialog = type
+      var index = this.typeOfServiceForDialog.typeTime.indexOf('.')
+      this.typeOfServiceForDialog.minute = this.typeOfServiceForDialog.typeTime.substring(0,index)
+      this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(index+1)
+      this.editTypeDialog = true;
     }
+  },
+  created() {
+    axios
+      .get("http://localhost:3000/api/getalltypeofservice")
+      .then(response => {
+        this.typeData = response.data;
+        this.typeData.forEach(element => {
+          element.amount = 0;
+        });
+      });
   }
 };
 </script>
@@ -218,11 +460,27 @@ export default {
 }
 .title {
   text-align: left;
+  padding-top: 5%;
+  padding-left: 5%;
+  padding-bottom: 5%;
 }
 .textTable {
   font-size: 15px;
 }
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
+}
+.imageSize {
+  margin-top: 5%;
+  margin-left: -1%;
+  margin-bottom: 7%;
+  width: 220px;
+  height: 180px;
+}
+#buttonAdd {
+  margin-top: 3%;
+  margin-left: -1%;
+  border: none;
+  background-color: #f0cab1;
 }
 </style>

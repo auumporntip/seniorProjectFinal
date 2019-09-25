@@ -20,8 +20,9 @@ exports.updateTypeOfService = async(typeOfService) => {
 exports.insertTypeOfService = async(typeOfService) => {
     return await knex('typeOfService').insert({
         typeName:typeOfService.typeName,
-        typeTime:typeOfService.typeName,
+        typeTime:typeOfService.typeTime,
         typePrice:typeOfService.typePrice,
+        typePathImage:typeOfService.typePathImage,
         restaurantId:typeOfService.restaurantId
         })
 }

@@ -10,8 +10,8 @@
               {{selectedCategory.categoryName}}
               <b-icon icon="menu-down"></b-icon>
             </v-btn>
-            
-            <v-btn class="button is-dark" slot="trigger" v-else id="button" >
+
+            <v-btn class="button is-dark" slot="trigger" v-else id="button">
               All Category
               <!-- <b-icon icon="menu-down"></b-icon> -->
             </v-btn>
@@ -24,33 +24,33 @@
             >{{option.categoryName}}</b-dropdown-item>
           </b-dropdown>
           <v-layout>
-              <v-flex xs2>
-                <v-btn class="add" @click="AddDialog=true">Add Category</v-btn>
-                <v-dialog v-model="AddDialog" max-width="490">
-                  <v-card>
-                    <v-card-text class="headline">
-                      Add Category
-                      <v-form ref="form">
-                        <v-container fluid>
-                          <v-text-field
-                            label="categoryName"
-                            v-model="newCat.categoryName"
-                            type="text"
-                            :rules="[rules.nameRules,rules.check]"
-                          ></v-text-field>
-                        </v-container>
-                      </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn text @click="addCancel">Cancel</v-btn>
-                      <v-btn text @click="addSave">Save</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-flex>
-            </v-layout>
-          
+            <v-flex xs2>
+              <v-btn class="add" @click="AddDialog=true">Add Category</v-btn>
+              <v-dialog v-model="AddDialog" max-width="490">
+                <v-card>
+                  <v-card-text class="headline">
+                    Add Category
+                    <v-form ref="form">
+                      <v-container fluid>
+                        <v-text-field
+                          label="categoryName"
+                          v-model="newCat.categoryName"
+                          type="text"
+                          :rules="nameRules"
+                        ></v-text-field>
+                      </v-container>
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="addCancel">Cancel</v-btn>
+                    <v-btn text @click="addSave">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-flex>
+          </v-layout>
+
           <v-text-field
             class="search"
             v-model="keyword"
@@ -114,10 +114,10 @@ export default {
       //Add
       AddDialog: false,
       newCat: [],
-      rules: {
-        nameRules: v => !!v || "Name is required",
-        
-      },
+      nameRules: [
+        v => !!v || "Name is required",
+        v => this.checkName || "Name has already"
+      ],
       isPaginated: true,
       isPaginationSimple: false,
       currentPage: 1,
@@ -131,27 +131,13 @@ export default {
     };
   },
   methods: {
-    check(){
-      for (let index = 0; index < this.category.length; index++) {
-            if (
-              this.newCat.categoryName.toLowerCase() ===
-              this.category[index].categoryName.toLowerCase()
-            ) {
-              return false;
-
-            }
-          }
-          this.$refs.form.rules
-      return true;
-    },
     addCancel() {
       this.AddDialog = false;
       this.$refs.form.resetValidation();
       this.newCat = [];
     },
     addSave() {
-      if (this.$refs.form.validate() && this.check()) {
-        console.log(this.newCat.categoryName);
+      if (this.$refs.form.validate()) {
         axios
           .post("http://localhost:3000/api/insertCategory", {
             categoryName: this.newCat.categoryName,
@@ -160,8 +146,8 @@ export default {
           .then(response => {
             this.reCat();
             (this.newCat = []), this.$refs.form.resetValidation();
+            this.AddDialog = false;
           });
-        this.AddDialog = false;
       }
     },
     reCat() {
@@ -208,6 +194,18 @@ export default {
       } else {
         return this.$store.getters.menu;
       }
+    },
+    checkName() {
+      for (let index = 0; index < this.category.length; index++) {
+        if (
+          this.newCat.categoryName.toLowerCase() ===
+          this.category[index].categoryName.toLowerCase()
+        ) {
+          return false;
+        }
+      }
+      this.$refs.form.rules;
+      return true;
     }
   },
   created: function() {
