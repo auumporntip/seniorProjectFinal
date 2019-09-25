@@ -6,14 +6,15 @@
           Category of food
           <!-- <span class="head">Category of Food:</span> -->
           <b-dropdown v-model="selectedCategory">
-            <button class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
+            <v-btn class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
               {{selectedCategory.categoryName}}
               <b-icon icon="menu-down"></b-icon>
-            </button>
-            <button class="button is-dark" slot="trigger" v-else id="button">
+            </v-btn>
+            
+            <v-btn class="button is-dark" slot="trigger" v-else id="button" >
               All Category
-              <b-icon icon="menu-down"></b-icon>
-            </button>
+              <!-- <b-icon icon="menu-down"></b-icon> -->
+            </v-btn>
             <b-dropdown-item @click="allCategory">All Category</b-dropdown-item>
             <b-dropdown-item
               v-for="option in category"
@@ -21,7 +22,8 @@
               :key="option.categoryId"
               @click="changeCategoryMenu"
             >{{option.categoryName}}</b-dropdown-item>
-            <v-layout>
+          </b-dropdown>
+          <v-layout>
               <v-flex xs2>
                 <v-btn class="add" @click="AddDialog=true">Add Category</v-btn>
                 <v-dialog v-model="AddDialog" max-width="490">
@@ -48,7 +50,7 @@
                 </v-dialog>
               </v-flex>
             </v-layout>
-          </b-dropdown>
+          
           <v-text-field
             class="search"
             v-model="keyword"
@@ -114,6 +116,7 @@ export default {
       newCat: [],
       rules: {
         nameRules: v => !!v || "Name is required",
+        
       },
       isPaginated: true,
       isPaginationSimple: false,
@@ -135,6 +138,7 @@ export default {
               this.category[index].categoryName.toLowerCase()
             ) {
               return false;
+
             }
           }
           this.$refs.form.rules

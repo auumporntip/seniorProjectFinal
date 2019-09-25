@@ -17,7 +17,7 @@
               <DeleteButton></DeleteButton>
             </v-flex>
           </v-layout>
-        </v-flex>
+      
       </section>
     </div>
   </div>
