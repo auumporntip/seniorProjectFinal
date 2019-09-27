@@ -71,8 +71,6 @@
     <b-table
       :data="items"
       :selected.sync="selectedMenu"
-      focusable
-      class="elevation-1"
       :paginated="isPaginated"
       :per-page="perPage"
       :current-page.sync="currentPage"
@@ -82,9 +80,11 @@
       aria-page-label="Page"
       aria-current-label="Current page"
       @select="selected"
+
+      id="imageColumn"
     >
       <template slot-scope="props">
-        <b-table-column label="Image" width="80">
+        <b-table-column label="Image" width="80" >
           <div class="img-resize" v-if="props.row.menuPathImage!=null">
             <img :src="props.row.menuPathImage" />
           </div>
@@ -232,5 +232,9 @@ export default {
 }
 #button {
   margin-left: 10px;
+}
+#imageColumn{
+  margin-left: 1%;
+  margin-right: 1%;
 }
 </style>

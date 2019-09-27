@@ -15,22 +15,24 @@
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <div v-if="image==null">
-                      <img src="../../../assets/1.png" width="100px" height="100px" />
+                      <img src="../../../assets/1.png" width="100px" height="100px" class="imageSize" />
                     </div>
                     <div v-else>
                       <img :src="image" width="100px" height="100px" />
                     </div>
-                    <b-field class="file">
-                      <b-upload v-model="image" v-on:input="onFileChange">
-                        <a class="button is-primary">
-                          <b-icon icon="upload"></b-icon>
-                          <span>Click to upload</span>
-                        </a>
-                      </b-upload>
-                    </b-field>
+
                     <v-flex xs7 sm6>
-                      <v-text-field label="Menu Name" v-model="menu.menuName" :rules="nameRules"></v-text-field>
+                      <v-text-field class="name" label="Menu Name" v-model="menu.menuName" :rules="nameRules"></v-text-field>
+                      <b-field class="file">
+                        <b-upload v-model="image" v-on:input="onFileChange" class="uploadBtn">
+                          <a class="button is-primary">
+                            <b-icon icon="upload"></b-icon>
+                            <span>Click to upload</span>
+                          </a>
+                        </b-upload>
+                      </b-field>
                     </v-flex>
+
                     <v-flex xs12>
                       <v-text-field label="Menu Price" v-model="menu.menuPrice" :rules="priceRules"></v-text-field>
                     </v-flex>
@@ -202,3 +204,18 @@ export default {
 };
 </script>
 
+<style scoped>
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
+}
+.uploadBtn {
+  padding-top: 5%;
+  padding-left: 25%;
+}
+.name{
+   padding-left: 25%;
+}
+.imageSize {
+  margin-left: 4%;
+}
+</style>

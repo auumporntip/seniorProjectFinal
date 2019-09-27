@@ -105,8 +105,10 @@ export default {
 <style scoped>
 .space {
   margin: 15px;
+  padding-top: 20%;
 }
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
 }
+
 </style>

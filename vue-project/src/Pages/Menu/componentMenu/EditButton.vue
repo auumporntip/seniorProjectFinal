@@ -202,3 +202,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
+}
+</style>

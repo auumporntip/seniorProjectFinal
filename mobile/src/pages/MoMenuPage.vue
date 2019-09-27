@@ -1,17 +1,12 @@
 <template>
   <v-content>
-    <div class="header">
+    <v-toolbar class="tabBar" fixed>
       <Bar></Bar>
-      <v-tabs
-        v-model="tab"
-        color="white"
-        align-with-title
-      >
+      <v-tabs v-model="tab" color="white" fixed-tabs class="tabSlide">
         <v-tabs-slider color="#cd9575"></v-tabs-slider>
         <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
       </v-tabs>
-    </div>
-
+    </v-toolbar>
     <v-card color="white" class="cardMenu">
       <v-flex xs12 v-for="(menu) in items" :key="menu.menuId">
         <v-layout>
@@ -190,14 +185,19 @@ export default {
 .header {
   /* position: fixed; */
   z-index: 10;
+  overflow: hidden;
 }
 .cardMenu {
-  padding-top: 35%;
+  padding-top: 40%;
   margin: 0px;
   padding-bottom: 5%;
   overscroll-behavior-y: inherit;
 }
-.spaceText{
+.spaceText {
   margin-right: 5%;
+}
+.tabBar {
+  padding-top: 18%;
+  background-color: white;
 }
 </style>

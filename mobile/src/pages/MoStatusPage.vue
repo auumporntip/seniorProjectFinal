@@ -3,7 +3,6 @@
     <Bar></Bar>
     <div class="wrapper">
       <b-table :data="orders" :columns="columns"></b-table>
-      
     </div>
 
     <v-footer>
@@ -57,6 +56,6 @@ export default {
 <style scoped>
 .wrapper {
   margin: 15px;
-  padding-bottom: 15px;
+  padding-top: 20%;
 }
 </style>

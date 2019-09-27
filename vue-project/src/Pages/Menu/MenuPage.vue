@@ -2,8 +2,8 @@
   <div>
     <sidebar></sidebar>
     <div id="bigBox">
-      <section class="bg">
-        <v-card-title class="title">MENU</v-card-title>
+      <div class="bg">
+        <v-card-title class="headline font-weight-medium">MENU</v-card-title>
        
           <MenuTable></MenuTable>
           <v-layout row wrap id="button">
@@ -18,7 +18,7 @@
             </v-flex>
           </v-layout>
       
-      </section>
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +57,7 @@ export default {
 .bg {
   background-color: #f0cab1;
   border-radius: 20px;
+  padding: 1%;
 }
 #bigBox {
   background-color: #eeeeee;
@@ -68,5 +69,8 @@ export default {
 }
 #button{
   margin-left: 120px;
+}
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

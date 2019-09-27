@@ -3,9 +3,37 @@
     <Bar></Bar>
     <div class="wrapper">
       <b-table :data="orders" mobile-card :columns="columns"></b-table>
+      <v-card color="primary" class="elevation-1" >
+        <v-layout row>
+          <v-flex xs4>
+            <v-card-text class="textHead">Menu</v-card-text>
+          </v-flex>
+          <v-flex xs4>
+            <v-card-text class="textHead">Price</v-card-text>
+          </v-flex>
+          <v-flex xs4>
+            <v-card-text class="textHead">Amount</v-card-text>
+          </v-flex>
+        </v-layout>
+      </v-card>
+
+      <v-card color="primary" class="elevation-1" outline>
+        <v-layout row>
+          <v-flex xs4>
+            <v-card-text class="text">lssss</v-card-text>
+          </v-flex>
+          <v-flex xs4>
+            <v-card-text class="text">hi</v-card-text>
+          </v-flex>
+          <v-flex xs4>
+            <v-card-text class="text">pp</v-card-text>
+          </v-flex>
+        </v-layout>
+      </v-card>
+
       <v-card height="auto" flat>
         <v-card-title>
-          <strong class="subheading black--text">Total Prices : {{sumTotalPrice}} Baht</strong>
+          <strong class="subheading black--text">Total Prices: {{sumTotalPrice}} ฿</strong>
           <v-btn @click="confirm" color="#cd9575" class="white--text">Confirm</v-btn>
         </v-card-title>
       </v-card>
@@ -66,7 +94,7 @@ export default {
           .then(response => {
             console.log(response.data);
             this.$router.push("/Mostatus");
-            sessionStorage.setItem('foodMenu',null)
+            sessionStorage.setItem("foodMenu", null);
           });
       }
     }
@@ -90,5 +118,16 @@ export default {
 <style scoped>
 .wrapper {
   margin: 15px;
+  padding-top: 20%;
+  
+  margin-bottom: 20%;
 }
+.textHead {
+  font-weight: 1000;
+}
+.text {
+  text-align: left;
+  font-weight: 500;
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar dark color="#cd9575">
+  <v-toolbar dark color="#cd9575" fixed>
     <p v-if="this.$store.getters.namePages === 'Menu'" flat icon color="white">
       <v-icon></v-icon>
     </p>
