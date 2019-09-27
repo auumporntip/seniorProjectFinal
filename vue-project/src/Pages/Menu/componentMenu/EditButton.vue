@@ -148,7 +148,7 @@ export default {
         this.imageForUpload = null;
         this.category = {};
         this.selectedCategory = "";
-
+        this.$refs.form.resetValidation();
         this.$refs.form.rules;
       });
     },
@@ -177,7 +177,9 @@ export default {
   },
   computed: {
     checkName() {
-      if (this.name === this.selectedMenu.menuName) {
+      if (
+        this.name.toLowerCase() === this.selectedMenu.menuName.toLowerCase()
+      ) {
         return true;
       } else {
         for (let index = 0; index < this.allMenu.length; index++) {

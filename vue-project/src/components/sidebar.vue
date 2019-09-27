@@ -9,7 +9,7 @@
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title class="name">Restaurant Management</v-list-tile-title>
+              <v-list-tile-title class="name">PAT Restaurant</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -78,6 +78,15 @@
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Employee</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'TablePage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Table</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 

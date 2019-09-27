@@ -17,6 +17,7 @@ import TypeOfServicePage from '@/Pages/TypeOfServicePage'
 import TypeOfServiceMenu from '@/Pages/TypeOfServiceMenu'
 import Restaurant from '@/Pages/Restaurant'
 import MenuPage from '@/Pages/Menu/MenuPage'
+import TablePage from '@/Pages/TablePage'
 import Superadmin from '@/Superadmin/Superadmin'
 import accountsuper from '@/Superadmin/page/accountsuper'
 import billsuper from '@/Superadmin/page/billsuper'
@@ -92,6 +93,11 @@ export default new Router({
       path: '/Restaurant',
       name: 'Restaurant',
       component: Restaurant
+    },
+    {
+      path: '/Table',
+      name: 'TablePage',
+      component: TablePage
     },
     {
       path: '/Superadmin',

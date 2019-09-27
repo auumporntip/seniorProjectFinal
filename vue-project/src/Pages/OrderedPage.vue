@@ -3,10 +3,17 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium">ORDERED</v-card-title>
-        <b-tabs>
-          <b-tab-item label="Ordered">
-            <b-input placeholder="Search..." type="search" icon="magnify"></b-input>
+        <v-card-title class="headline font-weight-medium">ORDERED
+        <v-text-field
+            class="search"
+            v-model="keyword"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+          </v-card-title>
+            <!-- <b-input placeholder="Search..." type="search" icon="magnify"></b-input> -->
             <b-table
               :data="ordered"
               :columns="columns"
@@ -47,8 +54,6 @@
                 </v-card>
               </v-dialog>
             </div>
-          </b-tab-item>
-        </b-tabs>
       </section>
     </div>
   </div>

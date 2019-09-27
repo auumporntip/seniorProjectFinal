@@ -23,7 +23,7 @@
                     <v-card>
                       <v-card-text class="title">
                         New type of service
-                        <v-form>
+                        <v-form ref="form">
                           <v-container>
                             <v-layout row>
                               <v-flex>
@@ -48,7 +48,11 @@
                                 </b-field>
                               </v-flex>
                               <v-flex xs6 order-md3 order-xs2>
-                                <v-text-field label="Name" v-model="newType.typeName" :rules="rules.typeName"></v-text-field>
+                                <v-text-field
+                                  label="Name"
+                                  v-model="newType.typeName"
+                                  :rules="nameRules"
+                                ></v-text-field>
                                 <v-layout row>
                                   <v-flex xs6 order-md1 order-xs3>
                                     <v-text-field
@@ -57,6 +61,7 @@
                                       suffix="Hr."
                                       placeholder="1"
                                       v-model="hour"
+                                      :rules="hourRules"
                                     ></v-text-field>
                                   </v-flex>
                                   <v-flex xs6 order-md3 order-xs2>
@@ -66,6 +71,7 @@
                                       suffix="Min."
                                       placeholder="30"
                                       v-model="minute"
+                                      :rules="minuteRules"
                                     ></v-text-field>
                                   </v-flex>
                                 </v-layout>
@@ -73,6 +79,7 @@
                                   label="Price"
                                   type="number"
                                   v-model="newType.typePrice"
+                                  :rules="priceRules"
                                 ></v-text-field>
                               </v-flex>
                             </v-layout>
@@ -91,7 +98,11 @@
 
               <v-flex xs3 v-for="type in typeData" :key="type.typeId">
                 <v-card class="card">
-                  <v-img v-if="type.typePathImage != null" :src="type.typePathImage" aspect-ratio="1.5"></v-img>
+                  <v-img
+                    v-if="type.typePathImage != null"
+                    :src="type.typePathImage"
+                    aspect-ratio="1.5"
+                  ></v-img>
                   <v-img v-else :src="require('../assets/nophoto.png')" aspect-ratio="1.5"></v-img>
                   <v-btn
                     class="subheading font-weight-medium"
@@ -128,7 +139,11 @@
                             </b-field>
                           </v-flex>
                           <v-flex xs6 order-md3 order-xs2>
-                            <v-text-field label="Name" v-model="typeOfServiceForDialog.typeName"></v-text-field>
+                            <v-text-field
+                              label="Name"
+                              v-model="typeOfServiceForDialog.typeName"
+                              :rules="editNameRules"
+                            ></v-text-field>
                             <v-layout row>
                               <v-flex xs6 order-md1 order-xs3>
                                 <v-text-field
@@ -137,6 +152,7 @@
                                   suffix="Hr."
                                   placeholder="1"
                                   v-model="typeOfServiceForDialog.hour"
+                                  :rules="editHourRules"
                                 ></v-text-field>
                               </v-flex>
                               <v-flex xs6 order-md3 order-xs2>
@@ -146,6 +162,7 @@
                                   suffix="Min."
                                   placeholder="30"
                                   v-model="typeOfServiceForDialog.minute"
+                                  :rules="editMinuteRules"
                                 ></v-text-field>
                               </v-flex>
                             </v-layout>
@@ -153,6 +170,7 @@
                               label="Price"
                               type="number"
                               v-model="typeOfServiceForDialog.typePrice"
+                              :rules="priceRules"
                             ></v-text-field>
 
                             <!-- dialog add menu -->
@@ -224,18 +242,46 @@ export default {
   },
   data() {
     return {
-      newType: [],
+      newType: {
+        typePrice: 0
+      },
       typeData: [],
 
-      rules:{
-        typeName:[]
-      },
+      nameRules: [
+        v => !!v || "Name is required",
+        v => this.checkName || "Name has already"
+      ],
+      hourRules: [
+        v => (!!v && this.minute >= 0 && this.hour >= 0) || "Time is required"
+      ],
+      minuteRules: [
+        v => (!!v && this.hour >= 0 && this.minute >= 0) || "Time is required",
+
+        v => this.minute < 60 || "Minute เกิน 60 นาทีไม่ได้"
+      ],
+      priceRules: [v => !!v || "Price is required"],
+
+      editNameRules: [
+        v => !!v || "Name is required",
+        v => this.editCheckName || "Name has already"
+      ],
+      editHourRules: [
+        v =>
+          (!!v && this.typeOfServiceForDialog.hour >= 0) || "Time is required"
+      ],
+      editMinuteRules: [
+        v =>
+          (!!v && this.typeOfServiceForDialog.minute >= 0) ||
+          "Time is required",
+        v =>
+          this.typeOfServiceForDialog.minute < 60 || "Minute เกิน 60 นาทีไม่ได้"
+      ],
 
       //add new type
       image: null,
       newTypeDialog: false,
-      minute: null,
-      hour: null,
+      minute: 0,
+      hour: 0,
 
       //uploadFile
       imageForUpload: null,
@@ -245,12 +291,13 @@ export default {
       editTypeDialog: false,
       selectedType: {},
       editType: [],
-      typeOfServiceForDialog: [],
+      typeOfServiceForDialog: {},
+      editTypeName: "",
 
       //loop
       type: [],
       types: {
-        typePrice:null
+        typePrice: null
       },
 
       //add menu dialog
@@ -292,40 +339,42 @@ export default {
       reader.readAsDataURL(file);
     },
     newTypeSave() {
-      console.log(this.newType);
-      if (this.imageForUpload != null) {
-        var formData = new FormData();
-        formData.append("file", this.imageForUpload);
-        axios
-          .post("http://localhost:3000/api/uploadFB", formData)
-          .then(response => {
-            this.pathImage = response.data.url;
-            axios
-              .post("http://localhost:3000/api/insertTypeOfService", {
-                typeName: this.newType.typeName,
-                typeTime: this.hour + "." + this.minute,
-                typePrice: this.newType.typePrice,
-                typePathImage: this.pathImage,
-                restaurantId: 1
-              })
-              .then(response => {
-                this.newTypeCancel();
-                this.refreshPage();
-              });
-          });
-      } else {
-        axios
-          .post("http://localhost:3000/api/insertTypeOfService", {
-            typeName: this.newType.typeName,
-            typeTime: this.newType.typeTime,
-            typePrice: this.newType.typePrice,
-            typePathImage: this.imageForUpload,
-            restaurantId: 1
-          })
-          .then(response => {
-            this.newTypeCancel();
-            this.refreshPage();
-          });
+      if (this.$refs.form.validate()) {
+        if (this.imageForUpload != null) {
+          var formData = new FormData();
+          formData.append("file", this.imageForUpload);
+          axios
+            .post("http://localhost:3000/api/uploadFB", formData)
+            .then(response => {
+              this.pathImage = response.data.url;
+              axios
+                .post("http://localhost:3000/api/insertTypeOfService", {
+                  typeName: this.newType.typeName,
+                  typeTime: this.hour + "." + this.minute,
+                  typePrice: this.newType.typePrice,
+                  typePathImage: this.pathImage,
+                  restaurantId: 1
+                })
+                .then(response => {
+                  this.newTypeCancel();
+                  this.refreshPage();
+                  this.$refs.form.resetValidation();
+                });
+            });
+        } else {
+          axios
+            .post("http://localhost:3000/api/insertTypeOfService", {
+              typeName: this.newType.typeName,
+              typeTime: this.hour + "." + this.minute,
+              typePrice: this.newType.typePrice,
+              typePathImage: this.imageForUpload,
+              restaurantId: 1
+            })
+            .then(response => {
+              this.newTypeCancel();
+              this.refreshPage();
+            });
+        }
       }
     },
     newTypeCancel() {
@@ -336,16 +385,18 @@ export default {
       this.pathImage = null;
       this.minute = null;
       this.hour = null;
+      this.$refs.form.rules;
     },
     editTypeCancel() {
-      // axios
-      //   .get("http://localhost:3000/api/getalltypeofservice")
-      //   .then(response => {
-      //     this.selectedMenu = {};
-      //     this.image = null;
-      //     this.imageForUpload = null;
-      //   });
-      this.editTypeDialog = false;
+      axios
+        .get("http://localhost:3000/api/getalltypeofservice")
+        .then(response => {
+          this.typeData = response.data;
+          this.selectedMenu = {};
+          this.image = null;
+          this.imageForUpload = null;
+          this.editTypeDialog = false;
+        });
     },
     editTypeSave() {
       console.log(this.typeOfServiceForDialog);
@@ -413,11 +464,53 @@ export default {
         });
     },
     clickType(type) {
-      this.typeOfServiceForDialog = type
-      var index = this.typeOfServiceForDialog.typeTime.indexOf('.')
-      this.typeOfServiceForDialog.minute = this.typeOfServiceForDialog.typeTime.substring(0,index)
-      this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(index+1)
+      this.editTypeName = type.typeName;
+      this.typeOfServiceForDialog = type;
+      var index = this.typeOfServiceForDialog.typeTime.indexOf(".");
+      this.typeOfServiceForDialog.minute = this.typeOfServiceForDialog.typeTime.substring(
+        0,
+        index
+      );
+      this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(
+        index + 1
+      );
       this.editTypeDialog = true;
+    }
+  },
+  computed: {
+    checkName() {
+      for (let index = 0; index < this.typeData.length; index++) {
+        if (
+          this.newType.typeName.toLowerCase() ===
+          this.typeData[index].typeName.toLowerCase()
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
+    editCheckName() {
+      if (
+        this.typeOfServiceForDialog.typeName.toLowerCase() ===
+        this.editTypeName.toLowerCase()
+      ) {
+        return true;
+      } else {
+        for (let index = 0; index < this.typeData.length; index++) {
+          if (
+            this.typeOfServiceForDialog.typeId === this.typeData[index].typeId
+          ) {
+            continue;
+          }
+          if (
+            this.typeOfServiceForDialog.typeName.toLowerCase() ===
+            this.typeData[index].typeName.toLowerCase()
+          ) {
+            return false;
+          }
+        }
+        return true;
+      }
     }
   },
   created() {
@@ -425,9 +518,6 @@ export default {
       .get("http://localhost:3000/api/getalltypeofservice")
       .then(response => {
         this.typeData = response.data;
-        this.typeData.forEach(element => {
-          element.amount = 0;
-        });
       });
   }
 };

@@ -15,14 +15,24 @@
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <div v-if="image==null">
-                      <img src="../../../assets/1.png" width="100px" height="100px" class="imageSize" />
+                      <img
+                        src="../../../assets/1.png"
+                        width="100px"
+                        height="100px"
+                        class="imageSize"
+                      />
                     </div>
                     <div v-else>
                       <img :src="image" width="100px" height="100px" />
                     </div>
 
                     <v-flex xs7 sm6>
-                      <v-text-field class="name" label="Menu Name" v-model="menu.menuName" :rules="nameRules"></v-text-field>
+                      <v-text-field
+                        class="name"
+                        label="Menu Name"
+                        v-model="menu.menuName"
+                        :rules="nameRules"
+                      ></v-text-field>
                       <b-field class="file">
                         <b-upload v-model="image" v-on:input="onFileChange" class="uploadBtn">
                           <a class="button is-primary">
@@ -164,6 +174,7 @@ export default {
                     });
                   this.$toast.open("insert success");
                   this.closeDialog();
+                  this.$refs.form.resetValidation();
                 });
             });
         } else {
@@ -186,6 +197,7 @@ export default {
                 });
               this.$toast.open("insert success");
               this.closeDialog();
+               this.$refs.form.resetValidation();
             });
         }
       }
@@ -199,6 +211,7 @@ export default {
       this.selectedCategory = "";
       this.$store.commit("setSelectedMenu", null);
       this.$refs.form.rules;
+       this.$refs.form.resetValidation();
     }
   }
 };
@@ -212,8 +225,8 @@ div.error--text {
   padding-top: 5%;
   padding-left: 25%;
 }
-.name{
-   padding-left: 25%;
+.name {
+  padding-left: 25%;
 }
 .imageSize {
   margin-left: 4%;
