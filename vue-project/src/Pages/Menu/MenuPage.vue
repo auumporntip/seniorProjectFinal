@@ -70,7 +70,5 @@ export default {
 #button{
   margin-left: 120px;
 }
-div.error--text {
-  color: rgba(255, 34, 34, 0.86) !important;
-}
+
 </style>

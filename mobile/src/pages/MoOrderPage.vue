@@ -2,31 +2,30 @@
   <v-content>
     <Bar></Bar>
     <div class="wrapper">
-      <b-table :data="orders" mobile-card :columns="columns"></b-table>
       <v-card color="primary" class="elevation-1" >
         <v-layout row>
           <v-flex xs4>
             <v-card-text class="textHead">Menu</v-card-text>
           </v-flex>
           <v-flex xs4>
-            <v-card-text class="textHead">Price</v-card-text>
+            <v-card-text class="textHead">Amount</v-card-text>
           </v-flex>
           <v-flex xs4>
-            <v-card-text class="textHead">Amount</v-card-text>
+            <v-card-text class="textHead">Price</v-card-text>
           </v-flex>
         </v-layout>
       </v-card>
 
-      <v-card color="primary" class="elevation-1" outline>
+      <v-card color="primary" class="elevation-1" outline v-for="order in orders" :key="order.orderId">
         <v-layout row>
           <v-flex xs4>
-            <v-card-text class="text">lssss</v-card-text>
+            <v-card-text class="text">{{order.menuName}}</v-card-text>
           </v-flex>
           <v-flex xs4>
-            <v-card-text class="text">hi</v-card-text>
+            <v-card-text class="text">{{order.amount}}</v-card-text>
           </v-flex>
           <v-flex xs4>
-            <v-card-text class="text">pp</v-card-text>
+            <v-card-text class="text">{{order.menuPrice}}</v-card-text>
           </v-flex>
         </v-layout>
       </v-card>
@@ -34,7 +33,7 @@
       <v-card height="auto" flat>
         <v-card-title>
           <strong class="subheading black--text">Total Prices: {{sumTotalPrice}} ฿</strong>
-          <v-btn @click="confirm" color="#cd9575" class="white--text">Confirm</v-btn>
+          <v-btn @click="confirm" color="#cd9575" class="white--text" id="confirmBtn">Confirm</v-btn>
         </v-card-title>
       </v-card>
     </div>
@@ -58,26 +57,6 @@ export default {
     return {
       orders: null,
       sum: 0,
-      columns: [
-        {
-          field: "menuName",
-          label: "Menu",
-          width: "1000",
-          numeric: true
-        },
-        {
-          field: "amount",
-          label: "Amount",
-          width: "10",
-          numeric: true
-        },
-        {
-          field: "menuPrice",
-          label: "Price per piece",
-          width: "1000",
-          numeric: true
-        }
-      ]
     };
   },
   methods: {
@@ -110,7 +89,6 @@ export default {
   created() {
     this.$store.commit("setNamePages", "Order");
     this.orders = JSON.parse(sessionStorage.getItem("orders"));
-    // console.log(this.$store.getters.orders)
   }
 };
 </script>
@@ -128,6 +106,9 @@ export default {
 .text {
   text-align: left;
   font-weight: 500;
+}
+#confirmBtn{
+  margin-left: 10%;
 }
 
 </style>
