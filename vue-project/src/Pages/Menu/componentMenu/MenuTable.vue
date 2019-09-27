@@ -211,13 +211,11 @@ export default {
   created: function() {
     axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
       this.$store.commit("setMenu", response.data);
-      console.log(this.$store.getters.menu);
       this.selectedMenu = response.data[0];
       this.$store.commit("setSelectedMenu", response.data[0]);
     });
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
-      console.log(this.category);
     });
 
     this.$store.commit("setCheckCategory", false);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-layout >
+    <v-layout>
       <v-flex xs2>
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on }">
@@ -11,37 +11,40 @@
               <span class="headline">Add Menu</span>
             </v-card-title>
             <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <div v-if="image==null">
-                    <img src="../../../assets/1.png" width="100px" height="100px">
-                  </div>
-                  <div v-else>
-                    <img :src="image" width="100px" height="100px">
-                  </div>
-                  <b-field class="file">
-                    <b-upload v-model="image" v-on:input="onFileChange">
-                      <a class="button is-primary">
-                        <b-icon icon="upload"></b-icon>
-                        <span>Click to upload</span>
-                      </a>
-                    </b-upload>
-                  </b-field>
-                  <v-flex xs7 sm6>
-                    <v-text-field label="Menu Name" v-model="menu.menuName" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12>
-                    <v-text-field label="Menu Price" v-model="menu.menuPrice" required></v-text-field>
-                  </v-flex>
-                  <v-select
-                    label="Select Category"
-                    v-model="selectedCategory"
-                    :items="category"
-                    item-text="categoryName"
-                    item-value="categoryId"
-                  ></v-select>
-                </v-layout>
-              </v-container>
+              <v-form ref="form">
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <div v-if="image==null">
+                      <img src="../../../assets/1.png" width="100px" height="100px" />
+                    </div>
+                    <div v-else>
+                      <img :src="image" width="100px" height="100px" />
+                    </div>
+                    <b-field class="file">
+                      <b-upload v-model="image" v-on:input="onFileChange">
+                        <a class="button is-primary">
+                          <b-icon icon="upload"></b-icon>
+                          <span>Click to upload</span>
+                        </a>
+                      </b-upload>
+                    </b-field>
+                    <v-flex xs7 sm6>
+                      <v-text-field label="Menu Name" v-model="menu.menuName" :rules="nameRules"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field label="Menu Price" v-model="menu.menuPrice" :rules="priceRules"></v-text-field>
+                    </v-flex>
+                    <v-select
+                      label="Select Category"
+                      v-model="selectedCategory"
+                      :items="category"
+                      item-text="categoryName"
+                      item-value="categoryId"
+                      :rules="categoryRules"
+                    ></v-select>
+                  </v-layout>
+                </v-container>
+              </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -66,21 +69,56 @@ export default {
 
   data() {
     return {
+      nameRules: [
+        v => !!v || "Name is required",
+        v => this.checkName || "Name has already"
+      ],
+      priceRules: [
+        v => !!v || "Price is required",
+        v => !isNaN(this.menu.menuPrice) || "not a number"
+      ],
+      categoryRules: [v => !!v || "Category is required"],
+      allMenu: [],
       menu: {},
       image: null,
       dialog: false,
       imageForUpload: null,
       pathImage: null,
-      category: {},
-      selectedCategory: ""
+      category: null,
+      selectedCategory: null,
+
+      restaurantId: 1
     };
   },
-  created() {},
+  computed: {
+    checkName() {
+      for (let index = 0; index < this.allMenu.length; index++) {
+        if (
+          this.menu.menuName.toLowerCase() ===
+          this.allMenu[index].menuName.toLowerCase()
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+  },
+  created() {
+    axios
+      .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)
+      .then(response => {
+        this.allMenu = response.data;
+        console.log(this.allMenu);
+      });
+  },
+
   methods: {
     clickButton() {
-      axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
-        this.category = response.data;
-      });
+      axios
+        .get("http://localhost:3000/api/getcategory/" + this.restaurantId)
+        .then(response => {
+          this.category = response.data;
+        });
     },
     selected() {
       console.log(this.selectedCategory);
@@ -97,50 +135,57 @@ export default {
       reader.readAsDataURL(file);
     },
     confirmAdd() {
-      if (this.imageForUpload != null) {
-        var formData = new FormData();
-        formData.append("file", this.imageForUpload);
-        axios
-          .post("http://localhost:3000/api/uploadFB", formData)
-          .then(response => {
-            this.pathImage = response.data.url;
-            axios
-              .post("http://localhost:3000/api/insertmenu", {
-                menuName: this.menu.menuName,
-                menuPrice: this.menu.menuPrice,
-                categoryId: this.selectedCategory,
-                menuPathImage: this.pathImage,
-                restaurantId: 1
-              })
-              .then(response => {
-                axios
-                  .get("http://localhost:3000/api/getallmenu/" + 1)
-                  .then(response => {
-                    this.$store.commit("setMenu", response.data);
-                  });
-                this.$toast.open("insert success");
-                this.closeDialog();
-              });
-          });
-      } else {
-        axios
-          .post("http://localhost:3000/api/insertmenu", {
-            menuName: this.menu.menuName,
-            menuPrice: this.menu.menuPrice,
-            categoryId: this.selectedCategory,
-            menuPathImage: this.pathImage,
-            restaurantId: 1
-          })
-          .then(response => {
-            axios
-              .get("http://localhost:3000/api/getallmenu/" + 1)
-              .then(response => {
-                this.$store.commit("setMenu", response.data);
-                this.$store.commit("setCheckCategory", false);
-              });
-            this.$toast.open("insert success");
-            this.closeDialog();
-          });
+      if (this.$refs.form.validate()) {
+        if (this.imageForUpload != null) {
+          var formData = new FormData();
+          formData.append("file", this.imageForUpload);
+          axios
+            .post("http://localhost:3000/api/uploadFB", formData)
+            .then(response => {
+              this.pathImage = response.data.url;
+              axios
+                .post("http://localhost:3000/api/insertmenu", {
+                  menuName: this.menu.menuName,
+                  menuPrice: this.menu.menuPrice,
+                  categoryId: this.selectedCategory,
+                  menuPathImage: this.pathImage,
+                  restaurantId: this.restaurantId
+                })
+                .then(response => {
+                  axios
+                    .get(
+                      "http://localhost:3000/api/getallmenu/" +
+                        this.restaurantId
+                    )
+                    .then(response => {
+                      this.$store.commit("setMenu", response.data);
+                    });
+                  this.$toast.open("insert success");
+                  this.closeDialog();
+                });
+            });
+        } else {
+          axios
+            .post("http://localhost:3000/api/insertmenu", {
+              menuName: this.menu.menuName,
+              menuPrice: this.menu.menuPrice,
+              categoryId: this.selectedCategory,
+              menuPathImage: this.pathImage,
+              restaurantId: this.restaurantId
+            })
+            .then(response => {
+              axios
+                .get(
+                  "http://localhost:3000/api/getallmenu/" + this.restaurantId
+                )
+                .then(response => {
+                  this.$store.commit("setMenu", response.data);
+                  this.$store.commit("setCheckCategory", false);
+                });
+              this.$toast.open("insert success");
+              this.closeDialog();
+            });
+        }
       }
     },
     closeDialog() {
@@ -150,7 +195,8 @@ export default {
       this.imageForUpload = null;
       this.pathImage = null;
       this.selectedCategory = "";
-      this.$store.commit('setSelectedMenu',null)
+      this.$store.commit("setSelectedMenu", null);
+      this.$refs.form.rules;
     }
   }
 };
