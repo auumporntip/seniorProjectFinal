@@ -53,34 +53,40 @@
                                   v-model="newType.typeName"
                                   :rules="nameRules"
                                 ></v-text-field>
-                                <v-layout row>
-                                  <v-flex xs6 order-md1 order-xs3>
-                                    <v-text-field
-                                      label="Time Limit"
-                                      type="number"
-                                      suffix="Hr."
-                                      placeholder="1"
-                                      v-model="hour"
-                                      :rules="hourRules"
-                                    ></v-text-field>
-                                  </v-flex>
-                                  <v-flex xs6 order-md3 order-xs2>
-                                    <v-text-field
-                                      label="Time Limit"
-                                      type="number"
-                                      suffix="Min."
-                                      placeholder="30"
-                                      v-model="minute"
-                                      :rules="minuteRules"
-                                    ></v-text-field>
-                                  </v-flex>
-                                </v-layout>
-                                <v-text-field
-                                  label="Price"
-                                  type="number"
-                                  v-model="newType.typePrice"
-                                  :rules="priceRules"
-                                ></v-text-field>
+                                <v-radio-group v-model="row" row>
+                                  <v-radio label="A-LA-CARTE" value="alacarte"></v-radio>
+                                  <v-radio label="BUFFET" value="buffet"></v-radio>
+                                </v-radio-group>
+                                <div v-if="row === 'buffet'">
+                                  <v-layout row>
+                                    <v-flex xs6 order-md1 order-xs3>
+                                      <v-text-field
+                                        label="Time Limit"
+                                        type="number"
+                                        suffix="Hr."
+                                        placeholder="1"
+                                        v-model="hour"
+                                        :rules="hourRules"
+                                      ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs6 order-md3 order-xs2>
+                                      <v-text-field
+                                        label="Time Limit"
+                                        type="number"
+                                        suffix="Min."
+                                        placeholder="30"
+                                        v-model="minute"
+                                        :rules="minuteRules"
+                                      ></v-text-field>
+                                    </v-flex>
+                                  </v-layout>
+                                  <v-text-field
+                                    label="Price"
+                                    type="number"
+                                    v-model="newType.typePrice"
+                                    :rules="priceRules"
+                                  ></v-text-field>
+                                </div>
                               </v-flex>
                             </v-layout>
                           </v-container>
@@ -282,6 +288,7 @@ export default {
       newTypeDialog: false,
       minute: 0,
       hour: 0,
+      row: null,
 
       //uploadFile
       imageForUpload: null,
@@ -421,9 +428,9 @@ export default {
           .post("http://localhost:3000/api/uploadFB", formData)
           .then(response => {
             this.typeOfServiceForDialog.typePathImage = response.data.url;
-            
-            console.log(this.typeOfServiceForDialog.typePathImage)
-            console.log(this.typeOfServiceForDialog)
+
+            console.log(this.typeOfServiceForDialog.typePathImage);
+            console.log(this.typeOfServiceForDialog);
             axios
               .put(
                 "http://localhost:3000/api/updatetypeofservice/",
