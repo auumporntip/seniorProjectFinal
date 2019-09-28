@@ -1,79 +1,52 @@
 
 <template>
-
   <div>
-   <sidebar></sidebar>
-       <div id="bigbox">
+    <sidebar></sidebar>
+    <div id="bigbox">
       <section class="bg">
         <v-card-title class="headline font-weight-medium">NOTIFICATION</v-card-title>
-   
-<!-- <div class="notibox">
-<div class="noti">
-  <div class="noti2"> 
-    <img class="Edit2" src="../assets/notification (2).png" width="50px" height="50px">
-   </div> 
-</div>
-
-<div class="noti">
-  <div class="noti2"> 
-    <img class="Edit2" src="../assets/notification (2).png" width="50px" height="50px">
-   </div> 
-</div>
-
-<div class="noti">
-  <div class="noti2"> 
-    <img class="Edit2" src="../assets/notification (2).png" width="50px" height="50px">
-   </div> 
-</div>
-
-<div class="noti">
-  <div class="noti2"> 
-    <img class="Edit2" src="../assets/notification (2).png" width="50px" height="50px">
-   </div> 
-</div> -->
-
-<br>
-    <b-table :data="menu" :columns="columns" :selected.sync="selected" focusable></b-table>
-</section>
-</div>
+        <b-table :data="notiData" :columns="columns"></b-table>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
-import sidebar from '@/components/sidebar'
+import sidebar from "@/components/sidebar";
+import axios from "axios";
+
 export default {
-  name: 'NotificationPage', 
+  name: "NotificationPage",
   components: {
     sidebar
-  },data() {
-    const menu = [];
-    // this.test();
-    // this.test()
-    // console.log(data)
+  },
+  data() {
     return {
-      menu: menu,
-      selected: {},
+      notiData: [],
       columns: [
         {
           field: "notiId",
-          label: "ID",
-          width: "30",
+          label: "Noti Id",
+          width: "80",
           numeric: true
         },
         {
-          field: "tableNo",
-          label: "tableNo"
+          field: "notiMessage",
+          label: "Notification Message"
         },
         {
-          field: "notiMessage",
-          label: "Message"
+          field: "billId",
+          label: "Bill Id"
         }
-        
       ]
     };
+  },
+  created() {
+    axios.get("http://localhost:3000/api/getallnotification").then(response => {
+      this.notiData = response.data;
+    });
   }
-}
- 
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -92,43 +65,40 @@ export default {
   background-attachment: fixed;
 }
 
-h1 {
+/* h1 {
   font-family: "Arial Black", Gadget, sans-serif;
   font-size: 20px;
   padding-left: 40px;
   padding-top: 10px;
-  float:left;
+  float: left;
 }
 
-.noti{
-    background-color: #D2B48C;
-    width: 1200px;
-    height: 100px;
-    margin-left: 5px;
-    margin-top: 15px;
+.noti {
+  background-color: #d2b48c;
+  width: 1200px;
+  height: 100px;
+  margin-left: 5px;
+  margin-top: 15px;
 }
-.notibox{
-     
-    margin-top: 55px;
+.notibox {
+  margin-top: 55px;
 }
-.noti2{
-    width:100px;
-    height:100px;
-    float: left;
-    padding-left: 55px;
-    padding-top:20px;
-
+.noti2 {
+  width: 100px;
+  height: 100px;
+  float: left;
+  padding-left: 55px;
+  padding-top: 20px;
 }
-#boxright{
+#boxright {
   background-color: #f0cab1;
   width: 1170px;
   height: 52em;
   margin-top: 0px;
   margin-left: 180px;
-  background-attachment: fixed;  
-    
+  background-attachment: fixed;
 }
-#big{
-    padding-top: 5px;
-}
+#big {
+  padding-top: 5px;
+} */
 </style>
