@@ -207,7 +207,7 @@
                                 </v-card-text>
                                 <v-card-actions>
                                   <v-spacer></v-spacer>
-                                  <v-btn flat color="red" @click="menuDialog=false">Cancel</v-btn>
+                                  <v-btn flat color="red" @click="cancelAddMenu">Cancel</v-btn>
                                   <v-btn flat color="darkgrey" @click="addMenu">Add</v-btn>
                                 </v-card-actions>
                               </v-card>
@@ -301,6 +301,7 @@ export default {
       },
 
       //add menu dialog
+      checkBoxData: [],
       menuDialog: false,
       menuData: [],
       checkboxPosition: "left",
@@ -400,7 +401,6 @@ export default {
         });
     },
     editTypeSave() {
-      console.log(this.typeOfServiceForDialog);
       this.typeOfServiceForDialog.typeTime =
         this.typeOfServiceForDialog.hour +
         "." +
@@ -420,7 +420,10 @@ export default {
         axios
           .post("http://localhost:3000/api/uploadFB", formData)
           .then(response => {
-            this.selectedType.typePathImage = response.data.url;
+            this.typeOfServiceForDialog.typePathImage = response.data.url;
+            
+            console.log(this.typeOfServiceForDialog.typePathImage)
+            console.log(this.typeOfServiceForDialog)
             axios
               .put(
                 "http://localhost:3000/api/updatetypeofservice/",
@@ -434,27 +437,49 @@ export default {
     },
     showMenu() {
       this.menuDialog = true;
-      axios.get("http://localhost:3000/api/getallMenu").then(response => {
-        this.menuData = response.data;
-      });
+      axios
+        .get(
+          "http://localhost:3000/api/getmenubytypeofserviceid/" +
+            this.typeOfServiceForDialog.typeId
+        )
+        .then(response => {
+          this.checkBoxData = response.data;
+          axios.get("http://localhost:3000/api/getallMenu").then(response => {
+            this.menuData = response.data;
+            for (let index = 0; index < this.checkBoxData.length; index++) {
+              var i = this.menuData.findIndex(
+                menu => menu.menuId === this.checkBoxData[index].menuId
+              );
+              this.checkedRows.push(this.menuData[i]);
+            }
+          });
+        });
     },
-    addMenu() {
-      console.log(this.checkedRows);
-      console.log(this.typeOfServiceForDialog);
+    cancelAddMenu() {
+      this.checkedRows = [];
+      this.menuDialog = false;
+    },
+    async addMenu() {
+      const promiseArr = [];
+      for (let index = 0; index < this.checkBoxData.length; index++) {
+        promiseArr.push(
+          axios.delete(
+            "http://localhost:3000/api/deletemenuservice/" +
+              this.checkBoxData[index].menuServiceId
+          )
+        );
+      }
+      await Promise.all(promiseArr);
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .post(
-            "http://localhost:3000/api/insertMenuService/",
-            this.checkedRows[index],
-            {
-              typeId: this.typeOfServiceForDialog.typeId,
-              menuId: this.checkedRows.menuId
-            }
-          )
-          .then(() => {
-            this.checkedRows = [];
-          });
+          .post("http://localhost:3000/api/insertMenuService/", {
+            typeId: this.typeOfServiceForDialog.typeId,
+            menuId: this.checkedRows[index].menuId
+          })
+          .then(() => {});
       }
+
+      this.checkedRows = [];
       this.menuDialog = false;
     },
     refreshPage() {
@@ -475,6 +500,7 @@ export default {
       this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(
         index + 1
       );
+
       this.editTypeDialog = true;
     }
   },

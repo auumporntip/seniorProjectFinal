@@ -6,7 +6,7 @@ exports.getAllMenuService = async () => {
 
 exports.insertMenuService = async (menuservice) => {
     return await knex('menuservice').insert({
-        typeId: menuservice.menuId,
+        typeId: menuservice.typeId,
         menuId: menuservice.menuId
     })
 }

@@ -13,7 +13,8 @@ exports.updateTypeOfService = async(typeOfService) => {
         .update({
             typeName:typeOfService.typeName,
             typeTime:typeOfService.typeTime,
-            typePrice:typeOfService.typePrice
+            typePrice:typeOfService.typePrice,
+            typePathImage:typeOfService.typePathImage
         })
 }
 
