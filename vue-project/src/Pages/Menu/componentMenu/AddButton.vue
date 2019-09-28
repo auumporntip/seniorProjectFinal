@@ -192,14 +192,17 @@ export default {
                   "http://localhost:3000/api/getallmenu/" + this.restaurantId
                 )
                 .then(response => {
+                  this.allMenu = response.data;
                   this.$store.commit("setMenu", response.data);
                   this.$store.commit("setCheckCategory", false);
                 });
               this.$toast.open("insert success");
+
               this.closeDialog();
-               this.$refs.form.resetValidation();
+              this.$refs.form.resetValidation();
             });
         }
+        this.dialog = false
       }
     },
     closeDialog() {
@@ -211,7 +214,7 @@ export default {
       this.selectedCategory = "";
       this.$store.commit("setSelectedMenu", null);
       this.$refs.form.rules;
-       this.$refs.form.resetValidation();
+      this.$refs.form.resetValidation();
     }
   }
 };

@@ -6,15 +6,16 @@
           Category of food
           <!-- <span class="head">Category of Food:</span> -->
           <b-dropdown v-model="selectedCategory">
-            <v-btn class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
+            <b-dropdown-item class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
               {{selectedCategory.categoryName}}
               <b-icon icon="menu-down"></b-icon>
-            </v-btn>
+            </b-dropdown-item>
 
-            <v-btn class="button is-dark" slot="trigger" v-else id="button">
+            <b-dropdown-item class="button is-dark" slot="trigger" v-else id="button">
               All Category
               <!-- <b-icon icon="menu-down"></b-icon> -->
-            </v-btn>
+            </b-dropdown-item>
+            
             <b-dropdown-item @click="allCategory">All Category</b-dropdown-item>
             <b-dropdown-item
               v-for="option in category"
@@ -23,6 +24,7 @@
               @click="changeCategoryMenu"
             >{{option.categoryName}}</b-dropdown-item>
           </b-dropdown>
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <v-layout>
             <v-flex xs2>
               <v-btn class="add" @click="AddDialog=true">Add Category</v-btn>

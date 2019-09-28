@@ -386,6 +386,7 @@ export default {
       this.minute = null;
       this.hour = null;
       this.$refs.form.rules;
+      this.$refs.form.resetValidation();
     },
     editTypeCancel() {
       axios
