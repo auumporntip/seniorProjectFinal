@@ -97,6 +97,7 @@ export default {
       .get("http://localhost:3000/api/gettypeofservice/" + 1)
       .then(response => {
         this.typeOfService = response.data;
+        console.log(this.typeOfService)
       });
   }
 };

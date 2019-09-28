@@ -1,7 +1,5 @@
 <template>
   <div >
-    <Header></Header>
-    <sidebar></sidebar>
     <div id="biggest" >
       <div id="header">
         CREATE RESTAURANT

@@ -3,17 +3,17 @@
     <Bar></Bar>
     <div class="wrapper">
       <v-layout class="space">
-        <v-flex xs6>
+        <v-flex xs4>
           <p class="subheading">Bill : {{bill[0].billId}}</p>
           <p class="subheading">Table : {{bill[0].tableNumber}}</p>
         </v-flex>
-        <v-flex xs6>
-          <p class="subheading">Date : {{bill[0].created_at}}</p>
-          <p class="subheading">Time Start : {{bill[0].eatTimeStart}}</p>
+        <v-flex xs8>
+          <p class="subheading">Date : {{date}}</p>
+          <p class="subheading">Time Start : {{time}}</p>
         </v-flex>
       </v-layout>
 
-      <b-table :data="data" :columns="columns"></b-table>
+      <b-table :data="bill" :columns="columns"></b-table>
     </div>
     <v-btn
       class="white--text"
@@ -54,7 +54,7 @@
                   <v-card-text class="text">{{order.amount}}</v-card-text>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card-text class="text">{{order.menuPrice}}</v-card-text>
+                  <v-card-text class="text">{{order.menuPrice*order.amount}}</v-card-text>
                 </v-flex>
               </v-layout>
             </v-card>
@@ -76,6 +76,7 @@ import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
+import dayjs from "dayjs";
 
 export default {
   name: "MoReceiptPage",
@@ -89,25 +90,17 @@ export default {
       typeOfService: [],
       tableNumber: "",
       orderDialog: false,
-
-      data: [{ id: 1, ordered: "Buffet 1199.-", amount: "2", price: "2,398" }],
       columns: [
         {
-          field: "id",
-          label: "ID",
-          width: "1000",
-          numeric: true
+          field: "typeName",
+          label: "Promotion"
         },
         {
-          field: "ordered",
-          label: "Ordered"
+          field: "numOfCust",
+          label: "Customer"
         },
         {
-          field: "amount",
-          label: "Amount"
-        },
-        {
-          field: "price",
+          field: "totalPrice",
           label: "Price",
           numeric: true
         }
@@ -117,18 +110,36 @@ export default {
   created() {
     this.$store.commit("setNamePages", "Receipt");
     this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
-    this.$store.commit("setNamePages", "Order");
-    this.orders = JSON.parse(sessionStorage.getItem("orders"));
-
     axios
       .get(
-        "http://localhost:3000/api/getbillbybillid/" +
+        "http://localhost:3000/api/getorderbybillid/" +
           sessionStorage.getItem("billId")
       )
       .then(response => {
+        this.orders = response.data;
+        console.log(this.orders)
+      });
+
+    var id = sessionStorage.getItem("billId");
+
+    axios
+      .get("http://localhost:3000/api/getbillbybillid/" + id)
+      .then(response => {
         this.bill = response.data;
 
-        console.log(this.bill);
+        this.date = dayjs(this.bill[0].created_at).format("YYYY/MM/DD");
+        this.time = dayjs(this.bill[0].created_at).format("HH:mm:ss");
+        this.bill[0].typeName = this.typeOfService.typeName;
+        if (this.typeOfService.service === "buffet") {
+          this.bill[0].totalPrice = this.typeOfService.typePrice;
+        } else {
+          var price= 0;
+          for (let index = 0; index < this.orders.length; index++) {
+            price +=
+              this.orders[index].amount * this.orders[index].pricePerPiece;
+          }
+          this.bill[0].totalPrice = price;
+        }
       });
   }
 };

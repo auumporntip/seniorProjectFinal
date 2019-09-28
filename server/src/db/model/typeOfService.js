@@ -14,7 +14,8 @@ exports.updateTypeOfService = async(typeOfService) => {
             typeName:typeOfService.typeName,
             typeTime:typeOfService.typeTime,
             typePrice:typeOfService.typePrice,
-            typePathImage:typeOfService.typePathImage
+            typePathImage:typeOfService.typePathImage,
+            service:typeOfService.service
         })
 }
 
@@ -24,7 +25,8 @@ exports.insertTypeOfService = async(typeOfService) => {
         typeTime:typeOfService.typeTime,
         typePrice:typeOfService.typePrice,
         typePathImage:typeOfService.typePathImage,
-        restaurantId:typeOfService.restaurantId
+        restaurantId:typeOfService.restaurantId,
+        service:typeOfService.service
         })
 }
 
