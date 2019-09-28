@@ -68,7 +68,14 @@
             <v-icon>folder_open</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Notification</v-list-tile-title>
+            <v-list-tile-title>
+              Notification
+              <v-badge color="red">
+                <template v-slot:badge>
+                  <span>!</span>
+                </template>
+              </v-badge>
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
