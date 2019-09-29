@@ -20,7 +20,13 @@ router.put('/updatetypeOfService', async (req, res) => {
 })
 
 router.post('/inserttypeOfService', async (req, res) => {
-    res.send(await typeOfService.insertTypeOfService(req.body))
+    var result
+    try {
+        result = await typeOfService.insertTypeOfService(req.body)
+    } catch (error) {
+        result= error
+    }
+    res.send(result)
 })
 
 module.exports = router
