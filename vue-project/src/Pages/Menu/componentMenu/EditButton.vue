@@ -3,7 +3,7 @@
     <v-layout>
       <v-flex xs2>
         <!-- <v-btn color="black" outline v-on="on" @click="checkSelected()"> -->
-          <v-icon @click="checkSelected()">edit</v-icon>
+        <v-icon @click="checkSelected()">edit</v-icon>
         <!-- </v-btn> -->
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card>
@@ -14,31 +14,36 @@
               <v-form ref="form">
                 <v-container grid-list-md>
                   <v-layout wrap>
-                    <v-flex xs5 sm3>
-                      <div v-if="image!=null">
-                        <img :src="image" width="80px" height="80px" />
-                      </div>
-                      <div v-else-if="selectedMenu.menuPathImage==null">
-                        <img src="../../../assets/1.png" width="80px" height="80px" />
-                      </div>
-                      <div v-else>
-                        <img :src="selectedMenu.menuPathImage" width="80px" height="80px" />
-                      </div>
-                    </v-flex>
-                    <b-field class="file">
-                      <b-upload v-model="image" v-on:input="onFileChange">
-                        <a class="button is-primary">
-                          <b-icon icon="upload"></b-icon>
-                          <span>Click to upload</span>
-                        </a>
-                      </b-upload>
-                    </b-field>
+                    <div v-if="image!=null">
+                      <img :src="image" width="100px" height="100px" />
+                    </div>
+                    <div v-else-if="selectedMenu.menuPathImage==null">
+                      <img
+                        src="../../../assets/1.png"
+                        width="100px"
+                        height="100px"
+                        class="imageSize"
+                      />
+                    </div>
+                    <div v-else>
+                      <img :src="selectedMenu.menuPathImage" width="100px" height="100px" />
+                    </div>
+
                     <v-flex xs7 sm6>
                       <v-text-field
+                        class="name"
                         label="Menu Name"
                         v-model="selectedMenu.menuName"
                         :rules="nameRules"
                       ></v-text-field>
+                      <b-field class="file">
+                        <b-upload v-model="image" v-on:input="onFileChange" class="uploadBtn">
+                          <a class="button is-info" outlined>
+                            <b-icon icon="upload"></b-icon>
+                            <span>Click to upload</span>
+                          </a>
+                        </b-upload>
+                      </b-field>
                     </v-flex>
                     <v-flex xs12>
                       <v-text-field
@@ -210,5 +215,15 @@ export default {
 <style scoped>
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
+}
+.uploadBtn {
+  padding-top: 5%;
+  padding-left: 25%;
+}
+.name {
+  padding-left: 25%;
+}
+.imageSize {
+  margin-left: 4%;
 }
 </style>

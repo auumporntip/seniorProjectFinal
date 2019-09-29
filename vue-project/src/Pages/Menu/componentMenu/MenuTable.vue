@@ -29,40 +29,8 @@
           @click="changeCategoryMenu"
         >{{option.categoryName}}</b-dropdown-item>
       </b-dropdown>
-    </v-layout>&nbsp;&nbsp;&nbsp;&nbsp;
-    <!-- <v-layout>
-            <v-flex xs2>
-              <v-btn class="add" @click="AddDialog=true">Add Category</v-btn>
-              <v-dialog v-model="AddDialog" max-width="490">
-                <v-card>
-                  <v-card-text class="headline">
-                    Add Category
-                    <v-form ref="form">
-                      <v-container fluid>
-                        <v-text-field
-                          label="categoryName"
-                          v-model="newCat.categoryName"
-                          type="text"
-                          :rules="nameRules"
-                        ></v-text-field>
-                      </v-container>
-                    </v-form>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn text @click="addCancel">Cancel</v-btn>
-                    <v-btn text @click="addSave">Save</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-flex>
-    </v-layout>-->
-
-    <!-- <div class="search"> -->
-    <!-- <b-field>
-        <b-input placeholder="Search..." type="search" v-model="keyword"></b-input>
-    </b-field>-->
-
+    </v-layout>
+&nbsp;&nbsp;&nbsp;&nbsp;
     <b-table
       :data="items"
       :selected.sync="selectedMenu"

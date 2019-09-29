@@ -220,6 +220,15 @@ export default {
 }
 #button {
   margin-left: 86%;
-  margin-top: -5%;
+  margin-top: -2.5%;
+}
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: 0%;
+}
+.text {
+  margin-left: 75%;
+  padding-top: 14%;
 }
 </style>
