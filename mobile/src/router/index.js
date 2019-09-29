@@ -14,6 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'MoTypePage',
+      component: MoTypePage
        
     }, {
       path: '/MoMenu',
