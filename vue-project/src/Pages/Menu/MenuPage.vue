@@ -4,20 +4,10 @@
     <div id="bigBox">
       <div class="bg">
         <v-card-title class="headline font-weight-medium">MENU</v-card-title>
-       
-          <MenuTable></MenuTable>
-          <v-layout row wrap id="button">
-            <v-flex xs4>
-              <AddButton></AddButton>
-            </v-flex>
-            <v-flex xs4>
-              <EditButton></EditButton>
-            </v-flex>
-            <v-flex xs4>
-              <DeleteButton></DeleteButton>
-            </v-flex>
-          </v-layout>
-      
+        <div id="button">
+          <AddButton></AddButton><CategoryButton></CategoryButton>
+        </div>
+        <MenuTable></MenuTable>
       </div>
     </div>
   </div>
@@ -31,6 +21,7 @@ import AddButton from "./componentMenu/AddButton";
 import EditButton from "./componentMenu/EditButton";
 import DeleteButton from "./componentMenu/DeleteButton";
 import MenuTable from "./componentMenu/MenuTable";
+import CategoryButton from "./componentMenu/CategoryButton";
 
 export default {
   name: "MenuPage",
@@ -40,7 +31,8 @@ export default {
     AddButton,
     MenuTable,
     DeleteButton,
-    EditButton
+    EditButton,
+    CategoryButton
   },
   data() {
     return {};
@@ -67,8 +59,8 @@ export default {
   margin-left: 20%;
   background-attachment: fixed;
 }
-#button{
-  margin-left: 120px;
+#button {
+  margin-left: 20%;
+  margin-top: -2%;
 }
-
 </style>

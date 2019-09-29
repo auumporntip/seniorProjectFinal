@@ -27,24 +27,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile :to="{name: 'TransactionPage'}">
-          <v-list-tile-action>
-            <v-icon>folder_open</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Transaction</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-
-        <v-list-tile :to="{name: 'OrderedPage'}">
-          <v-list-tile-action>
-            <v-icon>folder_open</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Ordered</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-
         <v-list-tile :to="{name: 'TypeOfService'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>
@@ -54,12 +36,12 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile :to="{name: 'StaticPage'}">
+        <v-list-tile :to="{name: 'OrderedPage'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Statistics</v-list-tile-title>
+            <v-list-tile-title>Ordered</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
@@ -79,15 +61,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile :to="{name: 'EmployeePage'}">
-          <v-list-tile-action>
-            <v-icon>folder_open</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Employee</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-
         <v-list-tile :to="{name: 'TablePage'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>
@@ -97,9 +70,36 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <div class="pa-2">
+        <v-list-tile :to="{name: 'TransactionPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Transaction</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'StaticPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Statistics</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile :to="{name: 'EmployeePage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Employee</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <!-- <div class="pa-2">
           <v-btn block color="grey darken-1">Logout</v-btn>
-        </div>
+        </div> -->
       </v-list>
     </v-navigation-drawer>
   </v-card>

@@ -4,7 +4,9 @@
       <v-flex xs2>
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on" @click="clickButton">Add Menu</v-btn>
+            <v-btn color="black" outline dark v-on="on" @click="clickButton" class="addBtn">
+              <v-icon left dark>add</v-icon>Add Menu
+            </v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -35,7 +37,7 @@
                       ></v-text-field>
                       <b-field class="file">
                         <b-upload v-model="image" v-on:input="onFileChange" class="uploadBtn">
-                          <a class="button is-primary">
+                          <a class="button is-info" outlined>
                             <b-icon icon="upload"></b-icon>
                             <span>Click to upload</span>
                           </a>
@@ -67,6 +69,8 @@
         </v-dialog>
       </v-flex>
     </v-layout>
+
+    
   </div>
 </template>
 
@@ -99,7 +103,15 @@ export default {
       category: null,
       selectedCategory: null,
 
-      restaurantId: 1
+      restaurantId: 1,
+
+      //add category
+      AddDialog: false,
+      newCat: [],
+      nameRules: [
+        v => !!v || "Name is required",
+        v => this.checkName || "Name has already"
+      ]
     };
   },
   computed: {
@@ -122,6 +134,9 @@ export default {
         this.allMenu = response.data;
         console.log(this.allMenu);
       });
+    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+      this.category = response.data;
+    });
   },
 
   methods: {
@@ -202,7 +217,7 @@ export default {
               this.$refs.form.resetValidation();
             });
         }
-        this.dialog = false
+        this.dialog = false;
       }
     },
     closeDialog() {
@@ -213,9 +228,13 @@ export default {
       this.pathImage = null;
       this.selectedCategory = "";
       this.$store.commit("setSelectedMenu", null);
-      this.$refs.form.rules;
       this.$refs.form.resetValidation();
-    }
+    },
+    addCancel() {
+      this.AddDialog = false;
+      this.$refs.form.resetValidation();
+      this.newCat = [];
+    },
   }
 };
 </script>
@@ -233,5 +252,9 @@ div.error--text {
 }
 .imageSize {
   margin-left: 4%;
+}
+.addBtn {
+  margin-top: 20%;
+  margin-left: -135%;
 }
 </style>

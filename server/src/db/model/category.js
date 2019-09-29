@@ -10,10 +10,9 @@ exports.getCategory = async (restaurantId) => {
     })
 }
 
-exports.deleteCategory = async (categoryId, restaurantId) => {
+exports.deleteCategory = async (categoryId) => {
     await knex('category')
         .where('categoryId', categoryId)
-        .andWhere('restaurantId', restaurantId)
         .del()
 }
 

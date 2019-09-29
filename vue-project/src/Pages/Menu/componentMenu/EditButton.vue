@@ -2,7 +2,9 @@
   <div>
     <v-layout>
       <v-flex xs2>
-        <v-btn color="primary" dark v-on="on" @click="checkSelected()">Edit Menu</v-btn>
+        <!-- <v-btn color="black" outline v-on="on" @click="checkSelected()"> -->
+          <v-icon @click="checkSelected()">edit</v-icon>
+        <!-- </v-btn> -->
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card>
             <v-card-title>
@@ -173,7 +175,7 @@ export default {
               });
           });
       }
-      this.dialog =false
+      this.dialog = false;
     }
   },
   computed: {

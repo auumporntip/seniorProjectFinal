@@ -15,12 +15,12 @@ router.post('/insertcategory', async(req,res)=>{
     res.send(await category.insertCategory(req.body))
 })
 
-router.post('/updatecategory', async(req,res)=>{
+router.put('/updatecategory', async(req,res)=>{
     res.send(await category.updateCategory(req.body))
 })
 
-router.delete('/deletecategory', async(req,res)=>{
-    res.send(await category.getCategory(req.body))
+router.delete('/deletecategory/:categoryId', async(req,res)=>{
+    res.send(await category.deleteCategory(req.params.categoryId))
 })
 
 module.exports = router

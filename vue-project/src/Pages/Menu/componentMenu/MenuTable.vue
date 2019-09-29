@@ -1,31 +1,36 @@
 <template>
   <div>
-    <span id="test">
-      <v-flex xs12>
-        <v-card-title>
-          Category of food
-          <!-- <span class="head">Category of Food:</span> -->
-          <b-dropdown v-model="selectedCategory">
-            <b-dropdown-item class="button is-dark" slot="trigger" v-if="this.$store.getters.checkCategory">
-              {{selectedCategory.categoryName}}
-              <b-icon icon="menu-down"></b-icon>
-            </b-dropdown-item>
+    <v-text-field
+      class="search"
+      v-model="keyword"
+      append-icon="search"
+      label="Search"
+      single-line
+      hide-details
+    ></v-text-field>
+    <v-layout row wrap align-center>
+      <v-subheader class="text">Category</v-subheader>
+      <b-dropdown v-model="selectedCategory" id="button">
+        <v-btn flat slot="trigger" v-if="this.$store.getters.checkCategory">
+          {{selectedCategory.categoryName}}
+          <v-icon>keyboard_arrow_down</v-icon>
+        </v-btn>
 
-            <b-dropdown-item class="button is-dark" slot="trigger" v-else id="button">
-              All Category
-              <!-- <b-icon icon="menu-down"></b-icon> -->
-            </b-dropdown-item>
-            
-            <b-dropdown-item @click="allCategory">All Category</b-dropdown-item>
-            <b-dropdown-item
-              v-for="option in category"
-              :value="option"
-              :key="option.categoryId"
-              @click="changeCategoryMenu"
-            >{{option.categoryName}}</b-dropdown-item>
-          </b-dropdown>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <v-layout>
+        <v-btn flat slot="trigger" v-else>
+          <span>Category</span>
+          <v-icon>keyboard_arrow_down</v-icon>
+        </v-btn>
+
+        <b-dropdown-item @click="allCategory">All Category</b-dropdown-item>
+        <b-dropdown-item
+          v-for="option in category"
+          :value="option"
+          :key="option.categoryId"
+          @click="changeCategoryMenu"
+        >{{option.categoryName}}</b-dropdown-item>
+      </b-dropdown>
+    </v-layout>&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- <v-layout>
             <v-flex xs2>
               <v-btn class="add" @click="AddDialog=true">Add Category</v-btn>
               <v-dialog v-model="AddDialog" max-width="490">
@@ -51,19 +56,7 @@
                 </v-card>
               </v-dialog>
             </v-flex>
-          </v-layout>
-
-          <v-text-field
-            class="search"
-            v-model="keyword"
-            append-icon="search"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-      </v-flex>
-    </span>
+    </v-layout>-->
 
     <!-- <div class="search"> -->
     <!-- <b-field>
@@ -82,11 +75,10 @@
       aria-page-label="Page"
       aria-current-label="Current page"
       @select="selected"
-
       id="imageColumn"
     >
       <template slot-scope="props">
-        <b-table-column label="Image" width="80" >
+        <b-table-column label="Image" width="80">
           <div class="img-resize" v-if="props.row.menuPathImage!=null">
             <img :src="props.row.menuPathImage" />
           </div>
@@ -96,10 +88,14 @@
         </b-table-column>
 
         <b-table-column label="Menu Name" width="200">{{ props.row.menuName }}</b-table-column>
-
         <b-table-column label="Price" width="200">{{ props.row.menuPrice }}</b-table-column>
-
         <b-table-column label="Category" width="0">{{ props.row.categoryName }}</b-table-column>
+        <b-table-column label="Edit Menu" width="120">
+          <EditButton></EditButton>
+        </b-table-column>
+          <b-table-column label="Delete Menu" width="120">
+         <DeleteButton></DeleteButton>
+        </b-table-column>
       </template>
     </b-table>
   </div>
@@ -108,9 +104,15 @@
 <script>
 import axios from "axios";
 import { store } from "../../../store/store";
+import EditButton from "../componentMenu/EditButton";
+import DeleteButton from "../componentMenu/DeleteButton";
 
 export default {
   name: "TestAxios",
+  components: {
+    EditButton,
+    DeleteButton
+  },
   data() {
     return {
       //Add
@@ -225,18 +227,27 @@ export default {
 };
 </script>    
 <style >
-.head {
+/* .head {
   margin-left: 20px;
-}
+} */
 .search {
   margin-left: 57%;
   position: absolute;
+  margin-top: -3%;
 }
-#button {
+/* #button {
   margin-left: 10px;
-}
-#imageColumn{
+} */
+#imageColumn {
   margin-left: 1%;
   margin-right: 1%;
+}
+#button {
+  margin-left: 86%;
+  margin-top: -5%;
+}
+.text {
+  margin-left: 75%;
+  margin-top: 0%;
 }
 </style>

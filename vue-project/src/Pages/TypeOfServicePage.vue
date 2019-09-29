@@ -12,7 +12,11 @@
             <v-layout wrap>
               <v-flex xs3>
                 <v-card class="card">
-                  <v-img :src="require('../assets/add.png')" aspect-ratio="1.5"></v-img>
+                  <v-img
+                    :src="require('../assets/add.png')"
+                    aspect-ratio="1.5"
+                    @click="newTypeDialog=true"
+                  ></v-img>
                   <v-btn
                     class="subheading font-weight-medium"
                     block
@@ -59,7 +63,7 @@
                                 </v-radio-group>
                                 <div v-if="row === 'buffet'">
                                   <v-layout row>
-                                    <v-flex xs6 order-md1 order-xs3>
+                                    <v-flex xs6 order-md1 order-xs2>
                                       <v-text-field
                                         label="Time Limit"
                                         type="number"
@@ -69,9 +73,9 @@
                                         :rules="hourRules"
                                       ></v-text-field>
                                     </v-flex>
-                                    <v-flex xs6 order-md3 order-xs2>
+                                    <v-flex xs6 order-md3 order-xs3>
                                       <v-text-field
-                                        label="Time Limit"
+                                        label=""
                                         type="number"
                                         suffix="Min."
                                         placeholder="30"
@@ -108,8 +112,14 @@
                     v-if="type.typePathImage != null"
                     :src="type.typePathImage"
                     aspect-ratio="1.5"
+                    @click="editTypeDialog=true"
                   ></v-img>
-                  <v-img v-else :src="require('../assets/nophoto.png')" aspect-ratio="1.5"></v-img>
+                  <v-img
+                    v-else
+                    :src="require('../assets/nophoto.png')"
+                    aspect-ratio="1.5"
+                    @click="editTypeDialog=true"
+                  ></v-img>
                   <v-btn
                     class="subheading font-weight-medium"
                     block
@@ -150,34 +160,40 @@
                               v-model="typeOfServiceForDialog.typeName"
                               :rules="editNameRules"
                             ></v-text-field>
-                            <v-layout row>
-                              <v-flex xs6 order-md1 order-xs3>
-                                <v-text-field
-                                  label="Time Limit"
-                                  type="number"
-                                  suffix="Hr."
-                                  placeholder="1"
-                                  v-model="typeOfServiceForDialog.hour"
-                                  :rules="editHourRules"
-                                ></v-text-field>
-                              </v-flex>
-                              <v-flex xs6 order-md3 order-xs2>
-                                <v-text-field
-                                  label="Time Limit"
-                                  type="number"
-                                  suffix="Min."
-                                  placeholder="30"
-                                  v-model="typeOfServiceForDialog.minute"
-                                  :rules="editMinuteRules"
-                                ></v-text-field>
-                              </v-flex>
-                            </v-layout>
-                            <v-text-field
-                              label="Price"
-                              type="number"
-                              v-model="typeOfServiceForDialog.typePrice"
-                              :rules="priceRules"
-                            ></v-text-field>
+                            <v-radio-group v-model="row" row>
+                              <v-radio label="A-LA-CARTE" value="alacarte"></v-radio>
+                              <v-radio label="BUFFET" value="buffet"></v-radio>
+                            </v-radio-group>
+                            <div v-if="row === 'buffet'">
+                              <v-layout row>
+                                <v-flex xs6 order-md1 order-xs2>
+                                  <v-text-field
+                                    label="Time Limit"
+                                    type="number"
+                                    suffix="Hr."
+                                    placeholder="1"
+                                    v-model="typeOfServiceForDialog.hour"
+                                    :rules="editHourRules"
+                                  ></v-text-field>
+                                </v-flex>
+                                <v-flex xs6 order-md3 order-xs3>
+                                  <v-text-field
+                                    label=""
+                                    type="number"
+                                    suffix="Min."
+                                    placeholder="30"
+                                    v-model="typeOfServiceForDialog.minute"
+                                    :rules="editMinuteRules"
+                                  ></v-text-field>
+                                </v-flex>
+                              </v-layout>
+                              <v-text-field
+                                label="Price"
+                                type="number"
+                                v-model="typeOfServiceForDialog.typePrice"
+                                :rules="priceRules"
+                              ></v-text-field>
+                            </div>
 
                             <!-- dialog add menu -->
                             <a class="button" id="buttonAdd" @click="showMenu">
@@ -304,7 +320,7 @@ export default {
       //loop
       type: [],
       types: {
-        typePrice: null
+        typePrice: 0
       },
 
       //add menu dialog
@@ -361,6 +377,7 @@ export default {
                   typeTime: this.hour + "." + this.minute,
                   typePrice: this.newType.typePrice,
                   typePathImage: this.pathImage,
+                  service: this.row,
                   restaurantId: 1
                 })
                 .then(response => {
@@ -376,11 +393,13 @@ export default {
               typeTime: this.hour + "." + this.minute,
               typePrice: this.newType.typePrice,
               typePathImage: this.imageForUpload,
+              service: this.row,
               restaurantId: 1
             })
             .then(response => {
               this.newTypeCancel();
               this.refreshPage();
+              this.$refs.form.resetValidation();
             });
         }
       }
@@ -393,6 +412,7 @@ export default {
       this.pathImage = null;
       this.minute = null;
       this.hour = null;
+      this.row = null;
       this.$refs.form.rules;
       this.$refs.form.resetValidation();
     },
@@ -412,6 +432,11 @@ export default {
         this.typeOfServiceForDialog.hour +
         "." +
         this.typeOfServiceForDialog.minute;
+      this.typeOfServiceForDialog.service = this.row;
+      if (this.row == "alacarte") {
+        this.typeOfServiceForDialog.typeTime = 0;
+        this.typeOfServiceForDialog.typePrice = 0;
+      }
       if (this.image == null) {
         axios
           .put(
@@ -507,8 +532,16 @@ export default {
       this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(
         index + 1
       );
-
-      this.editTypeDialog = true;
+      console.log(this.typeOfServiceForDialog.hour)
+      if (this.typeOfServiceForDialog.service == "alacarte") {
+        console.log(this.typeOfServiceForDialog.service);
+        this.row = "alacarte";
+        this.editTypeDialog = true;
+      } else {
+        console.log(this.typeOfServiceForDialog.service);
+        this.row = "buffet";
+        this.editTypeDialog = true;
+      }
     }
   },
   computed: {

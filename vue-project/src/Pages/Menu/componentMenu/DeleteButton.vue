@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-btn color="primary" dark @click="confirmDelete">Delete Menu</v-btn>
+    <!-- <v-btn color="primary" dark @click="confirmDelete">Delete Menu</v-btn> -->
+    <v-icon @click="confirmDelete">delete</v-icon>
   </div>
 </template>
 
@@ -36,17 +37,16 @@ export default {
                     this.$store.commit("setMenu", response.data);
                     this.$store.commit("setCheckCategory", false);
                     this.$store.commit("setSelectedMenu", null);
+                    this.$toast.open("delete success");
                   })
               );
-            this.$toast.open("delete success");
           }
         });
       } else {
         this.$dialog.alert({
           title: "Error",
-          message:
-            "Please selected some menu row",
-          type: "is-warning",
+          message: "Please selected some menu row",
+          type: "is-warning"
         });
       }
     }
