@@ -11,12 +11,12 @@ router.delete('/deletenotification/:notificationId', async (req, res) => {
     res.send(await notification.deleteNotification(req.params.notificationId))
 })
 
-router.put('/updatebill', async (req, res) => {
-    res.send(await notification.updateBill(req.body))
+router.put('/updatenotification', async (req, res) => {
+    res.send(await notification.updateNotification(req.body))
 })
 
-router.post('/insertbill', async (req, res) => {
-    res.send(await notification.insertBill(req.body))
+router.post('/insertnotification', async (req, res) => {
+    res.send(await notification.insertNotification(req.body))
 })
 
 

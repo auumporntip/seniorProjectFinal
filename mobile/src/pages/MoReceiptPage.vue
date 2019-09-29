@@ -15,12 +15,29 @@
 
       <b-table :data="bill" :columns="columns"></b-table>
     </div>
+
     <v-btn
       class="white--text"
       color="#cd9575"
       id="spaceNext"
       @click="orderDialog=true"
     >Ordered detail</v-btn>
+
+    <v-btn class="white--text" color="#cd9575" id="spaceNext" @click="dialog=true">Check Bill</v-btn>
+
+    <div justify="center">
+      <v-dialog v-model="dialog" max-width="290">
+        <v-card>
+          <v-card-text>Are you sure you want to check bill?</v-card-text>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn color="blue darken-1" flat @click="dialog=false" class="cancelBtn">cancel</v-btn>
+            <v-btn color="blue darken-1" flat @click="okDialog" class="okBtn">OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+
     <v-dialog max-width="490" v-model="orderDialog">
       <v-card>
         <v-form ref="form">
@@ -61,7 +78,7 @@
           </v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="orderDialog=false">Back</v-btn>
+            <v-btn color="blue darken-1" flat @click="orderDialog = false" class="closeBtn">BACK</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -87,6 +104,7 @@ export default {
   data() {
     return {
       bill: "",
+      dialog: false,
       typeOfService: [],
       tableNumber: "",
       orderDialog: false,
@@ -107,6 +125,19 @@ export default {
       ]
     };
   },
+  methods: {
+    okDialog() {
+      axios
+        .post("http://localhost:3000/api/insertnotification", {
+          notiMessage: "check bill",
+          restaurantId: 1,
+          billId: sessionStorage.getItem("billId")
+        })
+        .then(response => {
+          this.dialog = false;
+        });
+    }
+  },
   created() {
     this.$store.commit("setNamePages", "Receipt");
     this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
@@ -117,7 +148,7 @@ export default {
       )
       .then(response => {
         this.orders = response.data;
-        console.log(this.orders)
+        console.log(this.orders);
       });
 
     var id = sessionStorage.getItem("billId");
@@ -133,7 +164,7 @@ export default {
         if (this.typeOfService.service === "buffet") {
           this.bill[0].totalPrice = this.typeOfService.typePrice;
         } else {
-          var price= 0;
+          var price = 0;
           for (let index = 0; index < this.orders.length; index++) {
             price +=
               this.orders[index].amount * this.orders[index].pricePerPiece;
@@ -156,7 +187,7 @@ export default {
   padding-top: 20%;
 }
 #spaceNext {
-  margin-left: 50%;
+  margin-left: 6%;
 }
 .textHead {
   font-weight: 1000;
@@ -164,5 +195,11 @@ export default {
 .text {
   text-align: left;
   font-weight: 500;
+}
+.cancelBtn {
+  margin-left: 10%;
+}
+.okBtn {
+  padding-left: 20%;
 }
 </style>

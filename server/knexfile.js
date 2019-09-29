@@ -8,6 +8,20 @@ module.exports = {
             database: 'RestaurantManagement'
         }
     }
+
+
+    // module.exports = {
+    //     development: {
+    //         client: 'mysql',
+    //         connection: {
+    //             host: '3.0.94.90',
+    //             user: 'Tiw',
+    //             password: 'res3',
+    //             database: 'RestaurantManagement'
+    //         }
+    //     }
+
+
     // development: {
     //     client: 'mysql',
     //     connection: {

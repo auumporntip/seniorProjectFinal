@@ -16,8 +16,8 @@ exports.updateNotification = async(notification) => {
 exports.insertNotification = async(notification) => {
     return await knex('notification').insert({
         notiMessage: notification.notiMessage,
-        restuarantId: notification.restuarantId,
-        billId : notification.billId
+        restaurantId: notification.restaurantId,
+        billId: notification.billId
         })
 }
 

@@ -178,7 +178,7 @@
                                 </v-flex>
                                 <v-flex xs6 order-md3 order-xs3>
                                   <v-text-field
-                                    label=""
+                                    label="Time Limit"
                                     type="number"
                                     suffix="Min."
                                     placeholder="30"
@@ -480,7 +480,7 @@ export default {
             this.menuData = response.data;
             for (let index = 0; index < this.checkBoxData.length; index++) {
               var i = this.menuData.findIndex(
-                menu => menu.menuId === this.checkBoxData[index].menuId
+                menu => menu.menuId === this.checkBoxData[index].menuId 
               );
               this.checkedRows.push(this.menuData[i]);
             }
@@ -525,11 +525,11 @@ export default {
       this.editTypeName = type.typeName;
       this.typeOfServiceForDialog = type;
       var index = this.typeOfServiceForDialog.typeTime.indexOf(".");
-      this.typeOfServiceForDialog.minute = this.typeOfServiceForDialog.typeTime.substring(
+      this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(
         0,
         index
       );
-      this.typeOfServiceForDialog.hour = this.typeOfServiceForDialog.typeTime.substring(
+      this.typeOfServiceForDialog.minute = this.typeOfServiceForDialog.typeTime.substring(
         index + 1
       );
       console.log(this.typeOfServiceForDialog.hour)
