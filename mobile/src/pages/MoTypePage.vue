@@ -23,7 +23,7 @@
         </v-card>
       </v-dialog>
       <div v-for="service in typeOfService" :key="service.typeId">
-        <v-img :src="image_src1"></v-img>
+        <v-img :src="service.typePathImage"></v-img>
         <v-btn
           block
           color="#cd9575"

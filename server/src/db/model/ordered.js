@@ -31,11 +31,18 @@ exports.deleteOrdered = async (orderedId) => {
         .del()
 }
 exports.getOrderedByResturantId = async (restaurantId) => {
-    return await knex('ordered')
-        .join('bill', 'bill.billId', '=', 'ordered.billId')
-        .join('menu', 'menu.menuId', '=', 'ordered.menuId')
-        .join('status', 'status.statusId', '=', 'ordered.statusId')
+    return await knex.select(
+        'ordered.orderId','ordered.created_at','ordered.pricePerPiece'
+        ,'ordered.amount','ordered.menuId','ordered.statusId'
+        ,'ordered.billId','bill.totalPrice','bill.tableNumber','bill.numOfCust'
+        ,'bill.eatTimeStart','bill.eatTimeEnd','menu.menuName','menu.menuPrice','menu.menuPathImage'
+        ,'status.statusName')
+        .from('ordered')
+        .leftJoin('bill', 'bill.billId', '=', 'ordered.billId')
+        .leftJoin('menu', 'menu.menuId', '=', 'ordered.menuId')
+        .leftJoin('status', 'status.statusId', '=', 'ordered.statusId')
         .where('menu.restaurantId', '=', restaurantId)
+        .orderBy('ordered.created_at','asc')
 }
 
 exports.getOrderedByBillId = async (billId) => {

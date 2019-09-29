@@ -71,6 +71,7 @@ export default {
   },
   data() {
     return {
+      restaurantId:1,
       ordered: [],
       dialog: false,
       isPaginated: true,
@@ -96,12 +97,12 @@ export default {
           label: "Menu Name"
         },
         {
-          field: "numOfTrans",
+          field: "amount",
           label: "Amount"
         },
         {
-          field: "transDate",
-          label: "Date",
+          field: "created_at",
+          label: "Time",
           centered: true
         },
         {
@@ -130,7 +131,7 @@ export default {
       }
       await Promise.all(promiseArr);
 
-      axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
+      axios.get("http://localhost:3000/api/getorderbyrestaurantid/"+this.restaurantId).then(response => {
         this.ordered = response.data;
       });
       this.checkedRows = [];
@@ -138,7 +139,7 @@ export default {
     }
   },
   created: function() {
-    axios.get("http://localhost:3000/api/gettransaction/1").then(response => {
+    axios.get("http://localhost:3000/api/getorderbyrestaurantid/"+this.restaurantId).then(response => {
       this.ordered = response.data;
     });
   }
