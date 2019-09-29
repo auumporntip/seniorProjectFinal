@@ -54,8 +54,7 @@ export default {
       dialog: false,
 
       numRules: [v => !!v || "Number of Customers is required"],
-      tableRules: [v => !!v || "Table number is required"],
-      image_src1: require("../assets/prestige.png")
+      tableRules: [v => !!v || "Table number is required"]
     };
   },
   methods: {
@@ -72,7 +71,7 @@ export default {
       const totalPrice = 0;
       if (this.$refs.form.validate()) {
         axios
-          .post("http://localhost:3000/api/insertbill", {
+          .post("http://3.0.183.80:3000/api/insertbill", {
             totalPrice: 0,
             eatTimeEnd: new Date(),
             eatTimeStart: new Date(),
@@ -94,7 +93,7 @@ export default {
   created() {
     this.$store.commit("setNamePages", "TypeOfService");
     axios
-      .get("http://localhost:3000/api/gettypeofservice/" + 1)
+      .get("http://3.0.183.80:3000/api/gettypeofservice/" + 1)
       .then(response => {
         this.typeOfService = response.data;
         console.log(this.typeOfService)

@@ -75,7 +75,7 @@ export default {
     this.$store.commit("setNamePages", "Status");
     axios
       .get(
-        "http://localhost:3000/api/getorderbybillid/" +
+        "http://3.0.183.80:3000/api/getorderbybillid/" +
           sessionStorage.getItem("billId")
       )
       .then(response => {
