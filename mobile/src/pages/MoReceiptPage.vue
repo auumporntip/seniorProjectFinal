@@ -128,7 +128,7 @@ export default {
   methods: {
     okDialog() {
       axios
-        .post("http://localhost:3000/api/insertnotification", {
+        .post("http://3.0.183.80:3000/api/insertnotification", {
           notiMessage: "check bill",
           restaurantId: 1,
           billId: sessionStorage.getItem("billId")
@@ -143,7 +143,7 @@ export default {
     this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
     axios
       .get(
-        "http://localhost:3000/api/getorderbybillid/" +
+        "http://3.0.183.80:3000/api/getorderbybillid/" +
           sessionStorage.getItem("billId")
       )
       .then(response => {
@@ -154,7 +154,7 @@ export default {
     var id = sessionStorage.getItem("billId");
 
     axios
-      .get("http://localhost:3000/api/getbillbybillid/" + id)
+      .get("http://3.0.183.80:3000/api/getbillbybillid/" + id)
       .then(response => {
         this.bill = response.data;
 

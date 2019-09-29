@@ -116,7 +116,7 @@ export default {
       if (this.typeOfService.typePrice != null) {
         axios
           .get(
-            "http://localhost:3000/api/getmenubytypeofserviceid/" +
+            "http://3.0.183.80:3000/api/getmenubytypeofserviceid/" +
               this.typeOfService.typeId
           )
           .then(response => {
@@ -127,7 +127,7 @@ export default {
           });
       } else {
         axios
-          .get("http://localhost:3000/api/getallmenu/" + 1)
+          .get("http://3.0.183.80:3000/api/getallmenu/" + 1)
           .then(response => {
             this.foodMenu = response.data;
             this.foodMenu.forEach(element => {
@@ -136,7 +136,7 @@ export default {
           });
       }
     }
-    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+    axios.get("http://3.0.183.80:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }
