@@ -4,10 +4,11 @@
     <div id="bigbox">
       <section class="bg">
         <v-card-title class="headline font-weight-medium">Table</v-card-title>
+        
+          <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
         <v-layout justify-space-around>
           <!-- add new type -->
 
-          
         </v-layout>
       </section>
     </div>
@@ -17,12 +18,15 @@
 <script>
 import sidebar from "@/components/sidebar";
 import axios from "axios";
+import QrcodeVue from "qrcode.vue";
+
 export default {
-    name: "Table",
+  name: "Table",
   components: {
-    sidebar
+    sidebar,
+    QrcodeVue
   }
-}
+};
 </script>
 <style scoped>
 .bg {

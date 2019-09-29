@@ -15,7 +15,7 @@
           ></v-text-field>
           <v-layout row wrap align-center>
             <v-subheader class="text">Status</v-subheader>
-            <b-dropdown v-model="selectedCategory" id="button">
+            <b-dropdown id="button">
               <v-btn flat slot="trigger">
                 {{nameOfStatus}}
                 <v-icon>keyboard_arrow_down</v-icon>
@@ -154,6 +154,21 @@ export default {
         );
       }
       await Promise.all(promiseArr);
+
+      for (let index = 0; index < this.checkedRows.length; index++) {
+        if (this.radioGroup === "3") {
+          axios.post("http://localhost:3000/api/inserttransaction", {
+            menuName: this.checkedRows[index].menuName,
+            transPrice: this.checkedRows[index].menuPrice,
+            totalPrice:
+              this.checkedRows[index].amount *
+              this.checkedRows[index].menuPrice,
+            amount: this.checkedRows[index].amount,
+            statusName: "finsh",
+            billId: this.checkedRows[index].billId
+          });
+        }
+      }
 
       axios
         .get(
