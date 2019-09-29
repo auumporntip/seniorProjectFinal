@@ -34,7 +34,7 @@ app.use('/api/',require('./routes/ordered'))
 app.use('/api/',require('./routes/authen'))
 app.use('/api/',require('./upload/upload'))
 
-app.listen(3000, () => {
+app.listen(5000, () => {
   console.log('Example app listening at http://localhost:3000');
 })
 
