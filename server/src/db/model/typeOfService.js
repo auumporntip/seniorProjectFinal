@@ -20,7 +20,7 @@ exports.updateTypeOfService = async(typeOfService) => {
 }
 
 exports.insertTypeOfService = async(typeOfService) => {
-    return await knex('typeOfService').insert({
+    return await knex('typeofservice').insert({
         typeName:typeOfService.typeName,
         typeTime:typeOfService.typeTime,
         typePrice:typeOfService.typePrice,
@@ -31,7 +31,7 @@ exports.insertTypeOfService = async(typeOfService) => {
 }
 
 exports.deleteTypeOfService = async (typeOfServiceId) => {
-    await knex('typeOfService')
+    await knex('typeofservice')
         .where('typeId','=', typeOfServiceId)
         .del()
 }
