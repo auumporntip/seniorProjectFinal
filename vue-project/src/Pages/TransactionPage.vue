@@ -4,15 +4,27 @@
     <div id="bigbox">
       <div class="bg">
         <v-card-title class="headline font-weight-medium">TRANSACTION</v-card-title>
-        <h1>All of the menu ordered:</h1>
+        <!-- <h1>All of the menu ordered:</h1>
         <div id="date">
           <b-field>
             <b-datepicker placeholder="Click to select date" icon="calendar-today">
               <br />
             </b-datepicker>
           </b-field>
-        </div>
-        <b-table :data="transData" :columns="columns" :selected.sync="selected" focusable></b-table>
+        </div>-->
+        <b-table
+          :data="transData"
+          :columns="columns"
+          :selected.sync="selected"
+          :paginated="isPaginated"
+          :per-page="perPage"
+          :current-page.sync="currentPage"
+          :pagination-simple="isPaginationSimple"
+          aria-next-label="Next page"
+          aria-previous-label="Previous page"
+          aria-page-label="Page"
+          aria-current-label="Current page"
+        ></b-table>
         <br />
         <br />
       </div>
@@ -34,22 +46,20 @@ export default {
   data() {
     const menu = [];
     return {
+      isPaginated: true,
+      isPaginationSimple: false,
+      currentPage: 1,
+      perPage: 10,
       transData: [],
       menu: menu,
       selected: {},
       columns: [
         {
-          field: "menuId",
-          label: "ID",
-          width: "40",
-          numeric: true
-        },
-        {
           field: "menuName",
           label: "Menu"
         },
         {
-          field: "menuPrice",
+          field: "transPrice",
           label: "Price"
         },
         {

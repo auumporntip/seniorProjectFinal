@@ -35,7 +35,6 @@
             <v-list-tile-title>Type of Service</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
         <v-list-tile :to="{name: 'OrderedPage'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>

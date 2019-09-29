@@ -15,6 +15,13 @@ exports.updateOrdered = async (ordered) => {
         })
 }
 
+exports.changeStatus = async (orderId,statusId) => {
+    await knex('ordered').where('orderId', '=', orderId)
+        .update({
+            statusId: statusId,
+        })
+}
+
 exports.insertOrdered = async (ordered) => {
     return await knex('ordered').insert({
         pricePerPiece: ordered.pricePerPiece,

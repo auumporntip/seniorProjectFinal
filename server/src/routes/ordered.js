@@ -23,6 +23,10 @@ router.put('/updateordered', async (req, res) => {
     res.send(await ordered.updateOrdered(req.body))
 })
 
+router.put('/changestatus/:orderId/:statusId', async (req, res) => {
+    res.send(await ordered.changeStatus(req.params.orderId,req.params.statusId))
+})
+
 router.post('/insertordered', async (req, res) => {
     res.send(await ordered.insertOrdered(req.body))
 })

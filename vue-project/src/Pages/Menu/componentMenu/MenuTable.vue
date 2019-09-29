@@ -93,8 +93,8 @@
         <b-table-column label="Edit Menu" width="120">
           <EditButton></EditButton>
         </b-table-column>
-          <b-table-column label="Delete Menu" width="120">
-         <DeleteButton></DeleteButton>
+        <b-table-column label="Delete Menu" width="120">
+          <DeleteButton></DeleteButton>
         </b-table-column>
       </template>
     </b-table>
