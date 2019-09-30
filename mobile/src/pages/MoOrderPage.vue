@@ -63,7 +63,7 @@ export default {
     confirm() {
       for (let index = 0; index < this.orders.length; index++) {
         axios
-          .post("http://3.0.183.80:3000/api/insertordered", {
+          .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/insertordered", {
             pricePerPiece: this.orders[index].menuPrice,
             amount: this.orders[index].amount,
             menuId: this.orders[index].menuId,

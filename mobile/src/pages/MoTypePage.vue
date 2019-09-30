@@ -71,7 +71,7 @@ export default {
       const totalPrice = 0;
       if (this.$refs.form.validate()) {
         axios
-          .post("http://3.0.183.80:3000/api/insertbill", {
+          .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/insertbill", {
             totalPrice: 0,
             eatTimeEnd: new Date(),
             eatTimeStart: new Date(),
@@ -93,7 +93,7 @@ export default {
   created() {
     this.$store.commit("setNamePages", "TypeOfService");
     axios
-      .get("http://3.0.183.80:3000/api/gettypeofservice/" + 1)
+      .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/gettypeofservice/" + 1)
       .then(response => {
         this.typeOfService = response.data;
         console.log(this.typeOfService)
