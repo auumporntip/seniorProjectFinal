@@ -116,7 +116,7 @@ export default {
       if (this.typeOfService.typePrice != null) {
         axios
           .get(
-            "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getmenubytypeofserviceid/" +
+            "https://restaurant.bazsup.ml/api/getmenubytypeofserviceid/" +
               this.typeOfService.typeId
           )
           .then(response => {
@@ -127,7 +127,7 @@ export default {
           });
       } else {
         axios
-          .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/" + 1)
+          .get("https://restaurant.bazsup.ml/api/getallmenu/" + 1)
           .then(response => {
             this.foodMenu = response.data;
             this.foodMenu.forEach(element => {
@@ -136,7 +136,7 @@ export default {
           });
       }
     }
-    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/" + 1).then(response => {
+    axios.get("https://restaurant.bazsup.ml/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }

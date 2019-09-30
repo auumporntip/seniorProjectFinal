@@ -24,7 +24,7 @@ export default {
           onConfirm: () => {
             axios
               .delete(
-                "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/deletemenu/" +
+                "https://restaurant.bazsup.ml/api/deletemenu/" +
                   this.$store.getters.selectedMenu.menuId +
                   "/" +
                   1
@@ -32,7 +32,7 @@ export default {
               )
               .then(
                 axios
-                  .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getallmenu/" + 1)
+                  .get("https://restaurant.bazsup.ml/api/getallmenu/" + 1)
                   .then(response => {
                     this.$store.commit("setMenu", response.data);
                     this.$store.commit("setCheckCategory", false);

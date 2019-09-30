@@ -75,7 +75,7 @@ export default {
     this.$store.commit("setNamePages", "Status");
     axios
       .get(
-        "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getorderbybillid/" +
+        "https://restaurant.bazsup.ml/api/getorderbybillid/" +
           sessionStorage.getItem("billId")
       )
       .then(response => {

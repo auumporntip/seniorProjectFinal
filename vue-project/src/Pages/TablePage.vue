@@ -25,7 +25,12 @@ export default {
   components: {
     sidebar,
     QrcodeVue
-  }
+  },
+  data() {
+    return {
+      value:'https://google.com/Motype'
+    }
+  },
 };
 </script>
 <style scoped>

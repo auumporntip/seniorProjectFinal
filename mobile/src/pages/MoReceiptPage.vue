@@ -128,7 +128,7 @@ export default {
   methods: {
     okDialog() {
       axios
-        .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/insertnotification", {
+        .post("https://restaurant.bazsup.ml/api/insertnotification", {
           notiMessage: "check bill",
           restaurantId: 1,
           billId: sessionStorage.getItem("billId")
@@ -143,7 +143,7 @@ export default {
     this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
     axios
       .get(
-        "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getorderbybillid/" +
+        "https://restaurant.bazsup.ml/api/getorderbybillid/" +
           sessionStorage.getItem("billId")
       )
       .then(response => {
@@ -154,7 +154,7 @@ export default {
     var id = sessionStorage.getItem("billId");
 
     axios
-      .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getbillbybillid/" + id)
+      .get("https://restaurant.bazsup.ml/api/getbillbybillid/" + id)
       .then(response => {
         this.bill = response.data;
 
