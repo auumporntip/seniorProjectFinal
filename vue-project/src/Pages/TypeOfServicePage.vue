@@ -368,11 +368,12 @@ export default {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
           axios
-            .post("http://localhost:3000/api/uploadFB", formData)
+            .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/uploadFB", formData)
             .then(response => {
               this.pathImage = response.data.url;
+              console.log(response.data.url)
               axios
-                .post("http://localhost:3000/api/insertTypeOfService", {
+                .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/inserttypeOfService", {
                   typeName: this.newType.typeName,
                   typeTime: this.hour + "." + this.minute,
                   typePrice: this.newType.typePrice,
@@ -387,8 +388,14 @@ export default {
                 });
             });
         } else {
+          console.log(this.newType.typeName+
+              "typeTime"+ this.hour + "." + this.minute+
+              "typePrice"+ this.newType.typePrice+
+              "typePathImage"+ this.imageForUpload+
+              "service"+ this.row+
+              "restaurantId"+ 1)
           axios
-            .post("http://localhost:3000/api/insertTypeOfService", {
+            .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/inserttypeOfService", {
               typeName: this.newType.typeName,
               typeTime: this.hour + "." + this.minute,
               typePrice: this.newType.typePrice,
@@ -397,6 +404,7 @@ export default {
               restaurantId: 1
             })
             .then(response => {
+              console.log(response.data)
               this.newTypeCancel();
               this.refreshPage();
               this.$refs.form.resetValidation();
@@ -418,7 +426,7 @@ export default {
     },
     editTypeCancel() {
       axios
-        .get("http://localhost:3000/api/getalltypeofservice")
+        .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
           this.selectedMenu = {};
@@ -440,7 +448,7 @@ export default {
       if (this.image == null) {
         axios
           .put(
-            "http://localhost:3000/api/updatetypeofservice/",
+            "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/updatetypeofservice/",
             this.typeOfServiceForDialog
           )
           .then(() => {
@@ -450,7 +458,7 @@ export default {
         var formData = new FormData();
         formData.append("file", this.imageForUpload);
         axios
-          .post("http://localhost:3000/api/uploadFB", formData)
+          .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/uploadFB", formData)
           .then(response => {
             this.typeOfServiceForDialog.typePathImage = response.data.url;
 
@@ -458,7 +466,7 @@ export default {
             console.log(this.typeOfServiceForDialog);
             axios
               .put(
-                "http://localhost:3000/api/updatetypeofservice/",
+                "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/updatetypeofservice/",
                 this.typeOfServiceForDialog
               )
               .then(() => {
@@ -471,12 +479,12 @@ export default {
       this.menuDialog = true;
       axios
         .get(
-          "http://localhost:3000/api/getmenubytypeofserviceid/" +
+          "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getmenubytypeofserviceid/" +
             this.typeOfServiceForDialog.typeId
         )
         .then(response => {
           this.checkBoxData = response.data;
-          axios.get("http://localhost:3000/api/getallMenu").then(response => {
+          axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getallMenu").then(response => {
             this.menuData = response.data;
             for (let index = 0; index < this.checkBoxData.length; index++) {
               var i = this.menuData.findIndex(
@@ -496,7 +504,7 @@ export default {
       for (let index = 0; index < this.checkBoxData.length; index++) {
         promiseArr.push(
           axios.delete(
-            "http://localhost:3000/api/deletemenuservice/" +
+            "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/deletemenuservice/" +
               this.checkBoxData[index].menuServiceId
           )
         );
@@ -504,7 +512,7 @@ export default {
       await Promise.all(promiseArr);
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .post("http://localhost:3000/api/insertMenuService/", {
+          .post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/insertMenuService/", {
             typeId: this.typeOfServiceForDialog.typeId,
             menuId: this.checkedRows[index].menuId
           })
@@ -516,7 +524,7 @@ export default {
     },
     refreshPage() {
       axios
-        .get("http://localhost:3000/api/getalltypeofservice")
+        .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
         });
@@ -582,7 +590,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:3000/api/getalltypeofservice")
+      .get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getalltypeofservice")
       .then(response => {
         this.typeData = response.data;
       });

@@ -9,7 +9,7 @@ exports.getTypeOfServiceByRestaurantId=async(restaurantId) => {
 }
 
 exports.updateTypeOfService = async(typeOfService) => {
-    await knex('typeOfService').where('typeId', '=', typeOfService.typeId)
+    await knex('typeofservice').where('typeId', '=', typeOfService.typeId)
         .update({
             typeName:typeOfService.typeName,
             typeTime:typeOfService.typeTime,
@@ -20,7 +20,7 @@ exports.updateTypeOfService = async(typeOfService) => {
 }
 
 exports.insertTypeOfService = async(typeOfService) => {
-    return await knex('typeOfService').insert({
+    return await knex('typeofservice').insert({
         typeName:typeOfService.typeName,
         typeTime:typeOfService.typeTime,
         typePrice:typeOfService.typePrice,
