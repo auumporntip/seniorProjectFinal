@@ -1,25 +1,25 @@
-module.exports = {
-    development: {
-        client: 'mysql',
-        connection: {
-            host: 'localhost',
-            user: 'root',
-            password: '123456789',
-            database: 'RestaurantManagement'
+// module.exports = {
+//     development: {
+//         client: 'mysql',
+//         connection: {
+//             host: 'localhost',
+//             user: 'root',
+//             password: '123456789',
+//             database: 'RestaurantManagement'
+//         }
+//     }
+
+
+    module.exports = {
+        development: {
+            client: 'mysql',
+            connection: {
+                host: '3.0.94.90',
+                user: 'Tiw',
+                password: 'res3',
+                database: 'restaurantmanagement'
+            }
         }
-    }
-
-
-    // module.exports = {
-    //     development: {
-    //         client: 'mysql',
-    //         connection: {
-    //             host: '3.0.94.90',
-    //             user: 'Tiw',
-    //             password: 'res3',
-    //             database: 'RestaurantManagement'
-    //         }
-    //     }
 
 
     // development: {
