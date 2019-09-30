@@ -146,7 +146,7 @@ export default {
       for (let index = 0; index < this.checkedRows.length; index++) {
         promiseArr.push(
           axios.put(
-            "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/changestatus/" +
+            "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/changestatus/" +
               this.checkedRows[index].orderId +
               "/" +
               this.radioGroup
@@ -157,7 +157,7 @@ export default {
 
       for (let index = 0; index < this.checkedRows.length; index++) {
         if (this.radioGroup === "3") {
-          axios.post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/inserttransaction", {
+          axios.post("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/inserttransaction", {
             menuName: this.checkedRows[index].menuName,
             transPrice: this.checkedRows[index].menuPrice,
             totalPrice:
@@ -172,7 +172,7 @@ export default {
 
       axios
         .get(
-          "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getorderbyrestaurantid/" +
+          "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getorderbyrestaurantid/" +
             this.restaurantId
         )
         .then(response => {
@@ -199,7 +199,7 @@ export default {
   created: function() {
     axios
       .get(
-        "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getorderbyrestaurantid/" + this.restaurantId
+        "http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getorderbyrestaurantid/" + this.restaurantId
       )
       .then(response => {
         this.ordered = response.data;
@@ -209,7 +209,7 @@ export default {
           ).format("HH:mm:ss");
         }
       });
-    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getallstatus").then(response => {
+    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getallstatus").then(response => {
       this.statusData = response.data;
     });
   }

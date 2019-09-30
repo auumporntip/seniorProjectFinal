@@ -38,7 +38,7 @@ export default {
     return {};
   },
   created() {
-    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getcategory/" + 1).then(response => {
+    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }

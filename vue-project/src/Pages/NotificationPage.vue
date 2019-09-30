@@ -42,7 +42,7 @@ export default {
     };
   },
   created() {
-    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:5000/api/getallnotification").then(response => {
+    axios.get("http://ec2-54-169-124-227.ap-southeast-1.compute.amazonaws.com:3000/api/getallnotification").then(response => {
       this.notiData = response.data;
     });
   }
