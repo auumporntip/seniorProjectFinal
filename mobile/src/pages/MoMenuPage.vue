@@ -116,7 +116,7 @@ export default {
       if (this.typeOfService.typePrice != null) {
         axios
           .get(
-            "https://restaurant.bazsup.ml/api/getmenubytypeofserviceid/" +
+            "http://localhost:3000/api/getmenubytypeofserviceid/" +
               this.typeOfService.typeId
           )
           .then(response => {
@@ -127,7 +127,7 @@ export default {
           });
       } else {
         axios
-          .get("https://restaurant.bazsup.ml/api/getallmenu/" + 1)
+          .get("http://localhost:3000/api/getallmenu/" + 1)
           .then(response => {
             this.foodMenu = response.data;
             this.foodMenu.forEach(element => {
@@ -136,7 +136,7 @@ export default {
           });
       }
     }
-    axios.get("https://restaurant.bazsup.ml/api/getcategory/" + 1).then(response => {
+    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }

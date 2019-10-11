@@ -368,12 +368,12 @@ export default {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
           axios
-            .post("https://restaurant.bazsup.ml/api/uploadFB", formData)
+            .post("http://localhost:3000/api/uploadFB", formData)
             .then(response => {
               this.pathImage = response.data.url;
               console.log(response.data.url)
               axios
-                .post("https://restaurant.bazsup.ml/api/inserttypeOfService", {
+                .post("http://localhost:3000/api/inserttypeOfService", {
                   typeName: this.newType.typeName,
                   typeTime: this.hour + "." + this.minute,
                   typePrice: this.newType.typePrice,
@@ -395,7 +395,7 @@ export default {
               "service"+ this.row+
               "restaurantId"+ 1)
           axios
-            .post("https://restaurant.bazsup.ml/api/inserttypeOfService", {
+            .post("http://localhost:3000/api/inserttypeOfService", {
               typeName: this.newType.typeName,
               typeTime: this.hour + "." + this.minute,
               typePrice: this.newType.typePrice,
@@ -426,7 +426,7 @@ export default {
     },
     editTypeCancel() {
       axios
-        .get("https://restaurant.bazsup.ml/api/getalltypeofservice")
+        .get("http://localhost:3000/api/getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
           this.selectedMenu = {};
@@ -448,7 +448,7 @@ export default {
       if (this.image == null) {
         axios
           .put(
-            "https://restaurant.bazsup.ml/api/updatetypeofservice/",
+            "http://localhost:3000/api/updatetypeofservice/",
             this.typeOfServiceForDialog
           )
           .then(() => {
@@ -458,7 +458,7 @@ export default {
         var formData = new FormData();
         formData.append("file", this.imageForUpload);
         axios
-          .post("https://restaurant.bazsup.ml/api/uploadFB", formData)
+          .post("http://localhost:3000/api/uploadFB", formData)
           .then(response => {
             this.typeOfServiceForDialog.typePathImage = response.data.url;
 
@@ -466,7 +466,7 @@ export default {
             console.log(this.typeOfServiceForDialog);
             axios
               .put(
-                "https://restaurant.bazsup.ml/api/updatetypeofservice/",
+                "http://localhost:3000/api/updatetypeofservice/",
                 this.typeOfServiceForDialog
               )
               .then(() => {
@@ -479,12 +479,12 @@ export default {
       this.menuDialog = true;
       axios
         .get(
-          "https://restaurant.bazsup.ml/api/getmenubytypeofserviceid/" +
+          "http://localhost:3000/api/getmenubytypeofserviceid/" +
             this.typeOfServiceForDialog.typeId
         )
         .then(response => {
           this.checkBoxData = response.data;
-          axios.get("https://restaurant.bazsup.ml/api/getallMenu").then(response => {
+          axios.get("http://localhost:3000/api/getallMenu").then(response => {
             this.menuData = response.data;
             for (let index = 0; index < this.checkBoxData.length; index++) {
               var i = this.menuData.findIndex(
@@ -504,7 +504,7 @@ export default {
       for (let index = 0; index < this.checkBoxData.length; index++) {
         promiseArr.push(
           axios.delete(
-            "https://restaurant.bazsup.ml/api/deletemenuservice/" +
+            "http://localhost:3000/api/deletemenuservice/" +
               this.checkBoxData[index].menuServiceId
           )
         );
@@ -512,7 +512,7 @@ export default {
       await Promise.all(promiseArr);
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .post("https://restaurant.bazsup.ml/api/insertMenuService/", {
+          .post("http://localhost:3000/api/insertMenuService/", {
             typeId: this.typeOfServiceForDialog.typeId,
             menuId: this.checkedRows[index].menuId
           })
@@ -524,7 +524,7 @@ export default {
     },
     refreshPage() {
       axios
-        .get("https://restaurant.bazsup.ml/api/getalltypeofservice")
+        .get("http://localhost:3000/api/getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
         });
@@ -590,7 +590,7 @@ export default {
   },
   created() {
     axios
-      .get("https://restaurant.bazsup.ml/api/getalltypeofservice")
+      .get("http://localhost:3000/api/getalltypeofservice")
       .then(response => {
         this.typeData = response.data;
       });

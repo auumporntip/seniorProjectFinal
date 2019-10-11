@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      value:'https://google.com/Motype'
+      value:'http://restaurant-management.netlify.com'
     }
   },
 };

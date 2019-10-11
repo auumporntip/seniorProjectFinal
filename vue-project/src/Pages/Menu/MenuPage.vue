@@ -38,7 +38,7 @@ export default {
     return {};
   },
   created() {
-    axios.get("https://restaurant.bazsup.ml/api/getcategory/" + 1).then(response => {
+    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }

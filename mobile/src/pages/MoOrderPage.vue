@@ -63,7 +63,7 @@ export default {
     confirm() {
       for (let index = 0; index < this.orders.length; index++) {
         axios
-          .post("https://restaurant.bazsup.ml/api/insertordered", {
+          .post("http://localhost:3000/api/insertordered", {
             pricePerPiece: this.orders[index].menuPrice,
             amount: this.orders[index].amount,
             menuId: this.orders[index].menuId,

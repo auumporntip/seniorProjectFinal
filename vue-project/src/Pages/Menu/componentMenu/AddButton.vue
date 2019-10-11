@@ -129,12 +129,12 @@ export default {
   },
   created() {
     axios
-      .get("https://restaurant.bazsup.ml/api/getallmenu/" + this.restaurantId)
+      .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)
       .then(response => {
         this.allMenu = response.data;
         console.log(this.allMenu);
       });
-    axios.get("https://restaurant.bazsup.ml/api/getcategory/" + 1).then(response => {
+    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   },
@@ -142,7 +142,7 @@ export default {
   methods: {
     clickButton() {
       axios
-        .get("https://restaurant.bazsup.ml/api/getcategory/" + this.restaurantId)
+        .get("http://localhost:3000/api/getcategory/" + this.restaurantId)
         .then(response => {
           this.category = response.data;
         });
@@ -167,11 +167,11 @@ export default {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
           axios
-            .post("https://restaurant.bazsup.ml/api/uploadFB", formData)
+            .post("http://localhost:3000/api/uploadFB", formData)
             .then(response => {
               this.pathImage = response.data.url;
               axios
-                .post("https://restaurant.bazsup.ml/api/insertmenu", {
+                .post("http://localhost:3000/api/insertmenu", {
                   menuName: this.menu.menuName,
                   menuPrice: this.menu.menuPrice,
                   categoryId: this.selectedCategory,
@@ -181,7 +181,7 @@ export default {
                 .then(response => {
                   axios
                     .get(
-                      "https://restaurant.bazsup.ml/api/getallmenu/" +
+                      "http://localhost:3000/api/getallmenu/" +
                         this.restaurantId
                     )
                     .then(response => {
@@ -194,7 +194,7 @@ export default {
             });
         } else {
           axios
-            .post("https://restaurant.bazsup.ml/api/insertmenu", {
+            .post("http://localhost:3000/api/insertmenu", {
               menuName: this.menu.menuName,
               menuPrice: this.menu.menuPrice,
               categoryId: this.selectedCategory,
@@ -204,7 +204,7 @@ export default {
             .then(response => {
               axios
                 .get(
-                  "https://restaurant.bazsup.ml/api/getallmenu/" + this.restaurantId
+                  "http://localhost:3000/api/getallmenu/" + this.restaurantId
                 )
                 .then(response => {
                   this.allMenu = response.data;

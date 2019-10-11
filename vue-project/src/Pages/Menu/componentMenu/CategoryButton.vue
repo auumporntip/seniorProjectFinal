@@ -250,7 +250,7 @@ export default {
     addSave() {
       if (this.$refs.form.validate()) {
         axios
-          .post("https://restaurant.bazsup.ml/api/insertCategory", {
+          .post("http://localhost:3000/api/insertCategory", {
             categoryName: this.newCat.categoryName,
             restaurantId: 1
           })
@@ -266,13 +266,13 @@ export default {
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
           .put(
-            "https://restaurant.bazsup.ml/api/updatecategory",
+            "http://localhost:3000/api/updatecategory",
             this.checkedRows[index]
           )
           .then(() => {
             this.reCat();
             axios
-              .get("https://restaurant.bazsup.ml/api/getallmenu/" + 1)
+              .get("http://localhost:3000/api/getallmenu/" + 1)
               .then(response => {
                 this.$store.commit("setMenu", response.data);
               });
@@ -288,7 +288,7 @@ export default {
       console.log(this.checkedRows)
         axios
           .delete(
-            "https://restaurant.bazsup.ml/api/deletecategory/" +
+            "http://localhost:3000/api/deletecategory/" +
               this.checkedRows[index].categoryId
           )
           .then(() => {
@@ -310,7 +310,7 @@ export default {
     //         for (let index = 0; index < this.checkedRows.length; index++) {
     //           axios
     //             .delete(
-    //               "https://restaurant.bazsup.ml/api/deletecategory/" +
+    //               "http://localhost:3000/api/deletecategory/" +
     //                 this.checkedRows[index].categoryId
     //             )
     //             .then(() => {
@@ -330,7 +330,7 @@ export default {
     //   }
     // },
     reCat() {
-      axios.get("https://restaurant.bazsup.ml/api/getallcategory").then(response => {
+      axios.get("http://localhost:3000/api/getallcategory").then(response => {
         this.category = response.data;
       });
     }
@@ -350,7 +350,7 @@ export default {
     }
   },
   created: function() {
-    axios.get("https://restaurant.bazsup.ml/api/getcategory/" + 1).then(response => {
+    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }

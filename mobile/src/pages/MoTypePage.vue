@@ -71,7 +71,7 @@ export default {
       const totalPrice = 0;
       if (this.$refs.form.validate()) {
         axios
-          .post("https://restaurant.bazsup.ml/api/insertbill", {
+          .post("http://localhost:3000/api/insertbill", {
             totalPrice: 0,
             eatTimeEnd: new Date(),
             eatTimeStart: new Date(),
@@ -91,9 +91,10 @@ export default {
     }
   },
   created() {
+    console.log(process.env.localhost)
     this.$store.commit("setNamePages", "TypeOfService");
     axios
-      .get("https://restaurant.bazsup.ml/api/gettypeofservice/" + 1)
+      .get("http://localhost:3000/api/gettypeofservice/" + 1)
       .then(response => {
         this.typeOfService = response.data;
         console.log(this.typeOfService)

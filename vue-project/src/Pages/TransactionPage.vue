@@ -83,7 +83,7 @@ export default {
   },
   methods: {},
   created() {
-    axios.get("https://restaurant.bazsup.ml/api/getalltransaction").then(response => {
+    axios.get("http://localhost:3000/api/getalltransaction").then(response => {
       this.transData = response.data;
     });
   }

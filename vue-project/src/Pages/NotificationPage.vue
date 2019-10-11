@@ -42,7 +42,7 @@ export default {
     };
   },
   created() {
-    axios.get("https://restaurant.bazsup.ml/api/getallnotification").then(response => {
+    axios.get("http://localhost:3000/api/getallnotification").then(response => {
       this.notiData = response.data;
     });
   }

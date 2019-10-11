@@ -135,7 +135,7 @@ export default {
 
         this.name = this.$store.getters.selectedMenu.menuName;
         axios
-          .get("https://restaurant.bazsup.ml/api/getcategory/" + this.restaurantId)
+          .get("http://localhost:3000/api/getcategory/" + this.restaurantId)
           .then(response => {
             this.category = response.data;
           });
@@ -145,7 +145,7 @@ export default {
     },
     closeDialog() {
       console.log(this.name);
-      axios.get("https://restaurant.bazsup.ml/api/getallmenu/" + 1).then(response => {
+      axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
         this.$store.commit("setMenu", response.data);
         this.$store.commit("setCheckCategory", false);
         this.$store.commit("setSelectedMenu", null);
@@ -162,7 +162,7 @@ export default {
     confirmEdit() {
       if (this.image == null) {
         axios
-          .put("https://restaurant.bazsup.ml/api/updatemenu/", this.selectedMenu)
+          .put("http://localhost:3000/api/updatemenu/", this.selectedMenu)
           .then(() => {
             this.closeDialog();
           });
@@ -170,11 +170,11 @@ export default {
         var formData = new FormData();
         formData.append("file", this.imageForUpload);
         axios
-          .post("https://restaurant.bazsup.ml/api/uploadFB", formData)
+          .post("http://localhost:3000/api/uploadFB", formData)
           .then(response => {
             this.selectedMenu.menuPathImage = response.data.url;
             axios
-              .put("https://restaurant.bazsup.ml/api/updatemenu/", this.selectedMenu)
+              .put("http://localhost:3000/api/updatemenu/", this.selectedMenu)
               .then(() => {
                 this.closeDialog();
               });
@@ -204,7 +204,7 @@ export default {
   },
   created() {
     axios
-      .get("https://restaurant.bazsup.ml/api/getallmenu/" + this.restaurantId)
+      .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)
       .then(response => {
         this.allMenu = response.data;
         console.log(this.allMenu);

@@ -146,7 +146,7 @@ export default {
       for (let index = 0; index < this.checkedRows.length; index++) {
         promiseArr.push(
           axios.put(
-            "https://restaurant.bazsup.ml/api/changestatus/" +
+            "http://localhost:3000/api/changestatus/" +
               this.checkedRows[index].orderId +
               "/" +
               this.radioGroup
@@ -157,7 +157,7 @@ export default {
 
       for (let index = 0; index < this.checkedRows.length; index++) {
         if (this.radioGroup === "3") {
-          axios.post("https://restaurant.bazsup.ml/api/inserttransaction", {
+          axios.post("http://localhost:3000/api/inserttransaction", {
             menuName: this.checkedRows[index].menuName,
             transPrice: this.checkedRows[index].menuPrice,
             totalPrice:
@@ -172,7 +172,7 @@ export default {
 
       axios
         .get(
-          "https://restaurant.bazsup.ml/api/getorderbyrestaurantid/" +
+          "http://localhost:3000/api/getorderbyrestaurantid/" +
             this.restaurantId
         )
         .then(response => {
@@ -199,7 +199,7 @@ export default {
   created: function() {
     axios
       .get(
-        "https://restaurant.bazsup.ml/api/getorderbyrestaurantid/" + this.restaurantId
+        "http://localhost:3000/api/getorderbyrestaurantid/" + this.restaurantId
       )
       .then(response => {
         this.ordered = response.data;
@@ -209,7 +209,7 @@ export default {
           ).format("HH:mm:ss");
         }
       });
-    axios.get("https://restaurant.bazsup.ml/api/getallstatus").then(response => {
+    axios.get("http://localhost:3000/api/getallstatus").then(response => {
       this.statusData = response.data;
     });
   }
