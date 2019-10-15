@@ -84,6 +84,17 @@
       </v-card>
     </v-dialog>
 
+    <!-- <template>
+    <v-container>
+    <v-dialog v-model="waitDialog">
+      <v-card color="#F9F9F9" >
+      <div class="img"> <center><v-progress-circular :value="60"></v-progress-circular></center> </div>
+      <p class="text">Please wait, your request is being processed. </p>
+    </v-card>
+    </v-dialog>
+    </v-container>
+    </template> -->
+
     <NavBar></NavBar>
   </v-content>
 </template>
@@ -108,6 +119,7 @@ export default {
       typeOfService: [],
       tableNumber: "",
       orderDialog: false,
+      waitDialog: false,
       columns: [
         {
           field: "typeName",
@@ -135,6 +147,7 @@ export default {
         })
         .then(response => {
           this.dialog = false;
+          this.waitDialog = true;
         });
     }
   },
@@ -201,5 +214,15 @@ export default {
 }
 .okBtn {
   padding-left: 20%;
+}
+.text{
+  font-size: 18px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+.img{
+  padding-top: 20px;
 }
 </style>
