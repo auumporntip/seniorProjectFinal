@@ -13,7 +13,7 @@
             single-line
             hide-details
           ></v-text-field>
-          <v-layout row wrap align-center>
+          <!-- <v-layout row wrap align-center>
             <v-subheader class="text">Status</v-subheader>
             <b-dropdown id="button">
               <v-btn flat slot="trigger">
@@ -29,49 +29,132 @@
                 @click="changeStatus(option.statusName)"
               >{{option.statusName}}</b-dropdown-item>
             </b-dropdown>
-          </v-layout>
+          </v-layout>-->
         </v-card-title>
-        <!-- <b-input placeholder="Search..." type="search" icon="magnify"></b-input> -->
-        <b-table
-          :data="items"
-          :columns="columns"
-          :paginated="isPaginated"
-          :per-page="perPage"
-          :checked-rows.sync="checkedRows"
-          :is-row-checkable="(row) => row.id !== 3"
-          checkable
-          :checkbox-position="checkboxPosition"
-          aria-next-label="Next page"
-          aria-previous-label="Previous page"
-          aria-page-label="Page"
-          aria-current-label="Current page"
-        >
-          <template slot="bottom-left">
-            <b>Total checked</b>
-            : {{ checkedRows.length }}
-          </template>
-        </b-table>
-        <div class="space-btn">
-          <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
-          <v-dialog v-model="dialog" max-width="290">
-            <v-card>
-              <v-card-text class="headline">
-                What status do you want to change?
-                <v-radio-group v-model="radioGroup">
-                  <v-radio label="Preparing" value="1"></v-radio>
-                  <v-radio label="Cooking" value="2"></v-radio>
-                  <v-radio label="Serving" value="3"></v-radio>
-                  <v-radio label="Cancel" value="4"></v-radio>
-                </v-radio-group>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
+
+        <!-- TIME -->
+        <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle">
+          <b-tab-item label="Ordered by time">
+            <b-table
+              :data="items"
+              :columns="columns"
+              :paginated="isPaginated"
+              :per-page="perPage"
+              :checked-rows.sync="checkedRows"
+              :is-row-checkable="(row) => row.id !== 3"
+              checkable
+              :checkbox-position="checkboxPosition"
+              aria-next-label="Next page"
+              aria-previous-label="Previous page"
+              aria-page-label="Page"
+              aria-current-label="Current page"
+            >
+              <template slot="bottom-left">
+                <b>Total checked</b>
+                : {{ checkedRows.length }}
+              </template>
+            </b-table>
+            <div class="space-btn">
+              <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
+              <v-dialog v-model="dialog" max-width="290">
+                <v-card>
+                  <v-card-text class="headline">
+                    What status do you want to change?
+                    <v-radio-group v-model="radioGroup">
+                      <v-radio label="Preparing" value="1"></v-radio>
+                      <v-radio label="Cooking" value="2"></v-radio>
+                      <v-radio label="Serving" value="3"></v-radio>
+                      <v-radio label="Cancel" value="4"></v-radio>
+                    </v-radio-group>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </b-tab-item>
+
+          <!-- menu -->
+          <b-tab-item label="Ordered by menu">
+            <div>
+              <v-expansion-panel v-model="panel" expand>
+                <v-expansion-panel-content>
+                  <template v-slot:header>
+                    <div>Bacon</div>
+                    <div>Amount 10</div>                    
+                    <div>Preparing</div>
+                      <v-btn color="#FF5733" small dark @click.stop="test">Change Status</v-btn>
+                      <v-dialog v-model="dialog" max-width="290">
+                        <v-card>
+                          <v-card-text class="headline">
+                            What status do you want to change?
+                            <v-radio-group v-model="radioGroup">
+                              <v-radio label="Preparing" value="1"></v-radio>
+                              <v-radio label="Cooking" value="2"></v-radio>
+                              <v-radio label="Serving" value="3"></v-radio>
+                              <v-radio label="Cancel" value="4"></v-radio>
+                            </v-radio-group>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
+                            <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                  </template>
+                  <v-card>
+                    <v-card-text class="grey lighten-3">
+                      <b-table
+                        :data="items"
+                        :columns="columns"
+                        :paginated="isPaginated"
+                        :per-page="perPage"
+                        :checked-rows.sync="checkedRows"
+                        :is-row-checkable="(row) => row.id !== 3"
+                        checkable
+                        :checkbox-position="checkboxPosition"
+                        aria-next-label="Next page"
+                        aria-previous-label="Previous page"
+                        aria-page-label="Page"
+                        aria-current-label="Current page"
+                      >
+                        <template slot="bottom-left">
+                          <b>Total checked</b>
+                          : {{ checkedRows.length }}
+                        </template>
+                      </b-table>
+                      <div class="space-btn">
+                        <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
+                        <v-dialog v-model="dialog" max-width="290">
+                          <v-card>
+                            <v-card-text class="headline">
+                              What status do you want to change?
+                              <v-radio-group v-model="radioGroup">
+                                <v-radio label="Preparing" value="1"></v-radio>
+                                <v-radio label="Cooking" value="2"></v-radio>
+                                <v-radio label="Serving" value="3"></v-radio>
+                                <v-radio label="Cancel" value="4"></v-radio>
+                              </v-radio-group>
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
+                              <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </div>
+          </b-tab-item>
+        </b-tabs>
       </section>
     </div>
   </div>
@@ -90,8 +173,11 @@ export default {
   },
   data() {
     return {
-      nameOfStatus:"All Status",
+      panel: [false, true, true],
+
+      nameOfStatus: "All Status",
       statusData: [],
+      activeTab: 0,
 
       keyword: "",
       restaurantId: 1,
@@ -130,12 +216,12 @@ export default {
     };
   },
   methods: {
-    allStatus(){
-      this.keyword = ''
+    allStatus() {
+      this.keyword = "";
     },
-    changeStatus(statusName){
-      this.nameOfStatus= statusName
-      this.keyword = statusName
+    changeStatus(statusName) {
+      this.nameOfStatus = statusName;
+      this.keyword = statusName;
     },
     test() {
       this.dialog = true;
@@ -235,7 +321,7 @@ export default {
 }
 #button {
   margin-left: 86%;
-  margin-top: -2.5%;
+  margin-top: 0%;
 }
 .search {
   margin-left: 57%;

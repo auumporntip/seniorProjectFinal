@@ -11,7 +11,9 @@ exports.insertTransaction = async (transaction) => {
         totalPrice:transaction.totalPrice,
         amount: transaction.amount,
         statusName:transaction.statusName,
-        billId:transaction.billId
+        billId:transaction.billId,
+        created_at : Date(),
+        update_at : Date(),
     })
 }
 exports.updateTransaction = async (transaction) => {
@@ -20,7 +22,8 @@ exports.updateTransaction = async (transaction) => {
         transPrice: transaction.transPrice,
         totalPrice:transaction.totalPrice,
         amount: transaction.amount,
-        statusName:transaction.statusName
+        statusName:transaction.statusName,
+        update_at : Date(),
     })
 }
 exports.deleteTransaction = async (transactionId) => {

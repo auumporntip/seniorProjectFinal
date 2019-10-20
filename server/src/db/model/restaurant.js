@@ -28,7 +28,9 @@ exports.insertRestuarant = async (restaurant) => {
         restaurantPhone: restaurant.restaurantPhone,
         restaurantDescription: restaurant.restaurantDescription,
         typeResId: restaurant.typeResId,
-        accountId: restaurant.accountId
+        accountId: restaurant.accountId,
+        created_at : Date(),
+        update_at : Date(),
     })
 }
 
@@ -40,6 +42,7 @@ exports.updateRestaurant = async (restaurant) => {
             restaurantPhone: restaurant.restaurantPhone,
             restaurantDescription: restaurant.restaurantDescription,
             typeResId: restaurant.typeResId,
-            accountId: restaurant.accountId
+            accountId: restaurant.accountId,
+            update_at : Date(),
         })
 }

@@ -19,7 +19,9 @@ exports.insertAccount = async(account)=>{
         email: account.email,
         name: account.name,
         surname : account.surname,
-        phone : account.phone
+        phone : account.phone,
+        created_at : Date(),
+        update_at : Date(),
     })
 }
 
@@ -29,7 +31,8 @@ exports.updateAccount = async(account) => {
             email: account.email,
             name: account.name,
             surname : account.surname,
-            phone : account.phone
+            phone : account.phone,
+            update_at : Date(),
         })
 }
 

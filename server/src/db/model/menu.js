@@ -43,7 +43,9 @@ exports.insertMenu = async (menu) => {
         menuPrice: menu.menuPrice,
         menuPathImage: menu.menuPathImage,
         categoryId: menu.categoryId,
-        restaurantId: menu.restaurantId
+        restaurantId: menu.restaurantId,
+        created_at : Date(),
+        update_at : Date(),
     })
 }
 
@@ -54,5 +56,6 @@ exports.updateMenu = async (menu) => {
             menuPrice: menu.menuPrice,
             menuPathImage: menu.menuPathImage,
             categoryId: menu.categoryId,
+            update_at : Date(),
         })
 }

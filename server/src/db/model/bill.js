@@ -15,7 +15,8 @@ exports.updateBill = async (bill) => {
             eatTime: bill.eatTime,
             numOfCust: bill.numOfCust,
             typeId: bill.typeId,
-            tableNumber: bill.tableNumber
+            tableNumber: bill.tableNumber,
+            update_at : Date(),
         })
 }
 
@@ -26,7 +27,9 @@ exports.insertBill = async (bill) => {
         eatTimeStart: bill.eatTimeStart,
         numOfCust: bill.numOfCust,
         typeId: bill.typeId,
-        tableNumber: bill.tableNumber
+        tableNumber: bill.tableNumber,
+        created_at : Date(),
+        update_at : Date(),
     })
 }
 

@@ -11,7 +11,8 @@ exports.updateOrdered = async (ordered) => {
             amount: ordered.amount,
             menuId: ordered.menuId,
             statusId: ordered.statusId,
-            billId: ordered.billId
+            billId: ordered.billId,
+            update_at : Date(),
         })
 }
 
@@ -28,7 +29,9 @@ exports.insertOrdered = async (ordered) => {
         amount: ordered.amount,
         menuId: ordered.menuId,
         statusId: ordered.statusId,
-        billId: ordered.billId
+        billId: ordered.billId,
+        created_at : Date(),
+        update_at : Date(),
     })
 }
 
