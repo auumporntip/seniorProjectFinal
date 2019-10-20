@@ -209,7 +209,7 @@ body {
   background-color: red;
   
 } */
-address {
+/* address {
   margin-top: 1em;
   padding-top: 1em;
   border-top: thin dotted;
@@ -224,4 +224,4 @@ address {
 #static {
   padding-top: 20px;
 }
-</style>
+</style> */

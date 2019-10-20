@@ -14,8 +14,12 @@ export const store = new Vuex.Store({
         menu:{},
         selectedMenu:null,
         category:{},
-        checkCategory:''
+        checkCategory:'',
         //menu 
+        employee: {},
+        position: [],
+        //employee
+
     },
     mutations: {
         //menu page
@@ -46,6 +50,13 @@ export const store = new Vuex.Store({
         },
         setRestaurantName(state,restaurantName){
             state.restaurantName = restaurantName
+        },
+        //employee
+        setEmployee(state,employee){
+            state.employee = employee
+        },
+        setPosition(state, position){
+            state.position = position
         }
     },
     getters: {
@@ -59,6 +70,9 @@ export const store = new Vuex.Store({
         name: state=>state.name,
         restaurantId: state => state.restaurantId,
         restaurantName: state => state.restaurantName,
-        selectedRestaurant: state => state.selectedRestaurant
+        selectedRestaurant: state => state.selectedRestaurant,
+        //Employee
+        employee: state=> state.employee,
+        position: state => state.position,
       }
 })
