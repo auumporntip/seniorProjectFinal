@@ -7,4 +7,10 @@ router.get('/getallemployee', async(req,res)=>{
     res.send(await employee.getAllEmployee())
 })
 
+
+
+
+
+
+
 module.exports = router

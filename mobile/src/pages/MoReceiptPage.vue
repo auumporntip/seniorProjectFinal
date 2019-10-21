@@ -93,7 +93,7 @@
     </v-card>
     </v-dialog>
     </v-container>
-    </template> -->
+    </template>-->
 
     <NavBar></NavBar>
   </v-content>
@@ -148,6 +148,8 @@ export default {
         .then(response => {
           this.dialog = false;
           this.waitDialog = true;
+
+          this.$router.push("Mowait");
         });
     }
   },
@@ -175,7 +177,8 @@ export default {
         this.time = dayjs(this.bill[0].created_at).format("HH:mm:ss");
         this.bill[0].typeName = this.typeOfService.typeName;
         if (this.typeOfService.service === "buffet") {
-          this.bill[0].totalPrice = this.typeOfService.typePrice;
+          this.bill[0].totalPrice =
+            this.typeOfService.typePrice * this.bill[0].numOfCust;
         } else {
           var price = 0;
           for (let index = 0; index < this.orders.length; index++) {
@@ -215,14 +218,14 @@ export default {
 .okBtn {
   padding-left: 20%;
 }
-.text{
+.text {
   font-size: 18px;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 20px;
   padding-bottom: 40px;
 }
-.img{
+.img {
   padding-top: 20px;
 }
 </style>

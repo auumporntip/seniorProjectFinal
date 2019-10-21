@@ -16,24 +16,33 @@
     </v-btn>-->
     <v-toolbar-title class="headline-text white--text">{{this.$store.getters.namePages}}</v-toolbar-title>
     <v-spacer></v-spacer>
-    <div v-if="this.$store.getters.namePages === 'Menu'">
+    <!-- <div v-if="this.$store.getters.namePages === 'Menu'">
       Promotion : {{typeOfService.typeName}}
       <br />
       Bill : {{billId}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Table No: {{tableNumber}}
-    </div>
+      {{time}}
+    </div>-->
+    {{time}}
   </v-toolbar>
 </template>
 
 <script>
 import { store } from "../store/store";
+import axios from "axios";
+import dayjs from "dayjs";
+  import FlipCountdown from 'vue2-flip-countdown'
+
 export default {
   name: "Bar",
+      components: { FlipCountdown },
   data() {
     return {
       image_src: require("../assets/1.png"),
-      typeOfService:[],
-      billId:'',
-      tableNumber:''
+      typeOfService: [],
+      billId: "",
+      tableNumber: "",
+      bill: [],
+      time: ""
     };
   },
   methods: {
@@ -51,10 +60,29 @@ export default {
     }
   },
   created() {
-    // console.log(sessionStorage.getItem('typeOfService'))
-    this.billId = sessionStorage.getItem('billId')
-    this.tableNumber = sessionStorage.getItem('tableNumber')
-    this.typeOfService = JSON.parse(sessionStorage.getItem('typeOfService'))
+    if (this.$store.getters.namePages != "TypeOfService") {
+      axios
+        .get(
+          "http://localhost:3000/api/getbillbybillid/" +
+            sessionStorage.getItem("billId")
+        )
+        .then(response => {
+          this.bill = response.data;
+          var date = new Date()
+          var dayjs1 = dayjs(date)
+          setInterval(() => {
+            var date2 = new Date()
+            var dayjs2 = dayjs(date2)
+            // console.log(date, date2)
+            var time = dayjs2.diff(dayjs1)
+            // console.log(time)
+            this.time = dayjs(time).format("HH:mm:ss")
+          }, 1000);
+        });
+    }
+    this.billId = sessionStorage.getItem("billId");
+    this.tableNumber = sessionStorage.getItem("tableNumber");
+    this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
   }
 };
 </script>

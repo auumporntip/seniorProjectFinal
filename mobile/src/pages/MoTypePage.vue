@@ -39,6 +39,7 @@
 import Bar from "../components/Bar";
 import { store } from "../store/store";
 import axios from "axios";
+import dayjs from "dayjs";
 
 export default {
   name: "MoTypePage",
@@ -69,17 +70,22 @@ export default {
     },
     clickNext() {
       const totalPrice = 0;
+      console.log(dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"));
+      
       if (this.$refs.form.validate()) {
         axios
           .post("http://localhost:3000/api/insertbill", {
             totalPrice: 0,
-            eatTimeEnd: new Date(),
-            eatTimeStart: new Date(),
+            eatTimeEnd: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
+            eatTimeStart: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
             numOfCust: this.newCust.numOfCust,
             typeId: this.selectService.typeId,
-            tableNumber: this.newCust.tableNumber
+            tableNumber: this.newCust.tableNumber,
+            created_at:dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
+            update_at:dayjs(Date()).format("YYYY-MM-DD HH:mm:ss")
           })
           .then(response => {
+            sessionStorage.setItem("timestart", Date());
             sessionStorage.setItem("billId", response.data);
             sessionStorage.setItem("typeOfService", JSON.stringify(this.selectService));
             sessionStorage.setItem("tableNumber", this.newCust.tableNumber);

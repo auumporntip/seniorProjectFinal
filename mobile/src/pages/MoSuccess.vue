@@ -1,6 +1,5 @@
 <template>
   <v-content>
-    <Bar></Bar>
     <div class="logo">
       <img src="../assets/bill.png" height="100%" width="100%"/>
       </div>

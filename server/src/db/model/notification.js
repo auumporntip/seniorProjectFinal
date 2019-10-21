@@ -19,8 +19,6 @@ exports.insertNotification = async(notification) => {
         notiMessage: notification.notiMessage,
         restaurantId: notification.restaurantId,
         billId: notification.billId,
-        created_at : Date(),
-        update_at : Date(),
         })
 }
 

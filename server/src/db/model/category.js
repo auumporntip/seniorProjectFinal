@@ -20,8 +20,8 @@ exports.insertCategory = async (category) => {
     return await knex('category').insert({
         categoryName: category.categoryName,
         restaurantId: category.restaurantId,
-        created_at : Date(),
-        update_at : Date(),
+        created_at : category.created_at,
+        update_at : category.update_at,
     })
 }
 

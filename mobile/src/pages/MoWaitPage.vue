@@ -1,6 +1,5 @@
 <template>
   <v-content>
-    <Bar></Bar>
 
     <!-- 
     <template>
@@ -9,7 +8,7 @@
     <v-card color="#F9F9F9" >-->
     <div class="logo">
       <center>
-        <img src="../assets/video-conference.png" height="60%" width="60%" />
+        <img src="../assets/video-conference.png" @click="click" height="60%" width="60%" />
         <!-- videoconference -->
       </center></div>
       <p class="text">Please wait, your request is being processed.</p>
@@ -19,8 +18,6 @@
     </v-dialog>
     </v-container>
     </template>-->
-
-    <NavBar></NavBar>
   </v-content>
 </template>
 
@@ -40,7 +37,12 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    click(){
+      
+        this.$router.push('MoSuccess')
+    }
+  },
   created() {
     this.$store.commit("setNamePages", "Waiting Employee");
   }
