@@ -40,14 +40,21 @@
               :columns="columns"
               :paginated="isPaginated"
               :per-page="perPage"
+              :checked-rows.sync="checkedRows"
+              :is-row-checkable="(row) => row.id !== 3"
+              checkable
+              :checkbox-position="checkboxPosition"
               aria-next-label="Next page"
               aria-previous-label="Previous page"
               aria-page-label="Page"
               aria-current-label="Current page"
             >
-             
+              <template slot="bottom-left">
+                <b>Total checked</b>
+                : {{ checkedRows.length }}
+              </template>
             </b-table>
-            <!-- <div class="space-btn">
+            <div class="space-btn">
               <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
               <v-dialog v-model="dialog" max-width="290">
                 <v-card>
@@ -67,7 +74,7 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            </div> -->
+            </div>
           </b-tab-item>
 
           <!-- menu -->
@@ -106,6 +113,10 @@
                         :columns="columns"
                         :paginated="isPaginated"
                         :per-page="perPage"
+                        :checked-rows.sync="checkedRows"
+                        :is-row-checkable="(row) => row.id !== 3"
+                        checkable
+                        :checkbox-position="checkboxPosition"
                         aria-next-label="Next page"
                         aria-previous-label="Previous page"
                         aria-page-label="Page"

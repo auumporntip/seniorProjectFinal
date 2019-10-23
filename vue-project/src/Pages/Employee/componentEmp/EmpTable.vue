@@ -49,7 +49,7 @@ export default {
       isPaginated: true, 
       isPaginationSimple: false, 
       currentPage: 1, 
-      perPage: 5, 
+      perPage: 10, 
       selectedEmp: {},
     //    columns: [ 
     //     { 
@@ -81,7 +81,7 @@ export default {
      
   }, 
   created() { 
-    axios.get("http://localhost:3000/api/getallemployee").then(response => { 
+    axios.get("http://localhost:3000/api/getallemployee/").then(response => { 
       this.empData = response.data; 
     }); 
   } 
