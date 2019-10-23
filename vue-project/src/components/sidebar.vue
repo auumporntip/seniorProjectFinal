@@ -76,14 +76,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile :to="{name: 'TransactionPage'}">
-          <v-list-tile-action>
-            <v-icon>folder_open</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Transaction</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
 
         <v-list-tile :to="{name: 'StaticPage'}">
           <v-list-tile-action>

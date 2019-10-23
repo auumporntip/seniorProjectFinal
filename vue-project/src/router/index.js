@@ -5,7 +5,6 @@ import Router from 'vue-router'
 import App from '@/App'
 // import MenuPage from '@/Pages/MenuPage'
 import LoginPage from '@/Pages/LoginPage'
-import TransactionPage from '@/Pages/TransactionPage'
 import NotificationPage from '@/Pages/NotificationPage'
 import StaticPage from '@/Pages/StaticPage'
 import OrderedPage from '@/Pages/OrderedPage'
@@ -46,11 +45,8 @@ export default new Router({
       path: '/Menu',
       name: 'MenuPage',
       component: MenuPage
-    },  {
-      path: '/Transaction',
-      name: 'TransactionPage',
-      component: TransactionPage
-    }, {
+    },
+    {
       path: '/Notification',
       name: 'NotificationPage',
       component: NotificationPage
