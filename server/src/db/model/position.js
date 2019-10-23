@@ -6,9 +6,7 @@ exports.getAllPosition = async () => {
 
 exports.insertPosition = async (position) => {
     return await knex('position').insert({
-        positionName: position.positionName,
-        created_at : Date(),
-        update_at : Date(),
+        positionName: position.positionName
     })
 }
 exports.updatePosition = async (position) => {

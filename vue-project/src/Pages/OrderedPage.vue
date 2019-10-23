@@ -13,9 +13,9 @@
             single-line
             hide-details
           ></v-text-field>
-          <!-- <v-layout row wrap align-center>
-            <v-subheader class="text">Status</v-subheader>
-            <b-dropdown id="button">
+          <v-layout row wrap align-center>
+            <v-subheader class="text" fixed>Status</v-subheader>
+            <b-dropdown id="button" fixed>
               <v-btn flat slot="trigger">
                 {{nameOfStatus}}
                 <v-icon>keyboard_arrow_down</v-icon>
@@ -29,7 +29,7 @@
                 @click="changeStatus(option.statusName)"
               >{{option.statusName}}</b-dropdown-item>
             </b-dropdown>
-          </v-layout>-->
+          </v-layout>
         </v-card-title>
 
         <!-- TIME -->
@@ -84,27 +84,27 @@
                 <v-expansion-panel-content>
                   <template v-slot:header>
                     <div>Bacon</div>
-                    <div>Amount 10</div>                    
+                    <div>Amount 10</div>
                     <div>Preparing</div>
-                      <v-btn color="#FF5733" small dark @click.stop="test">Change Status</v-btn>
-                      <v-dialog v-model="dialog" max-width="290">
-                        <v-card>
-                          <v-card-text class="headline">
-                            What status do you want to change?
-                            <v-radio-group v-model="radioGroup">
-                              <v-radio label="Preparing" value="1"></v-radio>
-                              <v-radio label="Cooking" value="2"></v-radio>
-                              <v-radio label="Serving" value="3"></v-radio>
-                              <v-radio label="Cancel" value="4"></v-radio>
-                            </v-radio-group>
-                          </v-card-text>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                            <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
+                    <v-btn color="#FF5733" small dark @click.stop="test">Change Status</v-btn>
+                    <v-dialog v-model="dialog" max-width="290">
+                      <v-card>
+                        <v-card-text class="headline">
+                          What status do you want to change?
+                          <v-radio-group v-model="radioGroup">
+                            <v-radio label="Preparing" value="1"></v-radio>
+                            <v-radio label="Cooking" value="2"></v-radio>
+                            <v-radio label="Serving" value="3"></v-radio>
+                            <v-radio label="Cancel" value="4"></v-radio>
+                          </v-radio-group>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
+                          <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
                   </template>
                   <v-card>
                     <v-card-text class="grey lighten-3">
@@ -320,8 +320,9 @@ export default {
   margin-left: 85%;
 }
 #button {
-  margin-left: 86%;
-  margin-top: 0%;
+  padding-left: 5em;
+  padding-top: 5%;
+  margin: -7%;
 }
 .search {
   margin-left: 57%;
@@ -329,7 +330,8 @@ export default {
   margin-top: 0%;
 }
 .text {
-  margin-left: 75%;
-  padding-top: 14%;
+  padding-left: 60em;
+  padding-top: 5%;
+  margin: -7%;
 }
 </style>

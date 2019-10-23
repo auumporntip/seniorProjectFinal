@@ -9,8 +9,7 @@ exports.updateNotification = async(notification) => {
         .update({
             notiMessage: notification.notiMessage,
             restuarantId: notification.restuarantId,
-            billId:notification.billId,
-            update_at : Date(),
+            billId:notification.billId
         })
 }
 

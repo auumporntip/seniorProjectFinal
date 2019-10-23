@@ -6,16 +6,13 @@ exports.getAllTypeOfRestaurant = async() => {
 
 exports.insertTypeOfRestaurant = async(typeOfRestaurant)=>{
     return await knex('typeofrestaurant').insert({
-        typeResName:typeOfRestaurant.typeResName,
-        created_at : Date(),
-        update_at : Date(),
+        typeResName:typeOfRestaurant.typeResName
     })
 }
 
 exports.updateTypeOfRestaurant = async (typeOfRestaurant) => {
     await knex('typeOfRestaurant').where('typeResId', '=', typeOfRestaurant.typeResId).update({
-        typeResName: typeOfRestaurant.typeResName,
-        update_at : Date(),
+        typeResName: typeOfRestaurant.typeResName
     })
 }
 exports.deleteTypeOfRestaurant = async (typeOfRestaurantId) => {

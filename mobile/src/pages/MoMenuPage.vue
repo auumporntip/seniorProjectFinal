@@ -12,12 +12,10 @@
         <v-layout>
           <v-flex xs6 class="box">
             <div v-if="menu.menuPathImage!=null">
-              <img :src="menu.menuPathImage" class="spacePic" contain />
-              <img />
+               <v-img :src="menu.menuPathImage" aspect-ratio="1.8"></v-img>
             </div>
             <div v-else>
-              <img src="../assets/1.png" class="spacePic" contain />
-              <img />
+               <v-img :src="require('../assets/1.png')" aspect-ratio="1.8"></v-img>
             </div>
           </v-flex>
           <v-flex xs6 class="spaceText">
@@ -153,14 +151,6 @@ export default {
   margin: 0%;
   padding-left: 10%;
   padding-top: 6%;
-}
-.spacePic {
-  /* margin-left: 5%;
-  padding-top: 15%; */
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 80px;
 }
 .v-layout {
   text-align: left;
