@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-xs-center" id="addBtn">
-      <v-menu v-model="categoryBtn" :close-on-content-click="false" :nudge-width="200" offset-x>
+      <v-dialog v-model="categoryBtn" max-width="600">
         <template v-slot:activator="{ on }">
           <v-btn color="black" outline dark v-on="on">
             <v-icon left dark>menu</v-icon>Category
@@ -9,33 +9,43 @@
         </template>
 
         <v-card>
-          <v-list>
-            <v-list-tile>
-              <v-btn color="black" @click="AddDialog=true" flat>
-                <v-icon left dark>add</v-icon>Add Category
-              </v-btn>
-            </v-list-tile>
-
-            <v-list-tile>
-              <v-btn color="black" @click="editDataDialog=true" flat>
-                <v-icon left dark>edit</v-icon>Edit Category
-              </v-btn>
-            </v-list-tile>
-
-            <v-list-tile>
-              <v-btn color="black" @click="delDataDialog=true" flat>
-                <v-icon left dark>delete</v-icon>Delete Category
-              </v-btn>
-            </v-list-tile>
-          </v-list>
+          <b-table
+            :data="category"
+            :columns="columns"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+            :paginated="isPaginated"
+            :per-page="perPage"
+            :current-page.sync="currentPage"
+            aria-next-label="Next page"
+            aria-previous-label="Previous page"
+            aria-page-label="Page"
+            aria-current-label="Current page"
+          >
+            <template slot="bottom-left">
+              <b>&nbsp;&nbsp;Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
+          <v-btn color="black" @click="AddDialog=true" flat>
+            <v-icon left dark>add</v-icon>Add Category
+          </v-btn>
+          <v-btn color="black" @click="editDialog=true" flat>
+            <v-icon left dark>edit</v-icon>Edit Category
+          </v-btn>
+          <v-btn color="black" @click="comfirmDelete()" flat>
+            <v-icon left dark>delete</v-icon>Delete Category
+          </v-btn>
         </v-card>
-      </v-menu>
+      </v-dialog>
     </div>
 
     <!-- add category -->
     <v-layout>
       <v-flex xs2>
-        <!-- <v-btn color="black" outline @click="AddDialog=true" class="addBtn">Add Category</v-btn> -->
+        <!-- <v-btn color="black" outline @click="AddDialog=true" class="addBtn">Add Category</v-btn>  -->
         <v-dialog v-model="AddDialog" max-width="490">
           <v-card>
             <v-card-text class="headline">
@@ -43,9 +53,9 @@
               <v-form ref="form">
                 <v-container fluid>
                   <v-text-field
+                    type="text"
                     label="categoryName"
                     v-model="newCat.categoryName"
-                    type="text"
                     :rules="nameRules"
                   ></v-text-field>
                 </v-container>
@@ -64,10 +74,10 @@
     <!-- editCategory -->
     <v-layout>
       <v-flex xs2>
-        <v-dialog v-model="editDataDialog" max-width="450">
-          <v-card>
-            <v-card-text>
-              <b-table
+        <v-dialog v-model="editDialog" max-width="450">
+          <!-- <v-card>
+          <v-card-text>-->
+          <!-- <b-table
                 :data="category"
                 :columns="columns"
                 :checked-rows.sync="checkedRows"
@@ -86,35 +96,36 @@
                   <b>Total checked</b>
                   : {{ checkedRows.length }}
                 </template>
-              </b-table>
+          </b-table>-->
 
-              <v-btn color="black darken-1" outline @click="editDialog=true">
+          <!-- <v-btn color="black darken-1" outline @click="editDialog=true">
                 <v-icon left dark>edit</v-icon>EDIT CATEGORY
-              </v-btn>
-              <v-dialog max-width="390" v-model="editDialog">
-                <v-card>
-                  <v-card-text class="headline">
-                    Edit Category
-                    <v-form v-for="cat in checkedRows" :key="cat.categoryId">
-                      <v-container>
-                        <v-text-field label="CategoryId" disabled v-model="cat.categoryId"></v-text-field>
-                        <v-text-field label="CategoryName" v-model="cat.categoryName"></v-text-field>
-                      </v-container>
-                    </v-form>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" flat @click="editDialog=false">CANCEL</v-btn>
-                    <v-btn color="blue darken-1" flat @click="editSave">SAVE</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+          </v-btn>-->
+          <!-- <v-dialog max-width="390" v-model="editDialog"> -->
+          <v-card>
+            <v-card-text class="headline">
+              Edit Category
+              <v-form v-for="cat in checkedRows" :key="cat.categoryId" ref="form">
+                <v-container>
+                  <v-text-field label="CategoryId" disabled v-model="cat.categoryId"></v-text-field>
+                  <v-text-field label="CategoryName" v-model="cat.categoryName" :rules="editRules"></v-text-field>
+                </v-container>
+              </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="editDataDialog=false">CLOSE</v-btn>
+              <v-btn color="red darken-1" flat @click="closeEdit()">CANCEL</v-btn>
+              <v-btn color="blue darken-1" flat @click="editSave">SAVE</v-btn>
             </v-card-actions>
           </v-card>
+          <!-- </v-dialog> -->
+          <!-- </v-card-text> -->
+          <!-- <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" flat @click="editDialog=false">CLOSE</v-btn>
+          </v-card-actions>-->
+          <!-- </v-card>
+          </v-dialog>-->
         </v-dialog>
       </v-flex>
     </v-layout>
@@ -122,10 +133,10 @@
     <!-- delete -->
     <v-layout>
       <v-flex xs2>
-        <v-dialog v-model="delDataDialog" max-width="450">
-          <v-card>
-            <v-card-text>
-              <b-table
+        <!-- <v-dialog v-model="delDataDialog" max-width="450"> -->
+        <!-- <v-card> -->
+        <!-- <v-card-text> -->
+        <!-- <b-table
                 :data="category"
                 :columns="columns"
                 :checked-rows.sync="checkedRows"
@@ -144,48 +155,79 @@
                   <b>Total checked</b>
                   : {{ checkedRows.length }}
                 </template>
-              </b-table>
+        </b-table>-->
 
-              <v-btn color="black darken-1" outline @click="dialog = true">
+        <!-- <v-btn color="black darken-1" outline @click="dialog = true">
                 <v-icon left dark>delete</v-icon>DELETE CATEGORY
-              </v-btn>
-              <div>
-                <div v-if="checkedRows > '0'">
-                  <v-row justify="center">
-                    <!-- <v-btn color="primary" dark @click.stop="dialog = true">Open Dialog</v-btn> -->
+        </v-btn>-->
+        <!-- <div> -->
+        <div>
+          <v-row justify="center">
+            <v-dialog v-model="delDataDialog" max-width="290">
+              <v-card>
+                <v-card-text>Are you sure you want to delete?</v-card-text>
+                <v-card-actions>
+                  <div class="flex-grow-1"></div>
+                  <v-btn color="blue darken-1" flat @click="closeDelete()">CANCEL</v-btn>
+                  <v-btn color="red darken-1" flat @click="onConfirm">DELETE</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+        </div>
+        <!-- </v-card-text> -->
+        <!-- </v-card> -->
+        <!-- </v-dialog> -->
+      </v-flex>
+    </v-layout>
+    <v-layout>
+      <v-flex xs2>
+        <!-- <v-dialog v-model="delDataDialog" max-width="450"> -->
+        <!-- <v-card> -->
+        <!-- <v-card-text> -->
+        <!-- <b-table
+                :data="category"
+                :columns="columns"
+                :checked-rows.sync="checkedRows"
+                :is-row-checkable="(row) => row.id !== 3"
+                checkable
+                :checkbox-position="checkboxPosition"
+                :paginated="isPaginated"
+                :per-page="perPage"
+                :current-page.sync="currentPage"
+                aria-next-label="Next page"
+                aria-previous-label="Previous page"
+                aria-page-label="Page"
+                aria-current-label="Current page"
+              >
+                <template slot="bottom-left">
+                  <b>Total checked</b>
+                  : {{ checkedRows.length }}
+                </template>
+        </b-table>-->
 
-                    <v-dialog v-model="dialog" max-width="290">
-                      <v-card>
-                        <!-- <v-card-title class="headline"></v-card-title> -->
-                        <v-card-text>Are you sure you want to delete?</v-card-text>
-                        <v-card-actions>
-                          <div class="flex-grow-1"></div>
-                          <v-btn color="blue darken-1" flat @click="dialog = false">CANCEL</v-btn>
-                          <v-btn color="red darken-1" flat @click="onConfirm">DELETE</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </v-row>
-                </div>
-                <div v-else>
-                  <v-row justify="center">
-                    <!-- <v-btn color="primary" dark @click.stop="dialog = true">Open Dialog</v-btn> -->
-                    <v-dialog v-model="dialog" max-width="290">
-                      <v-card>
-                        <v-card-title class="headline">Error</v-card-title>
-                        <v-card-text>Please selected some menu row</v-card-text>
-                        <v-card-actions>
-                          <div class="flex-grow-1"></div>
-                          <v-btn color="blue darken-1" flat @click="dialog = false">CLOSE</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </v-row>
-                </div>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+        <!-- <v-btn color="black darken-1" outline @click="dialog = true">
+                <v-icon left dark>delete</v-icon>DELETE CATEGORY
+        </v-btn>-->
+        <!-- <div> -->
+        <div>
+          <v-row justify="center">
+            <!-- <v-btn color="primary" dark @click.stop="dialog = true">Open Dialog</v-btn> -->
+            <v-dialog v-model="dialog" max-width="290">
+              <v-card>
+                <v-card-title class="headline">Error</v-card-title>
+                <v-card-text>Please selected some menu row</v-card-text>
+                <v-card-actions>
+                  <div class="flex-grow-1"></div>
+                  <v-btn color="blue darken-1" flat @click="closeDialog()">CLOSE</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+        </div>
+        <!-- </v-card-text> -->
+        <!-- </v-card> -->
+        <!-- </v-dialog> -->
       </v-flex>
     </v-layout>
   </div>
@@ -212,6 +254,10 @@ export default {
         v => !!v || "Name is required",
         v => this.checkName || "Name has already"
       ],
+      editRules: [
+        v => !!v || "Name is required",
+        v => this.checkedRows.categoryName || "Name has already"
+      ],
       restaurantId: 1,
 
       //edit
@@ -228,7 +274,8 @@ export default {
         {
           field: "categoryId",
           label: "categoryId",
-          width: "40",
+          width: "20",
+          height: "40",
           numeric: true
         },
         {
@@ -246,6 +293,7 @@ export default {
       this.AddDialog = false;
       this.$refs.form.resetValidation();
       this.newCat = [];
+      this.categoryBtn = true;
     },
     addSave() {
       if (this.$refs.form.validate()) {
@@ -256,14 +304,18 @@ export default {
           })
           .then(response => {
             this.reCat();
-            (this.newCat = []), this.$refs.form.resetValidation();
+            this.newCat = [];
+            this.$refs.form.resetValidation();
             this.AddDialog = false;
           });
+        this.categoryBtn = true;
       }
     },
     editSave() {
       console.log(this.checkedRows);
+     if (this.$refs.form.validate()) {
       for (let index = 0; index < this.checkedRows.length; index++) {
+      
         axios
           .put(
             "http://localhost:3000/api/updatecategory",
@@ -278,14 +330,16 @@ export default {
               });
           });
       }
+      
       this.checkedRows = [];
       this.editDialog = false;
+      this.categoryBtn = true;
+     }
     },
 
     onConfirm() {
       for (let index = 0; index < this.checkedRows.length; index++) {
-
-      console.log(this.checkedRows)
+        console.log(this.checkedRows);
         axios
           .delete(
             "http://localhost:3000/api/deletecategory/" +
@@ -293,10 +347,33 @@ export default {
           )
           .then(() => {
             this.reCat();
+            this.checkedRows = [];
             this.delDataDialog = false;
           });
       }
+      this.categoryBtn = true;
     },
+
+    comfirmDelete() {
+      if (this.checkedRows.length > 0) {
+        this.delDataDialog = true;
+      } else {
+        this.dialog = true;
+      }
+    },
+    closeEdit() {
+      this.editDialog = false;
+      this.categoryBtn = true;
+    },
+    closeDelete() {
+      this.delDataDialog = false;
+      this.categoryBtn = true;
+    },
+    closeDialog() {
+      this.dialog = false;
+      this.categoryBtn = true;
+    },
+
     // catDelete() {
     //   console.log(this.checkedRows);
     //   if (this.checkedRows != "") {
@@ -345,7 +422,7 @@ export default {
           return false;
         }
       }
-      this.$refs.form.rules;
+
       return true;
     }
   },
@@ -376,3 +453,5 @@ div.error--text {
   margin-left: -85%;
 }
 </style>
+
+

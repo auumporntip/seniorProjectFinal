@@ -43,7 +43,14 @@
             <v-list-tile-title>Ordered</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
+        <v-list-tile :to="{name: 'ServedPage'}">
+          <v-list-tile-action>
+            <v-icon>folder_open</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Served</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile :to="{name: 'NotificationPage'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>
