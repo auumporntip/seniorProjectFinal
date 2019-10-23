@@ -30,11 +30,11 @@
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
-  import FlipCountdown from 'vue2-flip-countdown'
+import moment from "moment"
+import momentT from 'moment-timezone'
 
 export default {
   name: "Bar",
-      components: { FlipCountdown },
   data() {
     return {
       image_src: require("../assets/1.png"),
@@ -68,15 +68,20 @@ export default {
         )
         .then(response => {
           this.bill = response.data;
-          var date = new Date()
-          var dayjs1 = dayjs(date)
+          var date1 = moment(moment(this.bill[0].created_at)._d).unix()
+          var date2 = moment(new Date()).unix()
+            console.log(date1);
+            console.log(date2);
+          var  date3 = moment.unix(date2-date1)
+          var date4 = momentT(date3._d)
+          console.log(date4.tz('Asia/Bangkok').format('hh:mm:ss'));
+          
+            // console.log(date3.tz('Asia/Bangkok').format('hh:mm:ss'););
+            
           setInterval(() => {
-            var date2 = new Date()
-            var dayjs2 = dayjs(date2)
-            // console.log(date, date2)
-            var time = dayjs2.diff(dayjs1)
-            // console.log(time)
-            this.time = dayjs(time).format("HH:mm:ss")
+            
+            
+            
           }, 1000);
         });
     }
