@@ -25,7 +25,7 @@
 <script>
 // import Header from "../components/Header";
 import axios from "axios";
-// import { store } from '../store/store'
+import { store } from "../store/store";
 import md5 from "md5";
 import jwt from "jsonwebtoken";
 
@@ -50,32 +50,47 @@ export default {
   methods: {
     login() {
       axios
-        .get("http://localhost:3000/api/getAccountbyusername/" + this.username)
+        .post("http://localhost:3000/api/login", {
+          username: this.username,
+          password: this.password
+        })
         .then(response => {
           this.account = response.data;
-          if (md5(this.password) === this.account[0].password) {
-            var accounttoken = jwt.sign(this.account[0], "secret");
-            localStorage.setItem("account", accounttoken);
-
-            if (this.account[0].positionId === 3) {
-              this.$router.push("/menu");
-            } else if (this.account[0].positionId === 2) {
-              console.log(this.account[0].positionId);
-            } else if (this.account[0].positionId === 1) {
-              console.log(this.account[0].positionId);
+          var accountdecode = jwt.decode(this.account.token);
+          
+          localStorage.setItem("token", this.account.token);
+          this.$store.commit("setAccount", accountdecode);
+          if (this.account.login === true) {
+            if (accountdecode.positionId === 3) {
+              this.$router.push("/Menu");
+            } else if (accountdecode.positionId === 2) {
+              console.log(accountdecode.positionId);
+              this.$router.push("/Table");
+            } else if (accountdecode.positionId === 1) {
+              console.log(accountdecode.positionId);
+              this.$router.push("/Menu");
+            } else if (accountdecode.positionId === 5) {
+              console.log(accountdecode.positionId);
+              this.$router.push("/ordered");
             }
           }
         });
     }
   },
   created() {
-    try {
-      if (jwt.decode(localStorage.getItem("account")) != null) {
-        this.$router.push("/menu");
-      }
-    } catch (error) {
-      this.$router.push("/");
-    }
+    console.log(this.$store);
+    
+    // try {
+    //   if (jwt.decode(localStorage.getItem("token")) != null || this.$store.getters.account.positionId === 3 || this.$store.getters.account.positionId === 1 ) {
+    //     this.$router.push("/menu");
+    //   }else if(jwt.decode(localStorage.getItem("token")) != null || this.$store.getters.account.positionId === 2){
+    //     this.$router.push("/Table");
+    //   }else if(jwt.decode(localStorage.getItem("token")) != null || this.$store.getters.account.positionId === 5){
+    //     this.$router.push("/ordered");
+    //   }
+    // } catch (error) {
+    //   this.$router.push("/");
+    // }
   }
 };
 </script>

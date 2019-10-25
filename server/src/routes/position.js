@@ -6,6 +6,9 @@ const router = express.Router()
 router.get('/getallposition', async(req,res)=>{
     res.send(await position.getAllPosition())
 })
+router.get('/getExceptPosition/:positionId', async(req,res)=>{
+    res.send(await position.getExceptPosition(req.params.positionId))
+})
 
 router.post('/insertposition', async(req,res)=>{
     res.send(await position.insertPosition(req.body))

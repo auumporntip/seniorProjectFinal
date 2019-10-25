@@ -4,6 +4,10 @@ exports.getAllPosition = async () => {
     return await knex('position')
 }
 
+exports.getExceptPosition = async (positionId) => {
+    return await knex('position').where('positionId','!=',positionId)
+}
+
 exports.insertPosition = async (position) => {
     return await knex('position').insert({
         positionName: position.positionName

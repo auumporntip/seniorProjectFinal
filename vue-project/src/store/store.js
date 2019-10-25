@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        accountId:'',
+        account:'',
         name:'',
         restaurantId:'',
         selectedRestaurant:'',
@@ -36,8 +36,8 @@ export const store = new Vuex.Store({
             state.checkCategory = checkCategory
         },
         //menu
-        setAccount(state,accountId){
-            state.accountId = accountId
+        setAccount(state,account){
+            state.account = account
         },
         setName(state,name){
             state.name = name
@@ -66,7 +66,7 @@ export const store = new Vuex.Store({
         category: state=> state.category,
         checkCategory: state=> state.checkCategory,
         //menu
-        accountId: state=> state.accountId,
+        account: state=> state.account,
         name: state=>state.name,
         restaurantId: state => state.restaurantId,
         restaurantName: state => state.restaurantName,
