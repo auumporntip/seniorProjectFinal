@@ -171,6 +171,11 @@ export default new Router({
       name: 'ServedPage',
       component: ServedPage
     },
+    {
+      path: '/Login',
+      name: 'LoginPage',
+      component: LoginPage
+    },
     
 
   ]

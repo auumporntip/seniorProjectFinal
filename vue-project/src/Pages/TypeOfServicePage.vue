@@ -75,7 +75,7 @@
                                     </v-flex>
                                     <v-flex xs6 order-md3 order-xs3>
                                       <v-text-field
-                                        label=""
+                                        label
                                         type="number"
                                         suffix="Min."
                                         placeholder="30"
@@ -127,7 +127,24 @@
                     @click="clickType(type)"
                   >{{type.typeName}}</v-btn>
                 </v-card>
+                <v-icon class="iconClose" @click="deleteButton(type.typeId)">cancel</v-icon>
               </v-flex>
+              <v-dialog v-model="deleteDialog" max-width="290">
+                <v-card>
+                  <v-card-title class="title">DELETE CONFIRMATION</v-card-title>
+                  <v-card-text class="confirmDialog">
+                    <v-icon color="red">warning</v-icon>You sure you want to delete this type of service?
+                    You can't undo this action
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="deleteDialog = false">NO</v-btn>
+                    <v-btn color="red darken-1" flat @click="clickYesDeleteDialog()">YES</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <!-- edit -->
               <v-dialog max-width="600" v-model="editTypeDialog">
                 <v-card>
                   <v-card-text class="title">
@@ -264,6 +281,8 @@ export default {
   },
   data() {
     return {
+      typeId: "",
+      deleteDialog: false,
       newType: {
         typePrice: 0
       },
@@ -371,7 +390,7 @@ export default {
             .post("http://localhost:3000/api/uploadFB", formData)
             .then(response => {
               this.pathImage = response.data.url;
-              console.log(response.data.url)
+              console.log(response.data.url);
               axios
                 .post("http://localhost:3000/api/inserttypeOfService", {
                   typeName: this.newType.typeName,
@@ -388,12 +407,21 @@ export default {
                 });
             });
         } else {
-          console.log(this.newType.typeName+
-              "typeTime"+ this.hour + "." + this.minute+
-              "typePrice"+ this.newType.typePrice+
-              "typePathImage"+ this.imageForUpload+
-              "service"+ this.row+
-              "restaurantId"+ 1)
+          console.log(
+            this.newType.typeName +
+              "typeTime" +
+              this.hour +
+              "." +
+              this.minute +
+              "typePrice" +
+              this.newType.typePrice +
+              "typePathImage" +
+              this.imageForUpload +
+              "service" +
+              this.row +
+              "restaurantId" +
+              1
+          );
           axios
             .post("http://localhost:3000/api/inserttypeOfService", {
               typeName: this.newType.typeName,
@@ -404,7 +432,7 @@ export default {
               restaurantId: 1
             })
             .then(response => {
-              console.log(response.data)
+              console.log(response.data);
               this.newTypeCancel();
               this.refreshPage();
               this.$refs.form.resetValidation();
@@ -425,6 +453,7 @@ export default {
       this.$refs.form.resetValidation();
     },
     editTypeCancel() {
+      console.log(this.checkedRows.length);
       axios
         .get("http://localhost:3000/api/getalltypeofservice")
         .then(response => {
@@ -445,34 +474,36 @@ export default {
         this.typeOfServiceForDialog.typeTime = 0;
         this.typeOfServiceForDialog.typePrice = 0;
       }
-      if (this.image == null) {
-        axios
-          .put(
-            "http://localhost:3000/api/updatetypeofservice/",
-            this.typeOfServiceForDialog
-          )
-          .then(() => {
-            this.editTypeCancel();
-          });
-      } else {
-        var formData = new FormData();
-        formData.append("file", this.imageForUpload);
-        axios
-          .post("http://localhost:3000/api/uploadFB", formData)
-          .then(response => {
-            this.typeOfServiceForDialog.typePathImage = response.data.url;
+      if (this.$refs.form.validate()) {
+        if (this.image == null) {
+          axios
+            .put(
+              "http://localhost:3000/api/updatetypeofservice/",
+              this.typeOfServiceForDialog
+            )
+            .then(() => {
+              this.editTypeCancel();
+            });
+        } else {
+          var formData = new FormData();
+          formData.append("file", this.imageForUpload);
+          axios
+            .post("http://localhost:3000/api/uploadFB", formData)
+            .then(response => {
+              this.typeOfServiceForDialog.typePathImage = response.data.url;
 
-            console.log(this.typeOfServiceForDialog.typePathImage);
-            console.log(this.typeOfServiceForDialog);
-            axios
-              .put(
-                "http://localhost:3000/api/updatetypeofservice/",
-                this.typeOfServiceForDialog
-              )
-              .then(() => {
-                this.editTypeCancel();
-              });
-          });
+              console.log(this.typeOfServiceForDialog.typePathImage);
+              console.log(this.typeOfServiceForDialog);
+              axios
+                .put(
+                  "http://localhost:3000/api/updatetypeofservice/",
+                  this.typeOfServiceForDialog
+                )
+                .then(() => {
+                  this.editTypeCancel();
+                });
+            });
+        }
       }
     },
     showMenu() {
@@ -488,7 +519,7 @@ export default {
             this.menuData = response.data;
             for (let index = 0; index < this.checkBoxData.length; index++) {
               var i = this.menuData.findIndex(
-                menu => menu.menuId === this.checkBoxData[index].menuId 
+                menu => menu.menuId === this.checkBoxData[index].menuId
               );
               this.checkedRows.push(this.menuData[i]);
             }
@@ -518,7 +549,6 @@ export default {
           })
           .then(() => {});
       }
-
       this.checkedRows = [];
       this.menuDialog = false;
     },
@@ -540,7 +570,7 @@ export default {
       this.typeOfServiceForDialog.minute = this.typeOfServiceForDialog.typeTime.substring(
         index + 1
       );
-      console.log(this.typeOfServiceForDialog.hour)
+      console.log(this.typeOfServiceForDialog.hour);
       if (this.typeOfServiceForDialog.service == "alacarte") {
         console.log(this.typeOfServiceForDialog.service);
         this.row = "alacarte";
@@ -550,6 +580,18 @@ export default {
         this.row = "buffet";
         this.editTypeDialog = true;
       }
+    },
+    deleteButton(typeId) {
+      this.typeId = typeId;
+      this.deleteDialog = true;
+    },
+    clickYesDeleteDialog() {
+      axios
+        .delete("http://localhost:3000/api/deletetypeOfService/" + this.typeId)
+        .then(() => {
+          this.deleteDialog = false;
+          this.refreshPage();
+        });
     }
   },
   computed: {
@@ -647,5 +689,17 @@ div.error--text {
   margin-left: -1%;
   border: none;
   background-color: #f0cab1;
+}
+.iconClose {
+  color: red;
+  margin-left: 19.5%;
+  margin-top: -19%;
+  position: absolute;
+}
+.confirmDialog {
+  padding-top: 0px;
+}
+.title {
+  margin-bottom: 0%;
 }
 </style>

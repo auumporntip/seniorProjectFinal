@@ -80,78 +80,69 @@
           <!-- menu -->
           <b-tab-item label="Ordered by menu">
             <div>
-              <v-expansion-panel v-model="panel" expand>
-                <v-expansion-panel-content>
-                  <template v-slot:header>
-                    <div>Bacon</div>
-                    <div>Amount 10</div>
-                    <div>Preparing</div>
-                    <v-btn color="#FF5733" small dark @click.stop="test">Change Status</v-btn>
-                    <v-dialog v-model="dialog" max-width="290">
-                      <v-card>
-                        <v-card-text class="headline">
-                          What status do you want to change?
-                          <v-radio-group v-model="radioGroup">
-                            <v-radio label="Preparing" value="1"></v-radio>
-                            <v-radio label="Cooking" value="2"></v-radio>
-                            <v-radio label="Serving" value="3"></v-radio>
-                            <v-radio label="Cancel" value="4"></v-radio>
-                          </v-radio-group>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                          <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </template>
-                  <v-card>
-                    <v-card-text class="grey lighten-3">
-                      <b-table
-                        :data="items"
-                        :columns="columns"
-                        :paginated="isPaginated"
-                        :per-page="perPage"
-                        :checked-rows.sync="checkedRows"
-                        :is-row-checkable="(row) => row.id !== 3"
-                        checkable
-                        :checkbox-position="checkboxPosition"
-                        aria-next-label="Next page"
-                        aria-previous-label="Previous page"
-                        aria-page-label="Page"
-                        aria-current-label="Current page"
-                      >
-                        <template slot="bottom-left">
-                          <b>Total checked</b>
-                          : {{ checkedRows.length }}
-                        </template>
-                      </b-table>
-                      <div class="space-btn">
-                        <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
-                        <v-dialog v-model="dialog" max-width="290">
-                          <v-card>
-                            <v-card-text class="headline">
-                              What status do you want to change?
-                              <v-radio-group v-model="radioGroup">
-                                <v-radio label="Preparing" value="1"></v-radio>
-                                <v-radio label="Cooking" value="2"></v-radio>
-                                <v-radio label="Serving" value="3"></v-radio>
-                                <v-radio label="Cancel" value="4"></v-radio>
-                              </v-radio-group>
-                            </v-card-text>
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                              <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
-                      </div>
-                    </v-card-text>
-                  </v-card>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
+              <b-table
+                :data="items"
+                ref="table"
+                detailed
+                hoverable
+                custom-detail-row
+                :default-sort="['name', 'asc']"
+                detail-key="name"
+                @details-open="(row, index) => $buefy.toast.open(`Expanded ${row.name}`)"
+                :show-detail-icon="showDetailIcon"
+              >
+                <template slot-scope="props">
+                  <b-table-column
+                    field="menuName"
+                    :visible="columnsVisible['menuName'].display"
+                    :label="columnsVisible['menuName'].title"
+                    width="300"
+                    sortable
+                  >
+                    <template v-if="showDetailIcon">{{ props.row.menuName }}</template>
+                    <template v-else>
+                      <a @click="toggle(props.row)">{{ props.row.menuName }}</a>
+                    </template>
+                  </b-table-column>
+
+                  <b-table-column
+                    field="amount"
+                    :visible="columnsVisible['amount'].display"
+                    :label="columnsVisible['amount'].title"
+                    sortable
+                    centered
+                  >{{ props.row.amount }}</b-table-column>
+
+                  <b-table-column
+                    field="statusName"
+                    :visible="columnsVisible['statusName'].display"
+                    :label="columnsVisible['statusName'].title"
+                    sortable
+                    centered
+                  >{{ props.row.statusName }}</b-table-column>
+
+                  <b-table-column>
+                    <v-btn small outline color="indigo">Change Status</v-btn>
+                  </b-table-column>
+                </template>
+
+                <template slot="detail" slot-scope="props">
+                  <tr v-for="(order, index) in props.row.detailOrders" :key="order.menuName">
+                    <td v-if="showDetailIcon"></td>
+                    <td
+                      v-show="columnsVisible['menuName'].display"
+                    >&nbsp;&nbsp;&nbsp;&nbsp;{{ order.menuName }}</td>
+                    <td
+                      v-show="columnsVisible['amount'].display"
+                      class="has-text-centered"
+                    >{{ order.amount }}</td>
+                    <td
+                      v-show="columnsVisible['statusName'].display"
+                      class="has-text-centered"
+                    >{{ order.statusName }}</td>
+                  </tr>
+                </template>
+              </b-table>
             </div>
           </b-tab-item>
         </b-tabs>
@@ -173,6 +164,19 @@ export default {
   },
   data() {
     return {
+      //ordered by menu
+      data: [
+        {
+          detailOrders: []
+        }
+      ],
+      columnsVisible: {
+        menuName: { title: "Menu Name", display: true },
+        amount: { title: "Amount", display: true },
+        statusName: { title: "Status", display: true }
+      },
+      showDetailIcon: true,
+
       panel: [false, true, true],
 
       nameOfStatus: "All Status",
@@ -266,6 +270,9 @@ export default {
         });
       this.checkedRows = [];
       this.dialog = false;
+    },
+    toggle(row) {
+      this.$refs.table.toggleDetails(row);
     }
   },
   computed: {

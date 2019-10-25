@@ -6,12 +6,12 @@ exports.getAllTablechairs = async () => {
 
 exports.insertTablechairs = async (table) => {
     return await knex('tablechairs').insert({
-        tableNumber:table.tableNumber
+        tableNumber: table.tableNumber
     })
 }
 exports.updateTablechairs = async (table) => {
     await knex('tablechairs').where('tableId', '=', table.tableId).update({
-        tableNumber:table.tableNumber
+        tableNumber: table.tableNumber
     })
 }
 exports.deleteTablechairs = async (tableId) => {
