@@ -8,7 +8,7 @@ import LoginPage from '@/Pages/LoginPage'
 import NotificationPage from '@/Pages/NotificationPage'
 import StaticPage from '@/Pages/StaticPage'
 import OrderedPage from '@/Pages/OrderedPage'
-import ServedPage from '@/Pages/ServedPage'
+import BillPage from '@/Pages/BillPage'
 import EmployeePage from '@/Pages/Employee/EmployeePage'
 import SignupPage from '@/Pages/SignupPage'
 import CreateRestaurant from '@/Pages/CreateRestaurant'
@@ -167,9 +167,9 @@ export default new Router({
       component: typeofservicesuper
     },
     {
-      path: '/Served',
-      name: 'ServedPage',
-      component: ServedPage
+      path: '/Bill',
+      name: 'BillPage',
+      component: BillPage
     },
     {
       path: '/Login',
