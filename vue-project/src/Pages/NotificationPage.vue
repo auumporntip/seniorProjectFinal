@@ -5,7 +5,52 @@
     <div id="bigbox">
       <section class="bg">
         <v-card-title class="headline font-weight-medium">NOTIFICATION</v-card-title>
-        <b-table :data="notiData" :columns="columns"></b-table>
+
+        <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle">
+          <b-tab-item label="Checkbill">
+        <b-table 
+        :data="notiData" 
+        :columns="columns"
+        :paginated="isPaginated"
+        :per-page="perPage"
+        :checked-rows.sync="checkedRows"
+        :is-row-checkable="(row) => row.id !== 3"
+        checkable
+        :checkbox-position="checkboxPosition"
+        aria-next-label="Next page"
+        aria-previous-label="Previous page"
+        aria-page-label="Page"
+        aria-current-label="Current page"
+        >
+           <template slot="bottom-left">
+                <b>Total checked</b>
+                : {{ checkedRows.length }}
+              </template>
+        </b-table>
+          </b-tab-item>
+        <!--other-->
+        <b-tab-item label="Others">
+        <b-table 
+        :data="notiData" 
+        :columns="columns"
+        :paginated="isPaginated"
+        :per-page="perPage"
+        :checked-rows.sync="checkedRows"
+        :is-row-checkable="(row) => row.id !== 3"
+        checkable
+        :checkbox-position="checkboxPosition"
+        aria-next-label="Next page"
+        aria-previous-label="Previous page"
+        aria-page-label="Page"
+        aria-current-label="Current page"
+        >
+          <template slot="bottom-left">
+            <b>Total checked</b>
+            : {{ checkedRows.length }}
+        </template>
+        </b-table>
+          </b-tab-item>
+        </b-tabs>
       </section>
     </div>
   </div>
@@ -22,6 +67,11 @@ export default {
   },
   data() {
     return {
+      activeTab: 0,
+      isPaginated: true,
+      radioGroup: 1,
+      perPage: 10,
+      checkedRows: [],
       notiData: [],
       columns: [
         {
@@ -40,6 +90,9 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+    
   },
   created() {
     axios.get("http://localhost:3000/api/getallnotification").then(response => {
@@ -64,7 +117,24 @@ export default {
   margin-left: 20%;
   background-attachment: fixed;
 }
-
+.space-btn {
+  margin-left: 85%;
+}
+#button {
+  padding-left: 5em;
+  padding-top: 5%;
+  margin: -7%;
+}
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: 0%;
+}
+.text {
+  padding-left: 60em;
+  padding-top: 5%;
+  margin: -7%;
+}
 /* h1 {
   font-family: "Arial Black", Gadget, sans-serif;
   font-size: 20px;

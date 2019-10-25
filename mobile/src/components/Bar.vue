@@ -1,5 +1,6 @@
 <template>
-  <v-toolbar dark color="#cd9575" fixed>
+   <div> 
+     <v-toolbar dark color="#cd9575" fixed>
     <p v-if="this.$store.getters.namePages === 'Menu'" flat icon color="white">
       <v-icon></v-icon>
     </p>
@@ -15,7 +16,9 @@
     <v-spacer></v-spacer>
     {{time}}
   </v-toolbar>
+  </div> 
 </template>
+
 
 <script>
 import { store } from "../store/store";
@@ -23,11 +26,14 @@ import axios from "axios";
 import dayjs from "dayjs";
 import moment from "moment";
 import momentT from "moment-timezone";
+import Swal from 'sweetalert2'
 
 export default {
   name: "Bar",
   data() {
     return {
+      dialog: false,
+      warning: false,
       image_src: require("../assets/1.png"),
       typeOfService: [],
       billId: "",
@@ -78,11 +84,34 @@ export default {
         minute = '0'+back1
       }
       if (frontTime === hour && backTime === minute && second === '00') {
-        this.$dialog.alert({
-          title: "Warning",
-          message: "Time end in 15 minute",
-          type: "is-warning"
+        Swal.fire({
+            title: "Warning",
+            text: "Time end in 15 minute",
+            type: "warning",
+            confirmButtonColor: "#cd9575",
+            confirmButtonText: "Close"
         });
+        // this.$dialog.alert({
+        //   title: "Warning",
+        //   message: "Time end in 15 minute",
+        //   type: "is-warning"
+        // });
+         
+        // <v-card>
+        //  <v-card-title>
+        //   <span class="headline">Warning</span>
+        // </v-card-title>
+        //   <v-card-text>Time end in 15 minute</v-card-text>
+        // <v-card-actions>
+        //   <v-spacer></v-spacer>
+        //   <v-btn color="green darken-1" text >close</v-btn>
+        // </v-card-actions>
+        //       </v-card>
+
+        // <v-alert border="right" colored-border type="error" elevation="2">
+        // Warning !!!! 
+        // Time end in 15 minute
+        // </v-alert>
       }
     }
   },
