@@ -39,8 +39,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'MenuPage',
-      component: MenuPage
+      name: 'LoginPage',
+      component: LoginPage
     }, {
       path: '/Menu',
       name: 'MenuPage',

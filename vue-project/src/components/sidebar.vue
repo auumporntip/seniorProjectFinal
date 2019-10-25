@@ -76,7 +76,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-
         <v-list-tile :to="{name: 'StaticPage'}">
           <v-list-tile-action>
             <v-icon>folder_open</v-icon>
@@ -95,9 +94,9 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <!-- <div class="pa-2">
-          <v-btn block color="grey darken-1">Logout</v-btn>
-        </div> -->
+        <div class="pa-2">
+          <v-btn block color="grey darken-1" @click="logout">Logout</v-btn>
+        </div>
       </v-list>
     </v-navigation-drawer>
   </v-card>
@@ -111,6 +110,14 @@ export default {
       drawer: true,
       right: null
     };
+  },
+  methods: {
+    logout() {
+      sessionStorage.clear();
+      localStorage.clear();
+
+      this.$router.push("/");
+    }
   }
 };
 </script>

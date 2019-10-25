@@ -33,7 +33,6 @@ app.use('/api/',require('./routes/ordered'))
 app.use('/api/',require('./routes/table'))
 app.use('/api/',require('./routes/employee'))
 
-
 app.use('/api/',require('./routes/authen'))
 app.use('/api/',require('./upload/upload'))
 

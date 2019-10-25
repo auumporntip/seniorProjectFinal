@@ -147,7 +147,7 @@ export default {
             if (time.charAt(0) != "0") {
               var index = parseInt(time.substring(0, 2)) - 7;
 
-              this.time = "0" + index1 + time.substring(2, 8);
+              this.time = "0" + index + time.substring(2, 8);
             } else {
               var index1 = parseInt(time.charAt(1)) - 7;
               this.time = "0" + index1 + time.substring(2, 8);

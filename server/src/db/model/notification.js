@@ -4,6 +4,13 @@ exports.getAllNotification=async() => {
     return await knex('notification')
 }
 
+exports.getCheckBill=async() => {
+    return await knex('notification').where('notiMessage','=','check bill')
+}
+exports.getOtherNotification=async() => {
+    return await knex('notification').where('notiMessage','!=','check bill')
+}
+
 exports.updateNotification = async(notification) => {
     await knex('notification').where('notiId', '=', notification.notiId)
         .update({

@@ -7,6 +7,14 @@ router.get('/getallnotification', async(req,res)=>{
     res.send(await notification.getAllNotification())
 })
 
+router.get('/getcheckbillnotification', async(req,res)=>{
+    res.send(await notification.getCheckBill())
+})
+router.get('/getothernotification', async(req,res)=>{
+    res.send(await notification.getOtherNotification())
+})
+
+
 router.delete('/deletenotification/:notificationId', async (req, res) => {
     res.send(await notification.deleteNotification(req.params.notificationId))
 })
