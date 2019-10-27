@@ -5,35 +5,8 @@
     <div id="bigbox">
       <section class="bg">
         <v-card-title class="headline font-weight-medium">EMPLOYEE</v-card-title>
-        <!-- <section id="dropdown">
-          <b-dropdown aria-role="list">
-            <button class="button is-dark" slot="trigger">
-              <span>Select Category</span>
-              <b-icon icon="menu-down"></b-icon>
-            </button>
-
-            <b-dropdown-item aria-role="listitem">A La Carte</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Buffet299</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Buffet399</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Buffet499</b-dropdown-item>
-          </b-dropdown>
-        </section> -->
-      <!-- </div> -->
-      <!-- <b-table :data="data" :columns="columns" >
-      </b-table>-->
-      <br>
-      <b-table :data="menu" :columns="columns" :selected.sync="selected" focusable></b-table>
-<!-- 
-      <button class="button is-medium is-danger" @click="confirmCustom">Delete</button> -->
-
-      <!-- <div class="list" v-for="menu in menus" :key="menu.id">
-        <div class="list2">
-          <img class="Edit2" src="../assets/out.png" width="50px" height="50px">
-        </div>
-        <div class="list1">
-          <img class="Edit" src="../assets/edit.png" width="50px" height="50px">
-        </div>
-      </div>-->
+        <br />
+        <b-table :data="menu" :columns="columns" :selected.sync="selected" focusable></b-table>
       </section>
     </div>
   </div>
@@ -49,9 +22,6 @@ export default {
   },
   data() {
     const menu = [];
-    // this.test();
-    // this.test()
-    // console.log(data)
     return {
       menu: menu,
       selected: {},
@@ -82,32 +52,6 @@ export default {
     };
   },
   methods: {
-    // test() {
-    //   axios.get(`http://13.228.170.25:3000/api/querymenu`).then(response => {
-    //     this.menu = response.data;
-    //     console.log(response.data);
-    //     // return response.data
-    //   });
-    // },
-//     confirmCustom() {
-//       console.log(this.selected);
-//       this.$dialog.confirm({
-//         title: "Privacy Politics",
-//         message: "จะลบจริงอ่อ",
-//         cancelText: "Disagree",
-//         confirmText: "Agree",
-//         type: "is-success",
-//         onConfirm: () => this.$toast.open("delete success")
-//       });
-//     }
-//   },
-//   created: function() {
-//     axios.get(`http://13.228.170.25:3000/api/querymenu`).then(response => {
-//       this.menu = response.data;
-//       this.selected = response.data[0];
-//       console.log(response.data);
-//       // return response.data
-//     });
   }
 };
 </script>
@@ -166,12 +110,12 @@ body {
   margin-top: -20px;
 }
 #boxright {
- background-color: #f0cab1;
+  background-color: #f0cab1;
   width: 1170px;
   height: 52em;
   margin-top: 0px;
   margin-left: 180px;
-  background-attachment: fixed;  
+  background-attachment: fixed;
 }
 .category {
   font-family: "Arial Black", Gadget, sans-serif;

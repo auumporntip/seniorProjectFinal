@@ -5,13 +5,32 @@
       <section class="bg">
         <b-tabs>
           <v-card-title class="headline font-weight-medium">BILL</v-card-title>
-           <span id="button"> 
-             
-             <!--Add-->
-             <v-layout row>
+          <span id="button">
+
+            <b-table
+            :data="billData"
+            :columns="columns"
+            :paginated="isPaginated"
+            :per-page="perPage"
+            :checked-rows.sync="checkedRows"
+            :is-row-checkable="(row) => row.id !== 3"
+            checkable
+            :checkbox-position="checkboxPosition"
+            aria-next-label="Next page"
+            aria-previous-label="Previous page"
+            aria-page-label="Page"
+            aria-current-label="Current page"
+          >
+            <template slot="bottom-left">
+              <b>Total checked</b>
+              : {{ checkedRows.length }}
+            </template>
+          </b-table>
+            <!--Add-->
+            <v-layout row>
               <v-flex xs2>
-                <v-btn color="black" outline dark v-on="on"  @click="addDialog=true" >
-                  <v-icon left dark> add </v-icon> Add Bill
+                <v-btn color="black" outline dark v-on="on" @click="addDialog=true">
+                  <v-icon left dark>add</v-icon>Add Bill
                 </v-btn>
                 <v-dialog v-model="addDialog" max-width="490">
                   <v-card>
@@ -68,12 +87,12 @@
                   </v-card>
                 </v-dialog>
               </v-flex>
-            
-            <!--edit-->
-         
+
+              <!--edit-->
+
               <v-flex xs2>
-                <v-btn color="black" outline dark v-on="on" @click="editDialog=true"  >
-                  <v-icon left dark> edit </v-icon> Edit Bill
+                <v-btn color="black" outline dark v-on="on" @click="editDialog=true">
+                  <v-icon left dark>edit</v-icon>Edit Bill
                 </v-btn>
                 <v-dialog max-width="490" v-model="editDialog">
                   <v-card>
@@ -84,9 +103,9 @@
                           <v-text-field label="BillId" v-model="bill.billId" disabled></v-text-field>
                           <v-text-field label="TableNumber" v-model="bill.tableNumber"></v-text-field>
                           <v-text-field label="NumOfCust" v-model="bill.numOfCust"></v-text-field>
-                          <v-text-field label="TotalPrice" v-model="bill.totalPrice"></v-text-field>
+                          <!-- <v-text-field label="TotalPrice" v-model="bill.totalPrice"></v-text-field>
                           <v-text-field label="EatTimeStart" v-model="bill.eatTimeStart"></v-text-field>
-                          <v-text-field label="EatTimeEnd" v-model="bill.eatTimeEnd"></v-text-field>
+                          <v-text-field label="EatTimeEnd" v-model="bill.eatTimeEnd"></v-text-field> -->
                           <v-text-field label="TypeId" v-model="bill.typeId"></v-text-field>
                         </v-container>
                       </v-form>
@@ -99,133 +118,17 @@
                   </v-card>
                 </v-dialog>
               </v-flex>
-          
-            <!--Delete-->
-            
+
+              <!--Delete-->
+
               <v-flex xs2>
-                <v-btn color="black" outline dark v-on="on" @click="clickDelete" >
-                  <v-icon left dark> delete </v-icon> Delete Bill
+                <v-btn color="black" outline dark v-on="on" @click="clickDelete">
+                  <v-icon left dark>delete</v-icon>Delete Bill
                 </v-btn>
               </v-flex>
             </v-layout>
-           </span>
-          <b-table
-            :data="billData"
-            :columns="columns"
-            :paginated="isPaginated"
-            :per-page="perPage"
-            :checked-rows.sync="checkedRows"
-            :is-row-checkable="(row) => row.id !== 3"
-            checkable
-            :checkbox-position="checkboxPosition"
-            aria-next-label="Next page"
-            aria-previous-label="Previous page"
-            aria-page-label="Page"
-            aria-current-label="Current page"
-          >
-            <template slot="bottom-left">
-              <b>Total checked</b>
-              : {{ checkedRows.length }}
-            </template>
-          </b-table>
-
-          <!-- <span id="Addeditdelete"> -->
-            <!--Add-->
-            <!-- <v-layout>
-              <v-flex xs2>
-                <v-btn color="primary" dark class="add" @click="addDialog=true">Add</v-btn>
-                <v-dialog v-model="addDialog" max-width="490">
-                  <v-card>
-                    <v-card-text class="headline">
-                      Add Bill
-                      <v-form ref="form">
-                        <v-container fluid>
-                          <v-text-field
-                            label="Table no."
-                            type="string"
-                            v-model="bill.tableNumber"
-                            :rules="tableRules"
-                          ></v-text-field>
-                          <v-text-field
-                            label="Number of customer"
-                            type="number"
-                            v-model="bill.numOfCust"
-                            :rules="amountRules"
-                          ></v-text-field>
-                          <v-text-field
-                            label="Total Price"
-                            type="number"
-                            v-model="bill.totalPrice"
-                            :rules="totalPriceRules"
-                          ></v-text-field>
-                          <v-text-field
-                            label="Select time"
-                            type="time"
-                            value="00:00:00"
-                            v-model="bill.eatTimeStart"
-                            :rules="eatTimeStartRules"
-                          ></v-text-field>
-                          <v-text-field
-                            label="Time End"
-                            type="time"
-                            value="00:00:00"
-                            v-model="bill.eatTimeEnd"
-                            :rules="endTimeStartRules"
-                          ></v-text-field>
-                          <v-text-field
-                            label="Type Id"
-                            type="number"
-                            v-model="bill.typeId"
-                            :rules="typeIdRules"
-                          ></v-text-field>
-                        </v-container>
-                      </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="addCancel">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="addSave">Save</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-flex>
-            </v-layout> -->
-            <!--Edit-->
-            <!-- <v-layout id="layoutEdit">
-              <v-flex xs2>
-                <v-btn color="primary" dark @click="editDialog=true" class="add">Edit</v-btn>
-                <v-dialog max-width="490" v-model="editDialog">
-                  <v-card>
-                    <v-card-text class="headline">
-                      Edit Bill
-                      <v-form v-for="bill in checkedRows" :key="bill.billId">
-                        <v-container>
-                          <v-text-field label="BillId" v-model="bill.billId" disabled></v-text-field>
-                          <v-text-field label="TableNumber" v-model="bill.tableNumber"></v-text-field>
-                          <v-text-field label="NumOfCust" v-model="bill.numOfCust"></v-text-field>
-                          <v-text-field label="TotalPrice" v-model="bill.totalPrice"></v-text-field>
-                          <v-text-field label="EatTimeStart" v-model="bill.eatTimeStart"></v-text-field>
-                          <v-text-field label="EatTimeEnd" v-model="bill.eatTimeEnd"></v-text-field>
-                          <v-text-field label="TypeId" v-model="bill.typeId"></v-text-field>
-                        </v-container>
-                      </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" text @click="editDialog=false">Cancel</v-btn>
-                      <v-btn color="green darken-1" text @click="editSave">Save</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-flex>
-            </v-layout> -->
-            <!--Delete-->
-            <!-- <v-layout>
-              <v-flex xs2>
-                <v-btn color="primary" dark class="clear" @click="clickDelete">Delete</v-btn>
-              </v-flex>
-            </v-layout> -->
-          <!-- </span> -->
+          </span>
+          
         </b-tabs>
       </section>
     </div>
@@ -291,26 +194,18 @@ export default {
           field: "totalPrice",
           label: "Total Price"
         },
+        // {
+        //   field: "eatTimeStart",
+        //   label: "Time Start"
+        // },
+        // {
+        //   field: "eatTimeEnd",
+        //   label: "Time End",
+        //   centered: true
+        // },
         {
-          field: "eatTimeStart",
-          label: "Time Start"
-        },
-        {
-          field: "eatTimeEnd",
-          label: "Time End",
-          centered: true
-        },
-        {
-          field: "typeId",
-          label: "Type Id"
-        },
-        {
-          field: "created_at",
-          label: "Created at"
-        },
-        {
-          field: "update_at",
-          label: "Update at"
+          field: "typeName",
+          label: "Course"
         }
       ]
     };
@@ -385,15 +280,13 @@ export default {
       }
     },
     reBill() {
-      axios.get("http://localhost:3000/api/getAllbill").then(response => {
+      axios.get("http://localhost:3000/api/getallbillbyrestaurantId/"+1).then(response => {
         this.billData = response.data;
       });
     }
   },
   created() {
-    axios.get("http://localhost:3000/api/getAllBill").then(response => {
-      this.billData = response.data;
-    });
+    this.reBill()
   }
 };
 </script>
@@ -424,5 +317,4 @@ export default {
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
 }
-
 </style>

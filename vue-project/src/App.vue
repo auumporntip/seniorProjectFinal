@@ -19,7 +19,7 @@ export default {
           })
           .then(response => {
             var isSuccess = response.data.isSuccess;
-            console.log(isSuccess);
+            // console.log(isSuccess);
             
             if (isSuccess === false) {
               this.$router.push("/");

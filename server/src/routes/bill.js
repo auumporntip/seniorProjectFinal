@@ -7,6 +7,10 @@ router.get('/getallbill', async (req, res) => {
     res.send(await bill.getAllBill())
 })
 
+router.get('/getallbillbyrestaurantId/:restaurantId', async (req, res) => {
+    res.send(await bill.getBillByRestaurantId(req.params.restaurantId))
+})
+
 router.get('/getbillbybillId/:billId', async (req, res) => {
     res.send(await bill.getBillByBillId(req.params.billId))
 })

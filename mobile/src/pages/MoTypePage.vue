@@ -73,14 +73,17 @@ export default {
       console.log(dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"));
       
       if (this.$refs.form.validate()) {
+        console.log(this.selectService.typePrice,this.newCust.numOfCust);
+        
         axios
           .post("http://localhost:3000/api/insertbill", {
-            totalPrice: 0,
+            totalPrice: this.newCust.numOfCust*this.selectService.typePrice,
             eatTimeEnd: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
             eatTimeStart: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
             numOfCust: this.newCust.numOfCust,
             typeId: this.selectService.typeId,
             tableNumber: this.newCust.tableNumber,
+            billStatus: '0',
             created_at:dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
             update_at:dayjs(Date()).format("YYYY-MM-DD HH:mm:ss")
           })

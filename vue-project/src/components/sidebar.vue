@@ -56,7 +56,7 @@
         </div>
 
         <div v-if="this.account.positionId!=5">
-          <v-list-tile :to="{name: 'ServedPage'}">
+          <v-list-tile :to="{name: 'BillPage'}">
             <v-list-tile-action>
               <v-icon>folder_open</v-icon>
             </v-list-tile-action>
@@ -151,7 +151,7 @@ export default {
   },
   created() {
     this.account = jwt.decode(localStorage.getItem('token'))
-    console.log(this.account)
+    // console.log(this.account)
   },
 };
 </script>

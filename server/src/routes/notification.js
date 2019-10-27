@@ -14,6 +14,9 @@ router.get('/getothernotification', async(req,res)=>{
     res.send(await notification.getOtherNotification())
 })
 
+router.put('/changeStatusNotification/:notificationId', async (req, res) => {
+    res.send(await notification.changeStatusNotification(req.params.notificationId))
+})
 
 router.delete('/deletenotification/:notificationId', async (req, res) => {
     res.send(await notification.deleteNotification(req.params.notificationId))

@@ -48,7 +48,7 @@
                 <b-table-column
                   label="Table No."
                   width="100"
-                >&nbsp;&nbsp;&nbsp;&nbsp;{{ props.row.tableNumber }}</b-table-column>
+                >{{props.row.tableNumber}}</b-table-column>
                 <b-table-column label="Menu Name" width="250">{{ props.row.menuName }}</b-table-column>
                 <b-table-column
                   label="Amount"
@@ -57,35 +57,41 @@
                 <b-table-column label="Time" width="200">{{ props.row.time }}</b-table-column>
                 <b-table-column label="Status" width="100">{{ props.row.statusName }}</b-table-column>
                 <b-table-column label="Change Status" width="200">
-                  <v-btn small outline color="indigo" @click.stop="test"><v-icon>repeat</v-icon>Change Status</v-btn>
+                  <v-btn
+                    small
+                    outline
+                    color="indigo"
+                    @click="changeStatusOrder(props.row.orderId,props.row.statusId)"
+                  >
+                    <v-icon>repeat</v-icon>Change Status
+                  </v-btn>
                 </b-table-column>
               </template>
             </b-table>
 
             <div class="space-btn">
-              <!-- <v-btn color="primary" dark @click.stop="test">Change Status</v-btn> -->
               <v-dialog v-model="dialog" max-width="290">
                 <v-card>
                   <v-card-text class="title">
                     What status do you want to change?
                     <v-radio-group v-model="radioGroup">
-                      <v-radio label="Preparing" value="1"></v-radio>
-                      <v-radio label="Cooking" value="2"></v-radio>
-                      <v-radio label="Serving" value="3"></v-radio>
-                      <v-radio label="Cancel" value="4"></v-radio>
+                      <v-radio v-if="checkStatus(1)" label="Preparing" value="1"></v-radio>
+                      <v-radio v-if="checkStatus(2)" label="Cooking" value="2"></v-radio>
+                      <v-radio v-if="checkStatus(3)" label="Serving" value="3"></v-radio>
+                      <v-radio v-if="checkStatus(4)" label="Cancel" value="5"></v-radio>
                     </v-radio-group>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red darken-1" flat @click="dialog = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" flat @click="clickSave">Save</v-btn>
+                    <v-btn color="blue darken-1" flat @click="saveChangeStatus">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </div>
           </b-tab-item>
 
-          <!-- menu -->
+          <!-- same menu -->
           <b-tab-item label="Ordered by menu">
             <div>
               <b-table
@@ -132,7 +138,9 @@
                   >{{ props.row.statusName }}</b-table-column>
 
                   <b-table-column>
-                    <v-btn small outline color="indigo" @click.stop="test"><v-icon>repeat</v-icon>Change Status</v-btn>
+                    <v-btn small outline color="indigo" @click.stop="test">
+                      <v-icon>repeat</v-icon>Change Status
+                    </v-btn>
                   </b-table-column>
                 </template>
 
@@ -203,10 +211,13 @@ export default {
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       checkboxPosition: "left",
-      checkedRows: []
+      checkedRows: [],
+      selectOrderId: "",
+      selectedStatusId: ""
     };
   },
   methods: {
+    //search
     allStatus() {
       this.keyword = "";
     },
@@ -214,39 +225,80 @@ export default {
       this.nameOfStatus = statusName;
       this.keyword = statusName;
     },
-    test() {
+
+    //change status in order
+    changeStatusOrder(orderId, statusId) {
+      this.selectOrderId = orderId;
+      this.selectedStatusId = statusId;
       this.dialog = true;
     },
-    async clickSave() {
-      console.log(this.radioGroup);
-      const promiseArr = [];
-      for (let index = 0; index < this.checkedRows.length; index++) {
-        promiseArr.push(
-          axios.put(
-            "http://localhost:3000/api/changestatus/" +
-              this.checkedRows[index].orderId +
-              "/" +
-              this.radioGroup
-          )
-        );
+    checkStatus(status) {
+      if (this.selectedStatusId >= status) {
+        return false;
+      } else {
+        return true;
       }
-      await Promise.all(promiseArr);
+    },
+    saveChangeStatus() {
+      axios
+        .put(
+          "http://localhost:3000/api/changestatus/" +
+            this.selectOrderId +
+            "/" +
+            this.radioGroup
+        )
+        .then(response => {
+          this.getOrderData;
+          this.dialog = false;
+        });
+    },
+    // method for change many order
+    // async clickSave() {
+    //   console.log(this.radioGroup);
+    //   const promiseArr = [];
+    //   for (let index = 0; index < this.checkedRows.length; index++) {
+    //     promiseArr.push(
+    //       axios.put(
+    //         "http://localhost:3000/api/changestatus/" +
+    //           this.checkedRows[index].orderId +
+    //           "/" +
+    //           this.radioGroup
+    //       )
+    //     );
+    //   }
+    //   await Promise.all(promiseArr);
 
-      for (let index = 0; index < this.checkedRows.length; index++) {
-        if (this.radioGroup === "3") {
-          axios.post("http://localhost:3000/api/inserttransaction", {
-            menuName: this.checkedRows[index].menuName,
-            transPrice: this.checkedRows[index].menuPrice,
-            totalPrice:
-              this.checkedRows[index].amount *
-              this.checkedRows[index].menuPrice,
-            amount: this.checkedRows[index].amount,
-            statusName: "finsh",
-            billId: this.checkedRows[index].billId
-          });
-        }
-      }
+    //   for (let index = 0; index < this.checkedRows.length; index++) {
+    //     if (this.radioGroup === "3") {
+    //       axios.post("http://localhost:3000/api/inserttransaction", {
+    //         menuName: this.checkedRows[index].menuName,
+    //         transPrice: this.checkedRows[index].menuPrice,
+    //         totalPrice:
+    //           this.checkedRows[index].amount *
+    //           this.checkedRows[index].menuPrice,
+    //         amount: this.checkedRows[index].amount,
+    //         statusName: "finsh",
+    //         billId: this.checkedRows[index].billId
+    //       });
+    //     }
+    //   }
 
+    //   axios
+    //     .get(
+    //       "http://localhost:3000/api/getorderbyrestaurantid/" +
+    //         this.restaurantId
+    //     )
+    //     .then(response => {
+    //       this.ordered = response.data;
+    //     });
+    //   this.checkedRows = [];
+    //   this.dialog = false;
+    // },
+    toggle(row) {
+      this.$refs.table.toggleDetails(row);
+    },
+
+    getOrderData() {
       axios
         .get(
           "http://localhost:3000/api/getorderbyrestaurantid/" +
@@ -254,12 +306,12 @@ export default {
         )
         .then(response => {
           this.ordered = response.data;
+          for (let index = 0; index < this.ordered.length; index++) {
+            this.ordered[index].time = dayjs(
+              this.ordered[index].created_at
+            ).format("HH:mm:ss");
+          }
         });
-      this.checkedRows = [];
-      this.dialog = false;
-    },
-    toggle(row) {
-      this.$refs.table.toggleDetails(row);
     }
   },
   computed: {
@@ -277,18 +329,7 @@ export default {
     }
   },
   created: function() {
-    axios
-      .get(
-        "http://localhost:3000/api/getorderbyrestaurantid/" + this.restaurantId
-      )
-      .then(response => {
-        this.ordered = response.data;
-        for (let index = 0; index < this.ordered.length; index++) {
-          this.ordered[index].time = dayjs(
-            this.ordered[index].created_at
-          ).format("HH:mm:ss");
-        }
-      });
+    this.getOrderData();
     axios.get("http://localhost:3000/api/getallstatus").then(response => {
       this.statusData = response.data;
     });

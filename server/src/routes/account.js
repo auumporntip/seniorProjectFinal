@@ -7,11 +7,15 @@ router.get('/getallaccount', async(req,res)=>{
     res.send(await account.getAllAccount()) 
 })
 
-router.get('/getAccountbyusername/:username',async(req,res)=>{
+router.get('/getaccountbyusername/:username',async(req,res)=>{
     res.send(await account.getAccountByUsername(req.params.username))
 })
 
-router.get('/getAccountbyId/:accountId',async(req,res)=>{
+router.get('/getaccountbyposition/:restaurantId/:positionId',async(req,res)=>{
+    res.send(await account.getAllAccountByRestaurantIdAndPositionId(req.params.restaurantId,req.params.positionId))
+})
+
+router.get('/getaccountbyId/:accountId',async(req,res)=>{
     res.send(await account.getAccountById(req.params.accountId))
 })
 

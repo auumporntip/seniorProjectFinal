@@ -3,37 +3,37 @@
     <v-layout>
       <v-flex xs2>
         <!-- <v-btn color="black" outline v-on="on" @click="checkSelected()"> -->
-        <v-icon @click="editButton" >edit</v-icon>
+        <v-icon @click="editButton">edit</v-icon>
         <!-- </v-btn> -->
         <v-dialog v-model="dialog" persistent max-width="600px">
-         <v-card>
+          <v-card>
             <v-card-title>
               <span class="headline">Edit Menu</span>
             </v-card-title>
             <v-card-text>
-               <v-form ref="form">
+              <v-form ref="form">
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <v-flex xs6>
-                       <v-text-field label="Name" ></v-text-field>
-                       <v-text-field label="Username" ></v-text-field>
-                       <v-text-field label="Email" ></v-text-field>
+                      <v-text-field label="Name"></v-text-field>
+                      <v-text-field label="Username"></v-text-field>
+                      <v-text-field label="Email"></v-text-field>
                     </v-flex>
                     <v-flex xs6>
-                      <v-select label="Select Position"> </v-select>
+                      <v-select label="Select Position"></v-select>
                       <v-text-field label="Password"></v-text-field>
                       <v-text-field label="Phone"></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
-               </v-form>
+              </v-form>
             </v-card-text>
-            <v-card-actions> 
-              <v-spacer></v-spacer> 
-              <v-btn color="blue darken-1" flat @click="closeDialog">Close</v-btn> 
-              <v-btn color="blue darken-1" flat @click="confirmAdd">Save</v-btn> 
-            </v-card-actions> 
-         </v-card>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click="closeDialog">Close</v-btn>
+              <v-btn color="blue darken-1" flat @click="confirmAdd">Save</v-btn>
+            </v-card-actions>
+          </v-card>
         </v-dialog>
       </v-flex>
     </v-layout>
@@ -48,32 +48,27 @@ export default {
   name: "EditEmployee",
   data() {
     return {
-      dialog: false,   
+      dialog: false,
+      employee:''
     };
   },
   methods: {
-    editButton(){
-      this.dialog=true;
+    editButton() {
+      this.dialog = true;
     },
-     closeDialog(){ 
-    this.dialog= false; 
-    this.employee.empName=[];
-    this.employee.empUsername=[];
-    this.employee.empPassword=[];
-    this.employee.empPhone=[];
-    this.employee.empEmail=[];
-    this.selectedPosition=[];
-    }, 
-     confirmAdd(){ 
-       this.dialog= false; 
-       this.refreshAccount();
-       this.closeDialog(); 
-    } ,
+    closeDialog() {
+      this.dialog = false;
+    },
+    confirmEdit() {
+      this.dialog = false;
+    }
+  },
+  computed: {},
+  created() {
+    this.employee = this.$store.getters.employee
+    console.log(this.employee);
     
   },
-  computed: {
-  },
-  
 };
 </script>
 <style scoped>

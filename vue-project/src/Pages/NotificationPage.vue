@@ -18,10 +18,14 @@
               aria-current-label="Current page"
             >
               <template slot-scope="props">
-                <b-table-column label="Notification Id" width="100">&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
+                <b-table-column
+                  label="Noti Id"
+                  width="100"
+                >&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
                 <b-table-column label="Notification Message" width="200">{{props.row.notiMessage}}</b-table-column>
+                <b-table-column label="Table No" width="100">{{props.row.tableNumber}}</b-table-column>
                 <b-table-column label="Change Status" width="50">
-                  <v-btn small outline color="green" @click="check()">
+                  <v-btn small outline color="green" @click="check(props.row.notiId)">
                     <v-icon>check</v-icon>DONE
                   </v-btn>
                 </b-table-column>
@@ -40,10 +44,11 @@
               aria-current-label="Current page"
             >
               <template slot-scope="props">
-                <b-table-column label="Notification Id" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
+                <b-table-column label="Id" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
                 <b-table-column label="Notification Message" width="200">{{props.row.notiMessage}}</b-table-column>
+                <b-table-column label="Table No" width="100">{{props.row.tableNumber}}</b-table-column>
                 <b-table-column label="status" width="50">
-                  <v-btn small outline color="green" @click="checkOther()">
+                  <v-btn small outline color="green" @click="checkOther(props.row.notiId)">
                     <v-icon>check</v-icon>DONE
                   </v-btn>
                 </b-table-column>
@@ -81,73 +86,43 @@ export default {
       notiData: [],
       checkbillData: [],
       otherData: []
-      // columns: [
-      //   {
-      //     field: "notiId",
-      //     label: "Noti Id",
-      //     width: "80",
-      //     numeric: true
-      //   },
-      //   {
-      //     field: "notiMessage",
-      //     label: "Notification Message"
-      //   },
-      //   {
-      //     field: "billId",
-      //     label: "Bill Id"
-      //   },
-      //   {
-      //     field: "",
-      //     label: "a"
-      //   }
-      // ],
     };
   },
   methods: {
-    check() {
-      Swal.fire("Good job!", "Payment successful", "success");
+    check(notiId) {
+      this.changeStatus(notiId);
+      Swal.fire("Good job!", "Payment successful", "success");S
     },
-    checkOther() {
+    checkOther(notiId) {
+      this.changeStatus(notiId);
       Swal.fire("Good job!", "", "success");
     },
-    test() {
-      this.dialog = true;
+    changeStatus(notiId) {
+      axios
+        .put("http://localhost:3000/api/changeStatusNotification/" + notiId)
+        .then(() => {
+          this.getCheckBillNotification();
+          this.getOtherNotification();
+        });
     },
-    async clickSave() {
-      console.log(this.radioGroup);
-      const promise = [];
-      for (let index = 0; index < this.checkedRows.length; index++) {
-        promise.push(
-          axios.put(
-            "http://localhost:3000/api/changestatus/" +
-              this.checkedRows[index].notiId +
-              "/" +
-              this.radioGroup
-          )
-        );
-      }
-      await Promise.all(promise);
-
-      for (let index = 0; index < this.checkedRows.length; index++) {
-        if (this.radioGroup === "3") {
-        }
-      }
+    getCheckBillNotification() {
+      axios
+        .get("http://localhost:3000/api/getcheckbillnotification")
+        .then(response => {
+          this.checkbillData = response.data;
+        });
+    },
+    getOtherNotification() {
+      axios
+        .get("http://localhost:3000/api/getothernotification")
+        .then(response => {
+          this.otherData = response.data;
+        });
     }
   },
   created() {
-    axios.get("http://localhost:3000/api/getallnotification").then(response => {
-      this.notiData = response.data;
-    });
-    axios
-      .get("http://localhost:3000/api/getcheckbillnotification")
-      .then(response => {
-        this.checkbillData = response.data;
-      });
-    axios
-      .get("http://localhost:3000/api/getothernotification")
-      .then(response => {
-        this.otherData = response.data;
-      });
+    this.getCheckBillNotification();
+    this.getOtherNotification();
   }
 };
 </script>
@@ -185,40 +160,4 @@ export default {
   padding-top: 5%;
   margin: -7%;
 }
-/* h1 {
-  font-family: "Arial Black", Gadget, sans-serif;
-  font-size: 20px;
-  padding-left: 40px;
-  padding-top: 10px;
-  float: left;
-}
-
-.noti {
-  background-color: #d2b48c;
-  width: 1200px;
-  height: 100px;
-  margin-left: 5px;
-  margin-top: 15px;
-}
-.notibox {
-  margin-top: 55px;
-}
-.noti2 {
-  width: 100px;
-  height: 100px;
-  float: left;
-  padding-left: 55px;
-  padding-top: 20px;
-}
-#boxright {
-  background-color: #f0cab1;
-  width: 1170px;
-  height: 52em;
-  margin-top: 0px;
-  margin-left: 180px;
-  background-attachment: fixed;
-}
-#big {
-  padding-top: 5px;
-} */
 </style>
