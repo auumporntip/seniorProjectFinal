@@ -18,10 +18,12 @@
               aria-current-label="Current page"
             >
               <template slot-scope="props">
-                <b-table-column label="Notification Id" width="100">{{props.row.notiId}}</b-table-column>
+                <b-table-column label="Notification Id" width="100">&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
                 <b-table-column label="Notification Message" width="200">{{props.row.notiMessage}}</b-table-column>
-                <b-table-column label="status" width="50">
-                  <v-icon @click="check()">check</v-icon>
+                <b-table-column label="Change Status" width="50">
+                  <v-btn small outline color="green" @click="check()">
+                    <v-icon>check</v-icon>DONE
+                  </v-btn>
                 </b-table-column>
               </template>
             </b-table>
@@ -38,10 +40,12 @@
               aria-current-label="Current page"
             >
               <template slot-scope="props">
-                <b-table-column label="Notification Id" width="200">{{props.row.notiId}}</b-table-column>
+                <b-table-column label="Notification Id" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
                 <b-table-column label="Notification Message" width="200">{{props.row.notiMessage}}</b-table-column>
                 <b-table-column label="status" width="50">
-                  <v-icon @click="check()">check</v-icon>
+                  <v-btn small outline color="green" @click="checkOther()">
+                    <v-icon>check</v-icon>DONE
+                  </v-btn>
                 </b-table-column>
               </template>
             </b-table>
@@ -102,6 +106,9 @@ export default {
   methods: {
     check() {
       Swal.fire("Good job!", "Payment successful", "success");
+    },
+    checkOther() {
+      Swal.fire("Good job!", "", "success");
     },
     test() {
       this.dialog = true;

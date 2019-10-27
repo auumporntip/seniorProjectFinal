@@ -37,28 +37,36 @@
           <b-tab-item label="Ordered by time">
             <b-table
               :data="items"
-              :columns="columns"
               :paginated="isPaginated"
               :per-page="perPage"
-              :checked-rows.sync="checkedRows"
-              :is-row-checkable="(row) => row.id !== 3"
-              checkable
-              :checkbox-position="checkboxPosition"
               aria-next-label="Next page"
               aria-previous-label="Previous page"
               aria-page-label="Page"
               aria-current-label="Current page"
             >
-              <template slot="bottom-left">
-                <b>Total checked</b>
-                : {{ checkedRows.length }}
+              <template slot-scope="props">
+                <b-table-column
+                  label="Table No."
+                  width="100"
+                >&nbsp;&nbsp;&nbsp;&nbsp;{{ props.row.tableNumber }}</b-table-column>
+                <b-table-column label="Menu Name" width="250">{{ props.row.menuName }}</b-table-column>
+                <b-table-column
+                  label="Amount"
+                  width="200"
+                >&nbsp;&nbsp;&nbsp;&nbsp;{{ props.row.amount }}</b-table-column>
+                <b-table-column label="Time" width="200">{{ props.row.time }}</b-table-column>
+                <b-table-column label="Status" width="100">{{ props.row.statusName }}</b-table-column>
+                <b-table-column label="Change Status" width="200">
+                  <v-btn small outline color="indigo" @click.stop="test"><v-icon>repeat</v-icon>Change Status</v-btn>
+                </b-table-column>
               </template>
             </b-table>
+
             <div class="space-btn">
-              <v-btn color="primary" dark @click.stop="test">Change Status</v-btn>
+              <!-- <v-btn color="primary" dark @click.stop="test">Change Status</v-btn> -->
               <v-dialog v-model="dialog" max-width="290">
                 <v-card>
-                  <v-card-text class="headline">
+                  <v-card-text class="title">
                     What status do you want to change?
                     <v-radio-group v-model="radioGroup">
                       <v-radio label="Preparing" value="1"></v-radio>
@@ -69,8 +77,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-                    <v-btn color="green darken-1" text @click="clickSave">Save</v-btn>
+                    <v-btn color="red darken-1" flat @click="dialog = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" flat @click="clickSave">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -82,6 +90,8 @@
             <div>
               <b-table
                 :data="items"
+                :paginated="isPaginated"
+                :per-page="perPage"
                 ref="table"
                 detailed
                 hoverable
@@ -122,7 +132,7 @@
                   >{{ props.row.statusName }}</b-table-column>
 
                   <b-table-column>
-                    <v-btn small outline color="indigo">Change Status</v-btn>
+                    <v-btn small outline color="indigo" @click.stop="test"><v-icon>repeat</v-icon>Change Status</v-btn>
                   </b-table-column>
                 </template>
 
@@ -193,30 +203,7 @@ export default {
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       checkboxPosition: "left",
-      checkedRows: [],
-      columns: [
-        {
-          field: "tableNumber",
-          label: "Table No."
-        },
-        {
-          field: "menuName",
-          label: "Menu Name"
-        },
-        {
-          field: "amount",
-          label: "Amount"
-        },
-        {
-          field: "time",
-          label: "Time",
-          centered: true
-        },
-        {
-          field: "statusName",
-          label: "Status"
-        }
-      ]
+      checkedRows: []
     };
   },
   methods: {
