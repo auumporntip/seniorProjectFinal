@@ -8,6 +8,7 @@ import LoginPage from '@/Pages/LoginPage'
 import NotificationPage from '@/Pages/NotificationPage'
 import StaticPage from '@/Pages/StaticPage'
 import OrderedPage from '@/Pages/OrderedPage'
+import ServingPage from '@/Pages/ServingPage'
 import BillPage from '@/Pages/BillPage'
 import EmployeePage from '@/Pages/Employee/EmployeePage'
 import SignupPage from '@/Pages/SignupPage'
@@ -175,6 +176,11 @@ export default new Router({
       path: '/Login',
       name: 'LoginPage',
       component: LoginPage
+    },
+    {
+      path: '/Serving',
+      name: 'ServingPage',
+      component: ServingPage
     },
     
 
