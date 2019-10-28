@@ -77,8 +77,7 @@
                     <v-radio-group v-model="radioGroup">
                       <v-radio v-if="checkStatus(1)" label="Preparing" value="1"></v-radio>
                       <v-radio v-if="checkStatus(2)" label="Cooking" value="2"></v-radio>
-                      <v-radio v-if="checkStatus(3)" label="Serving" value="3"></v-radio>
-                      <v-radio v-if="checkStatus(4)" label="Cancel" value="5"></v-radio>
+                      <v-radio label="Cancel" value="5"></v-radio>
                     </v-radio-group>
                   </v-card-text>
                   <v-card-actions>
@@ -248,7 +247,7 @@ export default {
             this.radioGroup
         )
         .then(response => {
-          this.getOrderData;
+          this.getOrderData();
           this.dialog = false;
         });
     },
@@ -301,7 +300,7 @@ export default {
     getOrderData() {
       axios
         .get(
-          "http://localhost:3000/api/getorderbyrestaurantid/" +
+          "http://localhost:3000/api/getOrderedByStatusPrepareAndCooking/" +
             this.restaurantId
         )
         .then(response => {

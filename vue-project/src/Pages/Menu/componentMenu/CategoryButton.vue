@@ -75,33 +75,6 @@
     <v-layout>
       <v-flex xs2>
         <v-dialog v-model="editDialog" max-width="450">
-          <!-- <v-card>
-          <v-card-text>-->
-          <!-- <b-table
-                :data="category"
-                :columns="columns"
-                :checked-rows.sync="checkedRows"
-                :is-row-checkable="(row) => row.id !== 3"
-                checkable
-                :checkbox-position="checkboxPosition"
-                :paginated="isPaginated"
-                :per-page="perPage"
-                :current-page.sync="currentPage"
-                aria-next-label="Next page"
-                aria-previous-label="Previous page"
-                aria-page-label="Page"
-                aria-current-label="Current page"
-              >
-                <template slot="bottom-left">
-                  <b>Total checked</b>
-                  : {{ checkedRows.length }}
-                </template>
-          </b-table>-->
-
-          <!-- <v-btn color="black darken-1" outline @click="editDialog=true">
-                <v-icon left dark>edit</v-icon>EDIT CATEGORY
-          </v-btn>-->
-          <!-- <v-dialog max-width="390" v-model="editDialog"> -->
           <v-card>
             <v-card-text class="headline">
               Edit Category
@@ -118,14 +91,6 @@
               <v-btn color="blue darken-1" flat @click="editSave">SAVE</v-btn>
             </v-card-actions>
           </v-card>
-          <!-- </v-dialog> -->
-          <!-- </v-card-text> -->
-          <!-- <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="editDialog=false">CLOSE</v-btn>
-          </v-card-actions>-->
-          <!-- </v-card>
-          </v-dialog>-->
         </v-dialog>
       </v-flex>
     </v-layout>
@@ -133,34 +98,6 @@
     <!-- delete -->
     <v-layout>
       <v-flex xs2>
-        <!-- <v-dialog v-model="delDataDialog" max-width="450"> -->
-        <!-- <v-card> -->
-        <!-- <v-card-text> -->
-        <!-- <b-table
-                :data="category"
-                :columns="columns"
-                :checked-rows.sync="checkedRows"
-                :is-row-checkable="(row) => row.id !== 3"
-                checkable
-                :checkbox-position="checkboxPosition"
-                :paginated="isPaginated"
-                :per-page="perPage"
-                :current-page.sync="currentPage"
-                aria-next-label="Next page"
-                aria-previous-label="Previous page"
-                aria-page-label="Page"
-                aria-current-label="Current page"
-              >
-                <template slot="bottom-left">
-                  <b>Total checked</b>
-                  : {{ checkedRows.length }}
-                </template>
-        </b-table>-->
-
-        <!-- <v-btn color="black darken-1" outline @click="dialog = true">
-                <v-icon left dark>delete</v-icon>DELETE CATEGORY
-        </v-btn>-->
-        <!-- <div> -->
         <div>
           <v-row justify="center">
             <v-dialog v-model="delDataDialog" max-width="290">
@@ -256,7 +193,7 @@ export default {
       ],
       editRules: [
         v => !!v || "Name is required",
-        v => this.checkedRows.categoryName || "Name has already"
+        // v => this.checkedRows.categoryName || "Name has already"
       ],
       restaurantId: 1,
 

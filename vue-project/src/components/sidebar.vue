@@ -18,9 +18,7 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <div
-          v-if="this.account.positionId===3 || this.account.positionId===1 "
-        >
+        <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'MenuPage'}">
             <v-list-tile-action>
               <v-icon>folder_open</v-icon>
@@ -31,9 +29,7 @@
           </v-list-tile>
         </div>
 
-        <div
-          v-if="this.account.positionId===3 || this.account.positionId===1 "
-        >
+        <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'TypeOfService'}">
             <v-list-tile-action>
               <v-icon>folder_open</v-icon>
@@ -54,7 +50,16 @@
             </v-list-tile-content>
           </v-list-tile>
         </div>
-
+        <div v-if="this.account.positionId !=5">
+          <v-list-tile :to="{name: 'ServingPage'}">
+            <v-list-tile-action>
+              <v-icon>folder_open</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Serving</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </div>
         <div v-if="this.account.positionId!=5">
           <v-list-tile :to="{name: 'BillPage'}">
             <v-list-tile-action>
@@ -95,9 +100,7 @@
           </v-list-tile>
         </div>
 
-        <div
-          v-if="this.account.positionId===3 || this.account.positionId===1 "
-        >
+        <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'StaticPage'}">
             <v-list-tile-action>
               <v-icon>folder_open</v-icon>
@@ -108,25 +111,13 @@
           </v-list-tile>
         </div>
 
-        <div
-          v-if="this.account.positionId===3 || this.account.positionId===1 "
-        >
+        <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'EmployeePage'}">
             <v-list-tile-action>
               <v-icon>folder_open</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Employee</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </div>
-
-<v-list-tile :to="{name: 'ServingPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Serving</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </div>
@@ -148,7 +139,7 @@ export default {
     return {
       drawer: true,
       right: null,
-      account:''
+      account: ""
     };
   },
   methods: {
@@ -160,9 +151,9 @@ export default {
     }
   },
   created() {
-    this.account = jwt.decode(localStorage.getItem('token'))
+    this.account = jwt.decode(localStorage.getItem("token"));
     // console.log(this.account)
-  },
+  }
 };
 </script>
 

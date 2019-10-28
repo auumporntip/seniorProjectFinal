@@ -52,6 +52,39 @@ exports.getOrderedByResturantId = async (restaurantId) => {
         .orderBy('ordered.created_at','asc')
 }
 
+exports.getOrderedByStatusPrepareAndCooking = async (restaurantId) => {
+    return await knex.select(
+        'ordered.orderId','ordered.created_at','ordered.pricePerPiece'
+        ,'ordered.amount','ordered.menuId','ordered.statusId'
+        ,'ordered.billId','bill.totalPrice','bill.tableNumber','bill.numOfCust'
+        ,'bill.eatTimeStart','bill.eatTimeEnd','menu.menuName','menu.menuPrice','menu.menuPathImage'
+        ,'status.statusName')
+        .from('ordered')
+        .leftJoin('bill', 'bill.billId', '=', 'ordered.billId')
+        .leftJoin('menu', 'menu.menuId', '=', 'ordered.menuId')
+        .leftJoin('status', 'status.statusId', '=', 'ordered.statusId')
+        .where('menu.restaurantId', '=', restaurantId)
+        .andWhere('ordered.statusId','!=','3')
+        .andWhere('ordered.statusId','!=','4')
+        .andWhere('ordered.statusId','!=','5')
+        .orderBy('ordered.created_at','asc')
+}
+exports.getOrderedByStatusServing = async (restaurantId) => {
+    return await knex.select(
+        'ordered.orderId','ordered.created_at','ordered.pricePerPiece'
+        ,'ordered.amount','ordered.menuId','ordered.statusId'
+        ,'ordered.billId','bill.totalPrice','bill.tableNumber','bill.numOfCust'
+        ,'bill.eatTimeStart','bill.eatTimeEnd','menu.menuName','menu.menuPrice','menu.menuPathImage'
+        ,'status.statusName')
+        .from('ordered')
+        .leftJoin('bill', 'bill.billId', '=', 'ordered.billId')
+        .leftJoin('menu', 'menu.menuId', '=', 'ordered.menuId')
+        .leftJoin('status', 'status.statusId', '=', 'ordered.statusId')
+        .where('menu.restaurantId', '=', restaurantId)
+        .andWhere('ordered.statusId','=','3')
+        .orderBy('ordered.created_at','asc')
+}
+
 exports.getOrderedByBillId = async (billId) => {
     console.log(billId)
     return await knex('ordered')

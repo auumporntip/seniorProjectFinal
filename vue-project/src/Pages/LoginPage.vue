@@ -28,6 +28,7 @@ import axios from "axios";
 import { store } from "../store/store";
 import md5 from "md5";
 import jwt from "jsonwebtoken";
+import Swal from "sweetalert2";
 
 export default {
   name: "LoginPage",
@@ -57,15 +58,16 @@ export default {
         .then(response => {
           this.account = response.data;
           var accountdecode = jwt.decode(this.account.token);
-          
+
           localStorage.setItem("token", this.account.token);
           this.$store.commit("setAccount", accountdecode);
           if (this.account.login === true) {
+            Swal.fire("Login Success", "", "success");
             if (accountdecode.positionId === 3) {
               this.$router.push("/Menu");
             } else if (accountdecode.positionId === 2) {
               console.log(accountdecode.positionId);
-              this.$router.push("/Table");
+              this.$router.push("/notification");
             } else if (accountdecode.positionId === 1) {
               console.log(accountdecode.positionId);
               this.$router.push("/Menu");
@@ -73,24 +75,43 @@ export default {
               console.log(accountdecode.positionId);
               this.$router.push("/ordered");
             }
+          } else {
+            
+            Swal.fire("Oooops!", "Login Fail", "error");
           }
         });
     }
   },
   created() {
-    console.log(this.$store);
-    
-    // try {
-    //   if (jwt.decode(localStorage.getItem("token")) != null || this.$store.getters.account.positionId === 3 || this.$store.getters.account.positionId === 1 ) {
-    //     this.$router.push("/menu");
-    //   }else if(jwt.decode(localStorage.getItem("token")) != null || this.$store.getters.account.positionId === 2){
-    //     this.$router.push("/Table");
-    //   }else if(jwt.decode(localStorage.getItem("token")) != null || this.$store.getters.account.positionId === 5){
-    //     this.$router.push("/ordered");
-    //   }
-    // } catch (error) {
-    //   this.$router.push("/");
-    // }
+    try {
+      var account = jwt.decode(localStorage.getItem("token"));
+      this.$store.commit("setAccount", account);
+      if (
+        localStorage.getItem("token") != null &&
+        (this.$store.getters.account.positionId === 3 ||
+          this.$store.getters.account.positionId === 1)
+      ) {
+        this.$router.push("/menu");
+      } else if (
+        jwt.decode(localStorage.getItem("token")) != null &&
+        this.$store.getters.account.positionId === 2
+      ) {
+        this.$router.push("/notification");
+      } else if (
+        jwt.decode(localStorage.getItem("token")) != null &&
+        this.$store.getters.account.positionId === 5
+      ) {
+        this.$router.push("/ordered");
+      } else {
+        console.log("fail");
+
+        this.$router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+
+      this.$router.push("/");
+    }
   }
 };
 </script>
