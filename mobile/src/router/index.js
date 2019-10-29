@@ -9,6 +9,7 @@ import MoReceiptPage from '@/pages/MoReceiptPage'
 import MoSuccess from '@/pages/MoSuccess'
 import MoCallEmp from '@/pages/MoCallEmp'
 import MoWaitPage from '@/pages/MoWaitPage'
+import MoLandingPage from '@/pages/MoLandingPage'
 Vue.use(Router)
 
 export default new Router({
@@ -51,6 +52,10 @@ export default new Router({
       path: '/MoWait',
       name: 'MoWaitPage',
       component: MoWaitPage
+    },{
+      path: '/MoLanding',
+      name: 'MoLandingPage',
+      component: MoLandingPage
     }
   ]
 })
