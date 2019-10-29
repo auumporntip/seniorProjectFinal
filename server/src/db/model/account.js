@@ -5,8 +5,8 @@ exports.getAllAccount = async () => {
 }
 
 exports.getAllAccountByRestaurantIdAndPositionId = async (restaurantId, positionId) => {
-    console.log(restaurantId,positionId);
-    
+    console.log(restaurantId, positionId);
+
     if (positionId === '3') {
         return await knex('account')
             .where('restaurantId', '=', restaurantId)
@@ -16,8 +16,8 @@ exports.getAllAccountByRestaurantIdAndPositionId = async (restaurantId, position
             .where('restaurantId', '=', restaurantId)
             .andWhere('positionId', '!=', positionId)
             .andWhere('positionId', '!=', 3)
-    } else{
-        return {notPosition : false}
+    } else {
+        return { notPosition: false }
     }
 }
 
@@ -31,22 +31,27 @@ exports.getAccountById = async (accountId) => {
 
 exports.insertAccount = async (account) => {
     return await knex('account').insert({
-        username: account.username,
+        userName: account.userName,
         password: account.password,
         email: account.email,
         name: account.name,
         surname: account.surname,
-        phone: account.phone
+        phone: account.phone,        
+        restaurantId: 1,
+        positionId: account.positionId
     })
 }
 
 exports.updateAccount = async (account) => {
     await knex('account').where('accountId', '=', account.accountId)
         .update({
+            userName: account.userName,
+            password: account.password,
             email: account.email,
             name: account.name,
             surname: account.surname,
-            phone: account.phone
+            phone: account.phone,
+            positionId: account.positionId
         })
 }
 

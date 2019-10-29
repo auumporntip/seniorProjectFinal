@@ -1,7 +1,14 @@
 <template>
   <div class="bg">
     <v-card class="box">
-      <v-flex xs6 offset-lg5>
+      <v-flex xs6 class="positionLogin">
+      <v-img
+        :src="require('../assets/login.jpg')"
+        aspect-ratio="1"
+        max-width="240"
+      ></v-img>
+     </v-flex>
+      <v-flex xs6 offset-lg5 style="margin-top:-45%">
         <v-card-title class="loginText">LOGIN</v-card-title>
         <v-form>
           <v-container>
@@ -119,7 +126,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
-  background-color: #f0c1a8;
+  background-color: darkslategray;
   background-size: cover;
   -webkit-background-size: cover;
   width: 100vw;
@@ -142,7 +149,8 @@ export default {
   margin-left: 35%;
   padding-top: 15%;
   font-weight: 600;
-  color: #cd9575;
+  color: #cd9575;  
+  padding-bottom: 0%;
 }
 .text {
   color: darkgrey;
@@ -152,5 +160,9 @@ export default {
   background-color: brown;
   height: 65%;
   border: none;
+}
+.positionLogin{
+  padding-top: 6em;
+  padding-left: 2em;
 }
 </style>
