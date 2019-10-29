@@ -150,7 +150,7 @@
         <!-- delete dialog -->
         <v-dialog v-model="deleteDialog" max-width="290">
           <v-card>
-            <v-card-title class="title" style="margin-bottom:0px">DELETE CONFIRMATION</v-card-title>
+            <v-card-title class="title" style="margin-bottom:0px;">DELETE CONFIRMATION</v-card-title>
             <v-card-text class="confirmDialog">
               <v-icon color="red">warning</v-icon>you sure you want to delete this employee?
               You can't undo this action
@@ -399,4 +399,43 @@ export default {
   margin-top: -8%;
   margin-left: 80%;
 }
+#imageColumn {
+  margin-left: 1%;
+  margin-right: 1%;
+}
+#button {
+  margin-left: 86%;
+  margin-top: -5%;
+}
+.text {
+  margin-left: 75%;
+  margin-top: 0%;
+}
+.uploadBtn {
+  padding-top: 5%;
+  padding-left: 25%;
+}
+.name {
+  padding-left: 25%;
+}
+.imageSize {
+  margin-left: 4%;
+}
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
+}
+.confirmDialog {
+  padding-top: 0px;
+}
+.uploadBtn {
+  padding-top: 5%;
+  padding-left: 25%;
+}
+.name {
+  padding-left: 25%;
+}
+.imageSize {
+  margin-left: 4%;
+}
+
 </style> 

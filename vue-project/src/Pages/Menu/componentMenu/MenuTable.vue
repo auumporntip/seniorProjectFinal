@@ -29,8 +29,7 @@
           @click="changeCategoryMenu"
         >{{option.categoryName}}</b-dropdown-item>
       </b-dropdown>
-    </v-layout>
-&nbsp;&nbsp;&nbsp;&nbsp;
+    </v-layout>&nbsp;&nbsp;&nbsp;&nbsp;
     <b-table
       :data="items"
       :selected.sync="selectedMenu"
@@ -48,10 +47,15 @@
       <template slot-scope="props">
         <b-table-column label="Image" width="80">
           <div class="img-resize" v-if="props.row.menuPathImage!=null">
-            <img :src="props.row.menuPathImage" />
+            <v-img :src="props.row.menuPathImage" aspect-ratio="1.5"></v-img>
+            <!-- <img :src="props.row.menuPathImage" /> -->
           </div>
           <div class="img-resize" v-else>
-            <img src="../../../assets/1.png" />
+            <v-img
+              :src="require('../../../assets/1.png')"
+              aspect-ratio="1.5"
+            ></v-img>
+            <!-- <img src="../../../assets/1.png" /> -->
           </div>
         </b-table-column>
 

@@ -9,9 +9,12 @@
         </template>
 
         <v-card>
+          <v-card-title>
+            <span class="headline">Category</span>
+            <v-icon style="padding-left:78%;" @click="categoryBtn=false">close</v-icon>
+          </v-card-title>
           <b-table
             :data="category"
-            :columns="columns"
             :checked-rows.sync="checkedRows"
             :is-row-checkable="(row) => row.id !== 3"
             checkable
@@ -23,7 +26,16 @@
             aria-previous-label="Previous page"
             aria-page-label="Page"
             aria-current-label="Current page"
+            id="tableStyle"
           >
+            <template slot-scope="props">
+              <b-table-column label="Id" width="100">{{ props.row.categoryId }}</b-table-column>
+              <b-table-column label="Category name" width="200">{{ props.row.categoryName }}</b-table-column>
+              <b-table-column label="Edit" width="100">
+                <!-- edit category -->
+                <v-icon @click="editDialog2(props.row)">edit</v-icon>
+              </b-table-column>
+            </template>
             <template slot="bottom-left">
               <b>&nbsp;&nbsp;Total checked</b>
               : {{ checkedRows.length }}
@@ -32,9 +44,9 @@
           <v-btn color="black" @click="AddDialog=true" flat>
             <v-icon left dark>add</v-icon>Add Category
           </v-btn>
-          <v-btn color="black" @click="editDialog=true" flat>
+          <!-- <v-btn color="black" @click="editDialog=true" flat>
             <v-icon left dark>edit</v-icon>Edit Category
-          </v-btn>
+          </v-btn>-->
           <v-btn color="black" @click="comfirmDelete()" flat>
             <v-icon left dark>delete</v-icon>Delete Category
           </v-btn>
@@ -78,7 +90,7 @@
           <v-card>
             <v-card-text class="headline">
               Edit Category
-              <v-form v-for="cat in checkedRows" :key="cat.categoryId" ref="form">
+              <v-form ref="form1">
                 <v-container>
                   <v-text-field label="CategoryId" disabled v-model="cat.categoryId"></v-text-field>
                   <v-text-field label="CategoryName" v-model="cat.categoryName" :rules="editRules"></v-text-field>
@@ -87,7 +99,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="closeEdit()">CANCEL</v-btn>
+              <v-btn color="red darken-1" flat @click="closeEdit">CANCEL</v-btn>
               <v-btn color="blue darken-1" flat @click="editSave">SAVE</v-btn>
             </v-card-actions>
           </v-card>
@@ -102,7 +114,11 @@
           <v-row justify="center">
             <v-dialog v-model="delDataDialog" max-width="290">
               <v-card>
-                <v-card-text>Are you sure you want to delete?</v-card-text>
+                <v-card-title class="title" style="margin-bottom:0px">DELETE CONFIRMATION</v-card-title>
+                <v-card-text class="confirmDialog">
+                  <v-icon color="red">warning</v-icon>you sure you want to delete this employee?
+                  You can't undo this action
+                </v-card-text>
                 <v-card-actions>
                   <div class="flex-grow-1"></div>
                   <v-btn color="blue darken-1" flat @click="closeDelete()">CANCEL</v-btn>
@@ -193,7 +209,7 @@ export default {
       ],
       editRules: [
         v => !!v || "Name is required",
-        // v => this.checkedRows.categoryName || "Name has already"
+        v => this.editCheckName || "Name has already"
       ],
       restaurantId: 1,
 
@@ -201,25 +217,14 @@ export default {
       editDataDialog: false,
       editDialog: false,
       category: [],
+      cat: [],
       checkboxPosition: "left",
       checkedRows: [],
       isPaginated: true,
       isPaginationSimple: false,
       currentPage: 1,
       perPage: 5,
-      columns: [
-        {
-          field: "categoryId",
-          label: "categoryId",
-          width: "20",
-          height: "40",
-          numeric: true
-        },
-        {
-          field: "categoryName",
-          label: "categoryName"
-        }
-      ],
+      editName:"",
 
       //delete
       delDataDialog: false
@@ -248,17 +253,23 @@ export default {
         this.categoryBtn = true;
       }
     },
+    editDialog2(editCategory) {
+      this.cat = editCategory;
+      this.editDialog = true;
+      this.editName = editCategory.categoryName;
+    },
     editSave() {
       console.log(this.checkedRows);
-     if (this.$refs.form.validate()) {
-      for (let index = 0; index < this.checkedRows.length; index++) {
-      
+      if (this.$refs.form1.validate()) {
         axios
-          .put(
-            "http://localhost:3000/api/updatecategory",
-            this.checkedRows[index]
-          )
+          .put("http://localhost:3000/api/updatecategory", {
+            categoryId: this.cat.categoryId,
+            categoryName: this.cat.categoryName
+          })
           .then(() => {
+            this.$refs.form1.resetValidation();
+            this.editDialog = false;
+            this.categoryBtn = true;
             this.reCat();
             axios
               .get("http://localhost:3000/api/getallmenu/" + 1)
@@ -267,11 +278,6 @@ export default {
               });
           });
       }
-      
-      this.checkedRows = [];
-      this.editDialog = false;
-      this.categoryBtn = true;
-     }
     },
 
     onConfirm() {
@@ -299,6 +305,7 @@ export default {
       }
     },
     closeEdit() {
+      this.reCat();
       this.editDialog = false;
       this.categoryBtn = true;
     },
@@ -361,6 +368,26 @@ export default {
       }
 
       return true;
+    },
+    editCheckName() {
+      if (
+        this.cat.categoryName.toLowerCase() === this.editName.toLowerCase()
+      ) {
+        return true;
+      } else {
+        for (let index = 0; index < this.category.length; index++) {
+          if (this.cat.categoryId === this.category[index].categoryId) {
+            continue;
+          }
+          if (
+            this.cat.categoryName.toLowerCase() ===
+            this.category[index].categoryName.toLowerCase()
+          ) {
+            return false;
+          }
+        }
+        return true;
+      }
     }
   },
   created: function() {
@@ -388,6 +415,12 @@ div.error--text {
 #addBtn {
   margin-top: -6%;
   margin-left: -85%;
+}
+#tableStyle {
+  margin: 2%;
+}
+.confirmDialog {
+  padding-top: 0px;
 }
 </style>
 
