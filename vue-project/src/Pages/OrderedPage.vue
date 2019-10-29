@@ -77,6 +77,7 @@
                     <v-radio-group v-model="radioGroup">
                       <v-radio v-if="checkStatus(1)" label="Preparing" value="1"></v-radio>
                       <v-radio v-if="checkStatus(2)" label="Cooking" value="2"></v-radio>
+                      <v-radio v-if="checkStatus(3)" label="Serving" value="3"></v-radio>
                       <v-radio label="Cancel" value="5"></v-radio>
                     </v-radio-group>
                   </v-card-text>

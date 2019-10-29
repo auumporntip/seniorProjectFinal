@@ -14,6 +14,11 @@ router.get('/getothernotification', async(req,res)=>{
     res.send(await notification.getOtherNotification())
 })
 
+
+router.get('/getnotificationbybillid/:billId', async(req,res)=>{
+    res.send(await notification.getNotificationByBillId(req.params.billId))
+})
+
 router.put('/changeStatusNotification/:notificationId', async (req, res) => {
     res.send(await notification.changeStatusNotification(req.params.notificationId))
 })

@@ -11,7 +11,9 @@ exports.insertTransaction = async (transaction) => {
         totalPrice:transaction.totalPrice,
         amount: transaction.amount,
         statusName:transaction.statusName,
-        billId:transaction.billId
+        categoryName:transaction.categoryName,
+        billId:transaction.billId,
+        restaurantId:transaction.restaurantId
     })
 }
 exports.updateTransaction = async (transaction) => {

@@ -13,23 +13,6 @@
             single-line
             hide-details
           ></v-text-field>
-          <v-layout row wrap align-center>
-            <v-subheader class="text" fixed>Status</v-subheader>
-            <b-dropdown id="button" fixed>
-              <v-btn flat slot="trigger">
-                {{nameOfStatus}}
-                <v-icon>keyboard_arrow_down</v-icon>
-              </v-btn>
-
-              <b-dropdown-item @click="allStatus">All Status</b-dropdown-item>
-              <b-dropdown-item
-                v-for="option in statusData"
-                :value="option"
-                :key="option.statusId"
-                @click="changeStatus(option.statusName)"
-              >{{option.statusName}}</b-dropdown-item>
-            </b-dropdown>
-          </v-layout>
         </v-card-title>
 
         <b-table
@@ -56,7 +39,7 @@
                 small
                 outline
                 color="indigo"
-                @click="changeStatusOrder(props.row.orderId,props.row.statusId)"
+                @click="changeStatusOrder(props.row,props.row.statusId)"
               >
                 <v-icon>repeat</v-icon>Change Status
               </v-btn>
@@ -82,24 +65,7 @@ export default {
   },
   data() {
     return {
-      //ordered by menu
-      data: [
-        {
-          detailOrders: []
-        }
-      ],
-      columnsVisible: {
-        menuName: { title: "Menu Name", display: true },
-        amount: { title: "Amount", display: true },
-        statusName: { title: "Status", display: true }
-      },
-      showDetailIcon: true,
-
-      panel: [false, true, true],
-
-      nameOfStatus: "All Status",
       statusData: [],
-      activeTab: 0,
 
       keyword: "",
       restaurantId: 1,
@@ -110,31 +76,37 @@ export default {
       perPage: 10,
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
-      checkboxPosition: "left",
-      checkedRows: [],
+
       selectOrderId: "",
       selectedStatusId: ""
     };
   },
   methods: {
-    //search
-    allStatus() {
-      this.keyword = "";
-    },
-    changeStatus(statusName) {
-      this.nameOfStatus = statusName;
-      this.keyword = statusName;
-    },
-
     //change status in order
-    changeStatusOrder(orderId, statusId) {
-      axios
-        .put("http://localhost:3000/api/changestatus/" + orderId + "/" + 4)
-        .then(response => {
-          this.getOrderData();
-          this.dialog = false;
+    changeStatusOrder(order, statusId) {
+      console.log(order);
 
-          Swal.fire("Finish", "Serve menu on table", "success");
+      axios
+        .put(
+          "http://localhost:3000/api/changestatus/" + order.orderId + "/" + 4
+        )
+        .then(response => {
+          axios
+            .post("http://localhost:3000/api/inserttransaction", {
+              menuName: order.menuName,
+              transPrice: order.menuPrice,
+              totalPrice: order.menuPrice * order.amount,
+              amount: order.amount,
+              statusName: "finish",
+              categoryName: order.categoryName,
+              billId: order.billId,
+              restaurantId: this.restaurantId
+            })
+            .then(response => {
+              this.getOrderData();
+              this.dialog = false;
+              Swal.fire("Finish", "Serve menu on table", "success");
+            });
         });
     },
     toggle(row) {
@@ -158,6 +130,7 @@ export default {
     }
   },
   computed: {
+    //search
     items() {
       if (this.keyword != "") {
         return this.ordered.filter(

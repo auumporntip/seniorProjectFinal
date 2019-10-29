@@ -75,10 +75,11 @@ exports.getOrderedByStatusServing = async (restaurantId) => {
         ,'ordered.amount','ordered.menuId','ordered.statusId'
         ,'ordered.billId','bill.totalPrice','bill.tableNumber','bill.numOfCust'
         ,'bill.eatTimeStart','bill.eatTimeEnd','menu.menuName','menu.menuPrice','menu.menuPathImage'
-        ,'status.statusName')
+        ,'status.statusName','categoryName')
         .from('ordered')
         .leftJoin('bill', 'bill.billId', '=', 'ordered.billId')
         .leftJoin('menu', 'menu.menuId', '=', 'ordered.menuId')
+        .leftJoin('category', 'category.categoryId', '=', 'menu.categoryId')
         .leftJoin('status', 'status.statusId', '=', 'ordered.statusId')
         .where('menu.restaurantId', '=', restaurantId)
         .andWhere('ordered.statusId','=','3')
