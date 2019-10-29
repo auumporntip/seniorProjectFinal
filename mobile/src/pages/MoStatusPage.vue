@@ -2,7 +2,7 @@
   <v-content>
     <Bar></Bar>
     <div class="wrapper">
-
+      <!--menu-->
       <v-card color="primary" class="elevation-1">
         <v-layout row>
           <v-flex xs6>
@@ -26,12 +26,42 @@
             <v-card-text class="text">{{order.menuName}}</v-card-text>
           </v-flex>
           <v-flex xs4>
-            <div v-if="orders.statusId==3">
-            <v-card-text class="textRed">{{order.statusName}}</v-card-text>
+            <div v-if="orders.statusId===5">
+              <v-card-text class="textRed">{{order.statusName}}</v-card-text>
             </div>
             <div v-else>
-               <v-card-text class="text">{{order.statusName}}</v-card-text>
+              <v-card-text class="text">{{order.statusName}}</v-card-text>
             </div>
+          </v-flex>
+        </v-layout>
+      </v-card>
+
+      <!--noti-->
+      <v-card color="primary" class="elevation-1">
+        <v-layout row>
+          <v-flex xs6>
+            <v-card-text class="textHead">Call Employee</v-card-text>
+          </v-flex>
+          <v-flex xs4>
+            <v-card-text class="textHead">Status</v-card-text>
+          </v-flex>
+        </v-layout>
+      </v-card>
+
+      <v-card
+        color="primary"
+        class="elevation-1"
+        outline
+        v-for="notification in noti"
+        :key="notification.notiId"
+      >
+        <v-layout row>
+          <v-flex xs6>
+            <v-card-text class="text">{{notification.notiMessage}}</v-card-text>
+          </v-flex>
+          <v-flex xs4>
+              <v-card-text v-if="notification.status===0" class="text">Waiting</v-card-text>
+              <v-card-text v-if="notification.status===1" class="text">Finish</v-card-text>
           </v-flex>
         </v-layout>
       </v-card>
@@ -59,10 +89,19 @@ export default {
       currentPage: 1,
       perPage: 5,
       orders: [],
+      noti: [],
       columns: [
         {
           field: "menuName",
           label: "Menu"
+        },
+        {
+          field: "statusName",
+          label: "Status"
+        },
+        {
+          field: "notiMessage",
+          label: "Message"
         },
         {
           field: "statusName",
@@ -80,6 +119,14 @@ export default {
       )
       .then(response => {
         this.orders = response.data;
+      });
+    axios
+      .get(
+        "http://localhost:3000/api/getnotificationbybillid/" +
+          sessionStorage.getItem("billId")
+      )
+      .then(response => {
+        this.noti = response.data;
       });
   }
 };
