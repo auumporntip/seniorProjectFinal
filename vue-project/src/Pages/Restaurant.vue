@@ -54,6 +54,7 @@ import Header from "@/components/Header";
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
+import { host } from "./data"
 export default {
   name: "Restaurant",
   components: {

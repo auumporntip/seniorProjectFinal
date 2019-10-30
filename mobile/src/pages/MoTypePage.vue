@@ -41,6 +41,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import {host} from './data'
 
 export default {
   name: "MoTypePage",
@@ -73,7 +74,7 @@ export default {
       const totalPrice = 0;
       if (this.$refs.form.validate()) {
         axios
-          .post("http://localhost:3000/api/insertbill", {
+          .post(host+"insertbill", {
             totalPrice: this.newCust.numOfCust * this.selectService.typePrice,
             eatTimeEnd: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
             eatTimeStart: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
@@ -91,7 +92,7 @@ export default {
               typeOfService: this.selectService
             };
             axios
-              .post("http://localhost:3000/api/signjwt", token)
+              .post(host+"signjwt", token)
               .then(response => {
                 sessionStorage.setItem("token", response.data);
                 console.log(
@@ -108,7 +109,7 @@ export default {
   created() {
     axios
       .post(
-        "http://localhost:3000/api/checkTable/" + this.$route.params.tableNumber
+        host+"checkTable/" + this.$route.params.tableNumber
       )
       .then(response => {
         if (response.data.tableAvailable === false) {
@@ -118,7 +119,7 @@ export default {
 
     this.$store.commit("setNamePages", "TypeOfService");
     axios
-      .get("http://localhost:3000/api/gettypeofservice/" + 1)
+      .get(host+"gettypeofservice/" + 1)
       .then(response => {
         this.typeOfService = response.data;
       });

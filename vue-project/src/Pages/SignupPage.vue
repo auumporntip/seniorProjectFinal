@@ -69,6 +69,7 @@
 <script>
 import Header from "@/components/Header";
 import axios from "axios";
+import { host } from "./data"
 
 export default {
   name: "SignupPage",

@@ -17,6 +17,7 @@
 <script >
 import { store } from "../store/store";
 import axios from "axios";
+import {host} from './data'
 
 export default {
   name: "MoLandingPage",
@@ -29,7 +30,7 @@ export default {
   methods: {
     next() {
       axios
-        .post("http://localhost:3000/api/verifybill/" + this.billId)
+        .post(host+"verifybill/" + this.billId)
         .then(response => {
           if (response.data.login === true) {
             sessionStorage.setItem("token", response.data.token);

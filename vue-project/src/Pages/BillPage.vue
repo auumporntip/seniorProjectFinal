@@ -102,9 +102,6 @@
                           <v-text-field label="BillId" v-model="bill.billId" disabled></v-text-field>
                           <v-text-field label="TableNumber" v-model="bill.tableNumber"></v-text-field>
                           <v-text-field label="NumOfCust" v-model="bill.numOfCust"></v-text-field>
-                          <!-- <v-text-field label="TotalPrice" v-model="bill.totalPrice"></v-text-field>
-                          <v-text-field label="EatTimeStart" v-model="bill.eatTimeStart"></v-text-field>
-                          <v-text-field label="EatTimeEnd" v-model="bill.eatTimeEnd"></v-text-field>-->
                           <v-text-field label="TypeId" v-model="bill.typeId"></v-text-field>
                         </v-container>
                       </v-form>
@@ -137,6 +134,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
+import { host } from "./data"
 
 export default {
   name: "BillPage",
@@ -192,15 +190,6 @@ export default {
           field: "totalPrice",
           label: "Total Price"
         },
-        // {
-        //   field: "eatTimeStart",
-        //   label: "Time Start"
-        // },
-        // {
-        //   field: "eatTimeEnd",
-        //   label: "Time End",
-        //   centered: true
-        // },
         {
           field: "typeName",
           label: "Course"
@@ -213,7 +202,7 @@ export default {
       if (this.$refs.form.validate()) {
         console.log(this.bill);
         axios
-          .post("http://localhost:3000/api/insertBill", {
+          .post(host+"insertBill", {
             billId: this.bill.billId,
             tableNumber: this.bill.tableNumber,
             numOfCust: this.bill.numOfCust,
@@ -238,7 +227,7 @@ export default {
     editSave() {
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .put("http://localhost:3000/api/updateBill/", this.checkedRows[index])
+          .put(host+"updateBill/", this.checkedRows[index])
           .then(() => {
             this.reBill();
           });
@@ -258,7 +247,7 @@ export default {
             for (let index = 0; index < this.checkedRows.length; index++) {
               axios
                 .delete(
-                  "http://localhost:3000/api/deleteBill/" +
+                  host+"deleteBill/" +
                     this.checkedRows[index].billId
                 )
                 .then(() => {
@@ -279,7 +268,7 @@ export default {
     },
     reBill() {
       axios
-        .get("http://localhost:3000/api/getallbillbyrestaurantId/" + 1)
+        .get(host+"getallbillbyrestaurantId/" + 1)
         .then(response => {
           this.billData = response.data;
         });

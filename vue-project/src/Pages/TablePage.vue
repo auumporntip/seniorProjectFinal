@@ -119,6 +119,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import QrcodeVue from "qrcode.vue";
+import { host } from "./data"
 
 export default {
   name: "Table",
@@ -175,7 +176,7 @@ export default {
         console.log(this.newTable);
         console.log(this.value);
         axios
-          .post("http://localhost:3000/api/inserttable", {
+          .post(host+"inserttable", {
             tableNumber: this.newTable.tableNumber
           })
           .then(response => {
@@ -187,7 +188,7 @@ export default {
       }
     },
     cancelEditTable() {
-      axios.get("http://localhost:3000/api/getalltable").then(response => {
+      axios.get(host+"getalltable").then(response => {
         this.tableData = response.data;
         this.editTableDialog = false;
       });
@@ -196,7 +197,7 @@ export default {
       console.log(11);
 
       axios
-        .put("http://localhost:3000/api/updatetable/", {
+        .put(host+"updatetable/", {
           tableId: this.editTable.tableId,
           tableNumber: this.editTable.tableNumber
         })
@@ -207,13 +208,13 @@ export default {
         });
     },
     refreshPage() {
-      axios.get("http://localhost:3000/api/getalltable").then(response => {
+      axios.get(host+"getalltable").then(response => {
         this.tableData = response.data;
       });
     },
     clickYesDeleteDialog() {
       axios
-        .delete("http://localhost:3000/api/deletetable/" + this.tableId)
+        .delete(host+"deletetable/" + this.tableId)
         .then(() => {
           this.deleteDialog = false;
           this.refreshPage();
@@ -221,7 +222,7 @@ export default {
     }
   },
   created() {
-    axios.get("http://localhost:3000/api/getalltable").then(response => {
+    axios.get(host+"getalltable").then(response => {
       this.tableData = response.data;
     });
   }

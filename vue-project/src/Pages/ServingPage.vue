@@ -57,6 +57,7 @@ import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import { host } from "./data"
 
 export default {
   name: "ServingPage",
@@ -88,11 +89,11 @@ export default {
 
       axios
         .put(
-          "http://localhost:3000/api/changestatus/" + order.orderId + "/" + 4
+          host+"changestatus/" + order.orderId + "/" + 4
         )
         .then(response => {
           axios
-            .post("http://localhost:3000/api/inserttransaction", {
+            .post(host+"inserttransaction", {
               menuName: order.menuName,
               transPrice: order.menuPrice,
               totalPrice: order.menuPrice * order.amount,
@@ -116,7 +117,7 @@ export default {
     getOrderData() {
       axios
         .get(
-          "http://localhost:3000/api/getOrderedByStatusServing/" +
+          host+"getOrderedByStatusServing/" +
             this.restaurantId
         )
         .then(response => {
@@ -146,7 +147,7 @@ export default {
   },
   created: function() {
     this.getOrderData();
-    axios.get("http://localhost:3000/api/getallstatus").then(response => {
+    axios.get(host+"getallstatus").then(response => {
       this.statusData = response.data;
     });
   }

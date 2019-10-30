@@ -15,6 +15,7 @@
 <script>
 import sidebar from "@/components/sidebar";
 import axios from "axios";
+import { host } from "./data"
 export default {
   name: "MenuPage",
   components: {

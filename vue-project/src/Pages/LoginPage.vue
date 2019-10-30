@@ -36,6 +36,7 @@ import { store } from "../store/store";
 import md5 from "md5";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import { host } from "./data"
 
 export default {
   name: "LoginPage",
@@ -58,7 +59,7 @@ export default {
   methods: {
     login() {
       axios
-        .post("http://localhost:3000/api/login", {
+        .post(host+"login", {
           username: this.username,
           password: this.password
         })

@@ -145,7 +145,7 @@
                 </template>
 
                 <template slot="detail" slot-scope="props">
-                  <tr v-for="(order, index) in props.row.detailOrders" :key="order.menuName">
+                  <tr v-for="(order) in props.row.detailOrders" :key="order.menuName">
                     <td v-if="showDetailIcon"></td>
                     <td
                       v-show="columnsVisible['menuName'].display"
@@ -174,6 +174,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
+import { host } from "./data"
 
 export default {
   name: "OrderedPage",
@@ -242,7 +243,7 @@ export default {
     saveChangeStatus() {
       axios
         .put(
-          "http://localhost:3000/api/changestatus/" +
+          host+"changestatus/" +
             this.selectOrderId +
             "/" +
             this.radioGroup
@@ -259,7 +260,7 @@ export default {
     //   for (let index = 0; index < this.checkedRows.length; index++) {
     //     promiseArr.push(
     //       axios.put(
-    //         "http://localhost:3000/api/changestatus/" +
+    //         host+"changestatus/" +
     //           this.checkedRows[index].orderId +
     //           "/" +
     //           this.radioGroup
@@ -270,7 +271,7 @@ export default {
 
     //   for (let index = 0; index < this.checkedRows.length; index++) {
     //     if (this.radioGroup === "3") {
-    //       axios.post("http://localhost:3000/api/inserttransaction", {
+    //       axios.post(host+"inserttransaction", {
     //         menuName: this.checkedRows[index].menuName,
     //         transPrice: this.checkedRows[index].menuPrice,
     //         totalPrice:
@@ -285,7 +286,7 @@ export default {
 
     //   axios
     //     .get(
-    //       "http://localhost:3000/api/getorderbyrestaurantid/" +
+    //       host+"getorderbyrestaurantid/" +
     //         this.restaurantId
     //     )
     //     .then(response => {
@@ -301,7 +302,7 @@ export default {
     getOrderData() {
       axios
         .get(
-          "http://localhost:3000/api/getOrderedByStatusPrepareAndCooking/" +
+          host+"getOrderedByStatusPrepareAndCooking/" +
             this.restaurantId
         )
         .then(response => {
@@ -330,7 +331,7 @@ export default {
   },
   created: function() {
     this.getOrderData();
-    axios.get("http://localhost:3000/api/getallstatus").then(response => {
+    axios.get(host+"getallstatus").then(response => {
       this.statusData = response.data;
     });
   }

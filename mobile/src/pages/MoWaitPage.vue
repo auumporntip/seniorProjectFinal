@@ -27,6 +27,7 @@ import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
+import {host} from './data'
 
 export default {
   name: "MoWaitPage",

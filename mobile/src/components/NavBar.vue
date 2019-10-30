@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import {host} from '../pages/data'
+
 export default {
   name: "NavBar",
   components: {}

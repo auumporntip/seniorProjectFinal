@@ -51,6 +51,7 @@
 
 <script>
 import sidebar from "@/components/sidebar";
+import { host } from "./data"
 export default {
   name: "StaticPage",
   components: {

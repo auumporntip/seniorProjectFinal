@@ -79,6 +79,7 @@ import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import {host} from './data'
 export default {
   name: "MoStatusPage",
   components: {
@@ -120,7 +121,7 @@ export default {
     this.token = jwt.decode(sessionStorage.getItem('token'))
     axios
       .get(
-        "http://localhost:3000/api/getorderbybillid/" +
+        host+"getorderbybillid/" +
           this.token.billId
       )
       .then(response => {
@@ -128,7 +129,7 @@ export default {
       });
     axios
       .get(
-        "http://localhost:3000/api/getnotificationbybillid/" +
+        host+"getnotificationbybillid/" +
           this.token.billId
       )
       .then(response => {

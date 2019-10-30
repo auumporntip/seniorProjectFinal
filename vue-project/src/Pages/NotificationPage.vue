@@ -65,6 +65,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { host } from "./data"
 
 export default {
   name: "NotificationPage",
@@ -99,7 +100,7 @@ export default {
     },
     changeStatus(notiId) {
       axios
-        .put("http://localhost:3000/api/changeStatusNotification/" + notiId)
+        .put(host+"changeStatusNotification/" + notiId)
         .then(() => {
           this.getCheckBillNotification();
           this.getOtherNotification();
@@ -107,14 +108,14 @@ export default {
     },
     getCheckBillNotification() {
       axios
-        .get("http://localhost:3000/api/getcheckbillnotification")
+        .get(host+"getcheckbillnotification")
         .then(response => {
           this.checkbillData = response.data;
         });
     },
     getOtherNotification() {
       axios
-        .get("http://localhost:3000/api/getothernotification")
+        .get(host+"getothernotification")
         .then(response => {
           this.otherData = response.data;
         });

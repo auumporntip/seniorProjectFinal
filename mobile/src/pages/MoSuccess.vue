@@ -16,6 +16,7 @@ import Bar from "../components/Bar";
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
+import {host} from './data'
 
 export default {
   name: "MoSuccess",

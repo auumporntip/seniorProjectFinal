@@ -4,7 +4,11 @@
     </div>
 </template>
 <script>
+import {host} from './data'
 export default {
   name: "PageNotFound",
+  created() {
+    console.log(host,'ts');
+  },
 }
 </script>

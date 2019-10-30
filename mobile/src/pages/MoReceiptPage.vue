@@ -107,6 +107,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import {host} from './data'
 
 export default {
   name: "MoReceiptPage",
@@ -144,7 +145,7 @@ export default {
   methods: {
     okDialog() {
       axios
-        .post("http://localhost:3000/api/insertnotification", {
+        .post(host+"insertnotification", {
           notiMessage: "check bill",
           restaurantId: 1,
           billId: this.token.billId
@@ -165,14 +166,14 @@ export default {
     this.token = jwt.decode(sessionStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
     axios
-      .get("http://localhost:3000/api/getorderbybillid/" + this.token.billId)
+      .get(host+"getorderbybillid/" + this.token.billId)
       .then(response => {
         this.orders = response.data;
         console.log(this.orders);
       });
 
     axios
-      .get("http://localhost:3000/api/getbillbybillid/" + this.token.billId)
+      .get(host+"getbillbybillid/" + this.token.billId)
       .then(response => {
         this.bill = response.data;
 

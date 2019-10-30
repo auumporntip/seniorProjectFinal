@@ -53,6 +53,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import {host} from './data'
 
 export default {
   name: "MoCallEmp",
@@ -101,7 +102,7 @@ export default {
     },
     confirmDialog() {
       axios
-        .post("http://localhost:3000/api/insertnotification", {
+        .post(host+"insertnotification", {
           notiMessage: this.message,
           restaurantId: 1,
           billId: this.billId

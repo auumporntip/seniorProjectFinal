@@ -274,6 +274,8 @@
 <script>
 import sidebar from "@/components/sidebar";
 import axios from "axios";
+import { host } from "./data"
+
 export default {
   name: "TypeOfServicePage",
   components: {
@@ -387,12 +389,12 @@ export default {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
           axios
-            .post("http://localhost:3000/api/uploadFB", formData)
+            .post(host+"uploadFB", formData)
             .then(response => {
               this.pathImage = response.data.url;
               console.log(response.data.url);
               axios
-                .post("http://localhost:3000/api/inserttypeOfService", {
+                .post(host+"inserttypeOfService", {
                   typeName: this.newType.typeName,
                   typeTime: this.hour + "." + this.minute,
                   typePrice: this.newType.typePrice,
@@ -423,7 +425,7 @@ export default {
               1
           );
           axios
-            .post("http://localhost:3000/api/inserttypeOfService", {
+            .post(host+"inserttypeOfService", {
               typeName: this.newType.typeName,
               typeTime: this.hour + "." + this.minute,
               typePrice: this.newType.typePrice,
@@ -455,7 +457,7 @@ export default {
     editTypeCancel() {
       console.log(this.checkedRows.length);
       axios
-        .get("http://localhost:3000/api/getalltypeofservice")
+        .get(host+"getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
           this.selectedMenu = {};
@@ -478,7 +480,7 @@ export default {
         if (this.image == null) {
           axios
             .put(
-              "http://localhost:3000/api/updatetypeofservice/",
+              host+"updatetypeofservice/",
               this.typeOfServiceForDialog
             )
             .then(() => {
@@ -488,7 +490,7 @@ export default {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
           axios
-            .post("http://localhost:3000/api/uploadFB", formData)
+            .post(host+"uploadFB", formData)
             .then(response => {
               this.typeOfServiceForDialog.typePathImage = response.data.url;
 
@@ -496,7 +498,7 @@ export default {
               console.log(this.typeOfServiceForDialog);
               axios
                 .put(
-                  "http://localhost:3000/api/updatetypeofservice/",
+                  host+"updatetypeofservice/",
                   this.typeOfServiceForDialog
                 )
                 .then(() => {
@@ -510,12 +512,12 @@ export default {
       this.menuDialog = true;
       axios
         .get(
-          "http://localhost:3000/api/getmenubytypeofserviceid/" +
+          host+"getmenubytypeofserviceid/" +
             this.typeOfServiceForDialog.typeId
         )
         .then(response => {
           this.checkBoxData = response.data;
-          axios.get("http://localhost:3000/api/getallMenu").then(response => {
+          axios.get(host+"getallMenu").then(response => {
             this.menuData = response.data;
             for (let index = 0; index < this.checkBoxData.length; index++) {
               var i = this.menuData.findIndex(
@@ -535,7 +537,7 @@ export default {
       for (let index = 0; index < this.checkBoxData.length; index++) {
         promiseArr.push(
           axios.delete(
-            "http://localhost:3000/api/deletemenuservice/" +
+            host+"deletemenuservice/" +
               this.checkBoxData[index].menuServiceId
           )
         );
@@ -543,7 +545,7 @@ export default {
       await Promise.all(promiseArr);
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .post("http://localhost:3000/api/insertMenuService/", {
+          .post(host+"insertMenuService/", {
             typeId: this.typeOfServiceForDialog.typeId,
             menuId: this.checkedRows[index].menuId
           })
@@ -554,7 +556,7 @@ export default {
     },
     refreshPage() {
       axios
-        .get("http://localhost:3000/api/getalltypeofservice")
+        .get(host+"getalltypeofservice")
         .then(response => {
           this.typeData = response.data;
         });
@@ -587,7 +589,7 @@ export default {
     },
     clickYesDeleteDialog() {
       axios
-        .delete("http://localhost:3000/api/deletetypeOfService/" + this.typeId)
+        .delete(host+"deletetypeOfService/" + this.typeId)
         .then(() => {
           this.deleteDialog = false;
           this.refreshPage();
@@ -632,7 +634,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:3000/api/getalltypeofservice")
+      .get(host+"getalltypeofservice")
       .then(response => {
         this.typeData = response.data;
       });

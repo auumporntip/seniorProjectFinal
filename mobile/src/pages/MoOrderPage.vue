@@ -48,6 +48,7 @@ import { store } from "../store/store";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import {host} from './data'
 
 export default {
   name: "MoOrderPage",
@@ -66,7 +67,7 @@ export default {
     confirm() {
       for (let index = 0; index < this.orders.length; index++) {
         axios
-          .post("http://localhost:3000/api/insertordered", {
+          .post(host+"insertordered", {
             pricePerPiece: this.orders[index].menuPrice,
             amount: this.orders[index].amount,
             menuId: this.orders[index].menuId,

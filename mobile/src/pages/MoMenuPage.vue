@@ -52,6 +52,7 @@ import axios from "axios";
 import { store } from "../store/store";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import {host} from './data'
 
 export default {
   name: "MoMenuPage",
@@ -121,7 +122,7 @@ export default {
       if (this.typeOfService.typePrice != null) {
         axios
           .get(
-            "http://localhost:3000/api/getmenubytypeofserviceid/" +
+            host+"getmenubytypeofserviceid/" +
               this.typeOfService.typeId
           )
           .then(response => {
@@ -132,7 +133,7 @@ export default {
           });
       } else {
         axios
-          .get("http://localhost:3000/api/getallmenu/" + 1)
+          .get(host+"getallmenu/" + 1)
           .then(response => {
             this.foodMenu = response.data;
             this.foodMenu.forEach(element => {
@@ -141,7 +142,7 @@ export default {
           });
       }
     }
-    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+    axios.get(host+"getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }
