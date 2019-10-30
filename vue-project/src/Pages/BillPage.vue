@@ -5,7 +5,7 @@
       <section class="bg">
         <b-tabs>
           <v-card-title class="headline font-weight-medium">BILL</v-card-title>
-          <span id="button">
+          <span>
             <b-table
               :data="billData"
               :columns="columns"

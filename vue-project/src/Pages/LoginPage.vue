@@ -3,7 +3,7 @@
     <v-card class="box">
       <v-flex xs6 class="positionLogin">
       <v-img
-        :src="require('../assets/login.jpg')"
+        :src="require('../assets/1.png')"
         aspect-ratio="1"
         max-width="240"
       ></v-img>

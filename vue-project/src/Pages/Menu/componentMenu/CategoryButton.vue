@@ -317,39 +317,6 @@ export default {
       this.dialog = false;
       this.categoryBtn = true;
     },
-
-    // catDelete() {
-    //   console.log(this.checkedRows);
-    //   if (this.checkedRows != "") {
-    //     this.$dialog.confirm({
-    //       title: "Privacy Politics",
-    //       message: "Are you sure you want to delete?",
-    //       cancelText: "Disagree",
-    //       confirmText: "Agree",
-    //       type: "is-success",
-    //       onConfirm: () => {
-    //         for (let index = 0; index < this.checkedRows.length; index++) {
-    //           axios
-    //             .delete(
-    //               "http://localhost:3000/api/deletecategory/" +
-    //                 this.checkedRows[index].categoryId
-    //             )
-    //             .then(() => {
-    //               this.reCat();
-    //             });
-    //         }
-
-    //         this.$toast.open("delete success");
-    //       }
-    //     });
-    //   } else {
-    //     this.$dialog.alert({
-    //       title: "Error",
-    //       message: "Please selected some menu row",
-    //       type: "is-warning"
-    //     });
-    //   }
-    // },
     reCat() {
       axios.get("http://localhost:3000/api/getallcategory").then(response => {
         this.category = response.data;

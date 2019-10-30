@@ -4,7 +4,6 @@
     <div id="bigbox">
       <section class="bg">
         <v-card-title class="headline font-weight-medium">Table</v-card-title>
-        <!-- <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue> -->
         <v-layout justify-space-around>
           <v-container fluid>
             <v-layout wrap>
@@ -23,12 +22,6 @@
                         New table
                         <v-form ref="form">
                           <v-container>
-                            <!-- <qrcode-vue
-                                  :value="value"
-                                  :size="size"
-                                  level="H"
-                                  class="sizeQrcode"
-                            ></qrcode-vue>-->
                             <v-flex xs12>
                               <v-text-field
                                 label="Table number"
@@ -54,7 +47,7 @@
               <v-flex xs3 v-for="table in tableData" :key="table.tableId">
                 <v-card class="card">
                   <v-img aspect-ratio="1.5">
-                    <qrcode-vue :value="value" :size="size" level="L" class="sizeQrcode"></qrcode-vue>
+                    <qrcode-vue :value="host+table.tableNumber" :size="size" class="sizeQrcode"></qrcode-vue>
                   </v-img>
                   <v-btn
                     class="subheading font-weight-medium"
@@ -72,7 +65,6 @@
                     <v-form>
                       <v-container>
                         <v-layout row>
-                          <qrcode-vue :value="value " :size="size" level="H" class="sizeQrcode"></qrcode-vue>
                           <v-flex xs6 order-md3 order-xs3>
                             <v-text-field
                               label="Table number"
@@ -96,8 +88,7 @@
                 <v-card>
                   <v-card-title class="title">DELETE CONFIRMATION</v-card-title>
                   <v-card-text class="confirmDialog">
-                    <v-icon color="red">warning</v-icon>
-                    you sure you want to delete this type of service?
+                    <v-icon color="red">warning</v-icon>you sure you want to delete this type of service?
                     You can't undo this action
                   </v-card-text>
                   <v-card-actions>
@@ -119,7 +110,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import QrcodeVue from "qrcode.vue";
-import { host } from "./data"
+import { host } from "./data";
 
 export default {
   name: "Table",
@@ -129,12 +120,12 @@ export default {
   },
   data() {
     return {
+      t:'',
       deleteDialog: false,
       tableId: "",
-
-      value: "http://restaurant-management.netlify.com/",
+      host: "localhost",
+      value: "",
       size: 100,
-
       tableData: [],
       editTable: [],
       //new table form
@@ -142,19 +133,43 @@ export default {
       newTable: [],
       tableNumber: [
         v => !!v || "Table number is required",
-        v => !isNaN(this.newTable.tableNumber) || "Please enter a valid number."
+        v =>
+          this.checkName(this.newTable.tableNumber) ||
+          "Please input not same table."
       ],
 
       //edit table form
       editTableDialog: false,
       editTableNumber: [
         v => !!v || "Table number is required",
-        v =>
-          !isNaN(this.editTable.tableNumber) || "Please enter a valid number."
+        v => this.editCheckName() || "Please enter a valid number."
       ]
     };
   },
   methods: {
+    editCheckName() {
+      for (let index = 0; index < this.tableData.length; index++) {
+        if (this.editTable.tableNumber===this.t) {
+          return true;
+        } else if (
+          tableNumber.toLowerCase() ===
+          this.tableData[index].tableNumber.toLowerCase()
+        ) {
+          return false;
+        }
+      }
+    },
+    checkName(tableNumber) {
+      for (let index = 0; index < this.tableData.length; index++) {
+        if (
+          tableNumber.toLowerCase() ===
+          this.tableData[index].tableNumber.toLowerCase()
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
     deleteButton(tableId) {
       console.log(tableId);
 
@@ -162,7 +177,9 @@ export default {
       this.deleteDialog = true;
     },
     editDialog(table) {
+      this.t = table.tableNumber
       this.editTable = table;
+      this.value = this.host + table.tableNumber;
       this.editTableDialog = true;
     },
     cancelNewTable() {
@@ -176,7 +193,7 @@ export default {
         console.log(this.newTable);
         console.log(this.value);
         axios
-          .post(host+"inserttable", {
+          .post(host + "inserttable", {
             tableNumber: this.newTable.tableNumber
           })
           .then(response => {
@@ -188,16 +205,14 @@ export default {
       }
     },
     cancelEditTable() {
-      axios.get(host+"getalltable").then(response => {
+      axios.get(host + "getalltable").then(response => {
         this.tableData = response.data;
         this.editTableDialog = false;
       });
     },
     saveEditTable() {
-      console.log(11);
-
       axios
-        .put(host+"updatetable/", {
+        .put(host + "updatetable/", {
           tableId: this.editTable.tableId,
           tableNumber: this.editTable.tableNumber
         })
@@ -208,21 +223,19 @@ export default {
         });
     },
     refreshPage() {
-      axios.get(host+"getalltable").then(response => {
+      axios.get(host + "getalltable").then(response => {
         this.tableData = response.data;
       });
     },
     clickYesDeleteDialog() {
-      axios
-        .delete(host+"deletetable/" + this.tableId)
-        .then(() => {
-          this.deleteDialog = false;
-          this.refreshPage();
-        });
+      axios.delete(host + "deletetable/" + this.tableId).then(() => {
+        this.deleteDialog = false;
+        this.refreshPage();
+      });
     }
   },
   created() {
-    axios.get(host+"getalltable").then(response => {
+    axios.get(host + "getalltable").then(response => {
       this.tableData = response.data;
     });
   }
