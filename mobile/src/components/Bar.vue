@@ -27,6 +27,7 @@ import dayjs from "dayjs";
 import moment from "moment";
 import momentT from "moment-timezone";
 import Swal from 'sweetalert2'
+import jwt from "jsonwebtoken";
 
 export default {
   name: "Bar",
@@ -91,34 +92,14 @@ export default {
             confirmButtonColor: "#cd9575",
             confirmButtonText: "Close"
         });
-        // this.$dialog.alert({
-        //   title: "Warning",
-        //   message: "Time end in 15 minute",
-        //   type: "is-warning"
-        // });
-         
-        // <v-card>
-        //  <v-card-title>
-        //   <span class="headline">Warning</span>
-        // </v-card-title>
-        //   <v-card-text>Time end in 15 minute</v-card-text>
-        // <v-card-actions>
-        //   <v-spacer></v-spacer>
-        //   <v-btn color="green darken-1" text >close</v-btn>
-        // </v-card-actions>
-        //       </v-card>
-
-        // <v-alert border="right" colored-border type="error" elevation="2">
-        // Warning !!!! 
-        // Time end in 15 minute
-        // </v-alert>
       }
     }
   },
   created() {
-    this.billId = sessionStorage.getItem("billId");
-    this.tableNumber = sessionStorage.getItem("tableNumber");
-    this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
+    var token = jwt.decode(sessionStorage.getItem('token'))
+    this.billId = token.billId
+    this.tableNumber = token.tableNumber
+    this.typeOfService = token.typeOfService
     
     if (
       this.$store.getters.namePages != "TypeOfService" &&
@@ -133,7 +114,7 @@ export default {
       axios
         .get(
           "http://localhost:3000/api/getbillbybillid/" +
-            sessionStorage.getItem("billId")
+            this.billId
         )
         .then(response => {
           this.bill = response.data;

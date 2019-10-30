@@ -12,10 +12,10 @@
         <v-layout>
           <v-flex xs6 class="box">
             <div v-if="menu.menuPathImage!=null">
-               <v-img :src="menu.menuPathImage" aspect-ratio="1.8"></v-img>
+              <v-img :src="menu.menuPathImage" aspect-ratio="1.8"></v-img>
             </div>
             <div v-else>
-               <v-img :src="require('../assets/1.png')" aspect-ratio="1.8"></v-img>
+              <v-img :src="require('../assets/1.png')" aspect-ratio="1.8"></v-img>
             </div>
           </v-flex>
           <v-flex xs6 class="spaceText">
@@ -50,6 +50,8 @@ import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import axios from "axios";
 import { store } from "../store/store";
+import jwt from "jsonwebtoken";
+import Swal from "sweetalert2";
 
 export default {
   name: "MoMenuPage",
@@ -64,7 +66,8 @@ export default {
       tab: 0,
       foodMenu: [],
       category: null,
-      order: []
+      order: [],
+      token: ""
     };
   },
   methods: {
@@ -105,8 +108,12 @@ export default {
     }
   },
   created() {
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/MoLanding");
+    }
     this.$store.commit("setNamePages", "Menu");
-    this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
+    this.token = jwt.decode(sessionStorage.getItem("token"));
+    this.typeOfService = this.token.typeOfService;
 
     if (JSON.parse(sessionStorage.getItem("foodMenu")) != null) {
       this.foodMenu = JSON.parse(sessionStorage.getItem("foodMenu"));

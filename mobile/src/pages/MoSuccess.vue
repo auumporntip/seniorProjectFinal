@@ -25,8 +25,15 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    done(){
+      close();
+    }
+  },
   created() {
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/MoLanding");
+    }
     this.$store.commit("setNamePages", "Success");
   }
 };

@@ -30,16 +30,16 @@ export default {
                   1
                 // this.$store.getters.restaurantId
               )
-              .then(
+              .then(() => {
+                this.$toast.open("delete success");
                 axios
                   .get("http://localhost:3000/api/getallmenu/" + 1)
                   .then(response => {
                     this.$store.commit("setMenu", response.data);
                     this.$store.commit("setCheckCategory", false);
                     this.$store.commit("setSelectedMenu", null);
-                    this.$toast.open("delete success");
-                  })
-              );
+                  });
+              });
           }
         });
       } else {

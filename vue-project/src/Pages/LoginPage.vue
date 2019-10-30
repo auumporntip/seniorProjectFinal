@@ -69,7 +69,7 @@ export default {
           localStorage.setItem("token", this.account.token);
           this.$store.commit("setAccount", accountdecode);
           if (this.account.login === true) {
-            Swal.fire("Login Success", "", "success");
+            // Swal.fire("Login Success", "", "success");
             if (accountdecode.positionId === 3) {
               this.$router.push("/Menu");
             } else if (accountdecode.positionId === 2) {
@@ -83,7 +83,6 @@ export default {
               this.$router.push("/ordered");
             }
           } else {
-            
             Swal.fire("Oooops!", "Login Fail", "error");
           }
         });
@@ -110,8 +109,6 @@ export default {
       ) {
         this.$router.push("/ordered");
       } else {
-        console.log("fail");
-
         this.$router.push("/");
       }
     } catch (error) {

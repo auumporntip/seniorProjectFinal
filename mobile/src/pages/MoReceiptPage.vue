@@ -3,11 +3,11 @@
     <Bar></Bar>
     <div class="wrapper">
       <v-layout class="space">
-        <v-flex xs4>
-          <p class="subheading">Bill : {{bill[0].billId}}</p>
-          <p class="subheading">Table : {{bill[0].tableNumber}}</p>
+        <v-flex xs5>
+          <p class="subheading">Bill : {{token.billId}}</p>
+          <p class="subheading">Table : {{token.tableNumber}}</p>
         </v-flex>
-        <v-flex xs8>
+        <v-flex xs7>
           <p class="subheading">Date : {{date}}</p>
           <p class="subheading">Time Start : {{time}}</p>
         </v-flex>
@@ -105,6 +105,8 @@ import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
+import jwt from "jsonwebtoken";
+import Swal from "sweetalert2";
 
 export default {
   name: "MoReceiptPage",
@@ -115,6 +117,8 @@ export default {
   data() {
     return {
       bill: "",
+      token: "",
+      orders:'',
       dialog: false,
       typeOfService: [],
       tableNumber: "",
@@ -143,7 +147,7 @@ export default {
         .post("http://localhost:3000/api/insertnotification", {
           notiMessage: "check bill",
           restaurantId: 1,
-          billId: sessionStorage.getItem("billId")
+          billId: this.token.billId
         })
         .then(response => {
           this.dialog = false;
@@ -154,22 +158,21 @@ export default {
     }
   },
   created() {
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/MoLanding");
+    }
     this.$store.commit("setNamePages", "Receipt");
-    this.typeOfService = JSON.parse(sessionStorage.getItem("typeOfService"));
+    this.token = jwt.decode(sessionStorage.getItem("token"));
+    this.typeOfService = this.token.typeOfService;
     axios
-      .get(
-        "http://localhost:3000/api/getorderbybillid/" +
-          sessionStorage.getItem("billId")
-      )
+      .get("http://localhost:3000/api/getorderbybillid/" + this.token.billId)
       .then(response => {
         this.orders = response.data;
         console.log(this.orders);
       });
 
-    var id = sessionStorage.getItem("billId");
-
     axios
-      .get("http://localhost:3000/api/getbillbybillid/" + id)
+      .get("http://localhost:3000/api/getbillbybillid/" + this.token.billId)
       .then(response => {
         this.bill = response.data;
 

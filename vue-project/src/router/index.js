@@ -6,6 +6,7 @@ import App from '@/App'
 // import MenuPage from '@/Pages/MenuPage'
 import LoginPage from '@/Pages/LoginPage'
 import NotificationPage from '@/Pages/NotificationPage'
+import PageNotFound from '@/Pages/PageNotFound'
 import StaticPage from '@/Pages/StaticPage'
 import OrderedPage from '@/Pages/OrderedPage'
 import ServingPage from '@/Pages/ServingPage'
@@ -181,7 +182,11 @@ export default new Router({
       path: '/Serving',
       name: 'ServingPage',
       component: ServingPage
-    },
+    },{
+      path:'*',
+      name: 'PageNotFound',
+      component: PageNotFound
+    }
     
 
   ]

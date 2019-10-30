@@ -14,6 +14,11 @@ exports.getBillByRestaurantId = async (restaurantId) => {
 exports.getBillByBillId = async (billId) => {
     return await knex('bill').where('billId', '=', billId)
 }
+exports.getBillForCheckTableNumber = async (tableNumber) => {
+    return await knex('bill')
+    .join('typeofservice','typeofservice.typeId','=','bill.typeId')
+    .where('tableNumber', '=', tableNumber).andWhere('billStatus','=','0')
+}
 
 exports.updateBill = async (bill) => {
     await knex('bill').where('billId', '=', bill.billId)

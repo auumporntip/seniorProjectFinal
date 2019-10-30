@@ -11,7 +11,13 @@ import axios from "axios";
 export default {
   name: "App",
   created() {
-    if (this.$store.getters.account === "" || this.$store.getters.account === undefined) {
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    }
+    if (
+      this.$store.getters.account === "" ||
+      this.$store.getters.account === undefined
+    ) {
       if (localStorage.getItem("token") != null) {
         axios
           .post("http://localhost:3000/api/verify", {
@@ -20,7 +26,7 @@ export default {
           .then(response => {
             var isSuccess = response.data.isSuccess;
             // console.log(isSuccess);
-            
+
             if (isSuccess === false) {
               this.$router.push("/");
             }

@@ -78,6 +78,7 @@ import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 export default {
   name: "MoStatusPage",
   components: {
@@ -90,6 +91,7 @@ export default {
       perPage: 5,
       orders: [],
       noti: [],
+      token:'',
       columns: [
         {
           field: "menuName",
@@ -111,11 +113,15 @@ export default {
     };
   },
   created() {
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/MoLanding");
+    }
     this.$store.commit("setNamePages", "Status");
+    this.token = jwt.decode(sessionStorage.getItem('token'))
     axios
       .get(
         "http://localhost:3000/api/getorderbybillid/" +
-          sessionStorage.getItem("billId")
+          this.token.billId
       )
       .then(response => {
         this.orders = response.data;
@@ -123,7 +129,7 @@ export default {
     axios
       .get(
         "http://localhost:3000/api/getnotificationbybillid/" +
-          sessionStorage.getItem("billId")
+          this.token.billId
       )
       .then(response => {
         this.noti = response.data;

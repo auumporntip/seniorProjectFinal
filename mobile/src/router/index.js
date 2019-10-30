@@ -10,6 +10,7 @@ import MoSuccess from '@/pages/MoSuccess'
 import MoCallEmp from '@/pages/MoCallEmp'
 import MoWaitPage from '@/pages/MoWaitPage'
 import MoLandingPage from '@/pages/MoLandingPage'
+import PageNotFound from '@/pages/PageNotFound'
 Vue.use(Router)
 
 export default new Router({
@@ -25,7 +26,7 @@ export default new Router({
       name: 'MoMenuPage',
       component: MoMenuPage
     }, {
-      path: '/MoType',
+      path: '/MoType/:tableNumber',
       name: 'MoTypePage',
       component: MoTypePage
     }, {
@@ -56,6 +57,10 @@ export default new Router({
       path: '/MoLanding',
       name: 'MoLandingPage',
       component: MoLandingPage
+    },{
+      path:'*',
+      name: 'PageNotFound',
+      component: PageNotFound
     }
   ]
 })

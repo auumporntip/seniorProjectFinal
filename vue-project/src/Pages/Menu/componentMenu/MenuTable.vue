@@ -184,11 +184,13 @@ export default {
       return true;
     }
   },
-  created: function() {
+  created() {
     axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
       this.$store.commit("setMenu", response.data);
       this.selectedMenu = response.data[0];
+      
       this.$store.commit("setSelectedMenu", response.data[0]);
+      
     });
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;

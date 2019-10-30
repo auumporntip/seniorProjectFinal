@@ -46,6 +46,8 @@ import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
+import jwt from "jsonwebtoken";
+import Swal from "sweetalert2";
 
 export default {
   name: "MoOrderPage",
@@ -57,6 +59,7 @@ export default {
     return {
       orders: null,
       sum: 0,
+      token:'',
     };
   },
   methods: {
@@ -68,7 +71,7 @@ export default {
             amount: this.orders[index].amount,
             menuId: this.orders[index].menuId,
             statusId: 1,
-            billId: sessionStorage.getItem("billId")
+            billId: this.token.billId
           })
           .then(response => {
             console.log(response.data);
@@ -87,7 +90,11 @@ export default {
     }
   },
   created() {
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/MoLanding");
+    }
     this.$store.commit("setNamePages", "Order");
+    this.token = jwt.decode(sessionStorage.getItem('token'))
     this.orders = JSON.parse(sessionStorage.getItem("orders"));
   }
 };

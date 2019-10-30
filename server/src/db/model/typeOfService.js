@@ -3,6 +3,9 @@ const knex = require('../knex')
 exports.getAllTypeOfService=async() => {
     return await knex('typeofservice')
 }
+exports.getAllTypeOfServiceByTypeId=async(typeId) => {
+    return await knex('typeofservice').where('typeId','=',typeId)
+}
 
 exports.getTypeOfServiceByRestaurantId=async(restaurantId) => {
     return await knex('typeofservice').where('restaurantId','=',restaurantId)

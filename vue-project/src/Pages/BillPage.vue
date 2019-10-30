@@ -6,30 +6,29 @@
         <b-tabs>
           <v-card-title class="headline font-weight-medium">BILL</v-card-title>
           <span id="button">
-
             <b-table
-            :data="billData"
-            :columns="columns"
-            :paginated="isPaginated"
-            :per-page="perPage"
-            :checked-rows.sync="checkedRows"
-            :is-row-checkable="(row) => row.id !== 3"
-            checkable
-            :checkbox-position="checkboxPosition"
-            aria-next-label="Next page"
-            aria-previous-label="Previous page"
-            aria-page-label="Page"
-            aria-current-label="Current page"
-          >
-            <template slot="bottom-left">
-              <b>Total checked</b>
-              : {{ checkedRows.length }}
-            </template>
-          </b-table>
+              :data="billData"
+              :columns="columns"
+              :paginated="isPaginated"
+              :per-page="perPage"
+              :checked-rows.sync="checkedRows"
+              :is-row-checkable="(row) => row.id !== 3"
+              checkable
+              :checkbox-position="checkboxPosition"
+              aria-next-label="Next page"
+              aria-previous-label="Previous page"
+              aria-page-label="Page"
+              aria-current-label="Current page"
+            >
+              <template slot="bottom-left">
+                <b>Total checked</b>
+                : {{ checkedRows.length }}
+              </template>
+            </b-table>
             <!--Add-->
             <v-layout row>
               <v-flex xs2>
-                <v-btn color="black" outline dark v-on="on" @click="addDialog=true">
+                <v-btn color="black" outline dark @click="addDialog=true">
                   <v-icon left dark>add</v-icon>Add Bill
                 </v-btn>
                 <v-dialog v-model="addDialog" max-width="490">
@@ -91,7 +90,7 @@
               <!--edit-->
 
               <v-flex xs2>
-                <v-btn color="black" outline dark v-on="on" @click="editDialog=true">
+                <v-btn color="black" outline dark @click="editDialog=true">
                   <v-icon left dark>edit</v-icon>Edit Bill
                 </v-btn>
                 <v-dialog max-width="490" v-model="editDialog">
@@ -105,7 +104,7 @@
                           <v-text-field label="NumOfCust" v-model="bill.numOfCust"></v-text-field>
                           <!-- <v-text-field label="TotalPrice" v-model="bill.totalPrice"></v-text-field>
                           <v-text-field label="EatTimeStart" v-model="bill.eatTimeStart"></v-text-field>
-                          <v-text-field label="EatTimeEnd" v-model="bill.eatTimeEnd"></v-text-field> -->
+                          <v-text-field label="EatTimeEnd" v-model="bill.eatTimeEnd"></v-text-field>-->
                           <v-text-field label="TypeId" v-model="bill.typeId"></v-text-field>
                         </v-container>
                       </v-form>
@@ -122,13 +121,12 @@
               <!--Delete-->
 
               <v-flex xs2>
-                <v-btn color="black" outline dark v-on="on" @click="clickDelete">
+                <v-btn color="black" outline dark  @click="clickDelete">
                   <v-icon left dark>delete</v-icon>Delete Bill
                 </v-btn>
               </v-flex>
             </v-layout>
           </span>
-          
         </b-tabs>
       </section>
     </div>
@@ -280,9 +278,11 @@ export default {
       }
     },
     reBill() {
-      axios.get("http://localhost:3000/api/getallbillbyrestaurantId/"+1).then(response => {
-        this.billData = response.data;
-      });
+      axios
+        .get("http://localhost:3000/api/getallbillbyrestaurantId/" + 1)
+        .then(response => {
+          this.billData = response.data;
+        });
     }
   },
   created() {

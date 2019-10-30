@@ -37,11 +37,6 @@ export default {
   data() {
     return {};
   },
-  created() {
-    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
-      this.category = response.data;
-    });
-  }
 };
 </script>
 

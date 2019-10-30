@@ -12,7 +12,7 @@
       </v-layout>
       <v-card class="mx-auto" max-width="344" outlined>
         <v-card-text>
-          <v-radio-group v-model="radios" :disabled="disabled" :mandatory="false">
+          <v-radio-group v-model="radios" :disabled="false" :mandatory="false">
             <v-layout align-center>
               <v-radio
                 label="Call Employee to your table"
@@ -51,6 +51,8 @@ import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
+import jwt from "jsonwebtoken";
+import Swal from "sweetalert2";
 
 export default {
   name: "MoCallEmp",
@@ -61,6 +63,7 @@ export default {
   data() {
     return {
       dialog: false,
+      token: "",
       billId: "",
       tableNo: "",
       includeFiles: true,
@@ -80,28 +83,32 @@ export default {
           this.message = this.others;
           this.dialog = true;
         } else {
-          this.$dialog.alert({
-            title: "Error",
-            message: "Please input message for send to employee",
-            type: "is-warning"
+          Swal.fire({
+            title: "",
+            text: "Please input message for send to employee",
+            type: "warning",
+            confirmButtonColor: "#cd9575"
           });
         }
       } else {
-        this.$dialog.alert({
-          title: "Error",
-          message: "Please input message for send to employee",
-          type: "is-warning"
-        });
+        Swal.fire({
+            title: "",
+            text: "Please select problem",
+            type: "warning",
+            confirmButtonColor: "#cd9575"
+          });
       }
     },
     confirmDialog() {
-      axios.post("http://localhost:3000/api/insertnotification", {
-        notiMessage: this.message,
-        restaurantId: 1,
-        billId: this.billId
-      }).then(response=>{
-        this.$router.push('Momenu')
-      })
+      axios
+        .post("http://localhost:3000/api/insertnotification", {
+          notiMessage: this.message,
+          restaurantId: 1,
+          billId: this.billId
+        })
+        .then(response => {
+          this.$router.push("Momenu");
+        });
     },
     closeDialog() {
       this.dialog = false;
@@ -111,9 +118,10 @@ export default {
     }
   },
   created() {
-    this.billId = sessionStorage.getItem("billId");
-    this.tableNo = sessionStorage.getItem("tableNumber");
     this.$store.commit("setNamePages", "CallEmployee");
+    this.token = jwt.decode(sessionStorage.getItem("token"));
+    this.billId = this.token.billId;
+    this.tableNo = this.token.tableNumber;
   }
 };
 </script>
