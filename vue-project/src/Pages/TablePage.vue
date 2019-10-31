@@ -62,7 +62,7 @@
                 <v-card>
                   <v-card-text class="title">
                     Table
-                    <v-form>
+                    <v-form ref="form1">
                       <v-container>
                         <v-layout row>
                           <v-flex xs6 order-md3 order-xs3>
@@ -120,7 +120,7 @@ export default {
   },
   data() {
     return {
-      t:'',
+      t: "",
       deleteDialog: false,
       tableId: "",
       host: "localhost",
@@ -135,28 +135,45 @@ export default {
         v => !!v || "Table number is required",
         v =>
           this.checkName(this.newTable.tableNumber) ||
-          "Please input not same table."
+          "This table number has already"
       ],
 
       //edit table form
       editTableDialog: false,
       editTableNumber: [
         v => !!v || "Table number is required",
-        v => this.editCheckName() || "Please enter a valid number."
+        v => this.editCheckName() || "This table number has already"
       ]
     };
   },
   methods: {
     editCheckName() {
-      for (let index = 0; index < this.tableData.length; index++) {
-        if (this.editTable.tableNumber===this.t) {
-          return true;
-        } else if (
-          tableNumber.toLowerCase() ===
-          this.tableData[index].tableNumber.toLowerCase()
-        ) {
-          return false;
+      // for (let index = 0; index < this.tableData.length; index++) {
+      //   if (this.editTable.tableNumber === this.t) {
+      //     return true;
+      //   } else if (
+      //     tableNumber.toLowerCase() ===
+      //     this.tableData[index].tableNumber.toLowerCase()
+      //   ) {
+      //     return false;
+      //   }
+      // }
+
+      if (this.editTable.tableNumber.toLowerCase() === this.t.toLowerCase()) {
+        return true;
+      } else {
+        for (let index = 0; index < this.tableData.length; index++) {
+          if (this.editTable.tableId === this.tableData[index].tableId) {
+            continue;
+          }
+          if (
+            this.editTable.tableNumber.toLowerCase() ===
+            this.tableData[index].tableNumber.toLowerCase()
+          ) {
+            return false;
+          }
         }
+        return true;
       }
     },
     checkName(tableNumber) {
@@ -177,7 +194,7 @@ export default {
       this.deleteDialog = true;
     },
     editDialog(table) {
-      this.t = table.tableNumber
+      this.t = table.tableNumber;
       this.editTable = table;
       this.value = this.host + table.tableNumber;
       this.editTableDialog = true;
@@ -208,19 +225,22 @@ export default {
       axios.get(host + "getalltable").then(response => {
         this.tableData = response.data;
         this.editTableDialog = false;
+        this.$refs.form1.resetValidation();
       });
     },
     saveEditTable() {
-      axios
-        .put(host + "updatetable/", {
-          tableId: this.editTable.tableId,
-          tableNumber: this.editTable.tableNumber
-        })
-        .then(() => {
-          console.log(123);
+      if (this.$refs.form1.validate()) {
+        axios
+          .put(host + "updatetable/", {
+            tableId: this.editTable.tableId,
+            tableNumber: this.editTable.tableNumber
+          })
+          .then(() => {
+            console.log(123);
 
-          this.cancelEditTable();
-        });
+            this.cancelEditTable();
+          });
+      }
     },
     refreshPage() {
       axios.get(host + "getalltable").then(response => {

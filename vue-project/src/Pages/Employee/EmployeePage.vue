@@ -405,7 +405,7 @@ export default {
 }
 #button {
   margin-left: 86%;
-  margin-top: -5%;
+  margin-top: 0%;
 }
 .text {
   margin-left: 75%;
