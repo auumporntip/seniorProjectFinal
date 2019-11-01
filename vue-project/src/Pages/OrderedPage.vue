@@ -45,10 +45,7 @@
               aria-current-label="Current page"
             >
               <template slot-scope="props">
-                <b-table-column
-                  label="Table No."
-                  width="100"
-                >{{props.row.tableNumber}}</b-table-column>
+                <b-table-column label="Table No." width="100">{{props.row.tableNumber}}</b-table-column>
                 <b-table-column label="Menu Name" width="250">{{ props.row.menuName }}</b-table-column>
                 <b-table-column
                   label="Amount"
@@ -92,10 +89,10 @@
           </b-tab-item>
 
           <!-- same menu -->
-          <b-tab-item label="Ordered by menu">
+          <b-tab-item label="Ordered same menu">
             <div>
               <b-table
-                :data="items"
+                :data="orderSameMenu"
                 :paginated="isPaginated"
                 :per-page="perPage"
                 ref="table"
@@ -130,6 +127,14 @@
                   >{{ props.row.amount }}</b-table-column>
 
                   <b-table-column
+                    field="time"
+                    :visible="columnsVisible['time'].display"
+                    :label="columnsVisible['time'].title"
+                    sortable
+                    centered
+                  >{{ props.row.time }}</b-table-column>
+
+                  <b-table-column
                     field="statusName"
                     :visible="columnsVisible['statusName'].display"
                     :label="columnsVisible['statusName'].title"
@@ -145,7 +150,28 @@
                 </template>
 
                 <template slot="detail" slot-scope="props">
-                  <tr v-for="(order) in props.row.detailOrders" :key="order.menuName">
+                  
+                  <td
+                    v-show="columnsVisible['menuName'].display"
+                    class="has-text-centered"
+                  >&nbsp;&nbsp;&nbsp;&nbsp;Menu Name</td>
+                  <td 
+                    v-show="columnsVisible['amount'].display"
+                    class="has-text-centered"
+                  >Amount</td>
+                  <td
+                    v-show="columnsVisible['time'].display"
+                    class="has-text-centered"
+                  >Time</td>
+                  <td
+                    v-show="columnsVisible['time'].display"
+                    class="has-text-centered"
+                  >TableNumber</td>
+                  <td
+                    v-show="columnsVisible['statusName'].display"
+                    class="has-text-centered"
+                  >StatusName</td>
+                  <tr v-for="(order) in props.row.items" :key="order.orderId">
                     <td v-if="showDetailIcon"></td>
                     <td
                       v-show="columnsVisible['menuName'].display"
@@ -154,6 +180,14 @@
                       v-show="columnsVisible['amount'].display"
                       class="has-text-centered"
                     >{{ order.amount }}</td>
+                    <td
+                      v-show="columnsVisible['time'].display"
+                      class="has-text-centered"
+                    >{{ order.time }}</td>
+                    <td
+                      v-show="columnsVisible['time'].display"
+                      class="has-text-centered"
+                    >{{ order.tableNumber }}</td>
                     <td
                       v-show="columnsVisible['statusName'].display"
                       class="has-text-centered"
@@ -174,7 +208,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
-import { host } from "./data"
+import { host } from "./data";
 
 export default {
   name: "OrderedPage",
@@ -183,6 +217,7 @@ export default {
   },
   data() {
     return {
+      orderSameMenu: [],
       //ordered by menu
       data: [
         {
@@ -192,7 +227,9 @@ export default {
       columnsVisible: {
         menuName: { title: "Menu Name", display: true },
         amount: { title: "Amount", display: true },
-        statusName: { title: "Status", display: true }
+        statusName: { title: "Status", display: true },
+
+        time: { title: "Time", display: true }
       },
       showDetailIcon: true,
 
@@ -243,68 +280,20 @@ export default {
     saveChangeStatus() {
       axios
         .put(
-          host+"changestatus/" +
-            this.selectOrderId +
-            "/" +
-            this.radioGroup
+          host + "changestatus/" + this.selectOrderId + "/" + this.radioGroup
         )
         .then(response => {
           this.getOrderData();
           this.dialog = false;
         });
     },
-    // method for change many order
-    // async clickSave() {
-    //   console.log(this.radioGroup);
-    //   const promiseArr = [];
-    //   for (let index = 0; index < this.checkedRows.length; index++) {
-    //     promiseArr.push(
-    //       axios.put(
-    //         host+"changestatus/" +
-    //           this.checkedRows[index].orderId +
-    //           "/" +
-    //           this.radioGroup
-    //       )
-    //     );
-    //   }
-    //   await Promise.all(promiseArr);
-
-    //   for (let index = 0; index < this.checkedRows.length; index++) {
-    //     if (this.radioGroup === "3") {
-    //       axios.post(host+"inserttransaction", {
-    //         menuName: this.checkedRows[index].menuName,
-    //         transPrice: this.checkedRows[index].menuPrice,
-    //         totalPrice:
-    //           this.checkedRows[index].amount *
-    //           this.checkedRows[index].menuPrice,
-    //         amount: this.checkedRows[index].amount,
-    //         statusName: "finsh",
-    //         billId: this.checkedRows[index].billId
-    //       });
-    //     }
-    //   }
-
-    //   axios
-    //     .get(
-    //       host+"getorderbyrestaurantid/" +
-    //         this.restaurantId
-    //     )
-    //     .then(response => {
-    //       this.ordered = response.data;
-    //     });
-    //   this.checkedRows = [];
-    //   this.dialog = false;
-    // },
     toggle(row) {
       this.$refs.table.toggleDetails(row);
     },
 
     getOrderData() {
       axios
-        .get(
-          host+"getOrderedByStatusPrepareAndCooking/" +
-            this.restaurantId
-        )
+        .get(host + "getOrderedByStatusPrepareAndCooking/" + this.restaurantId)
         .then(response => {
           this.ordered = response.data;
           for (let index = 0; index < this.ordered.length; index++) {
@@ -331,7 +320,22 @@ export default {
   },
   created: function() {
     this.getOrderData();
-    axios.get(host+"getallstatus").then(response => {
+    axios.get(host + "getordersameMenu/" + 1).then(response => {
+      this.orderSameMenu = response.data;
+      for (let index = 0; index < this.orderSameMenu.length; index++) {
+        this.orderSameMenu[index].time = dayjs(
+          this.orderSameMenu[index].time
+        ).format("HH:mm:ss");
+        for (let i = 0; i < this.orderSameMenu[index].items.length; i++) {
+          this.orderSameMenu[index].items[i].time = dayjs(
+            this.orderSameMenu[index].items[i].created_at
+          ).format("HH:mm:ss");
+        }
+      }
+
+      console.log(this.orderSameMenu);
+    });
+    axios.get(host + "getallstatus").then(response => {
       this.statusData = response.data;
     });
   }

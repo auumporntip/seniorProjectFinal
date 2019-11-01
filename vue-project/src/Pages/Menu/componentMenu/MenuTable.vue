@@ -153,7 +153,6 @@ export default {
     selected() {
       setTimeout(() => {
         this.$store.commit("setSelectedMenu", this.selectedMenu);
-        console.log(this.selectedMenu);
       }, 1);
     }
   },

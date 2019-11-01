@@ -144,7 +144,6 @@ export default {
       }
     },
     closeDialog() {
-      console.log(this.name);
       axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
         this.$store.commit("setMenu", response.data);
         this.$store.commit("setCheckCategory", false);
@@ -207,7 +206,6 @@ export default {
       .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)
       .then(response => {
         this.allMenu = response.data;
-        console.log(this.allMenu);
       });
   }
 };
