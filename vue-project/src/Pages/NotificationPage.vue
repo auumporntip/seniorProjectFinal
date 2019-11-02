@@ -4,10 +4,23 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium">NOTIFICATION</v-card-title>
-
-        <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle">
-          <b-tab-item label="Checkbill">
+        <v-card-title class="headline font-weight-medium">
+          NOTIFICATION
+          <v-text-field
+            class="search"
+            v-model="keyword"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
+          <!-- <b-tab-item label="Checkbill"> -->
+            <v-tabs v-model="activeTab" color="#f0a676" dark slider-color="#eb8440" class="tabStyle">
+             <v-tab ripple>Check Bill</v-tab>
+          <v-tab ripple>Others</v-tab>
+          <v-tab-item>
             <b-table
               :data="checkbillData"
               :paginated="isPaginated"
@@ -31,9 +44,11 @@
                 </b-table-column>
               </template>
             </b-table>
-          </b-tab-item>
+          </v-tab-item>
+          <!-- </b-tab-item> -->
           <!--other-->
-          <b-tab-item label="Others">
+          <!-- <b-tab-item label="Others"> -->
+            <v-tab-item>
             <b-table
               :data="otherData"
               :paginated="isPaginated"
@@ -54,8 +69,10 @@
                 </b-table-column>
               </template>
             </b-table>
-          </b-tab-item>
-        </b-tabs>
+            </v-tab-item>
+            </v-tabs>
+          <!-- </b-tab-item> -->
+        <!-- </b-tabs> -->
       </section>
     </div>
   </div>
@@ -65,7 +82,7 @@
 import sidebar from "@/components/sidebar";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { host } from "./data"
+import { host } from "./data";
 
 export default {
   name: "NotificationPage",
@@ -74,6 +91,9 @@ export default {
   },
   data() {
     return {
+      //search
+      keyword:"",
+
       nameOfStatus: "All Status",
       dialog: false,
       activeTab: 0,
@@ -92,33 +112,28 @@ export default {
   methods: {
     check(notiId) {
       this.changeStatus(notiId);
-      Swal.fire("Good job!", "Payment successful", "success");S
+      Swal.fire("Good job!", "Payment successful", "success");
+      S;
     },
     checkOther(notiId) {
       this.changeStatus(notiId);
       Swal.fire("Good job!", "", "success");
     },
     changeStatus(notiId) {
-      axios
-        .put(host+"changeStatusNotification/" + notiId)
-        .then(() => {
-          this.getCheckBillNotification();
-          this.getOtherNotification();
-        });
+      axios.put(host + "changeStatusNotification/" + notiId).then(() => {
+        this.getCheckBillNotification();
+        this.getOtherNotification();
+      });
     },
     getCheckBillNotification() {
-      axios
-        .get(host+"getcheckbillnotification")
-        .then(response => {
-          this.checkbillData = response.data;
-        });
+      axios.get(host + "getcheckbillnotification").then(response => {
+        this.checkbillData = response.data;
+      });
     },
     getOtherNotification() {
-      axios
-        .get(host+"getothernotification")
-        .then(response => {
-          this.otherData = response.data;
-        });
+      axios.get(host + "getothernotification").then(response => {
+        this.otherData = response.data;
+      });
     }
   },
   created() {
@@ -160,5 +175,15 @@ export default {
   padding-left: 60em;
   padding-top: 5%;
   margin: -7%;
+}
+.tabStyle {
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 15px;
+}
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: -1%;
 }
 </style>

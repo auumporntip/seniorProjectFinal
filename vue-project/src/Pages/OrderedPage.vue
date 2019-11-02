@@ -33,8 +33,12 @@
         </v-card-title>
 
         <!-- TIME -->
-        <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle">
-          <b-tab-item label="Ordered by time">
+        <v-tabs v-model="activeTab" color="#f0a676" dark slider-color="#eb8440" class="tabStyle">
+          <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
+          <v-tab ripple>Ordered by time</v-tab>
+          <v-tab ripple>Ordered by time</v-tab>
+
+          <v-tab-item>
             <b-table
               :data="items"
               :paginated="isPaginated"
@@ -80,16 +84,19 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" flat @click="dialog = false">Cancel</v-btn>
+                    <v-btn color="red darken-1" flat @click="cancelDialog">Cancel</v-btn>
                     <v-btn color="blue darken-1" flat @click="saveChangeStatus">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </div>
-          </b-tab-item>
+          </v-tab-item>
+          <!-- </b-tab-item> -->
 
           <!-- same menu -->
-          <b-tab-item label="Ordered same menu">
+          <!-- <b-tab-item label="Ordered same menu"> -->
+
+          <v-tab-item>
             <div>
               <b-table
                 :data="orderSameMenu"
@@ -99,10 +106,10 @@
                 detailed
                 hoverable
                 custom-detail-row
-                :default-sort="['name', 'asc']"
-                detail-key="name"
-                @details-open="(row, index) => $buefy.toast.open(`Expanded ${row.name}`)"
+                :default-sort="['time', 'asc']"
+                detail-key="time"
                 :show-detail-icon="showDetailIcon"
+                :opened-detailed="['time']"
               >
                 <template slot-scope="props">
                   <b-table-column
@@ -122,82 +129,57 @@
                     field="amount"
                     :visible="columnsVisible['amount'].display"
                     :label="columnsVisible['amount'].title"
+                    width="200"
                     sortable
-                    centered
                   >{{ props.row.amount }}</b-table-column>
 
                   <b-table-column
                     field="time"
                     :visible="columnsVisible['time'].display"
                     :label="columnsVisible['time'].title"
+                    width="200"
                     sortable
-                    centered
                   >{{ props.row.time }}</b-table-column>
 
                   <b-table-column
                     field="statusName"
                     :visible="columnsVisible['statusName'].display"
                     :label="columnsVisible['statusName'].title"
+                    width="200"
                     sortable
-                    centered
                   >{{ props.row.statusName }}</b-table-column>
 
                   <b-table-column>
-                    <v-btn small outline color="indigo" @click.stop="test">
+                    <v-btn small outline color="indigo">
                       <v-icon>repeat</v-icon>Change Status
                     </v-btn>
                   </b-table-column>
                 </template>
 
                 <template slot="detail" slot-scope="props">
-                  
-                  <td
-                    v-show="columnsVisible['menuName'].display"
-                    class="has-text-centered"
-                  >&nbsp;&nbsp;&nbsp;&nbsp;Menu Name</td>
-                  <td 
-                    v-show="columnsVisible['amount'].display"
-                    class="has-text-centered"
-                  >Amount</td>
-                  <td
-                    v-show="columnsVisible['time'].display"
-                    class="has-text-centered"
-                  >Time</td>
-                  <td
-                    v-show="columnsVisible['time'].display"
-                    class="has-text-centered"
-                  >TableNumber</td>
-                  <td
-                    v-show="columnsVisible['statusName'].display"
-                    class="has-text-centered"
-                  >StatusName</td>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="300" style="font-weight: 600;">Menu Name</td>
+                    <td width="200" style="font-weight: 600;">Amount</td>
+                    <td width="200" style="font-weight: 600;">Time</td>
+                    <td width="200" style="font-weight: 600;">TableNumber</td>
+                    <td width="200" style="font-weight: 600;">StatusName</td>
+                  </tr>
                   <tr v-for="(order) in props.row.items" :key="order.orderId">
                     <td v-if="showDetailIcon"></td>
-                    <td
-                      v-show="columnsVisible['menuName'].display"
-                    >&nbsp;&nbsp;&nbsp;&nbsp;{{ order.menuName }}</td>
-                    <td
-                      v-show="columnsVisible['amount'].display"
-                      class="has-text-centered"
-                    >{{ order.amount }}</td>
-                    <td
-                      v-show="columnsVisible['time'].display"
-                      class="has-text-centered"
-                    >{{ order.time }}</td>
-                    <td
-                      v-show="columnsVisible['time'].display"
-                      class="has-text-centered"
-                    >{{ order.tableNumber }}</td>
-                    <td
-                      v-show="columnsVisible['statusName'].display"
-                      class="has-text-centered"
-                    >{{ order.statusName }}</td>
+                    <td v-show="columnsVisible['menuName'].display">{{ order.menuName }}</td>
+                    <td v-show="columnsVisible['amount'].display">{{ order.amount }}</td>
+                    <td v-show="columnsVisible['time'].display">{{ order.time }}</td>
+                    <td v-show="columnsVisible['time'].display">{{ order.tableNumber }}</td>
+                    <td v-show="columnsVisible['statusName'].display">{{ order.statusName }}</td>
                   </tr>
                 </template>
               </b-table>
             </div>
-          </b-tab-item>
-        </b-tabs>
+          </v-tab-item>
+          <!-- </b-tab-item> -->
+          <!-- </b-tabs> -->
+        </v-tabs>
       </section>
     </div>
   </div>
@@ -228,7 +210,6 @@ export default {
         menuName: { title: "Menu Name", display: true },
         amount: { title: "Amount", display: true },
         statusName: { title: "Status", display: true },
-
         time: { title: "Time", display: true }
       },
       showDetailIcon: true,
@@ -302,6 +283,10 @@ export default {
             ).format("HH:mm:ss");
           }
         });
+    },
+    cancelDialog() {
+      this.dialog = false;
+      this.radioGroup = 1;
     }
   },
   computed: {
@@ -361,17 +346,22 @@ export default {
 }
 #button {
   padding-left: 5em;
-  padding-top: 5%;
+  padding-top: 3%;
   margin: -7%;
 }
 .search {
   margin-left: 57%;
   position: absolute;
-  margin-top: 0%;
+  margin-top: -1%;
 }
 .text {
   padding-left: 60em;
-  padding-top: 5%;
+  padding-top: 3%;
   margin: -7%;
+}
+.tabStyle {
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 15px;
 }
 </style>

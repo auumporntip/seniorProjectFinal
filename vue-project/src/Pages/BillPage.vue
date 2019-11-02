@@ -3,9 +3,16 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <b-tabs>
-          <v-card-title class="headline font-weight-medium">BILL</v-card-title>
-          <span>
+          <v-card-title class="headline font-weight-medium">BILL
+          <v-text-field
+            class="search"
+            v-model="keyword"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+          </v-card-title>
             <b-table
               :data="billData"
               :columns="columns"
@@ -19,6 +26,7 @@
               aria-previous-label="Previous page"
               aria-page-label="Page"
               aria-current-label="Current page"
+              style="padding-left:14px;padding-right:14px;"
             >
               <template slot="bottom-left">
                 <b>Total checked</b>
@@ -124,7 +132,6 @@
               </v-flex>
             </v-layout>
           </span>
-        </b-tabs>
       </section>
     </div>
   </div>
@@ -143,6 +150,9 @@ export default {
   },
   data() {
     return {
+      //search
+      keyword: "",
+
       billData: [],
       // Add
       addDialog: false,
@@ -305,5 +315,10 @@ export default {
 }
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
+}
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: 0%;
 }
 </style>

@@ -12,6 +12,14 @@
           <v-card-title>
             <span class="headline">Category</span>
             <v-icon style="padding-left:78%;" @click="categoryBtn=false">close</v-icon>
+            <v-text-field
+              class="search"
+              v-model="keyword"
+              append-icon="search"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
           </v-card-title>
           <b-table
             :data="category"
@@ -224,10 +232,13 @@ export default {
       isPaginationSimple: false,
       currentPage: 1,
       perPage: 5,
-      editName:"",
+      editName: "",
 
       //delete
-      delDataDialog: false
+      delDataDialog: false,
+
+      //search
+      keyword:"",
     };
   },
   methods: {
@@ -337,9 +348,7 @@ export default {
       return true;
     },
     editCheckName() {
-      if (
-        this.cat.categoryName.toLowerCase() === this.editName.toLowerCase()
-      ) {
+      if (this.cat.categoryName.toLowerCase() === this.editName.toLowerCase()) {
         return true;
       } else {
         for (let index = 0; index < this.category.length; index++) {
@@ -388,6 +397,11 @@ div.error--text {
 }
 .confirmDialog {
   padding-top: 0px;
+}
+.search {
+  margin-left: 53%;
+  position: absolute;
+  margin-top: -1%;
 }
 </style>
 

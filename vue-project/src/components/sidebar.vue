@@ -20,9 +20,7 @@
 
         <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'MenuPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Menu</v-list-tile-title>
             </v-list-tile-content>
@@ -31,9 +29,7 @@
 
         <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'TypeOfService'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Type of Service</v-list-tile-title>
             </v-list-tile-content>
@@ -42,9 +38,7 @@
 
         <div v-if="this.account.positionId !=2">
           <v-list-tile :to="{name: 'OrderedPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Ordered</v-list-tile-title>
             </v-list-tile-content>
@@ -52,9 +46,7 @@
         </div>
         <div v-if="this.account.positionId !=5">
           <v-list-tile :to="{name: 'ServingPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Serving</v-list-tile-title>
             </v-list-tile-content>
@@ -62,9 +54,7 @@
         </div>
         <div v-if="this.account.positionId!=5">
           <v-list-tile :to="{name: 'BillPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Bill</v-list-tile-title>
             </v-list-tile-content>
@@ -73,9 +63,7 @@
 
         <div v-if="this.account.positionId!=5">
           <v-list-tile :to="{name: 'NotificationPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>
                 Notification
@@ -91,9 +79,7 @@
 
         <div v-if="this.account.positionId!=5">
           <v-list-tile :to="{name: 'TablePage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Table</v-list-tile-title>
             </v-list-tile-content>
@@ -102,9 +88,7 @@
 
         <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'StaticPage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Statistics</v-list-tile-title>
             </v-list-tile-content>
@@ -113,14 +97,12 @@
 
         <div v-if="this.account.positionId===3 || this.account.positionId===1 ">
           <v-list-tile :to="{name: 'EmployeePage'}">
-            <v-list-tile-action>
-              <v-icon>folder_open</v-icon>
-            </v-list-tile-action>
+            <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Employee</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-        </div>     
+        </div>
 
         <div class="pa-2">
           <v-btn block color="grey darken-1" @click="logout">Logout</v-btn>
