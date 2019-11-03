@@ -13,12 +13,14 @@ import 'vuetify/dist/vuetify.min.css'
 import VueScrollProgress from 'vue-scroll-progress'
 import { store } from './store/store'
 import BootstrapVue from 'bootstrap-vue'
+import ModuleLibrary from '@coreui/vue';
 
 Vue.use(BootstrapVue)
 
 Vue.use(VueScrollProgress)
 Vue.use(Vuetify)
 Vue.use(responsive)
+Vue.use(ModuleLibrary);
 
 Vue.prototype.$http = axios
 
