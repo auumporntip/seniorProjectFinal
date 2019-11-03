@@ -36,8 +36,23 @@ export default {
             barPercentage: 0.5
           }],
           yAxes: [{
-            display: false
+            display: false,
+            ticks: {
+                display: false,
+                min: Math.min.apply(Math, datasets4[0].data) - 5,
+                max: Math.max.apply(Math, datasets4[0].data) + 5
+              }
           }]
+        },
+        elements: {
+          line: {
+            borderWidth: 1
+          },
+          point: {
+            radius: 4,
+            hitRadius: 10,
+            hoverRadius: 4
+          }
         }
       }
     )
