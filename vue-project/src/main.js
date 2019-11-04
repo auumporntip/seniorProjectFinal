@@ -14,6 +14,7 @@ import VueScrollProgress from 'vue-scroll-progress'
 import { store } from './store/store'
 import BootstrapVue from 'bootstrap-vue'
 import ModuleLibrary from '@coreui/vue';
+import VTooltip from 'v-tooltip'
 
 Vue.use(BootstrapVue)
 
@@ -21,6 +22,8 @@ Vue.use(VueScrollProgress)
 Vue.use(Vuetify)
 Vue.use(responsive)
 Vue.use(ModuleLibrary);
+Vue.use(VTooltip)
+Vue.directive('tooltip', VTooltip)
 
 Vue.prototype.$http = axios
 

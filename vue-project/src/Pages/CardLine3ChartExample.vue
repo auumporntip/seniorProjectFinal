@@ -32,8 +32,8 @@ export default {
       },
       {
         tooltips: {
-          enabled: false,
-          custom: CustomTooltips
+          enabled: true,
+          
         },
         maintainAspectRatio: false,
         legend: {
