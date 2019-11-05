@@ -48,8 +48,9 @@
                 </b-card-body>
                 <card-line2-chart-example
                   chartId="card-chart-02"
-                  style="height:70px;width:300%;"
-                  :height="70"
+                 style="height:70px;width:194px;display:block;"
+                  height="70"
+                  width="194"
                 />
               </b-card>
             </v-flex>
@@ -68,8 +69,9 @@
                 </b-card-body>
                 <card-line3-chart-example
                   chartId="card-chart-03"
-                  style="height:70px;width:300%;"
+                  style="height:70px;width:194px;display:block;"
                   height="70"
+                  width="194"
                 />
               </b-card>
             </v-flex>
@@ -87,9 +89,9 @@
                   <p style="color:white; padding-left:10%;">Members online4</p>
                 </b-card-body>
                 <card-bar-chart-example
-                  chartId="card-chart-04"
-                  style="height:70px;width:300%;"
+                  style="height:70px;width:194px;display:block;"
                   height="70"
+                  width="194"
                 />
               </b-card>
             </v-flex>

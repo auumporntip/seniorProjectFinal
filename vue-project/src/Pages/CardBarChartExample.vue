@@ -22,7 +22,7 @@ export default {
       {
         tooltips: {
           enabled: true,
-          
+          width: 700
         },
         maintainAspectRatio: false,
         legend: {
@@ -59,3 +59,25 @@ export default {
   }
 }
 </script>
+<style>
+.tooltip-inner {
+  max-width: 500px !important;
+}
+.chartjs-tooltip {
+  position: absolute;
+  z-index: 1021;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: all 0.25s ease;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  border-radius: 0.25rem;
+}
+</style>
