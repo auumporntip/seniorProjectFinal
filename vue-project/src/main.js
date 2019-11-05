@@ -17,6 +17,7 @@ import ModuleLibrary from '@coreui/vue';
 import VTooltip from 'v-tooltip'
 
 Vue.use(BootstrapVue)
+Vue.config.ignoredElements = ['b-field', 'b-upload', 'b-icon','v-row']
 
 Vue.use(VueScrollProgress)
 Vue.use(Vuetify)

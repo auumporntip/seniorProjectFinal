@@ -274,7 +274,7 @@
 <script>
 import sidebar from "@/components/sidebar";
 import axios from "axios";
-import { host } from "./data"
+import { host } from "./data";
 
 export default {
   name: "TypeOfServicePage",
@@ -292,7 +292,7 @@ export default {
 
       nameRules: [
         v => !!v || "Name is required",
-        v => this.checkName || "Name has already"
+        v => (v && this.checkName()) || 'Name has already'
       ],
       hourRules: [
         v => (!!v && this.minute >= 0 && this.hour >= 0) || "Time is required"
@@ -306,7 +306,7 @@ export default {
 
       editNameRules: [
         v => !!v || "Name is required",
-        v => this.editCheckName || "Name has already"
+        v => (v && this.editCheckName()) || "Name has already"
       ],
       editHourRules: [
         v =>
@@ -388,26 +388,24 @@ export default {
         if (this.imageForUpload != null) {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
-          axios
-            .post(host+"uploadFB", formData)
-            .then(response => {
-              this.pathImage = response.data.url;
-              console.log(response.data.url);
-              axios
-                .post(host+"inserttypeOfService", {
-                  typeName: this.newType.typeName,
-                  typeTime: this.hour + "." + this.minute,
-                  typePrice: this.newType.typePrice,
-                  typePathImage: this.pathImage,
-                  service: this.row,
-                  restaurantId: 1
-                })
-                .then(response => {
-                  this.newTypeCancel();
-                  this.refreshPage();
-                  this.$refs.form.resetValidation();
-                });
-            });
+          axios.post(host + "uploadFB", formData).then(response => {
+            this.pathImage = response.data.url;
+            console.log(response.data.url);
+            axios
+              .post(host + "inserttypeOfService", {
+                typeName: this.newType.typeName,
+                typeTime: this.hour + "." + this.minute,
+                typePrice: this.newType.typePrice,
+                typePathImage: this.pathImage,
+                service: this.row,
+                restaurantId: 1
+              })
+              .then(response => {
+                this.newTypeCancel();
+                this.refreshPage();
+                this.$refs.form.resetValidation();
+              });
+          });
         } else {
           console.log(
             this.newType.typeName +
@@ -425,7 +423,7 @@ export default {
               1
           );
           axios
-            .post(host+"inserttypeOfService", {
+            .post(host + "inserttypeOfService", {
               typeName: this.newType.typeName,
               typeTime: this.hour + "." + this.minute,
               typePrice: this.newType.typePrice,
@@ -456,15 +454,13 @@ export default {
     },
     editTypeCancel() {
       console.log(this.checkedRows.length);
-      axios
-        .get(host+"getalltypeofservice")
-        .then(response => {
-          this.typeData = response.data;
-          this.selectedMenu = {};
-          this.image = null;
-          this.imageForUpload = null;
-          this.editTypeDialog = false;
-        });
+      axios.get(host + "getalltypeofservice").then(response => {
+        this.typeData = response.data;
+        this.selectedMenu = {};
+        this.image = null;
+        this.imageForUpload = null;
+        this.editTypeDialog = false;
+      });
     },
     editTypeSave() {
       this.typeOfServiceForDialog.typeTime =
@@ -479,32 +475,24 @@ export default {
       if (this.$refs.form.validate()) {
         if (this.image == null) {
           axios
-            .put(
-              host+"updatetypeofservice/",
-              this.typeOfServiceForDialog
-            )
+            .put(host + "updatetypeofservice/", this.typeOfServiceForDialog)
             .then(() => {
               this.editTypeCancel();
             });
         } else {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
-          axios
-            .post(host+"uploadFB", formData)
-            .then(response => {
-              this.typeOfServiceForDialog.typePathImage = response.data.url;
+          axios.post(host + "uploadFB", formData).then(response => {
+            this.typeOfServiceForDialog.typePathImage = response.data.url;
 
-              console.log(this.typeOfServiceForDialog.typePathImage);
-              console.log(this.typeOfServiceForDialog);
-              axios
-                .put(
-                  host+"updatetypeofservice/",
-                  this.typeOfServiceForDialog
-                )
-                .then(() => {
-                  this.editTypeCancel();
-                });
-            });
+            console.log(this.typeOfServiceForDialog.typePathImage);
+            console.log(this.typeOfServiceForDialog);
+            axios
+              .put(host + "updatetypeofservice/", this.typeOfServiceForDialog)
+              .then(() => {
+                this.editTypeCancel();
+              });
+          });
         }
       }
     },
@@ -512,12 +500,13 @@ export default {
       this.menuDialog = true;
       axios
         .get(
-          host+"getmenubytypeofserviceid/" +
+          host +
+            "getmenubytypeofserviceid/" +
             this.typeOfServiceForDialog.typeId
         )
         .then(response => {
           this.checkBoxData = response.data;
-          axios.get(host+"getallMenu").then(response => {
+          axios.get(host + "getallMenu").then(response => {
             this.menuData = response.data;
             for (let index = 0; index < this.checkBoxData.length; index++) {
               var i = this.menuData.findIndex(
@@ -537,15 +526,14 @@ export default {
       for (let index = 0; index < this.checkBoxData.length; index++) {
         promiseArr.push(
           axios.delete(
-            host+"deletemenuservice/" +
-              this.checkBoxData[index].menuServiceId
+            host + "deletemenuservice/" + this.checkBoxData[index].menuServiceId
           )
         );
       }
       await Promise.all(promiseArr);
       for (let index = 0; index < this.checkedRows.length; index++) {
         axios
-          .post(host+"insertMenuService/", {
+          .post(host + "insertMenuService/", {
             typeId: this.typeOfServiceForDialog.typeId,
             menuId: this.checkedRows[index].menuId
           })
@@ -555,11 +543,9 @@ export default {
       this.menuDialog = false;
     },
     refreshPage() {
-      axios
-        .get(host+"getalltypeofservice")
-        .then(response => {
-          this.typeData = response.data;
-        });
+      axios.get(host + "getalltypeofservice").then(response => {
+        this.typeData = response.data;
+      });
     },
     clickType(type) {
       this.editTypeName = type.typeName;
@@ -588,15 +574,11 @@ export default {
       this.deleteDialog = true;
     },
     clickYesDeleteDialog() {
-      axios
-        .delete(host+"deletetypeOfService/" + this.typeId)
-        .then(() => {
-          this.deleteDialog = false;
-          this.refreshPage();
-        });
-    }
-  },
-  computed: {
+      axios.delete(host + "deletetypeOfService/" + this.typeId).then(() => {
+        this.deleteDialog = false;
+        this.refreshPage();
+      });
+    },
     checkName() {
       for (let index = 0; index < this.typeData.length; index++) {
         if (
@@ -632,12 +614,46 @@ export default {
       }
     }
   },
+  computed: {
+    // checkName() {
+    //   for (let index = 0; index < this.typeData.length; index++) {
+    //     if (
+    //       this.newType.typeName.toLowerCase() ===
+    //       this.typeData[index].typeName.toLowerCase()
+    //     ) {
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // },
+    // editCheckName() {
+    //   if (
+    //     this.typeOfServiceForDialog.typeName.toLowerCase() ===
+    //     this.editTypeName.toLowerCase()
+    //   ) {
+    //     return true;
+    //   } else {
+    //     for (let index = 0; index < this.typeData.length; index++) {
+    //       if (
+    //         this.typeOfServiceForDialog.typeId === this.typeData[index].typeId
+    //       ) {
+    //         continue;
+    //       }
+    //       if (
+    //         this.typeOfServiceForDialog.typeName.toLowerCase() ===
+    //         this.typeData[index].typeName.toLowerCase()
+    //       ) {
+    //         return false;
+    //       }
+    //     }
+    //     return true;
+    //   }
+    // }
+  },
   created() {
-    axios
-      .get(host+"getalltypeofservice")
-      .then(response => {
-        this.typeData = response.data;
-      });
+    axios.get(host + "getalltypeofservice").then(response => {
+      this.typeData = response.data;
+    });
   }
 };
 </script>
