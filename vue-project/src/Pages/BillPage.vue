@@ -131,7 +131,6 @@
                 </v-btn>
               </v-flex>
             </v-layout>
-          </span>
       </section>
     </div>
   </div>

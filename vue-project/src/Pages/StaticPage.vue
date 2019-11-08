@@ -98,7 +98,7 @@
           </v-layout>
 
           <b-card>
-            <b-row>
+            <!-- <b-row>
               <b-col sm="5">
                 <center>
                   <h4 id="traffic">Restaurant Chart</h4>
@@ -121,7 +121,7 @@
                   </v-tabs-items>
                 </v-tabs>
               </b-col>
-            </b-row>
+            </b-row> -->
             <div class="container">
               <v-layout row wrap>
                 <v-flex xs2 id="first">

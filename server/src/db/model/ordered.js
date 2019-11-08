@@ -102,11 +102,12 @@ exports.getOrderedByStatusPreparing = async (restaurantId) => {
         ,'ordered.amount','ordered.menuId','ordered.statusId'
         ,'ordered.billId','bill.totalPrice','bill.tableNumber','bill.numOfCust'
         ,'bill.eatTimeStart','bill.eatTimeEnd','menu.menuName','menu.menuPrice','menu.menuPathImage'
-        ,'status.statusName')
+        ,'status.statusName','category.categoryName')
         .from('ordered')
         .leftJoin('bill', 'bill.billId', '=', 'ordered.billId')
         .leftJoin('menu', 'menu.menuId', '=', 'ordered.menuId')
         .leftJoin('status', 'status.statusId', '=', 'ordered.statusId')
+        .leftJoin('category', 'category.categoryId', '=', 'menu.categoryId')
         .where('menu.restaurantId', '=', restaurantId)
         .andWhere('ordered.statusId','!=','2')
         .andWhere('ordered.statusId','!=','3')
@@ -121,11 +122,12 @@ exports.getOrderedByStatusCooking = async (restaurantId) => {
         ,'ordered.amount','ordered.menuId','ordered.statusId'
         ,'ordered.billId','bill.totalPrice','bill.tableNumber','bill.numOfCust'
         ,'bill.eatTimeStart','bill.eatTimeEnd','menu.menuName','menu.menuPrice','menu.menuPathImage'
-        ,'status.statusName')
+        ,'status.statusName','category.categoryName')
         .from('ordered')
         .leftJoin('bill', 'bill.billId', '=', 'ordered.billId')
         .leftJoin('menu', 'menu.menuId', '=', 'ordered.menuId')
         .leftJoin('status', 'status.statusId', '=', 'ordered.statusId')
+        .leftJoin('category', 'category.categoryId', '=', 'menu.categoryId')
         .where('menu.restaurantId', '=', restaurantId)
         .andWhere('ordered.statusId','!=','1')
         .andWhere('ordered.statusId','!=','3')

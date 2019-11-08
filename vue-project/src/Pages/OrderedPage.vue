@@ -2,6 +2,26 @@
   <div>
     <sidebar></sidebar>
     <div id="bigbox">
+      <div class="space-btn">
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card>
+            <v-card-text class="title">
+              What status do you want to change?
+              <v-radio-group v-model="radioGroup">
+                <v-radio v-if="checkStatus(1)" label="Preparing" value="1"></v-radio>
+                <v-radio v-if="checkStatus(2)" label="Cooking" value="2"></v-radio>
+                <v-radio v-if="checkStatus(3)" label="Serving" value="3"></v-radio>
+                <v-radio label="Cancel" value="5"></v-radio>
+              </v-radio-group>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" flat @click="cancelDialog">Cancel</v-btn>
+              <v-btn color="blue darken-1" flat @click="saveChangeStatus">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
       <section class="bg">
         <v-card-title class="headline font-weight-medium">
           ORDERED
@@ -13,7 +33,7 @@
             single-line
             hide-details
           ></v-text-field>
-          <v-layout row wrap align-center>
+          <!-- <v-layout row wrap align-center>
             <v-subheader class="text" fixed>Status</v-subheader>
             <b-dropdown id="button" fixed>
               <v-btn flat slot="trigger">
@@ -29,14 +49,14 @@
                 @click="changeStatus(option.statusName)"
               >{{option.statusName}}</b-dropdown-item>
             </b-dropdown>
-          </v-layout>
+          </v-layout>-->
         </v-card-title>
 
         <!-- TIME -->
         <v-tabs v-model="activeTab" color="#f0a676" dark slider-color="#eb8440" class="tabStyle">
           <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
           <v-tab ripple>Ordered by time</v-tab>
-          <v-tab ripple>Ordered by time</v-tab>
+          <v-tab ripple>Ordered same menu</v-tab>
 
           <v-tab-item>
             <b-table
@@ -58,19 +78,14 @@
                 <b-table-column label="Time" width="200">{{ props.row.time }}</b-table-column>
                 <b-table-column label="Status" width="100">{{ props.row.statusName }}</b-table-column>
                 <b-table-column label="Change Status" width="200">
-                  <v-btn
-                    small
-                    outline
-                    color="indigo"
-                    @click="changeStatusOrder(props.row.orderId,props.row.statusId)"
-                  >
+                  <v-btn small outline color="indigo" @click="changeStatusOrder(props.row)">
                     <v-icon>repeat</v-icon>Change Status
                   </v-btn>
                 </b-table-column>
               </template>
             </b-table>
 
-            <div class="space-btn">
+            <!-- <div class="space-btn">
               <v-dialog v-model="dialog" max-width="290">
                 <v-card>
                   <v-card-text class="title">
@@ -89,7 +104,7 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            </div>
+            </div>-->
           </v-tab-item>
           <!-- </b-tab-item> -->
 
@@ -117,7 +132,6 @@
                     :visible="columnsVisible['menuName'].display"
                     :label="columnsVisible['menuName'].title"
                     width="300"
-                    sortable
                   >
                     <template v-if="showDetailIcon">{{ props.row.menuName }}</template>
                     <template v-else>
@@ -130,7 +144,6 @@
                     :visible="columnsVisible['amount'].display"
                     :label="columnsVisible['amount'].title"
                     width="200"
-                    sortable
                   >{{ props.row.amount }}</b-table-column>
 
                   <b-table-column
@@ -138,7 +151,6 @@
                     :visible="columnsVisible['time'].display"
                     :label="columnsVisible['time'].title"
                     width="200"
-                    sortable
                   >{{ props.row.time }}</b-table-column>
 
                   <b-table-column
@@ -146,11 +158,15 @@
                     :visible="columnsVisible['statusName'].display"
                     :label="columnsVisible['statusName'].title"
                     width="200"
-                    sortable
                   >{{ props.row.statusName }}</b-table-column>
 
                   <b-table-column>
-                    <v-btn small outline color="indigo">
+                    <v-btn
+                      small
+                      outline
+                      color="indigo"
+                      @click="changeStatusSameMenu(props.row)"
+                    >
                       <v-icon>repeat</v-icon>Change Status
                     </v-btn>
                   </b-table-column>
@@ -219,7 +235,7 @@ export default {
       nameOfStatus: "All Status",
       statusData: [],
       activeTab: 0,
-
+      order: "",
       keyword: "",
       restaurantId: 1,
       ordered: [],
@@ -232,7 +248,9 @@ export default {
       checkboxPosition: "left",
       checkedRows: [],
       selectOrderId: "",
-      selectedStatusId: ""
+      selectedStatusId: "",
+      orders: [],
+      checkNumberForChange: 0
     };
   },
   methods: {
@@ -246,30 +264,84 @@ export default {
     },
 
     //change status in order
-    changeStatusOrder(orderId, statusId) {
-      this.selectOrderId = orderId;
-      this.selectedStatusId = statusId;
+    changeStatusOrder(order) {
+      this.checkNumberForChange = 0;
+      this.selectOrderId = order.orderId;
+      this.selectedStatusId = order.statusId;
+      this.order = order;
       this.dialog = true;
     },
     checkStatus(status) {
-      if (this.selectedStatusId >= status) {
+      if (this.selectedStatusId >= status || this.orders.statusId >=status) {
         return false;
       } else {
         return true;
       }
     },
     saveChangeStatus() {
-      axios
-        .put(
-          host + "changestatus/" + this.selectOrderId + "/" + this.radioGroup
-        )
-        .then(response => {
-          this.getOrderData();
-          this.dialog = false;
-        });
+      if (this.checkNumberForChange === 0) {
+        axios
+          .put(
+            host + "changestatus/" + this.selectOrderId + "/" + this.radioGroup
+          )
+          .then(response => {
+            if (this.radioGroup === "5") {
+              axios
+                .post(host + "inserttransaction", {
+                  menuName: this.order.menuName,
+                  transPrice: this.order.menuPrice,
+                  totalPrice: this.order.menuPrice * this.order.amount,
+                  amount: this.order.amount,
+                  statusName: "cancle",
+                  categoryName: this.order.categoryName,
+                  billId: this.order.billId,
+                  restaurantId: this.restaurantId
+                })
+                .then(response => {
+                  this.cancelDialog();
+                });
+            } else {
+              this.cancelDialog();
+            }
+          });
+      } else {
+        for (let index = 0; index < this.orders.items.length; index++) {
+          axios
+            .put(
+              host +
+                "changestatus/" +
+                this.orders.items[index].orderId +
+                "/" +
+                this.radioGroup
+            )
+            .then(response => {
+              if (this.radioGroup === "5") {
+                axios
+                  .post(host + "inserttransaction", {
+                    menuName: this.orders.items[index].menuName,
+                    transPrice: this.orders.items[index].menuPrice,
+                    totalPrice:
+                      this.orders.items[index].menuPrice * this.orders.items[index].amount,
+                    amount: this.orders.items[index].amount,
+                    statusName: "cancle",
+                    categoryName: this.orders.items[index].categoryName,
+                    billId: this.orders.items[index].billId,
+                    restaurantId: this.restaurantId
+                  })
+                  .then();
+              }
+            });
+        }
+        this.cancelDialog();
+      }
     },
     toggle(row) {
       this.$refs.table.toggleDetails(row);
+    },
+    changeStatusSameMenu(orders) {
+      this.dialog = true;
+      this.orders = orders;
+      this.checkNumberForChange = 1;
     },
 
     getOrderData() {
@@ -285,8 +357,27 @@ export default {
         });
     },
     cancelDialog() {
+      this.getOrderSameMenu();
+      this.getOrderData();
       this.dialog = false;
       this.radioGroup = 1;
+      this.selectedStatusId = "";
+      this.orders = "";
+    },
+    getOrderSameMenu() {
+      axios.get(host + "getordersameMenu/" + 1).then(response => {
+        this.orderSameMenu = response.data;
+        for (let index = 0; index < this.orderSameMenu.length; index++) {
+          this.orderSameMenu[index].time = dayjs(
+            this.orderSameMenu[index].time
+          ).format("HH:mm:ss");
+          for (let i = 0; i < this.orderSameMenu[index].items.length; i++) {
+            this.orderSameMenu[index].items[i].time = dayjs(
+              this.orderSameMenu[index].items[i].created_at
+            ).format("HH:mm:ss");
+          }
+        }
+      });
     }
   },
   computed: {
@@ -305,21 +396,7 @@ export default {
   },
   created: function() {
     this.getOrderData();
-    axios.get(host + "getordersameMenu/" + 1).then(response => {
-      this.orderSameMenu = response.data;
-      for (let index = 0; index < this.orderSameMenu.length; index++) {
-        this.orderSameMenu[index].time = dayjs(
-          this.orderSameMenu[index].time
-        ).format("HH:mm:ss");
-        for (let i = 0; i < this.orderSameMenu[index].items.length; i++) {
-          this.orderSameMenu[index].items[i].time = dayjs(
-            this.orderSameMenu[index].items[i].created_at
-          ).format("HH:mm:ss");
-        }
-      }
-
-      console.log(this.orderSameMenu);
-    });
+    this.getOrderSameMenu();
     axios.get(host + "getallstatus").then(response => {
       this.statusData = response.data;
     });

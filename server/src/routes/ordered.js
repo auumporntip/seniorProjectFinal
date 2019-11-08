@@ -58,6 +58,7 @@ async function sameMenu(menu) {
             menuName: distinctMenu[index],
             amount : totalAmount,
             statusName:sameMenu[0].statusName,
+            statusId:sameMenu[0].statusId,
             time:sameMenu[0].created_at,
             items:sameMenu
         }
