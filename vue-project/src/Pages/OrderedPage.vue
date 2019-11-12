@@ -3,10 +3,12 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <div class="space-btn">
-        <v-dialog v-model="dialog" max-width="290">
+        <v-dialog v-model="dialog" max-width="290" data-app>
           <v-card>
-            <v-card-text class="title">
-              What status do you want to change?
+            <v-card-title style="padding-bottom:0%;">
+              <span class="nameDialog">What status do you want to change?</span>
+            </v-card-title>
+            <v-card-text style="padding-top:0px;">
               <v-radio-group v-model="radioGroup">
                 <v-radio v-if="checkStatus(1)" label="Preparing" value="1"></v-radio>
                 <v-radio v-if="checkStatus(2)" label="Cooking" value="2"></v-radio>
@@ -16,8 +18,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="cancelDialog">Cancel</v-btn>
-              <v-btn color="blue darken-1" flat @click="saveChangeStatus">Save</v-btn>
+              <v-btn color="#7d7a73" flat @click="cancelDialog">CANCEL</v-btn>
+              <v-btn color="#305378" flat @click="saveChangeStatus">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -53,8 +55,7 @@
         </v-card-title>
 
         <!-- TIME -->
-        <v-tabs v-model="activeTab" color="#f0a676" dark slider-color="#eb8440" class="tabStyle">
-          <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
+        <v-tabs v-model="activeTab" color="#B7CDC2" slider-color="#EAE6DA" class="tabStyle">
           <v-tab ripple>Ordered by time</v-tab>
           <v-tab ripple>Ordered same menu</v-tab>
 
@@ -78,7 +79,7 @@
                 <b-table-column label="Time" width="200">{{ props.row.time }}</b-table-column>
                 <b-table-column label="Status" width="100">{{ props.row.statusName }}</b-table-column>
                 <b-table-column label="Change Status" width="200">
-                  <v-btn small outline color="indigo" @click="changeStatusOrder(props.row)">
+                  <v-btn small color="#B7CDC2" @click="changeStatusOrder(props.row)">
                     <v-icon>repeat</v-icon>Change Status
                   </v-btn>
                 </b-table-column>
@@ -122,9 +123,9 @@
                 hoverable
                 custom-detail-row
                 :default-sort="['time', 'asc']"
-                detail-key="time"
+                detail-key="menuName"
                 :show-detail-icon="showDetailIcon"
-                :opened-detailed="['time']"
+                :opened-detailed="['menuName']"
               >
                 <template slot-scope="props">
                   <b-table-column
@@ -161,12 +162,7 @@
                   >{{ props.row.statusName }}</b-table-column>
 
                   <b-table-column>
-                    <v-btn
-                      small
-                      outline
-                      color="indigo"
-                      @click="changeStatusSameMenu(props.row)"
-                    >
+                    <v-btn small color="#B7CDC2" @click="changeStatusSameMenu(props.row)">
                       <v-icon>repeat</v-icon>Change Status
                     </v-btn>
                   </b-table-column>
@@ -272,7 +268,7 @@ export default {
       this.dialog = true;
     },
     checkStatus(status) {
-      if (this.selectedStatusId >= status || this.orders.statusId >=status) {
+      if (this.selectedStatusId >= status || this.orders.statusId >= status) {
         return false;
       } else {
         return true;
@@ -321,7 +317,8 @@ export default {
                     menuName: this.orders.items[index].menuName,
                     transPrice: this.orders.items[index].menuPrice,
                     totalPrice:
-                      this.orders.items[index].menuPrice * this.orders.items[index].amount,
+                      this.orders.items[index].menuPrice *
+                      this.orders.items[index].amount,
                     amount: this.orders.items[index].amount,
                     statusName: "cancle",
                     categoryName: this.orders.items[index].categoryName,
@@ -406,12 +403,12 @@ export default {
 
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #f7f6ee;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84a295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;
@@ -440,5 +437,10 @@ export default {
   padding-left: 14px;
   padding-right: 14px;
   padding-top: 15px;
+}
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 3%;
+  font-size: 1.5em;
 }
 </style>

@@ -86,7 +86,7 @@ export default {
     return {
       nameRules: [
         v => !!v || "Name is required",
-        v => this.checkName || "Name has already"
+        v => (v && this.checkName()) || 'Name has already'
       ],
       priceRules: [
         v => !!v || "Price is required",
@@ -102,7 +102,7 @@ export default {
       image: null,
       imageForUpload: null,
 
-      category: {},
+      category: [],
       selectedCategory: "",
 
       allMenu: {},
@@ -180,9 +180,7 @@ export default {
           });
       }
       this.dialog = false;
-    }
-  },
-  computed: {
+    },
     checkName() {
       if (
         this.name.toLowerCase() === this.selectedMenu.menuName.toLowerCase()
@@ -201,6 +199,7 @@ export default {
       }
     }
   },
+  
   created() {
     axios
       .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)

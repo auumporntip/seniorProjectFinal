@@ -3,7 +3,17 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium">TYPE OF SERVICE</v-card-title>
+        <v-card-title class="headline font-weight-medium">
+          TYPE OF SERVICE
+          <v-text-field
+            class="search"
+            v-model="keyword"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
         <v-layout justify-space-around>
           <!-- add new type -->
 
@@ -23,35 +33,45 @@
                     id="text"
                     @click="newTypeDialog=true"
                   >ADD TYPE OF SERVICE</v-btn>
-                  <v-dialog max-width="600" v-model="newTypeDialog">
+                  <v-dialog max-width="600px" persistent v-model="newTypeDialog" data-app>
                     <v-card>
-                      <v-card-text class="title">
-                        New type of service
+                      <v-card-title style="padding-bottom:0%;">
+                        <span class="nameDialog">Add new type of service</span>
+                      </v-card-title>
+                      <v-card-text>
                         <v-form ref="form">
-                          <v-container>
-                            <v-layout row>
-                              <v-flex>
-                                <div v-if="image === null">
-                                  <v-img :src="require('../assets/add.png')" class="imageSize"></v-img>
-                                  <!-- <img src="../assets/1.png" class="imageSize" /> -->
-                                </div>
-                                <div v-else>
-                                  <v-img :src="image" class="imageSize"></v-img>
-                                </div>
-                                <b-field class="file">
-                                  <b-upload
-                                    v-model="image"
-                                    v-on:input="fileChange"
-                                    accept="image/*"
-                                  >
-                                    <a class="button">
-                                      <b-icon icon="upload"></b-icon>
-                                      <span>Click to upload image</span>
-                                    </a>
-                                  </b-upload>
-                                </b-field>
-                              </v-flex>
-                              <v-flex xs6 order-md3 order-xs2>
+                          <v-container grid-list-md style="padding-top:0%;">
+                            <v-layout wrap>
+                              <div v-if="image == null">
+                                <v-img
+                                  :src="require('../assets/add.png')"
+                                  aspect-ratio="1.5"
+                                  class="imageSize"
+                                  style="margin-left:5%; margin-top:1%;"
+                                ></v-img>
+                              </div>
+                              <div v-else>
+                                <v-img
+                                  :src="image"
+                                  aspect-ratio="1.5"
+                                  class="imageSize"
+                                  style="margin-left:5%; margin-top:1%;"
+                                ></v-img>
+                              </div>
+                              <b-field class="file">
+                                <b-upload
+                                  v-model="image"
+                                  v-on:input="fileChange"
+                                  class="uploadBtn"
+                                  accept="image/*"
+                                >
+                                  <a class="button is-info" outlined>
+                                    <b-icon icon="upload"></b-icon>
+                                    <span>Click to upload image</span>
+                                  </a>
+                                </b-upload>
+                              </b-field>
+                              <v-layout column style="margin-left:45%; margin-top:-45%;">
                                 <v-text-field
                                   label="Name"
                                   v-model="newType.typeName"
@@ -91,22 +111,22 @@
                                     :rules="priceRules"
                                   ></v-text-field>
                                 </div>
-                              </v-flex>
+                              </v-layout>
                             </v-layout>
                           </v-container>
                         </v-form>
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat color="red" @click="newTypeCancel">Cancel</v-btn>
-                        <v-btn flat color="darkgrey" @click="newTypeSave">Save</v-btn>
+                        <v-btn flat color="#7d7a73" @click="newTypeCancel">CANCEL</v-btn>
+                        <v-btn flat color="#305378" @click="newTypeSave">SAVE</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
                 </v-card>
               </v-flex>
 
-              <v-flex xs3 v-for="type in typeData" :key="type.typeId">
+              <v-flex xs3 v-for="type in items" :key="type.typeId">
                 <v-card class="card">
                   <v-img
                     v-if="type.typePathImage != null"
@@ -129,7 +149,7 @@
                 </v-card>
                 <v-icon class="iconClose" @click="deleteButton(type.typeId)">cancel</v-icon>
               </v-flex>
-              <v-dialog v-model="deleteDialog" max-width="290">
+              <v-dialog v-model="deleteDialog" max-width="290" data-app persistent>
                 <v-card>
                   <v-card-title class="title">DELETE CONFIRMATION</v-card-title>
                   <v-card-text class="confirmDialog">
@@ -145,14 +165,15 @@
               </v-dialog>
 
               <!-- edit -->
-              <v-dialog max-width="600" v-model="editTypeDialog">
+              <v-dialog max-width="600px" persistent v-model="editTypeDialog" data-app>
                 <v-card>
-                  <v-card-text class="title">
-                    Edit type of service
-                    <v-form>
-                      <v-container>
-                        <v-layout row>
-                          <v-flex>
+                  <v-card-title style="padding-bottom:0%;">
+                    <span class="nameDialog">Edit type of service</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-form ref="form">
+                      <v-container grid-list-md style="padding-top:0%;">
+                        <v-layout wrap>
                             <div v-if="image != null">
                               <v-img :src="image" class="imageSize"></v-img>
                             </div>
@@ -163,15 +184,20 @@
                               <v-img :src="typeOfServiceForDialog.typePathImage" class="imageSize"></v-img>
                             </div>
                             <b-field class="file">
-                              <b-upload v-model="image" v-on:input="fileChange" accept="image/*">
-                                <a class="button">
+                              <b-upload
+                                v-model="image"
+                                v-on:input="fileChange"
+                                accept="image/*"
+                                class="uploadBtn"
+                              >
+                                <a class="button is-info" outlined>
                                   <b-icon icon="upload"></b-icon>
                                   <span>Click to upload image</span>
                                 </a>
                               </b-upload>
                             </b-field>
-                          </v-flex>
-                          <v-flex xs6 order-md3 order-xs2>
+                            <v-layout column style="margin-left:45%; margin-top:-45%;">
+                          <v-flex xs6>
                             <v-text-field
                               label="Name"
                               v-model="typeOfServiceForDialog.typeName"
@@ -211,15 +237,14 @@
                                 :rules="priceRules"
                               ></v-text-field>
                             </div>
-
                             <!-- dialog add menu -->
-                            <a class="button" id="buttonAdd" @click="showMenu">
+                            <a class="button is-info" id="buttonAdd" @click="showMenu">
                               <b-icon icon="plus"></b-icon>
                               <span>Add menu for this type of service</span>
                             </a>
-                            <v-dialog width="700" v-model="menuDialog">
+                            <v-dialog width="700" v-model="menuDialog" data-app>
                               <v-card>
-                                <v-card-text class="title">
+                                <v-card-text class="nameDialog">
                                   Choose menu for this type of service
                                   <v-form>
                                     <v-container>
@@ -246,20 +271,21 @@
                                 </v-card-text>
                                 <v-card-actions>
                                   <v-spacer></v-spacer>
-                                  <v-btn flat color="red" @click="cancelAddMenu">Cancel</v-btn>
-                                  <v-btn flat color="darkgrey" @click="addMenu">Add</v-btn>
+                                  <v-btn flat color="#7d7a73" @click="cancelAddMenu">CANCEL</v-btn>
+                                  <v-btn flat color="#305378" @click="addMenu">ADD</v-btn>
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
                           </v-flex>
+                            </v-layout>
                         </v-layout>
                       </v-container>
                     </v-form>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="red" @click="editTypeCancel">Cancel</v-btn>
-                    <v-btn flat color="darkgrey" @click="editTypeSave">Save</v-btn>
+                    <v-btn flat color="#7d7a73" @click="editTypeCancel">CANCEL</v-btn>
+                    <v-btn flat color="#305378" @click="editTypeSave">SAVE</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -292,7 +318,7 @@ export default {
 
       nameRules: [
         v => !!v || "Name is required",
-        v => (v && this.checkName()) || 'Name has already'
+        v => (v && this.checkName()) || "This name has already"
       ],
       hourRules: [
         v => (!!v && this.minute >= 0 && this.hour >= 0) || "Time is required"
@@ -302,11 +328,15 @@ export default {
 
         v => this.minute < 60 || "Minute เกิน 60 นาทีไม่ได้"
       ],
-      priceRules: [v => !!v || "Price is required"],
+      priceRules: [
+        v => !!v || "Price is required",
+        v => v > 0 || "Price must more than zero",
+        v => v < 5000 || "Price must less than 5000"
+      ],
 
       editNameRules: [
         v => !!v || "Name is required",
-        v => (v && this.editCheckName()) || "Name has already"
+        v => (v && this.editCheckName()) || "This name has already"
       ],
       editHourRules: [
         v =>
@@ -319,6 +349,9 @@ export default {
         v =>
           this.typeOfServiceForDialog.minute < 60 || "Minute เกิน 60 นาทีไม่ได้"
       ],
+
+      //search
+      keyword: "",
 
       //add new type
       image: null,
@@ -615,40 +648,15 @@ export default {
     }
   },
   computed: {
-    // checkName() {
-    //   for (let index = 0; index < this.typeData.length; index++) {
-    //     if (
-    //       this.newType.typeName.toLowerCase() ===
-    //       this.typeData[index].typeName.toLowerCase()
-    //     ) {
-    //       return false;
-    //     }
-    //   }
-    //   return true;
-    // },
-    // editCheckName() {
-    //   if (
-    //     this.typeOfServiceForDialog.typeName.toLowerCase() ===
-    //     this.editTypeName.toLowerCase()
-    //   ) {
-    //     return true;
-    //   } else {
-    //     for (let index = 0; index < this.typeData.length; index++) {
-    //       if (
-    //         this.typeOfServiceForDialog.typeId === this.typeData[index].typeId
-    //       ) {
-    //         continue;
-    //       }
-    //       if (
-    //         this.typeOfServiceForDialog.typeName.toLowerCase() ===
-    //         this.typeData[index].typeName.toLowerCase()
-    //       ) {
-    //         return false;
-    //       }
-    //     }
-    //     return true;
-    //   }
-    // }
+    items() {
+      if (this.keyword != "") {
+        return this.typeData.filter(items =>
+          items.typeName.toLowerCase().includes(this.keyword.toLowerCase())
+        );
+      } else {
+        return this.typeData;
+      }
+    }
   },
   created() {
     axios.get(host + "getalltypeofservice").then(response => {
@@ -660,12 +668,12 @@ export default {
 
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #f7f6ee;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84a295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;
@@ -696,9 +704,6 @@ div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
 }
 .imageSize {
-  margin-top: 5%;
-  margin-left: -1%;
-  margin-bottom: 7%;
   width: 220px;
   height: 180px;
 }
@@ -706,7 +711,6 @@ div.error--text {
   margin-top: 3%;
   margin-left: -1%;
   border: none;
-  background-color: #f0cab1;
 }
 .iconClose {
   color: red;
@@ -719,5 +723,19 @@ div.error--text {
 }
 .title {
   margin-bottom: 0%;
+}
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: -1%;
+}
+.uploadBtn {
+  padding-top: 110%;
+  margin-left: -105%;
+}
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 3%;
+  font-size: 2em;
 }
 </style>

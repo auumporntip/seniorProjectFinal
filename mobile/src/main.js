@@ -16,6 +16,7 @@ import { store } from './store/store'
 Vue.component(VImageInput.name, VImageInput);
 Vue.use(Vuetify)
 Vue.use(responsive)
+Vue.config.ignoredElements = ['b-field', 'b-upload', 'b-icon','v-row']
  
 Vue.prototype.$http = axios
 Vue.use(Buefy)

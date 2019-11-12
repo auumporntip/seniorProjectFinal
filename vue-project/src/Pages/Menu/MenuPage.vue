@@ -42,12 +42,12 @@ export default {
 
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #F7F6EE;
   border-radius: 20px;
   padding: 1%;
 }
 #bigBox {
-  background-color: #eeeeee;
+  background-color: #84A295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;

@@ -3,7 +3,17 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium">Table</v-card-title>
+        <v-card-title class="headline font-weight-medium">
+          Table
+          <v-text-field
+            class="search"
+            v-model="keyword"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
         <v-layout justify-space-around>
           <v-container fluid>
             <v-layout wrap>
@@ -16,12 +26,14 @@
                     id="text"
                     @click="newTableDialog=true"
                   >ADD TABLE</v-btn>
-                  <v-dialog max-width="350" v-model="newTableDialog">
+                  <v-dialog max-width="350" v-model="newTableDialog" data-app persistent>
                     <v-card>
-                      <v-card-text class="title">
-                        New table
+                      <v-card-title style="padding-bottom:0%;">
+                        <span class="nameDialog">New table</span>
+                      </v-card-title>
+                      <v-card-text>
                         <v-form ref="form">
-                          <v-container>
+                          <v-container grid-list-md style="padding-top:0%;">
                             <v-flex xs12>
                               <v-text-field
                                 label="Table number"
@@ -35,8 +47,8 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat color="red" @click="cancelNewTable">Cancel</v-btn>
-                        <v-btn flat color="blue" @click="saveNewTable">Save</v-btn>
+                        <v-btn flat color="#7d7a73" @click="cancelNewTable">CANCEL</v-btn>
+                        <v-btn flat color="#305378" @click="saveNewTable">SAVE</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -44,7 +56,7 @@
               </v-flex>
 
               <!-- table -->
-              <v-flex xs3 v-for="table in tableData" :key="table.tableId">
+              <v-flex xs3 v-for="table in items" :key="table.tableId">
                 <v-card class="card">
                   <v-img aspect-ratio="1.5">
                     <qrcode-vue :value="host+table.tableNumber" :size="size" class="sizeQrcode"></qrcode-vue>
@@ -58,10 +70,12 @@
                 </v-card>
                 <v-icon class="iconClose" @click="deleteButton(table.tableId)">cancel</v-icon>
               </v-flex>
-              <v-dialog max-width="450" v-model="editTableDialog">
+              <v-dialog max-width="450" v-model="editTableDialog" data-app persistent>
                 <v-card>
-                  <v-card-text class="title">
-                    Table
+                  <v-card-title style="padding-bottom:0%;">
+                    <span class="nameDialog">Table</span>
+                  </v-card-title>
+                  <v-card-text>
                     <v-form ref="form1">
                       <v-container>
                         <v-layout row>
@@ -79,12 +93,12 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="red" @click="cancelEditTable">Cancel</v-btn>
-                    <v-btn flat color="blue" @click="saveEditTable">Save</v-btn>
+                    <v-btn flat color="#7d7a73" @click="cancelEditTable">CANCEL</v-btn>
+                    <v-btn flat color="#305378" @click="saveEditTable">SAVE</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-              <v-dialog v-model="deleteDialog" max-width="290">
+              <v-dialog v-model="deleteDialog" max-width="290" data-app>
                 <v-card>
                   <v-card-title class="title">DELETE CONFIRMATION</v-card-title>
                   <v-card-text class="confirmDialog">
@@ -120,6 +134,8 @@ export default {
   },
   data() {
     return {
+      //search
+      keyword: "",
       t: "",
       deleteDialog: false,
       tableId: "",
@@ -133,32 +149,19 @@ export default {
       newTable: [],
       tableNumber: [
         v => !!v || "Table number is required",
-        v =>
-          this.checkName(this.newTable.tableNumber) ||
-          "This table number has already"
+        v => (v && this.checkName()) || "This table number has already"
       ],
 
       //edit table form
       editTableDialog: false,
       editTableNumber: [
         v => !!v || "Table number is required",
-        v => this.editCheckName() || "This table number has already"
+        v => (v && this.editCheckName()) || "This table number has already"
       ]
     };
   },
   methods: {
     editCheckName() {
-      // for (let index = 0; index < this.tableData.length; index++) {
-      //   if (this.editTable.tableNumber === this.t) {
-      //     return true;
-      //   } else if (
-      //     tableNumber.toLowerCase() ===
-      //     this.tableData[index].tableNumber.toLowerCase()
-      //   ) {
-      //     return false;
-      //   }
-      // }
-
       if (this.editTable.tableNumber.toLowerCase() === this.t.toLowerCase()) {
         return true;
       } else {
@@ -254,6 +257,17 @@ export default {
       });
     }
   },
+  computed: {
+    items() {
+      if (this.keyword != "") {
+        return this.tableData.filter(items =>
+          items.tableName.toLowerCase().includes(this.keyword.toLowerCase())
+        );
+      } else {
+        return this.typeData;
+      }
+    }
+  },
   created() {
     axios.get(host + "getalltable").then(response => {
       this.tableData = response.data;
@@ -263,12 +277,12 @@ export default {
 </script>
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #f7f6ee;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84a295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;
@@ -290,12 +304,6 @@ export default {
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
 }
-.title {
-  text-align: left;
-  padding-top: 5%;
-  padding-left: 5%;
-  padding-bottom: 5%;
-}
 .iconClose {
   color: red;
   margin-left: 19.5%;
@@ -305,7 +313,14 @@ export default {
 .confirmDialog {
   padding-top: 0px;
 }
-.title {
-  margin-bottom: 0%;
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 3%;
+  font-size: 2em;
+}
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: -1%;
 }
 </style>

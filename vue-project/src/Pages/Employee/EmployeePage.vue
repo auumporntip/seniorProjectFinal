@@ -3,19 +3,28 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <div class="bg">
-        <v-card-title class="headline font-weight-medium">EMPLOYEE</v-card-title>
-        <div id="button"></div>
-        <v-btn color="black" outline class="addBtn" @click="addDialog=true">
+        <v-card-title class="headline font-weight-medium">
+          EMPLOYEE
+          <v-text-field
+            class="search"
+            v-model="keyword"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-btn color="#B7CDC2" class="addBtn" @click="addDialog=true">
           <v-icon left dark>add</v-icon>Add Employee
         </v-btn>
-        <v-dialog persistent max-width="600px" v-model="addDialog">
+        <v-dialog persistent max-width="600px" v-model="addDialog" data-app>
           <v-card>
-            <v-card-title>
-              <span class="headline">Add Employee</span>
+            <v-card-title style="padding-bottom:0%;">
+              <span class="nameDialog">Add Employee</span>
             </v-card-title>
             <v-card-text>
               <v-form ref="form">
-                <v-container grid-list-md>
+                <v-container grid-list-md style="padding-top:0%;">
                   <v-layout wrap>
                     <v-flex xs6>
                       <v-text-field label="Name" v-model="newEmp.name" :rules="nameRules"></v-text-field>
@@ -54,15 +63,15 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="closeAddDialog">Close</v-btn>
-              <v-btn color="blue darken-1" flat @click="saveAddDialog">Save</v-btn>
+              <v-btn color="#7d7a73" flat @click="closeAddDialog">CLOSE</v-btn>
+              <v-btn color="#305378" flat @click="saveAddDialog">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
         <!-- edit employee -->
         <b-table
-          :data="empData"
+          :data="items"
           :paginated="isPaginated"
           :per-page="perPage"
           :current-page.sync="currentPage"
@@ -91,14 +100,14 @@
         </b-table>
         <!-- edit dialog -->
 
-        <v-dialog v-model="editEmpDialog" persistent max-width="600px">
+        <v-dialog v-model="editEmpDialog" persistent max-width="600px" data-app>
           <v-card>
-            <v-card-title>
-              <span class="headline">Edit Employee</span>
+            <v-card-title style="padding-bottom:0%;">
+              <span class="nameDialog">Edit Employee</span>
             </v-card-title>
             <v-card-text>
               <v-form ref="form1">
-                <v-container grid-list-md>
+                <v-container grid-list-md style="padding-top:0%;">
                   <v-layout wrap>
                     <v-flex xs6>
                       <v-text-field label="Name" :rules="editNameRules" v-model="editEmp.name"></v-text-field>
@@ -141,14 +150,14 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="editCloseDialog">Close</v-btn>
-              <v-btn color="blue darken-1" flat @click="confirmEdit">Save</v-btn>
+              <v-btn color="#7d7a73" flat @click="editCloseDialog">CLOSE</v-btn>
+              <v-btn color="#305378" flat @click="confirmEdit">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
         <!-- delete dialog -->
-        <v-dialog v-model="deleteDialog" max-width="290">
+        <v-dialog v-model="deleteDialog" max-width="290" data-app>
           <v-card>
             <v-card-title class="title" style="margin-bottom:0px;">DELETE CONFIRMATION</v-card-title>
             <v-card-text class="confirmDialog">
@@ -181,6 +190,9 @@ export default {
   },
   data() {
     return {
+      //search
+      keyword: "",
+
       // add dialog
       addDialog: false,
       position: [],
@@ -190,7 +202,7 @@ export default {
       nameRules: [v => !!v || "Name is required"],
       usernameRules: [
         v => !!v || "Username is required",
-        v => this.checkName || "Name has already"
+        v => (v && this.checkName()) || "This username has already"
       ],
       emailRules: [
         v => !!v || "email is required",
@@ -211,12 +223,12 @@ export default {
       editEmp: [],
       editEmpDialog: false,
       positionId: "",
-      editUsername:"",
+      editUsername: "",
       editNameRules: [v => !!v || "Name is required"],
       editSurnameRules: [v => !!v || "Surname is required"],
       editUsernameRules: [
         v => !!v || "Username is required",
-        v => this.editCheckName || "username has already"
+        v => (v && this.editCheckName()) || "This username has already"
       ],
       editPasswordRules: [v => !!v || "Password is required"],
       editEmailRules: [
@@ -321,9 +333,7 @@ export default {
           this.deleteDialog = false;
           this.refreshPage();
         });
-    }
-  },
-  computed: {
+    },
     checkName() {
       for (let index = 0; index < this.empData.length; index++) {
         if (
@@ -336,7 +346,9 @@ export default {
       return true;
     },
     editCheckName() {
-      if (this.editEmp.userName.toLowerCase() === this.editUsername.toLowerCase()) {
+      if (
+        this.editEmp.userName.toLowerCase() === this.editUsername.toLowerCase()
+      ) {
         return true;
       } else {
         for (let index = 0; index < this.empData.length; index++) {
@@ -351,6 +363,24 @@ export default {
           }
         }
         return true;
+      }
+    }
+  },
+  computed: {
+    items() {
+      if (this.keyword != "") {
+        return this.empData.filter(
+          items =>
+            items.name.toLowerCase().includes(this.keyword.toLowerCase()) ||
+            items.phone == this.keyword.toLowerCase() ||
+            items.surname
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase()) ||
+               items.userName.toLowerCase().includes(this.keyword.toLowerCase()) ||
+            items.email.toLowerCase().includes(this.keyword.toLowerCase())
+        );
+      } else {
+        return this.empData;
       }
     }
   },
@@ -383,12 +413,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only --> 
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #f7f6ee;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84a295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;
@@ -396,16 +426,13 @@ export default {
   background-attachment: fixed;
 }
 .addBtn {
-  margin-top: -8%;
-  margin-left: 80%;
+  margin-top: 0%;
+  margin-left: 2%;
+  margin-bottom: 2%;
 }
 #imageColumn {
   margin-left: 1%;
   margin-right: 1%;
-}
-#button {
-  margin-left: 86%;
-  margin-top: 0%;
 }
 .text {
   margin-left: 75%;
@@ -437,5 +464,14 @@ div.error--text {
 .imageSize {
   margin-left: 4%;
 }
-
+.search {
+  margin-left: 57%;
+  position: absolute;
+  margin-top: -1%;
+}
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 3%;
+  font-size: 2em;
+}
 </style> 

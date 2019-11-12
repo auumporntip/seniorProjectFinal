@@ -17,7 +17,7 @@
         </v-card-title>
         <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
           <!-- <b-tab-item label="Checkbill"> -->
-            <v-tabs v-model="activeTab" color="#f0a676" dark slider-color="#eb8440" class="tabStyle">
+            <v-tabs v-model="activeTab" color="#B7CDC2" slider-color="#EAE6DA" class="tabStyle">
              <v-tab ripple>Check Bill</v-tab>
           <v-tab ripple>Others</v-tab>
           <v-tab-item>
@@ -146,12 +146,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #F7F6EE;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84A295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;

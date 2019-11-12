@@ -9,9 +9,9 @@
         :src="image_src"
         max-width="40px"
       ></v-img>
-      <v-btn v-else @click="goBack" flat icon color="white">
+      <!-- <v-btn v-else @click="goBack" flat icon color="white">
         <v-icon>arrow_back</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-toolbar-title class="headline-text white--text">{{this.$store.getters.namePages}}</v-toolbar-title>
       <v-spacer></v-spacer>
       {{time}}

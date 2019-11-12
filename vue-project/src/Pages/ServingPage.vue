@@ -24,6 +24,7 @@
           aria-previous-label="Previous page"
           aria-page-label="Page"
           aria-current-label="Current page"
+          style="margin-top:1%;"
         >
           <template slot-scope="props">
             <b-table-column label="Table No." width="100">{{props.row.tableNumber}}</b-table-column>
@@ -37,8 +38,7 @@
             <b-table-column label="Change Status" width="200">
               <v-btn
                 small
-                outline
-                color="indigo"
+                color="#B7CDC2"
                 @click="changeStatusOrder(props.row,props.row.statusId)"
               >
                 <v-icon>repeat</v-icon>Change Status
@@ -156,12 +156,12 @@ export default {
 
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #F7F6EE;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84A295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;

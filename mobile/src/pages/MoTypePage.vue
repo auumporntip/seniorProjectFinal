@@ -15,8 +15,8 @@
             </v-container>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="clickBack">Back</v-btn>
-              <v-btn color="green darken-1" text @click="clickNext">Next</v-btn>
+              <v-btn color="#7d7a73" flat @click="clickBack">BACK</v-btn>
+              <v-btn color="#305378" flat @click="clickNext">NEXT</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>

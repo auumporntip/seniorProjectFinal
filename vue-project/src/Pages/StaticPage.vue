@@ -355,7 +355,7 @@ export default {
 }
 #bigbox {
   background-color: #eeeeee;
-  height: 2000px;
+  /* height: 2000px; */
   padding: 2%;
   margin-top: -800px;
   margin-left: 20%;

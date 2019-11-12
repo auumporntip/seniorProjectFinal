@@ -174,11 +174,6 @@ export default new Router({
       component: BillPage
     },
     {
-      path: '/Login',
-      name: 'LoginPage',
-      component: LoginPage
-    },
-    {
       path: '/Serving',
       name: 'ServingPage',
       component: ServingPage

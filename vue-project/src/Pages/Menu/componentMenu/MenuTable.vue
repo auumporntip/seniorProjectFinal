@@ -51,10 +51,7 @@
             <!-- <img :src="props.row.menuPathImage" /> -->
           </div>
           <div class="img-resize" v-else>
-            <v-img
-              :src="require('../../../assets/1.png')"
-              aspect-ratio="1.5"
-            ></v-img>
+            <v-img :src="require('../../../assets/1.png')" aspect-ratio="1.5"></v-img>
             <!-- <img src="../../../assets/1.png" /> -->
           </div>
         </b-table-column>
@@ -90,10 +87,6 @@ export default {
       //Add
       AddDialog: false,
       newCat: [],
-      nameRules: [
-        v => !!v || "Name is required",
-        v => this.checkName || "Name has already"
-      ],
       isPaginated: true,
       isPaginationSimple: false,
       currentPage: 1,
@@ -103,7 +96,8 @@ export default {
       keyword: "",
 
       category: {},
-      selectedCategory: ""
+      selectedCategory: "",
+
     };
   },
   methods: {
@@ -169,27 +163,14 @@ export default {
       } else {
         return this.$store.getters.menu;
       }
-    },
-    checkName() {
-      for (let index = 0; index < this.category.length; index++) {
-        if (
-          this.newCat.categoryName.toLowerCase() ===
-          this.category[index].categoryName.toLowerCase()
-        ) {
-          return false;
-        }
-      }
-      this.$refs.form.rules;
-      return true;
     }
   },
   created() {
     axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
       this.$store.commit("setMenu", response.data);
       this.selectedMenu = response.data[0];
-      
+
       this.$store.commit("setSelectedMenu", response.data[0]);
-      
     });
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
@@ -200,27 +181,23 @@ export default {
 };
 </script>    
 <style >
-/* .head {
-  margin-left: 20px;
-} */
 .search {
   margin-left: 57%;
   position: absolute;
-  margin-top: -3%;
+  margin-top: -8.5%;
 }
-/* #button {
-  margin-left: 10px;
-} */
 #imageColumn {
   margin-left: 1%;
   margin-right: 1%;
 }
 #button {
-  margin-left: 86%;
-  margin-top: -5%;
+  margin-left: 82%;
+  margin-top: -9%;
 }
 .text {
-  margin-left: 75%;
-  margin-top: 0%;
+  padding-left: 66.5em;
+  position: absolute;
+  padding-top: 17%;
+  margin: -12%;
 }
 </style>

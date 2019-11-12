@@ -25,18 +25,21 @@
 
     <v-btn class="white--text" color="#cd9575" id="spaceNext" @click="dialog=true">Check Bill</v-btn>
 
-    <div justify="center">
+    <v-row justify="center">
       <v-dialog v-model="dialog" max-width="290">
         <v-card>
-          <v-card-text>Are you sure you want to check bill?</v-card-text>
+           <v-icon color="red lighten-1" style="font-size:75px; margin-left:36%; margin-top: 2%;">error</v-icon>
+          <v-card-text class="nameDialog">
+           Are you sure you want to check bill?
+          </v-card-text>
           <v-card-actions>
             <div class="flex-grow-1"></div>
-            <v-btn color="blue darken-1" flat @click="dialog=false" class="cancelBtn">cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="okDialog" class="okBtn">OK</v-btn>
+            <v-btn color="#7d7a73" flat @click="dialog=false" class="cancelBtn">NO</v-btn>
+            <v-btn color="#305378" flat @click="okDialog" class="okBtn">YES</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </div>
+    </v-row>
 
     <v-dialog max-width="490" v-model="orderDialog">
       <v-card>
@@ -78,7 +81,7 @@
           </v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="orderDialog = false" class="closeBtn">BACK</v-btn>
+            <v-btn color="#305378" flat @click="orderDialog = false" class="closeBtn">BACK</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -107,7 +110,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
-import {host} from './data'
+import { host } from "./data";
 
 export default {
   name: "MoReceiptPage",
@@ -119,7 +122,9 @@ export default {
     return {
       bill: "",
       token: "",
-      orders:'',
+      date: "",
+      time: "",
+      orders: "",
       dialog: false,
       typeOfService: [],
       tableNumber: "",
@@ -145,7 +150,7 @@ export default {
   methods: {
     okDialog() {
       axios
-        .post(host+"insertnotification", {
+        .post(host + "insertnotification", {
           notiMessage: "check bill",
           restaurantId: 1,
           billId: this.token.billId
@@ -165,33 +170,28 @@ export default {
     this.$store.commit("setNamePages", "Receipt");
     this.token = jwt.decode(sessionStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
-    axios
-      .get(host+"getorderbybillid/" + this.token.billId)
-      .then(response => {
-        this.orders = response.data;
-        console.log(this.orders);
-      });
+    axios.get(host + "getorderbybillid/" + this.token.billId).then(response => {
+      this.orders = response.data;
+      console.log(this.orders);
+    });
 
-    axios
-      .get(host+"getbillbybillid/" + this.token.billId)
-      .then(response => {
-        this.bill = response.data;
+    axios.get(host + "getbillbybillid/" + this.token.billId).then(response => {
+      this.bill = response.data;
 
-        this.date = dayjs(this.bill[0].created_at).format("YYYY/MM/DD");
-        this.time = dayjs(this.bill[0].created_at).format("HH:mm:ss");
-        this.bill[0].typeName = this.typeOfService.typeName;
-        if (this.typeOfService.service === "buffet") {
-          this.bill[0].totalPrice =
-            this.typeOfService.typePrice * this.bill[0].numOfCust;
-        } else {
-          var price = 0;
-          for (let index = 0; index < this.orders.length; index++) {
-            price +=
-              this.orders[index].amount * this.orders[index].pricePerPiece;
-          }
-          this.bill[0].totalPrice = price;
+      this.date = dayjs(this.bill[0].created_at).format("YYYY/MM/DD");
+      this.time = dayjs(this.bill[0].created_at).format("HH:mm:ss");
+      this.bill[0].typeName = this.typeOfService.typeName;
+      if (this.typeOfService.service === "buffet") {
+        this.bill[0].totalPrice =
+          this.typeOfService.typePrice * this.bill[0].numOfCust;
+      } else {
+        var price = 0;
+        for (let index = 0; index < this.orders.length; index++) {
+          price += this.orders[index].amount * this.orders[index].pricePerPiece;
         }
-      });
+        this.bill[0].totalPrice = price;
+      }
+    });
   }
 };
 </script>
@@ -231,5 +231,10 @@ export default {
 }
 .img {
   padding-top: 20px;
+}
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 2%;
+  font-size: 1.5em;
 }
 </style>

@@ -3,15 +3,15 @@
     <div class="text-xs-center" id="addBtn">
       <v-dialog v-model="categoryBtn" max-width="600">
         <template v-slot:activator="{ on }">
-          <v-btn color="black" outline dark v-on="on">
+          <v-btn color="#B7CDC2" v-on="on" style="margin-top:0.39%;">
             <v-icon left dark>menu</v-icon>Category
           </v-btn>
         </template>
 
         <v-card>
           <v-card-title>
-            <span class="headline">Category</span>
-            <v-icon style="padding-left:78%;" @click="categoryBtn=false">close</v-icon>
+            <span class="nameDialog">Category</span>
+            <v-icon style="padding-left:73%; margin-top:-3%;" @click="categoryBtn=false">close</v-icon>
             <v-text-field
               class="search"
               v-model="keyword"
@@ -22,7 +22,7 @@
             ></v-text-field>
           </v-card-title>
           <b-table
-            :data="category"
+            :data="items"
             :checked-rows.sync="checkedRows"
             :is-row-checkable="(row) => row.id !== 3"
             checkable
@@ -49,13 +49,13 @@
               : {{ checkedRows.length }}
             </template>
           </b-table>
-          <v-btn color="black" @click="AddDialog=true" flat>
+          <v-btn color="#B7CDC2" @click="AddDialog=true" style="margin-bottom:2%;">
             <v-icon left dark>add</v-icon>Add Category
           </v-btn>
           <!-- <v-btn color="black" @click="editDialog=true" flat>
             <v-icon left dark>edit</v-icon>Edit Category
           </v-btn>-->
-          <v-btn color="black" @click="comfirmDelete()" flat>
+          <v-btn color="#B7CDC2" @click="comfirmDelete()" style="margin-bottom:2%;">
             <v-icon left dark>delete</v-icon>Delete Category
           </v-btn>
         </v-card>
@@ -66,15 +66,15 @@
     <v-layout>
       <v-flex xs2>
         <!-- <v-btn color="black" outline @click="AddDialog=true" class="addBtn">Add Category</v-btn>  -->
-        <v-dialog v-model="AddDialog" max-width="490">
+        <v-dialog v-model="AddDialog" max-width="420">
           <v-card>
-            <v-card-text class="headline">
+            <v-card-text class="nameDialog">
               Add Category
               <v-form ref="form">
                 <v-container fluid>
                   <v-text-field
                     type="text"
-                    label="categoryName"
+                    label="Name of category"
                     v-model="newCat.categoryName"
                     :rules="nameRules"
                   ></v-text-field>
@@ -83,8 +83,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="addCancel">CLOSE</v-btn>
-              <v-btn color="blue darken-1" flat @click="addSave">SAVE</v-btn>
+              <v-btn color="#7d7a73" flat @click="addCancel">CANCEL</v-btn>
+              <v-btn color="#305378" flat @click="addSave">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -96,19 +96,19 @@
       <v-flex xs2>
         <v-dialog v-model="editDialog" max-width="450">
           <v-card>
-            <v-card-text class="headline">
+            <v-card-text class="nameDialog">
               Edit Category
               <v-form ref="form1">
                 <v-container>
-                  <v-text-field label="CategoryId" disabled v-model="cat.categoryId"></v-text-field>
-                  <v-text-field label="CategoryName" v-model="cat.categoryName" :rules="editRules"></v-text-field>
+                  <v-text-field label="ID of category" disabled v-model="cat.categoryId"></v-text-field>
+                  <v-text-field label="Name of category" v-model="cat.categoryName" :rules="editRules"></v-text-field>
                 </v-container>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="closeEdit">CANCEL</v-btn>
-              <v-btn color="blue darken-1" flat @click="editSave">SAVE</v-btn>
+              <v-btn color="#7d7a73" flat @click="closeEdit">CANCEL</v-btn>
+              <v-btn color="#305378" flat @click="editSave">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -129,8 +129,8 @@
                 </v-card-text>
                 <v-card-actions>
                   <div class="flex-grow-1"></div>
-                  <v-btn color="blue darken-1" flat @click="closeDelete()">CANCEL</v-btn>
-                  <v-btn color="red darken-1" flat @click="onConfirm">DELETE</v-btn>
+                  <v-btn color="#7d7a73" flat @click="closeDelete()">CANCEL</v-btn>
+                  <v-btn color="red" flat @click="onConfirm">DELETE</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -213,11 +213,11 @@ export default {
       newCat: [],
       nameRules: [
         v => !!v || "Name is required",
-        v => this.checkName || "Name has already"
+        v => (v && this.checkName()) || 'This name has already'
       ],
       editRules: [
         v => !!v || "Name is required",
-        v => this.editCheckName || "Name has already"
+        v => (v && this.editCheckName()) || 'This name has already'
       ],
       restaurantId: 1,
 
@@ -332,9 +332,7 @@ export default {
       axios.get("http://localhost:3000/api/getallcategory").then(response => {
         this.category = response.data;
       });
-    }
-  },
-  computed: {
+    },
     checkName() {
       for (let index = 0; index < this.category.length; index++) {
         if (
@@ -366,6 +364,19 @@ export default {
       }
     }
   },
+  computed: {
+    items() {
+      if (this.keyword != "") {
+        return this.category.filter(
+          items =>
+            items.categoryName.toLowerCase().includes(this.keyword.toLowerCase()) 
+            );
+      } else {
+        return this.category;
+      }
+    }
+  },
+  
   created: function() {
     axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
       this.category = response.data;
@@ -378,16 +389,6 @@ export default {
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
 }
-.uploadBtn {
-  padding-top: 5%;
-  padding-left: 25%;
-}
-.name {
-  padding-left: 25%;
-}
-.imageSize {
-  margin-left: 4%;
-}
 #addBtn {
   margin-top: -6%;
   margin-left: -85%;
@@ -399,9 +400,14 @@ div.error--text {
   padding-top: 0px;
 }
 .search {
-  margin-left: 53%;
+  margin-left: 25%;
   position: absolute;
   margin-top: -1%;
+}
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 2%;
+  font-size: 2em;
 }
 </style>
 
