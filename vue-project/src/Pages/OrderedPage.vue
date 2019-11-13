@@ -288,7 +288,7 @@ export default {
                   transPrice: this.order.menuPrice,
                   totalPrice: this.order.menuPrice * this.order.amount,
                   amount: this.order.amount,
-                  statusName: "cancle",
+                  statusName: "cancel",
                   categoryName: this.order.categoryName,
                   billId: this.order.billId,
                   restaurantId: this.restaurantId
@@ -302,6 +302,26 @@ export default {
           });
       } else {
         for (let index = 0; index < this.orders.items.length; index++) {
+          console.log(this.radioGroup);
+          if (this.radioGroup === "5") {
+            console.log(this.radioGroup === "5");
+            
+            axios
+              .post(host + "inserttransaction", {
+                menuName: this.orders.items[index].menuName,
+                transPrice: this.orders.items[index].menuPrice,
+                totalPrice:
+                  this.orders.items[index].menuPrice *
+                  this.orders.items[index].amount,
+                amount: this.orders.items[index].amount,
+                statusName: "cancel",
+                categoryName: this.orders.items[index].categoryName,
+                billId: this.orders.items[index].billId,
+                restaurantId: this.restaurantId
+              })
+              .then(response => {
+              });
+          }
           axios
             .put(
               host +

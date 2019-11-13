@@ -3,7 +3,14 @@ const knex = require('../knex')
 exports.getAllTransaction=async() => {
     return await knex('transaction')
 }
-
+exports.getTransactionFinish=async() => {
+    return await knex('transaction')
+    .where('statusName','=','finish')
+}
+exports.getTransactionCancel=async() => {
+    return await knex('transaction')
+    .where('statusName','=','cancel')
+}
 exports.insertTransaction = async (transaction) => {
     return await knex('transaction').insert({
         menuName: transaction.menuName,

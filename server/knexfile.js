@@ -14,7 +14,7 @@
         development: {
             client: 'mysql',
             connection: {
-                host: '54.169.13.223',
+                host: '3.0.98.170',
                 user: 'res',
                 password: 'resDB',
                 database: 'restaurantmanagement'

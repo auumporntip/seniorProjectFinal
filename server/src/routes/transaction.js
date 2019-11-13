@@ -7,6 +7,14 @@ router.get('/getalltransaction', async(req, res) => {
     res.send(await transaction.getAllTransaction())
 })
 
+router.get('/gettransactionfinish', async(req, res) => {
+    res.send(await transaction.getTransactionFinish())
+})
+
+router.get('/gettransactioncancel', async(req, res) => {
+    res.send(await transaction.getTransactionCancel())
+})
+
 router.post('/inserttransaction', async(req,res)=>{
     res.send(await transaction.insertTransaction(req.body))
 })

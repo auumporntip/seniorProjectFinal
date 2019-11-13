@@ -48,7 +48,7 @@
                 </b-card-body>
                 <card-line2-chart-example
                   chartId="card-chart-02"
-                 style="height:70px;width:194px;display:block;"
+                  style="height:70px;width:194px;display:block;"
                   height="70"
                   width="194"
                 />
@@ -121,7 +121,7 @@
                   </v-tabs-items>
                 </v-tabs>
               </b-col>
-            </b-row> -->
+            </b-row>-->
             <div class="container">
               <v-layout row wrap>
                 <v-flex xs2 id="first">
@@ -304,6 +304,7 @@ import CardBarChartExample from "./CardBarChartExample";
 import MainChartExample from "./MainChartExample";
 import SocialBoxChartExample from "./SocialBoxChartExample";
 import CalloutChartExample from "./CalloutChartExample";
+import axios from "axios";
 
 export default {
   name: "StaticPage",
@@ -322,7 +323,9 @@ export default {
     return {
       selected: [],
       tab: null,
-      items: ["Day", "Month", "Year"]
+      items: ["Day", "Month", "Year"],
+      transaction: "",
+      transactionCacel: ""
     };
   },
   methods: {
@@ -341,8 +344,23 @@ export default {
     },
     flag(value) {
       return "flag-icon flag-icon-" + value;
+    },
+    getTransaction() {
+      axios.get(host + "gettransactionfinish").then(response => {
+        this.transaction = response.data;
+      });
+    },
+    getTransactionCancel() {
+      axios.get(host + "gettransactioncancel").then(response => {
+        this.transactionCacel = response.data;
+      });
     }
-  }
+  },
+  created() {
+    this.getTransaction()
+    this.getTransactionCancel()
+  },
+  computed() {}
 };
 </script>
 
@@ -355,7 +373,7 @@ export default {
 }
 #bigbox {
   background-color: #eeeeee;
-  /* height: 2000px; */
+  height: 2000px;
   padding: 2%;
   margin-top: -800px;
   margin-left: 20%;
