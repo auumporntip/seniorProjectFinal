@@ -49,13 +49,13 @@
               : {{ checkedRows.length }}
             </template>
           </b-table>
-          <v-btn color="#B7CDC2" @click="AddDialog=true" style="margin-bottom:2%;">
+          <v-btn color="#B7CDC2" @click="AddDialog=true" class="addDialog">
             <v-icon left dark>add</v-icon>Add Category
           </v-btn>
           <!-- <v-btn color="black" @click="editDialog=true" flat>
             <v-icon left dark>edit</v-icon>Edit Category
           </v-btn>-->
-          <v-btn color="#B7CDC2" @click="comfirmDelete()" style="margin-bottom:2%;">
+          <v-btn color="#B7CDC2" @click="comfirmDelete()" style="margin-bottom:3%;">
             <v-icon left dark>delete</v-icon>Delete Category
           </v-btn>
         </v-card>
@@ -176,8 +176,12 @@
             <!-- <v-btn color="primary" dark @click.stop="dialog = true">Open Dialog</v-btn> -->
             <v-dialog v-model="dialog" max-width="290">
               <v-card>
-                <v-card-title class="headline">Error</v-card-title>
-                <v-card-text>Please selected some menu row</v-card-text>
+                <v-icon
+            color="red lighten-1"
+            style="font-size:70px; margin-left:1.55em; margin-top: 0.3em;"
+          >error</v-icon>
+                <v-card-title class="nameDialog1">Error!</v-card-title>
+                <v-card-text style="font-size:1.5em;">Please selected some menu row</v-card-text>
                 <v-card-actions>
                   <div class="flex-grow-1"></div>
                   <v-btn color="blue darken-1" flat @click="closeDialog()">CLOSE</v-btn>
@@ -408,6 +412,18 @@ div.error--text {
   margin-top: 1%;
   margin-left: 2%;
   font-size: 2em;
+}
+.addDialog{
+  margin-bottom:3%;
+  overflow-x: hidden;
+  margin-left: 3%;
+}
+.nameDialog1 {
+  margin-left: 2%;
+  font-size: 2.5em;
+ justify-content: center;
+  color: rgb(97, 97, 97);
+  padding-top: 5%;
 }
 </style>
 

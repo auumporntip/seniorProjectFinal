@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-nav :value="true" color="#cd9575" fixed>
+  <v-bottom-nav :value="true" color="#84A295" fixed>
     <v-btn color="white" flat value="callEmp" href="/MoCallEmp">
       <span class="white--text">Call Employee</span>
       <v-icon color="white">call</v-icon>

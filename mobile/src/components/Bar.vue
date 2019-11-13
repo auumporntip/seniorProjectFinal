@@ -1,18 +1,19 @@
 <template>
   <div>
-    <v-toolbar dark color="#cd9575" fixed>
+    <v-toolbar color="#84A295" fixed>
       <p v-if="this.$store.getters.namePages === 'Menu'" flat icon color="white">
         <v-icon></v-icon>
       </p>
       <v-img
         v-else-if=" this.$store.getters.namePages ==='TypeOfService'"
         :src="image_src"
-        max-width="40px"
+        max-width="65px"
+        style="margin-left:-1em;"
       ></v-img>
-      <!-- <v-btn v-else @click="goBack" flat icon color="white">
+      <v-btn v-else @click="goBack" flat icon color="white">
         <v-icon>arrow_back</v-icon>
-      </v-btn> -->
-      <v-toolbar-title class="headline-text white--text">{{this.$store.getters.namePages}}</v-toolbar-title>
+      </v-btn>
+      <v-toolbar-title class="headline-text white--text" style="margin-left:5px;">{{this.$store.getters.namePages}}</v-toolbar-title>
       <v-spacer></v-spacer>
       {{time}}
     </v-toolbar>
@@ -36,7 +37,7 @@ export default {
     return {
       dialog: false,
       warning: false,
-      image_src: require("../assets/1.png"),
+      image_src: require("../assets/loginCircle.jpg"),
       typeOfService: [],
       billId: "",
       tableNumber: "",
@@ -49,6 +50,7 @@ export default {
       if (
         this.$store.getters.namePages === "Order" ||
         this.$store.getters.namePages === "Status" ||
+        this.$store.getters.namePages === "CallEmployee" ||
         this.$store.getters.namePages === "Receipt"
       ) {
         this.$router.push("/Momenu");

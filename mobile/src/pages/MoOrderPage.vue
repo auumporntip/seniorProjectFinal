@@ -33,7 +33,7 @@
       <v-card height="auto" flat>
         <v-card-title>
           <strong class="subheading black--text">Total Prices: {{sumTotalPrice}} ฿</strong>
-          <v-btn @click="confirm" color="#cd9575" class="white--text" id="confirmBtn">Confirm</v-btn>
+          <v-btn @click="confirm" color="#B7CDC2" id="confirmBtn">Confirm</v-btn>
         </v-card-title>
       </v-card>
     </div>

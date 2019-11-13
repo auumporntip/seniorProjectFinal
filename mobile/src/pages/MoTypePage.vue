@@ -1,36 +1,38 @@
 <template>
   <v-content>
-    <Bar></Bar>
-    <v-flex class="space">
-      <v-dialog max-width="490" v-model="dialog">
-        <v-card>
-          <v-form ref="form">
-            <v-container fluid>
-              <v-text-field
-                label="Number of Customers"
-                prepend-icon="people"
-                v-model="newCust.numOfCust"
-                :rules="numRules"
-              ></v-text-field>
-            </v-container>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="#7d7a73" flat @click="clickBack">BACK</v-btn>
-              <v-btn color="#305378" flat @click="clickNext">NEXT</v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-dialog>
-      <div v-for="service in typeOfService" :key="service.typeId">
-        <v-img :src="service.typePathImage"></v-img>
-        <v-btn
-          block
-          color="#cd9575"
-          class="white--text"
-          @click="openDialog(service)"
-        >{{service.typeName}} {{service.typePrice}}</v-btn>
-      </div>
-    </v-flex>
+    <div class="bg">
+      <Bar></Bar>
+      <v-flex class="space">
+        <v-dialog max-width="490" v-model="dialog" data-app>
+          <v-card>
+            <v-form ref="form">
+              <v-container fluid>
+                <v-text-field
+                  label="Number of Customers"
+                  prepend-icon="people"
+                  v-model="newCust.numOfCust"
+                  :rules="numRules"
+                ></v-text-field>
+              </v-container>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#7d7a73" flat @click="clickBack">BACK</v-btn>
+                <v-btn color="#305378" flat @click="clickNext">NEXT</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-dialog>
+        <div v-for="service in typeOfService" :key="service.typeId">
+          <v-img v-if="service.typePathImage != null" :src="service.typePathImage"></v-img>
+          <v-img v-else :src="require('../assets/nophoto.png')"></v-img>
+          <v-btn
+            block
+            color="#B7CDC2"
+            @click="openDialog(service)"
+          >{{service.typeName}} {{service.typePrice}}</v-btn>
+        </div>
+      </v-flex>
+    </div>
   </v-content>
 </template>
 
@@ -41,7 +43,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
-import {host} from './data'
+import { host } from "./data";
 
 export default {
   name: "MoTypePage",
@@ -56,7 +58,10 @@ export default {
       newCust: [],
       dialog: false,
 
-      numRules: [v => !!v || "Number of Customers is required"],
+      numRules: [
+        v => !!v || "Number of customer is required",
+        v => v > 0 || "Number of customer must more than zero"
+      ],
       tableRules: [v => !!v || "Table number is required"]
     };
   },
@@ -74,7 +79,7 @@ export default {
       const totalPrice = 0;
       if (this.$refs.form.validate()) {
         axios
-          .post(host+"insertbill", {
+          .post(host + "insertbill", {
             totalPrice: this.newCust.numOfCust * this.selectService.typePrice,
             eatTimeEnd: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
             eatTimeStart: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
@@ -91,26 +96,22 @@ export default {
               tableNumber: this.$route.params.tableNumber,
               typeOfService: this.selectService
             };
-            axios
-              .post(host+"signjwt", token)
-              .then(response => {
-                sessionStorage.setItem("token", response.data);
-                console.log(
-                  jwt.decode(sessionStorage.getItem("token", response.data))
-                );
-                this.dialog = false;
-                this.$refs.form.resetValidation();
-                this.$router.push("/Momenu");
-              });
+            axios.post(host + "signjwt", token).then(response => {
+              sessionStorage.setItem("token", response.data);
+              console.log(
+                jwt.decode(sessionStorage.getItem("token", response.data))
+              );
+              this.dialog = false;
+              this.$refs.form.resetValidation();
+              this.$router.push("/Momenu");
+            });
           });
       }
     }
   },
   created() {
     axios
-      .post(
-        host+"checkTable/" + this.$route.params.tableNumber
-      )
+      .post(host + "checkTable/" + this.$route.params.tableNumber)
       .then(response => {
         if (response.data.tableAvailable === false) {
           this.$router.push("/MoLanding");
@@ -118,11 +119,9 @@ export default {
       });
 
     this.$store.commit("setNamePages", "TypeOfService");
-    axios
-      .get(host+"gettypeofservice/" + 1)
-      .then(response => {
-        this.typeOfService = response.data;
-      });
+    axios.get(host + "gettypeofservice/" + 1).then(response => {
+      this.typeOfService = response.data;
+    });
   }
 };
 </script>
@@ -130,9 +129,12 @@ export default {
 <style scoped>
 .space {
   margin: 15px;
-  padding-top: 20%;
+  padding-top: 4.4em;
 }
 div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
+}
+.bg {
+  background-color: #f7f6ee;
 }
 </style>

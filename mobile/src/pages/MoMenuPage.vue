@@ -2,9 +2,9 @@
   <v-content>
     <v-toolbar class="tabBar" fixed>
       <Bar></Bar>
-      <v-tabs v-model="tab" color="white" fixed-tabs class="tabSlide">
-        <v-tabs-slider color="#cd9575"></v-tabs-slider>
-        <v-tab v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
+      <v-tabs v-model="tab" color="#84A295" fixed-tabs class="tabSlide">
+        <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
+        <v-tab class="white--text" v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
       </v-tabs>
     </v-toolbar>
     <v-card color="white" class="cardMenu">
@@ -38,7 +38,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-btn @click="next" class="white--text" color="#cd9575" block id="spaceNext">NEXT</v-btn>
+      <v-btn @click="next" class="white--text" color="#B7CDC2" block id="spaceNext">NEXT</v-btn>
     </v-card>
     <navBar></navBar>
   </v-content>
@@ -195,7 +195,7 @@ export default {
   margin-right: 5%;
 }
 .tabBar {
-  padding-top: 18%;
-  background-color: white;
+  padding-top: 4em;
+  background-color: #84A295;
 }
 </style>

@@ -16,22 +16,18 @@
       <b-table :data="bill" :columns="columns"></b-table>
     </div>
 
-    <v-btn
-      class="white--text"
-      color="#cd9575"
-      id="spaceNext"
-      @click="orderDialog=true"
-    >Ordered detail</v-btn>
+    <v-btn color="#B7CDC2" id="spaceNext" @click="orderDialog=true">Ordered detail</v-btn>
 
-    <v-btn class="white--text" color="#cd9575" id="spaceNext" @click="dialog=true">Check Bill</v-btn>
+    <v-btn color="#B7CDC2" @click="dialog=true" style="margin-left:2%;">Check Bill</v-btn>
 
     <v-row justify="center">
-      <v-dialog v-model="dialog" max-width="290">
-        <v-card>
-           <v-icon color="red lighten-1" style="font-size:75px; margin-left:36%; margin-top: 2%;">error</v-icon>
-          <v-card-text class="nameDialog">
-           Are you sure you want to check bill?
-          </v-card-text>
+      <v-dialog v-model="dialog" max-width="290" data-app>
+        <v-card class="dialogCheckbill">
+          <v-icon
+            color="red lighten-1"
+            style="font-size:70px; margin-left:1.55em; margin-top: 0.3em;"
+          >error</v-icon>
+          <v-card-text class="nameDialog">Are you sure you want to check bill?</v-card-text>
           <v-card-actions>
             <div class="flex-grow-1"></div>
             <v-btn color="#7d7a73" flat @click="dialog=false" class="cancelBtn">NO</v-btn>
@@ -41,7 +37,7 @@
       </v-dialog>
     </v-row>
 
-    <v-dialog max-width="490" v-model="orderDialog">
+    <v-dialog max-width="490" v-model="orderDialog" data-app>
       <v-card>
         <v-form ref="form">
           <v-container fluid>
@@ -120,7 +116,7 @@ export default {
   },
   data() {
     return {
-      bill: "",
+      bill: [ ],
       token: "",
       date: "",
       time: "",
@@ -207,13 +203,10 @@ export default {
   padding-top: 20%;
 }
 #spaceNext {
-  margin-left: 6%;
+  margin-left: 8%;
 }
 .textHead {
   font-weight: 1000;
-}
-.text {
-  text-align: left;
   font-weight: 500;
 }
 .cancelBtn {
@@ -222,19 +215,15 @@ export default {
 .okBtn {
   padding-left: 20%;
 }
-.text {
-  font-size: 18px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 20px;
-  padding-bottom: 40px;
-}
 .img {
   padding-top: 20px;
 }
 .nameDialog {
-  margin-top: 1%;
   margin-left: 2%;
   font-size: 1.5em;
+  padding-top: 0%;
+}
+.dialogCheckbill{
+  border-radius: 5%;
 }
 </style>

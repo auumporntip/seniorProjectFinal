@@ -29,15 +29,15 @@
         </v-card-text>
       </v-card>
     </div>
-    <v-btn @click="done" class="white--text" color="#cd9575" block id="spaceNext">DONE</v-btn>
+    <v-btn @click="done" color="#B7CDC2" block id="spaceNext">DONE</v-btn>
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="290">
         <v-card>
           <v-card-title class="headline">Are you sure to send message</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn color="green darken-1" text @click="confirmDialog">OK</v-btn>
+            <v-btn color="#7d7a73" flat @click="dialog = false">NO</v-btn>
+            <v-btn color="#305378" flat @click="confirmDialog">YES</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
