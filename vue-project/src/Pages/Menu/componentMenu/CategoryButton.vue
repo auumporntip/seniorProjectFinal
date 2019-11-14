@@ -201,6 +201,7 @@
 <script>
 import axios from "axios";
 import { store } from "../../../store/store";
+import { host } from "../../data";
 
 export default {
   name: "CategoryButton",
@@ -255,7 +256,7 @@ export default {
     addSave() {
       if (this.$refs.form.validate()) {
         axios
-          .post("http://localhost:3000/api/insertCategory", {
+          .post(host+"insertCategory", {
             categoryName: this.newCat.categoryName,
             restaurantId: 1
           })
@@ -277,7 +278,7 @@ export default {
       console.log(this.checkedRows);
       if (this.$refs.form1.validate()) {
         axios
-          .put("http://localhost:3000/api/updatecategory", {
+          .put(host+"updatecategory", {
             categoryId: this.cat.categoryId,
             categoryName: this.cat.categoryName
           })
@@ -287,7 +288,7 @@ export default {
             this.categoryBtn = true;
             this.reCat();
             axios
-              .get("http://localhost:3000/api/getallmenu/" + 1)
+              .get(host+"getallmenu/" + 1)
               .then(response => {
                 this.$store.commit("setMenu", response.data);
               });
@@ -300,7 +301,7 @@ export default {
         console.log(this.checkedRows);
         axios
           .delete(
-            "http://localhost:3000/api/deletecategory/" +
+            host+"deletecategory/" +
               this.checkedRows[index].categoryId
           )
           .then(() => {
@@ -333,7 +334,7 @@ export default {
       this.categoryBtn = true;
     },
     reCat() {
-      axios.get("http://localhost:3000/api/getallcategory").then(response => {
+      axios.get(host+"getallcategory").then(response => {
         this.category = response.data;
       });
     },
@@ -382,7 +383,7 @@ export default {
   },
   
   created: function() {
-    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+    axios.get(host+"getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }

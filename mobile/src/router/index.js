@@ -17,11 +17,6 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'MoTypePage',
-      component: MoTypePage
-       
-    }, {
       path: '/MoMenu',
       name: 'MoMenuPage',
       component: MoMenuPage

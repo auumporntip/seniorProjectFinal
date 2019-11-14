@@ -67,6 +67,7 @@
 <script>
 import axios from "axios";
 import { store } from "../../../store/store";
+import { host } from "../../data";
 
 export default {
   name: "AddEmployee",
@@ -112,10 +113,10 @@ export default {
       }
   },
   created() {
-     axios.get("http://localhost:3000/api/getallemployee").then(response => { 
+     axios.get(host+"getallemployee").then(response => { 
       this.empData = response.data; 
     }); 
-    axios.get("http://localhost:3000/api/getallposition/").then(response => {
+    axios.get(host+"getallposition/").then(response => {
       this.position = response.data;
     });
      
@@ -137,7 +138,7 @@ export default {
         console.log(this.selectedPosition);
 
         axios
-          .post("http://localhost:3000/api/insertemployee", {
+          .post(host+"insertemployee", {
             empName: this.employee.empName,
             empUsername: this.employee.empUsername,
             empPassword: this.employee.empPassword,
@@ -150,7 +151,7 @@ export default {
         
           .then(response => {
             axios
-              .get("http://localhost:3000/api/getallemployee/")
+              .get(host+"getallemployee/")
               .then(response => {
                 this.$store.commit("setEmployee",response.data);
                 });
@@ -167,7 +168,7 @@ export default {
     },
     refreshPage(){
       axios
-        .get("http://localhost:3000/api/getallemployee")
+        .get(host+"getallemployee")
         .then(response => {
           this.empData = response.data;
         });
@@ -176,7 +177,7 @@ export default {
       console.log(this.selectedPosition);
     },
     clickButton() {
-      axios.get("http://localhost:3000/api/getallposition").then(response => {
+      axios.get(host+"getallposition").then(response => {
         this.position = response.data;
       });
     }

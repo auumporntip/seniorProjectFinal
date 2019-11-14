@@ -182,6 +182,8 @@ import EmpTable from "./componentEmp/EmpTable";
 import jwt from "jsonwebtoken";
 import { store } from "../../store/store";
 import axios from "axios";
+import { host } from "../data";
+
 export default {
   name: "EmployeePage",
   components: {
@@ -248,7 +250,7 @@ export default {
     saveAddDialog() {
       if (this.$refs.form.validate()) {
         axios
-          .post("http://localhost:3000/api/insertAccount", {
+          .post(host+"insertAccount", {
             name: this.newEmp.name,
             userName: this.newEmp.userName,
             email: this.newEmp.email,
@@ -281,7 +283,7 @@ export default {
       }
       axios
         .get(
-          "http://localhost:3000/api/getaccountbyposition/" +
+          host+"getaccountbyposition/" +
             this.account.restaurantId +
             "/" +
             this.account.positionId
@@ -299,7 +301,7 @@ export default {
     confirmEdit() {
       if (this.$refs.form1.validate()) {
         axios
-          .put("http://localhost:3000/api/updateAccount/", {
+          .put(host+"updateAccount/", {
             accountId: this.editEmp.accountId,
             userName: this.editEmp.userName,
             password: this.editEmp.password,
@@ -328,7 +330,7 @@ export default {
     },
     clickYesDeleteDialog() {
       axios
-        .delete("http://localhost:3000/api/deleteaccount/" + this.accountId)
+        .delete(host+"deleteaccount/" + this.accountId)
         .then(() => {
           this.deleteDialog = false;
           this.refreshPage();
@@ -394,7 +396,7 @@ export default {
     }
     axios
       .get(
-        "http://localhost:3000/api/getaccountbyposition/" +
+        host+"getaccountbyposition/" +
           this.account.restaurantId +
           "/" +
           this.account.positionId
@@ -403,7 +405,7 @@ export default {
         this.empData = response.data;
       });
 
-    axios.get("http://localhost:3000/api/getallposition/").then(response => {
+    axios.get(host+"getallposition/").then(response => {
       this.position = response.data;
     });
   }

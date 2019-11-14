@@ -8,6 +8,7 @@
 <script> 
 import axios from "axios"; 
 import { store } from "../../../store/store"; 
+import { host } from "../../data";
  
 export default { 
   name: "DeleteEmployee", 
@@ -24,7 +25,7 @@ export default {
           onConfirm: () => { 
             axios 
               .delete( 
-                "http://localhost:3000/api/deletemenu/" + 
+                host+"deletemenu/" + 
                   this.$store.getters.selectedMenu.menuId + 
                   "/" + 
                   1 
@@ -32,7 +33,7 @@ export default {
               ) 
               .then( 
                 axios 
-                  .get("http://localhost:3000/api/getallmenu/" + 1) 
+                  .get(host+"getallmenu/" + 1) 
                   .then(response => { 
                     this.$store.commit("setMenu", response.data); 
                     this.$store.commit("setCheckCategory", false); 

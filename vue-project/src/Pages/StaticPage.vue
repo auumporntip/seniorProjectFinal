@@ -9,7 +9,7 @@
 
         <div>
           <v-layout row>
-            <v-flex xs3>
+            <!-- <v-flex xs3>
               <b-card no-body class="bg-primary">
                 <b-dropdown class="float-right" variant="transparent p-0" right>
                   <template slot="button-content"></template>
@@ -30,7 +30,7 @@
                 />
                 <div id></div>
 
-                <!-- <card-line1-chart-example chartId="card-chart-01" class="chart-wrapper px-3" style="height:70px;" :height="70"/> -->
+                <card-line1-chart-example chartId="card-chart-01" class="chart-wrapper px-3" style="height:70px;" :height="70"/>
               </b-card>
             </v-flex>
             <v-flex xs3>
@@ -94,7 +94,7 @@
                   width="194"
                 />
               </b-card>
-            </v-flex>
+            </v-flex>-->
           </v-layout>
 
           <b-card>
@@ -125,32 +125,64 @@
             <div class="container">
               <v-layout row wrap>
                 <v-flex xs2 id="first">
-                  <h1>Visits</h1>
-                  <strong>29.703 Users (60%)</strong>
-                  <v-progress-linear color="#4dbd74" :value="60"></v-progress-linear>
+                  <h1>Price</h1>
+                  {{numberOfCustomer}}
+                  <strong>{{totalPrice}}</strong>
+                  <v-progress-linear color="#4dbd74" :value="100"></v-progress-linear>
                 </v-flex>
-                <v-flex xs2 id="second">
-                  <h2>Unique</h2>
-                  <strong>24.093 Users (90%)</strong>
-                  <v-progress-linear color="#20a8d8" :value="90"></v-progress-linear>
-                </v-flex>
+                <!-- <v-flex xs2 id="second">
+                  <h2>All Customer</h2>
+                  <strong>{{numberOfCust}} Users</strong>
+                  <v-progress-linear color="#20a8d8" :value="100"></v-progress-linear>
+                </v-flex> -->
                 <v-flex xs2 id="third">
-                  <h3>Pageviews</h3>
-                  <strong>78.706 Views (100%)</strong>
-                  <v-progress-linear color="#f86c6b" :value="100"></v-progress-linear>
+                  <h3>Customer Buffet</h3>
+                  <strong>{{numberOfCustBuffet}} Users ({{numberOfCustBuffet/numberOfCust*100}}%)</strong>
+                  <v-progress-linear color="#f86c6b" :value="numberOfCustBuffet/numberOfCust*100"></v-progress-linear>
                 </v-flex>
                 <v-flex xs2 id="forth">
-                  <h4>New Users</h4>
-                  <strong>22.123 Users (20%)</strong>
-                  <v-progress-linear color="#f9b115" :value="20"></v-progress-linear>
+                  <h4>Customer Alacarte</h4>
+                  <strong>{{numberOfCustAlacarte}} Users ({{numberOfCustAlacarte/numberOfCust*100}}%)</strong>
+                  <v-progress-linear color="#f9b115" :value="numberOfCustAlacarte/numberOfCust*100"></v-progress-linear>
                 </v-flex>
                 <v-flex xs2 id="fifth">
-                  <h5>Bounce Rate</h5>
-                  <strong>Average Rate (30.15%)</strong>
-                  <v-progress-linear color="#4b0082" :value="30"></v-progress-linear>
+                  <h5>Buffet Price</h5>
+                  <strong>{{buffetPrice}} ({{buffetPrice/totalPrice*100}}%)</strong>
+                  <v-progress-linear color="#4b0082" :value="buffetPrice/totalPrice*100"></v-progress-linear>
+                </v-flex>
+                <v-flex xs2 id="second">
+                  <h5>Alacarte Price</h5>
+                  <strong>{{alacartePrice}} ({{alacartePrice/totalPrice*100}}%)</strong>
+                  <v-progress-linear color="#4b0082" :value="alacartePrice/totalPrice*100"></v-progress-linear>
                 </v-flex>
               </v-layout>
             </div>
+
+            <v-flex xs2>
+              <b-card no-body class="bg-primary">
+                <b-dropdown class="float-right" variant="transparent p-0" right>
+                  <template slot="button-content"></template>
+                  <b-dropdown-item>Action</b-dropdown-item>
+                  <b-dropdown-item>Another action</b-dropdown-item>
+                  <b-dropdown-item>Something else here...</b-dropdown-item>
+                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+                </b-dropdown>
+                <h4 style="color:white; padding-left:10%;">9.823</h4>
+                <p style="color:white; padding-left:10%;">Members online1</p>
+
+                <card-line1-chart-example
+                  chartId="card-chart-01"
+                  class="chartjs-render-monitor"
+                  style="height:70px;width:194px;display:block;"
+                  height="70"
+                  width="194"
+                />
+                <div id></div>
+
+              </b-card>
+            </v-flex>
+
+
             <div class="container">
               <hr />
               <v-layout row wrap>
@@ -324,8 +356,16 @@ export default {
       selected: [],
       tab: null,
       items: ["Day", "Month", "Year"],
-      transaction: "",
-      transactionCacel: ""
+      transaction: [],
+      transactionCacel: "",
+      numberOfCust: 0,
+      totalPrice: 0,
+      numberOfCustBuffet: 0,
+      numberOfCustAlacarte: 0,
+      distinctCategory: [],
+      bestSellerMenu: "",
+      buffetPrice:0,
+      alacartePrice:0
     };
   },
   methods: {
@@ -354,13 +394,130 @@ export default {
       axios.get(host + "gettransactioncancel").then(response => {
         this.transactionCacel = response.data;
       });
+    },
+    filterMenuFromCategoryName(categoryName) {
+      const transactionByCategory = this.transaction.filter(
+        items => items.categoryName === categoryName
+      );
+      return transactionByCategory;
+    },
+    findBestSellerMenuByCategoryName(categoryName) {
+      const transaction = this.filterMenuFromCategoryName(categoryName);
+      const distinctMenu = [
+        ...new Set(transaction.map(items => items.menuName))
+      ];
+      var bestSellerMenu = [];
+      var count = 0;
+      for (let index = 0; index < distinctMenu.length; index++) {
+        const filterMenu = transaction.filter(
+          items => items.menuName === distinctMenu[index]
+        );
+        var amount = 0;
+        for (let index = 0; index < filterMenu.length; index++) {
+          amount += filterMenu[index].amount;
+        }
+        if (amount > count) {
+          count = amount;
+          bestSellerMenu = [];
+          bestSellerMenu.push(distinctMenu[index]);
+        } else if (amount === count) {
+          bestSellerMenu.push(distinctMenu[index]);
+        }
+      }
+      return { bestSellerMenu: bestSellerMenu, count: count };
+    },
+    findWorseSellerMenuByCategoryName(categoryName) {
+      const transaction = this.filterMenuFromCategoryName(categoryName);
+      const distinctMenu = [
+        ...new Set(transaction.map(items => items.menuName))
+      ];
+      var worseSellerMenu = [];
+      var count = 0;
+      for (let index = 0; index < distinctMenu.length; index++) {
+        const filterMenu = transaction.filter(
+          items => items.menuName === distinctMenu[index]
+        );
+        var amount = 0;
+        for (let index = 0; index < filterMenu.length; index++) {
+          amount += filterMenu[index].amount;
+        }
+        if (count === 0) {
+          count = amount;
+        } else if (amount < count) {
+          count = amount;
+          worseSellerMenu = [];
+          worseSellerMenu.push(distinctMenu[index]);
+        } else if (amount === count) {
+          worseSellerMenu.push(distinctMenu[index]);
+        }
+      }
+      return { worseSellerMenu: worseSellerMenu, count: count };
+    },
+    sortMenuBestSeller() {
+      const distinctMenuName = [
+        ...new Set(this.transaction.map(items => items.menuName))
+      ];
+      var menuAndAmount = [];
+      for (let index = 0; index < distinctMenuName.length; index++) {
+        var menu = this.transaction.filter(
+          items => items.menuName === distinctMenuName[index]
+        );
+        var amount = 0;
+        for (let index = 0; index < menu.length; index++) {
+          amount += menu[index].amount;
+        }
+        menuAndAmount.push([distinctMenuName[index], amount]);
+      }
+      var sortmenu = menuAndAmount.sort(function(a, b) {
+        return b[1] - a[1];
+      });
+      return sortmenu;
     }
   },
   created() {
-    this.getTransaction()
-    this.getTransactionCancel()
+    this.getTransaction();
+    this.getTransactionCancel();
   },
-  computed() {}
+  computed: {
+    numberOfCustomer() {
+      this.numberOfCust = 0;
+      this.totalPrice = 0;
+      this.numberOfCustBuffet = 0;
+      this.numberOfCustAlacarte = 0;
+
+      const distinctCategoryName = [
+        ...new Set(this.transaction.map(items => items.categoryName))
+      ];
+
+      console.log(this.sortMenuBestSeller(), "top3");
+
+      for (let index = 0; index < distinctCategoryName.length; index++) {
+        console.log(
+          this.findBestSellerMenuByCategoryName(distinctCategoryName[index]),
+          distinctCategoryName[index]
+        );
+      }
+
+      for (let index = 0; index < distinctCategoryName.length; index++) {
+        console.log(
+          this.findWorseSellerMenuByCategoryName(distinctCategoryName[index]),
+          distinctCategoryName[index]
+        );
+      }
+
+      for (let index = 0; index < this.transaction.length; index++) {
+        if (this.transaction[index].service === "buffet") {
+          this.numberOfCustBuffet += this.transaction[index].numOfCust;
+          this.buffetPrice+=this.transaction[index].totalPrice
+        } else if (this.transaction[index].service === "alacarte") {
+          this.numberOfCustAlacarte += this.transaction[index].numOfCust;
+          this.alacartePrice += this.transaction[index].totalPrice
+        }
+        this.numberOfCust += this.transaction[index].numOfCust;
+        this.totalPrice += this.transaction[index].totalPrice;
+      }
+    }
+  }
 };
 </script>
 

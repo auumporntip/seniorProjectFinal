@@ -38,6 +38,7 @@ import { store } from "../../../store/store";
 import EditEmployee from "../componentEmp/EditEmployee";
 import DeleteEmployee from "../componentEmp/DeleteEmployee";
 import jwt from "jsonwebtoken";
+import { host } from "../../data";
 
 export default {
   name: "EmpTable",
@@ -76,7 +77,7 @@ export default {
 
     axios
       .get(
-        "http://localhost:3000/api/getaccountbyposition/" +
+        host+"getaccountbyposition/" +
           this.account.restaurantId +
           "/" +
           this.account.positionId

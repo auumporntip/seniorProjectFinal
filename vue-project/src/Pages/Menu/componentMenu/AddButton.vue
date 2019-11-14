@@ -83,6 +83,7 @@
 <script>
 import axios from "axios";
 import { store } from "../../../store/store";
+import { host } from "../../data";
 
 export default {
   name: "AddButton",
@@ -119,12 +120,12 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)
+      .get(host+"getallmenu/" + this.restaurantId)
       .then(response => {
         this.allMenu = response.data;
         console.log(this.allMenu);
       });
-    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+    axios.get(host+"getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   },
@@ -132,7 +133,7 @@ export default {
   methods: {
     clickButton() {
       axios
-        .get("http://localhost:3000/api/getcategory/" + this.restaurantId)
+        .get(host+"getcategory/" + this.restaurantId)
         .then(response => {
           this.category = response.data;
         });
@@ -157,11 +158,11 @@ export default {
           var formData = new FormData();
           formData.append("file", this.imageForUpload);
           axios
-            .post("http://localhost:3000/api/uploadFB", formData)
+            .post(host+"uploadFB", formData)
             .then(response => {
               this.pathImage = response.data.url;
               axios
-                .post("http://localhost:3000/api/insertmenu", {
+                .post(host+"insertmenu", {
                   menuName: this.menu.menuName,
                   menuPrice: this.menu.menuPrice,
                   categoryId: this.selectedCategory,
@@ -171,7 +172,7 @@ export default {
                 .then(response => {
                   axios
                     .get(
-                      "http://localhost:3000/api/getallmenu/" +
+                      host+"getallmenu/" +
                         this.restaurantId
                     )
                     .then(response => {
@@ -184,7 +185,7 @@ export default {
             });
         } else {
           axios
-            .post("http://localhost:3000/api/insertmenu", {
+            .post(host+"insertmenu", {
               menuName: this.menu.menuName,
               menuPrice: this.menu.menuPrice,
               categoryId: this.selectedCategory,
@@ -194,7 +195,7 @@ export default {
             .then(response => {
               axios
                 .get(
-                  "http://localhost:3000/api/getallmenu/" + this.restaurantId
+                  host+"getallmenu/" + this.restaurantId
                 )
                 .then(response => {
                   this.allMenu = response.data;

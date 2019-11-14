@@ -75,6 +75,7 @@ import axios from "axios";
 import { store } from "../../../store/store";
 import EditButton from "../componentMenu/EditButton";
 import DeleteButton from "../componentMenu/DeleteButton";
+import { host } from "../../data";
 
 export default {
   name: "TestAxios",
@@ -109,7 +110,7 @@ export default {
     addSave() {
       if (this.$refs.form.validate()) {
         axios
-          .post("http://localhost:3000/api/insertCategory", {
+          .post(host+"insertCategory", {
             categoryName: this.newCat.categoryName,
             restaurantId: 1
           })
@@ -121,14 +122,14 @@ export default {
       }
     },
     reCat() {
-      axios.get("http://localhost:3000/api/getallcategory").then(response => {
+      axios.get(host+"getallcategory").then(response => {
         this.category = response.data;
       });
     },
     changeCategoryMenu() {
       axios
         .get(
-          "http://localhost:3000/api/getmenubycategory/" +
+          host+"getmenubycategory/" +
             this.selectedCategory.categoryId +
             "/" +
             1
@@ -139,7 +140,7 @@ export default {
       this.$store.commit("setCheckCategory", true);
     },
     allCategory() {
-      axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
+      axios.get(host+"getallmenu/" + 1).then(response => {
         this.$store.commit("setMenu", response.data);
       });
       this.$store.commit("setCheckCategory", false);
@@ -166,13 +167,13 @@ export default {
     }
   },
   created() {
-    axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
+    axios.get(host+"getallmenu/" + 1).then(response => {
       this.$store.commit("setMenu", response.data);
       this.selectedMenu = response.data[0];
 
       this.$store.commit("setSelectedMenu", response.data[0]);
     });
-    axios.get("http://localhost:3000/api/getcategory/" + 1).then(response => {
+    axios.get(host+"getcategory/" + 1).then(response => {
       this.category = response.data;
     });
 

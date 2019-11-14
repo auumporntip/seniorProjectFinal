@@ -79,6 +79,7 @@
 <script>
 import axios from "axios";
 import { store } from "../../../store/store";
+import { host } from "../../data";
 
 export default {
   name: "EditButton",
@@ -135,7 +136,7 @@ export default {
 
         this.name = this.$store.getters.selectedMenu.menuName;
         axios
-          .get("http://localhost:3000/api/getcategory/" + this.restaurantId)
+          .get(host+"getcategory/" + this.restaurantId)
           .then(response => {
             this.category = response.data;
           });
@@ -144,7 +145,7 @@ export default {
       }
     },
     closeDialog() {
-      axios.get("http://localhost:3000/api/getallmenu/" + 1).then(response => {
+      axios.get(host+"getallmenu/" + 1).then(response => {
         this.$store.commit("setMenu", response.data);
         this.$store.commit("setCheckCategory", false);
         this.$store.commit("setSelectedMenu", null);
@@ -161,7 +162,7 @@ export default {
     confirmEdit() {
       if (this.image == null) {
         axios
-          .put("http://localhost:3000/api/updatemenu/", this.selectedMenu)
+          .put(host+"updatemenu/", this.selectedMenu)
           .then(() => {
             this.closeDialog();
           });
@@ -169,11 +170,11 @@ export default {
         var formData = new FormData();
         formData.append("file", this.imageForUpload);
         axios
-          .post("http://localhost:3000/api/uploadFB", formData)
+          .post(host+"uploadFB", formData)
           .then(response => {
             this.selectedMenu.menuPathImage = response.data.url;
             axios
-              .put("http://localhost:3000/api/updatemenu/", this.selectedMenu)
+              .put(host+"updatemenu/", this.selectedMenu)
               .then(() => {
                 this.closeDialog();
               });
@@ -202,7 +203,7 @@ export default {
   
   created() {
     axios
-      .get("http://localhost:3000/api/getallmenu/" + this.restaurantId)
+      .get(host+"getallmenu/" + this.restaurantId)
       .then(response => {
         this.allMenu = response.data;
       });

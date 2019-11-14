@@ -5,10 +5,14 @@ exports.getAllTransaction=async() => {
 }
 exports.getTransactionFinish=async() => {
     return await knex('transaction')
+    .join('bill','bill.billId','=','transaction.billId')
+    .join('typeofservice','typeofservice.typeId','=','bill.typeId')
     .where('statusName','=','finish')
 }
 exports.getTransactionCancel=async() => {
     return await knex('transaction')
+    .join('bill','bill.billId','=','transaction.billId')
+    .join('typeofservice','typeofservice.typeId','=','bill.typeId')
     .where('statusName','=','cancel')
 }
 exports.insertTransaction = async (transaction) => {
