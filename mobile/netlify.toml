@@ -1,4 +1,5 @@
 [[redirects]]
   from = "/*"
-  to = "/motype/:tableNumber"
+  to = "/index.html"
+  query = {path = "/motype/:tableNumber"}
   status = 200
