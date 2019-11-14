@@ -15,47 +15,51 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  routes: [
-    {
-      path: '/MoMenu',
-      name: 'MoMenuPage',
-      component: MoMenuPage
-    }, {
-      path: '/MoType/:tableNumber',
-      name: 'MoTypePage',
-      component: MoTypePage
-    }, {
-      path: '/MoOrder',
-      name: 'MoOrderPage',
-      component: MoOrderPage
-    }, {
-      path: '/MoStatus',
-      name: 'MoStatusPage',
-      component: MoStatusPage
-    }, {
-      path: '/MoReceipt',
-      name: 'MoReceiptPage',
-      component: MoReceiptPage
-    },{
-      path: '/MoSuccess',
-      name: 'MoSuccess',
-      component: MoSuccess
-    },{
-      path: '/MoCallEmp',
-      name: 'MoCallEmp',
-      component: MoCallEmp
-    },{
-      path: '/MoWait',
-      name: 'MoWaitPage',
-      component: MoWaitPage
-    },{
-      path: '/MoLanding',
-      name: 'MoLandingPage',
-      component: MoLandingPage
-    },{
-      path:'*',
-      name: 'PageNotFound',
-      component: PageNotFound
-    }
+  routes: [{
+    path: '/',
+    name: 'MoLandingPage',
+    component: MoLandingPage
+  },
+  {
+    path: '/MoMenu',
+    name: 'MoMenuPage',
+    component: MoMenuPage
+  }, {
+    path: '/MoType/:tableNumber',
+    name: 'MoTypePage',
+    component: MoTypePage
+  }, {
+    path: '/MoOrder',
+    name: 'MoOrderPage',
+    component: MoOrderPage
+  }, {
+    path: '/MoStatus',
+    name: 'MoStatusPage',
+    component: MoStatusPage
+  }, {
+    path: '/MoReceipt',
+    name: 'MoReceiptPage',
+    component: MoReceiptPage
+  }, {
+    path: '/MoSuccess',
+    name: 'MoSuccess',
+    component: MoSuccess
+  }, {
+    path: '/MoCallEmp',
+    name: 'MoCallEmp',
+    component: MoCallEmp
+  }, {
+    path: '/MoWait',
+    name: 'MoWaitPage',
+    component: MoWaitPage
+  }, {
+    path: '/MoLanding',
+    name: 'MoLandingPage',
+    component: MoLandingPage
+  }, {
+    path: '*',
+    name: 'PageNotFound',
+    component: PageNotFound
+  }
   ]
 })
