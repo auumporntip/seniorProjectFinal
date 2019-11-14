@@ -2,7 +2,7 @@
   <v-content>
     <v-toolbar class="tabBar" fixed>
       <Bar></Bar>
-      <v-tabs v-model="tab" color="#84A295" fixed-tabs class="tabSlide">
+      <v-tabs v-model="tab" color="#84A295" fixed-tabs>
         <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
         <v-tab class="white--text" v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
       </v-tabs>
