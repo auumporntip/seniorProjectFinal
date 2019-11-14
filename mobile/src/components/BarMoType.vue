@@ -1,26 +1,23 @@
 <template>
-  <v-toolbar dark color="#cd9575">
-  <v-img :src="image_src" max-width="40px"></v-img>
-  <v-toolbar-title class="headline-text white--text">{{nameRes}}</v-toolbar-title>
-     <v-spacer></v-spacer>
-    <div>
-     <h3 class="white--text" >{{namePro}}<br/></h3>
-    <h3 class="white--text" >{{billNo}}</h3>
-    </div>
-  </v-toolbar>
+  <div>
+    <v-toolbar color="#84A295" fixed>
+      <v-img
+        :src="image_src"
+        max-width="65px"
+        style="margin-left:-1em;"
+      ></v-img>
+      <v-toolbar-title class="headline-text white--text" style="margin-left:5px;">{{this.$store.getters.namePages}}</v-toolbar-title>
+
+    </v-toolbar>
+  </div>
 </template>
 
 <script>
 export default {
   name: "BarMoType",
-  data () {
-        return {
-            image_src: require("../assets/1.png"),
-            nameRes: "Restaurant",
-            namePro: "Buffet 1199.-",
-            billNo: "Bill No: 001"
-        }
-    }
+  created() {
+    
+  },
 };
 </script>
 

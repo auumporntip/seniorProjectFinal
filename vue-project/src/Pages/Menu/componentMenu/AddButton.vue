@@ -123,7 +123,6 @@ export default {
       .get(host+"getallmenu/" + this.restaurantId)
       .then(response => {
         this.allMenu = response.data;
-        console.log(this.allMenu);
       });
     axios.get(host+"getcategory/" + 1).then(response => {
       this.category = response.data;
@@ -137,9 +136,6 @@ export default {
         .then(response => {
           this.category = response.data;
         });
-    },
-    selected() {
-      console.log(this.selectedCategory);
     },
     onFileChange() {
       this.imageForUpload = this.image;

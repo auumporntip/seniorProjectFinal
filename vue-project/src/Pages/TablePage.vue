@@ -139,7 +139,7 @@ export default {
       t: "",
       deleteDialog: false,
       tableId: "",
-      host: "localhost",
+      host: "https://patrestaurantmobile.web.app/",
       value: "",
       size: 100,
       tableData: [],
@@ -264,13 +264,15 @@ export default {
           items.tableName.toLowerCase().includes(this.keyword.toLowerCase())
         );
       } else {
-        return this.typeData;
+        return this.tableData;
       }
     }
   },
   created() {
     axios.get(host + "getalltable").then(response => {
       this.tableData = response.data;
+      console.log(this.tableData);
+      
     });
   }
 };

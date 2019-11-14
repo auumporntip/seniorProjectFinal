@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <div class="bg">
-      <Bar></Bar>
+      <BarMoType></BarMoType>
       <v-flex class="space">
         <v-dialog max-width="490" v-model="dialog" data-app>
           <v-card>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import Bar from "../components/Bar";
+import BarMoType from "../components/BarMoType";
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -48,7 +48,7 @@ import { host } from "./data";
 export default {
   name: "MoTypePage",
   components: {
-    Bar
+    BarMoType
   },
   data() {
     return {

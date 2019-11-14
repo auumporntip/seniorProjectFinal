@@ -11,7 +11,7 @@ export const store = new Vuex.Store({
         selectedRestaurant:'',
         restaurantName:'Select your restaurant',
         //menu page
-        menu:{},
+        menu:[],
         selectedMenu:null,
         category:{},
         checkCategory:'',

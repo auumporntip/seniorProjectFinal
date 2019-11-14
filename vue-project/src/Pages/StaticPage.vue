@@ -489,20 +489,20 @@ export default {
         ...new Set(this.transaction.map(items => items.categoryName))
       ];
 
-      console.log(this.sortMenuBestSeller(), "top3");
+      // console.log(this.sortMenuBestSeller(), "top3");
 
       for (let index = 0; index < distinctCategoryName.length; index++) {
-        console.log(
-          this.findBestSellerMenuByCategoryName(distinctCategoryName[index]),
-          distinctCategoryName[index]
-        );
+        // console.log(
+        //   this.findBestSellerMenuByCategoryName(distinctCategoryName[index]),
+        //   distinctCategoryName[index]
+        // );
       }
 
       for (let index = 0; index < distinctCategoryName.length; index++) {
-        console.log(
-          this.findWorseSellerMenuByCategoryName(distinctCategoryName[index]),
-          distinctCategoryName[index]
-        );
+        // console.log(
+        //   this.findWorseSellerMenuByCategoryName(distinctCategoryName[index]),
+        //   distinctCategoryName[index]
+        // );
       }
 
       for (let index = 0; index < this.transaction.length; index++) {
