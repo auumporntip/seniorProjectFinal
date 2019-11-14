@@ -3,13 +3,15 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium">STATISTICS</v-card-title>
+        <v-card-title class="headline font-weight-medium"
+          >STATISTICS</v-card-title
+        >
         <!-- <div id="boxright">
         <div id="static">-->
 
         <div>
-          <v-layout row>
-            <!-- <v-flex xs3>
+          <!-- <v-layout row> -->
+          <!-- <v-flex xs3>
               <b-card no-body class="bg-primary">
                 <b-dropdown class="float-right" variant="transparent p-0" right>
                   <template slot="button-content"></template>
@@ -95,10 +97,10 @@
                 />
               </b-card>
             </v-flex>-->
-          </v-layout>
+          <!-- </v-layout> -->
 
-          <b-card>
-            <!-- <b-row>
+          <!-- <b-card> -->
+          <!-- <b-row>
               <b-col sm="5">
                 <center>
                   <h4 id="traffic">Restaurant Chart</h4>
@@ -122,43 +124,74 @@
                 </v-tabs>
               </b-col>
             </b-row>-->
-            <div class="container">
-              <v-layout row wrap>
-                <v-flex xs2 id="first">
-                  <h1>Price</h1>
-                  {{numberOfCustomer}}
-                  <strong>{{totalPrice}}</strong>
-                  <v-progress-linear color="#4dbd74" :value="100"></v-progress-linear>
-                </v-flex>
-                <!-- <v-flex xs2 id="second">
+          <div class="container">
+            <v-layout row wrap>
+              <v-flex xs2 id="first">
+                <h1>Total Price</h1>
+                {{ numberOfCustomer }}
+                <strong>{{ totalPrice }}</strong>
+                <v-progress-linear
+                  color="#4dbd74"
+                  :value="100"
+                ></v-progress-linear>
+              </v-flex>
+              <!-- <v-flex xs2 id="second">
                   <h2>All Customer</h2>
                   <strong>{{numberOfCust}} Users</strong>
                   <v-progress-linear color="#20a8d8" :value="100"></v-progress-linear>
                 </v-flex> -->
-                <v-flex xs2 id="third">
-                  <h3>Customer Buffet</h3>
-                  <strong>{{numberOfCustBuffet}} Users ({{numberOfCustBuffet/numberOfCust*100}}%)</strong>
-                  <v-progress-linear color="#f86c6b" :value="numberOfCustBuffet/numberOfCust*100"></v-progress-linear>
-                </v-flex>
-                <v-flex xs2 id="forth">
-                  <h4>Customer Alacarte</h4>
-                  <strong>{{numberOfCustAlacarte}} Users ({{numberOfCustAlacarte/numberOfCust*100}}%)</strong>
-                  <v-progress-linear color="#f9b115" :value="numberOfCustAlacarte/numberOfCust*100"></v-progress-linear>
-                </v-flex>
-                <v-flex xs2 id="fifth">
-                  <h5>Buffet Price</h5>
-                  <strong>{{buffetPrice}} ({{buffetPrice/totalPrice*100}}%)</strong>
-                  <v-progress-linear color="#4b0082" :value="buffetPrice/totalPrice*100"></v-progress-linear>
-                </v-flex>
-                <v-flex xs2 id="second">
-                  <h5>Alacarte Price</h5>
-                  <strong>{{alacartePrice}} ({{alacartePrice/totalPrice*100}}%)</strong>
-                  <v-progress-linear color="#4b0082" :value="alacartePrice/totalPrice*100"></v-progress-linear>
-                </v-flex>
-              </v-layout>
-            </div>
+              <v-flex xs2 id="third">
+                <h3>The total of buffet customer</h3>
+                <strong
+                  >{{ numberOfCustBuffet }} Users ({{
+                    (numberOfCustBuffet / numberOfCust) * 100
+                  }}%)</strong
+                >
+                <v-progress-linear
+                  color="#f86c6b"
+                  :value="(numberOfCustBuffet / numberOfCust) * 100"
+                ></v-progress-linear>
+              </v-flex>
+              <v-flex xs2 id="forth">
+                <h4>The total of a-la-carte customer</h4>
+                <strong
+                  >{{ numberOfCustAlacarte }} Users ({{
+                    (numberOfCustAlacarte / numberOfCust) * 100
+                  }}%)</strong
+                >
+                <v-progress-linear
+                  color="#f9b115"
+                  :value="(numberOfCustAlacarte / numberOfCust) * 100"
+                ></v-progress-linear>
+              </v-flex>
+              <v-flex xs2 id="fifth">
+                <h5>The total of buffet price</h5>
+                <strong
+                  >{{ buffetPrice }} ({{
+                    (buffetPrice / totalPrice) * 100
+                  }}%)</strong
+                >
+                <v-progress-linear
+                  color="#4b0082"
+                  :value="(buffetPrice / totalPrice) * 100"
+                ></v-progress-linear>
+              </v-flex>
+              <v-flex xs2 id="second">
+                <h5>The total of a-la-carte rice</h5>
+                <strong
+                  >{{ alacartePrice }} ({{
+                    (alacartePrice / totalPrice) * 100
+                  }}%)</strong
+                >
+                <v-progress-linear
+                  color="#4b0082"
+                  :value="(alacartePrice / totalPrice) * 100"
+                ></v-progress-linear>
+              </v-flex>
+            </v-layout>
+          </div>
 
-            <v-flex xs2>
+          <!-- <v-flex xs2>
               <b-card no-body class="bg-primary">
                 <b-dropdown class="float-right" variant="transparent p-0" right>
                   <template slot="button-content"></template>
@@ -180,10 +213,186 @@
                 <div id></div>
 
               </b-card>
+            </v-flex> -->
+          <v-layout row>
+            <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="300" class="styleTop3Table">
+                  <b-table
+                    :data="data"
+                    :columns="columns"
+                    style="padding-top:5em;"
+                  ></b-table>
+                </v-card>
+                <v-card width="250" class="styleTop3">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Top 3 the best selling</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
+                </v-card>
+              </div>
+            </v-flex>
+
+            <!-- category the most selling-->
+
+            <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="300" class="styleCategoryHeader">
+                  <v-tabs
+                    v-model="tab"
+                    color="#84A295"
+                    fixed-tabs
+                    style="padding-top:5em;"
+                  >
+                    <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
+                    <v-tab>a</v-tab>
+                    <v-tab>b</v-tab>
+                    <v-tab>c</v-tab>
+                    <!-- <v-tab
+                    class="white--text"
+                    v-for="category in category"
+                    :key="category.categoryId"
+                    >{{ category.categoryName }}</v-tab
+                  > -->
+
+                    <v-tab-item>
+                      <v-card>
+                        <b-table :data="data" :columns="columns"></b-table>
+                      </v-card>
+                    </v-tab-item>
+                  </v-tabs>
+                </v-card>
+
+                <v-card width="250" class="styleCategory">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Top 3 the most selling</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
+                </v-card>
+              </div>
+            </v-flex>
+
+            <!-- category the least selling-->
+            <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="300" class="styleCategoryHeader2">
+                  <v-tabs
+                    v-model="tab"
+                    color="#84A295"
+                    fixed-tabs
+                    style="padding-top:5em;"
+                  >
+                    <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
+                    <v-tab>a</v-tab>
+                    <v-tab>b</v-tab>
+                    <v-tab>c</v-tab>
+
+                    <v-tab-item>
+                      <v-card>
+                        <b-table :data="data" :columns="columns"></b-table>
+                      </v-card>
+                    </v-tab-item>
+                  </v-tabs>
+                </v-card>
+
+                <v-card width="250" class="styleCategory2">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Top 3 the most selling</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
+                </v-card>
+              </div>
+            </v-flex>
+          </v-layout>
+
+          <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="700" class="styleTrans">
+                  <b-table
+                    :data="data"
+                    :columns="columns"
+                    style="padding-top:5em;"
+                  ></b-table>
+                </v-card>
+                <v-card width="650" class="styleTransHeader">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Transaction</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
+                </v-card>
+              </div>
             </v-flex>
 
 
-            <div class="container">
+
+          <!-- graph -->
+          <!-- <v-layout row>
+            <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="450" class="styleGraphHeader">
+                  <canvas
+                    class="chart chartjs-render-monitor"
+                    id="card-chart4"
+                    height="70"
+                    width="194"
+                    style="display: block; width: 194px; height: 70px;"
+                  ></canvas>
+                </v-card>
+
+                <v-card width="400" class="styleGraph">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Menu graph</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
+                </v-card>
+              </div>
+            </v-flex> -->
+
+          <!-- graph-->
+          <!-- <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="450" class="styleCategoryHeader2">
+                  <v-tabs
+                    v-model="tab"
+                    color="#84A295"
+                    fixed-tabs
+                    style="padding-top:5em;"
+                  >
+                    <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
+                    <v-tab>a</v-tab>
+                    <v-tab>b</v-tab>
+                    <v-tab>c</v-tab>
+
+                    <v-tab-item>
+                      <v-card>
+                        <b-table :data="data" :columns="columns"></b-table>
+                      </v-card>
+                    </v-tab-item>
+                  </v-tabs>
+                </v-card>
+
+                <v-card width="400" class="styleCategory2">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Top 3 the most selling</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
+                </v-card>
+              </div>
+            </v-flex>
+          </v-layout> -->
+          <!-- <div class="container">
               <hr />
               <v-layout row wrap>
                 <v-flex xs3>
@@ -224,38 +433,94 @@
                       <div class="aaa">
                         <span class="progress-group-text">Monday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                         <span class="progress-group-text">Tuesday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                         <span class="progress-group-text">Wednesday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                         <span class="progress-group-text">Thursday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                         <span class="progress-group-text">Friday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                         <span class="progress-group-text">Saturday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                         <span class="progress-group-text">Sunday</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear color="#20a8d8" :value="50" height="4" />
-                          <v-progress-linear color="#f86c6b" :value="10" height="4" />
+                          <v-progress-linear
+                            color="#20a8d8"
+                            :value="50"
+                            height="4"
+                          />
+                          <v-progress-linear
+                            color="#f86c6b"
+                            :value="10"
+                            height="4"
+                          />
                         </span>
                       </div>
                     </v-flex>
@@ -268,14 +533,22 @@
                         <span>Male</span>
                         <span class="ml-auto font-weight-bold">43%</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear :value="43" color="#FFFF00" height="4"></v-progress-linear>
+                          <v-progress-linear
+                            :value="43"
+                            color="#FFFF00"
+                            height="4"
+                          ></v-progress-linear>
                         </span>
                       </span>
                       <span class="progress-group mb-5">
                         <span>Female</span>
                         <span class="ml-auto font-weight-bold">37%</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear :value="37" color="#FFFF00" height="4"></v-progress-linear>
+                          <v-progress-linear
+                            :value="37"
+                            color="#FFFF00"
+                            height="4"
+                          ></v-progress-linear>
                         </span>
                       </span>
                     </div>
@@ -288,36 +561,52 @@
                         <span>Organic Search</span>
                         <span class="ml-auto font-weight-bold">43%</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear :value="43" color="#0f4e06 " height="4"></v-progress-linear>
+                          <v-progress-linear
+                            :value="43"
+                            color="#0f4e06 "
+                            height="4"
+                          ></v-progress-linear>
                         </span>
                       </span>
                       <span class="progress-group mb-5">
                         <span>Facebook</span>
                         <span class="ml-auto font-weight-bold">37%</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear :value="37" color="#0f4e06 " height="4"></v-progress-linear>
+                          <v-progress-linear
+                            :value="37"
+                            color="#0f4e06 "
+                            height="4"
+                          ></v-progress-linear>
                         </span>
                       </span>
                       <span class="progress-group mb-5">
                         <span>Twitter</span>
                         <span class="ml-auto font-weight-bold">58%</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear :value="58" color="#0f4e06 " height="4"></v-progress-linear>
+                          <v-progress-linear
+                            :value="58"
+                            color="#0f4e06 "
+                            height="4"
+                          ></v-progress-linear>
                         </span>
                       </span>
                       <span class="progress-group mb-5">
                         <span>LinkedIn</span>
                         <span class="ml-auto font-weight-bold">92%</span>
                         <span class="progress-group-bars">
-                          <v-progress-linear :value="92" color="#0f4e06" height="4"></v-progress-linear>
+                          <v-progress-linear
+                            :value="92"
+                            color="#0f4e06"
+                            height="4"
+                          ></v-progress-linear>
                         </span>
                       </span>
                     </div>
                   </v-flex>
                 </v-row>
               </v-layout>
-            </div>
-          </b-card>
+            </div> -->
+          <!-- </b-card> -->
         </div>
       </section>
     </div>
@@ -353,6 +642,33 @@ export default {
   },
   data() {
     return {
+      data: [
+        {
+          menuName: "BAcon",
+          total: 200
+        },
+        {
+          menuName: "BAcon",
+          total: 200
+        },
+        {
+          menuName: "BAcon",
+          total: 200
+        }
+      ],
+      columns: [
+        {
+          field: "menuName",
+          label: "Menu name",
+          width: "200"
+        },
+        {
+          field: "total",
+          label: "Total",
+          numeric: true,
+          width: "100"
+        }
+      ],
       selected: [],
       tab: null,
       items: ["Day", "Month", "Year"],
@@ -364,8 +680,8 @@ export default {
       numberOfCustAlacarte: 0,
       distinctCategory: [],
       bestSellerMenu: "",
-      buffetPrice:0,
-      alacartePrice:0
+      buffetPrice: 0,
+      alacartePrice: 0
     };
   },
   methods: {
@@ -508,10 +824,10 @@ export default {
       for (let index = 0; index < this.transaction.length; index++) {
         if (this.transaction[index].service === "buffet") {
           this.numberOfCustBuffet += this.transaction[index].numOfCust;
-          this.buffetPrice+=this.transaction[index].totalPrice
+          this.buffetPrice += this.transaction[index].totalPrice;
         } else if (this.transaction[index].service === "alacarte") {
           this.numberOfCustAlacarte += this.transaction[index].numOfCust;
-          this.alacartePrice += this.transaction[index].totalPrice
+          this.alacartePrice += this.transaction[index].totalPrice;
         }
         this.numberOfCust += this.transaction[index].numOfCust;
         this.totalPrice += this.transaction[index].totalPrice;
@@ -524,12 +840,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
-  background-color: #f0cab1;
+  background-color: #f7f6ee;
   border-radius: 20px;
+  height: 2000px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #eeeeee;
+  background-color: #84a295;
   height: 2000px;
   padding: 2%;
   margin-top: -800px;
@@ -618,4 +935,55 @@ export default {
   margin-left: -350%;
   margin-top: 150%;
 }
+.styleTop3 {
+  background-color: #f6960b;
+  margin-left: 25%;
+  margin-top: -18em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+}
+.styleTop3Table {
+  margin-top: 2em;
+  margin-left: 10%;
+}
+.styleCategoryHeader {
+  margin-top: 2em;
+  margin-left: 12em;
+}
+.styleCategory {
+  background-color: #53ff8d;
+  margin-left: 14em;
+  margin-top: -21.5em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+}
+.styleCategoryHeader2 {
+  margin-top: 2em;
+  margin-left: 23em;
+}
+.styleCategory2 {
+  background-color: #5389ff;
+  margin-left: 25em;
+  margin-top: -21.5em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+}
+.styleTransHeader{
+  background-color: #f60b46;
+  margin-left: 98%;
+  margin-top: -18em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+  
+}
+.styleTrans{
+  margin-top: 20em;
+  margin-left: 85%;
+}
+/* .styleGraphHeader {
+  margin-top: 22em;
+  margin-left: 27em;
+}
+.styleGraph {
+  background-color: #5389ff;
+  margin-left: 28.5em;
+  margin-top: -15em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+} */
 </style>
