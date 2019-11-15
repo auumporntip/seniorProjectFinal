@@ -36,11 +36,7 @@
             <b-table-column label="Time" width="200">{{ props.row.time }}</b-table-column>
             <b-table-column label="Status" width="100">{{ props.row.statusName }}</b-table-column>
             <b-table-column label="Change Status" width="200">
-              <v-btn
-                small
-                color="#B7CDC2"
-                @click="changeStatusOrder(props.row,props.row.statusId)"
-              >
+              <v-btn small color="#B7CDC2" @click="changeStatusOrder(props.row,props.row.statusId)">
                 <v-icon>repeat</v-icon>Change Status
               </v-btn>
             </b-table-column>
@@ -57,7 +53,7 @@ import sidebar from "@/components/sidebar";
 import axios from "axios";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
-import { host } from "./data"
+import { host } from "./data";
 
 export default {
   name: "ServingPage",
@@ -88,12 +84,10 @@ export default {
       console.log(order);
 
       axios
-        .put(
-          host+"changestatus/" + order.orderId + "/" + 4
-        )
+        .put(host + "changestatus/" + order.orderId + "/" + 4)
         .then(response => {
           axios
-            .post(host+"inserttransaction", {
+            .post(host + "inserttransaction", {
               menuName: order.menuName,
               transPrice: order.menuPrice,
               totalPrice: order.menuPrice * order.amount,
@@ -116,10 +110,7 @@ export default {
 
     getOrderData() {
       axios
-        .get(
-          host+"getOrderedByStatusServing/" +
-            this.restaurantId
-        )
+        .get(host + "getOrderedByStatusServing/" + this.restaurantId)
         .then(response => {
           this.ordered = response.data;
           for (let index = 0; index < this.ordered.length; index++) {
@@ -146,8 +137,10 @@ export default {
     }
   },
   created: function() {
-    this.getOrderData();
-    axios.get(host+"getallstatus").then(response => {
+    setInterval(() => {
+      this.getOrderData();
+    }, 5000);
+    axios.get(host + "getallstatus").then(response => {
       this.statusData = response.data;
     });
   }
@@ -156,12 +149,12 @@ export default {
 
 <style scoped>
 .bg {
-  background-color: #F7F6EE;
+  background-color: #f7f6ee;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #84A295;
+  background-color: #84a295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;

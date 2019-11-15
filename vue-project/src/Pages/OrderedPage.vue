@@ -305,7 +305,7 @@ export default {
           console.log(this.radioGroup);
           if (this.radioGroup === "5") {
             console.log(this.radioGroup === "5");
-            
+
             axios
               .post(host + "inserttransaction", {
                 menuName: this.orders.items[index].menuName,
@@ -319,8 +319,7 @@ export default {
                 billId: this.orders.items[index].billId,
                 restaurantId: this.restaurantId
               })
-              .then(response => {
-              });
+              .then(response => {});
           }
           axios
             .put(
@@ -412,8 +411,10 @@ export default {
     }
   },
   created: function() {
-    this.getOrderData();
-    this.getOrderSameMenu();
+    setInterval(() => {
+      this.getOrderData();
+      this.getOrderSameMenu();
+    }, 5000);
     axios.get(host + "getallstatus").then(response => {
       this.statusData = response.data;
     });

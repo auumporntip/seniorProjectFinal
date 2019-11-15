@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <div class="bg">
-      <BarMoType></BarMoType>
+      <Bar></Bar>
       <v-flex class="space">
         <v-dialog max-width="490" v-model="dialog" data-app>
           <v-card>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import BarMoType from "../components/BarMoType";
+import Bar from "../components/Bar";
 import { store } from "../store/store";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -48,7 +48,7 @@ import { host } from "./data";
 export default {
   name: "MoTypePage",
   components: {
-    BarMoType
+    Bar
   },
   data() {
     return {
@@ -97,9 +97,9 @@ export default {
               typeOfService: this.selectService
             };
             axios.post(host + "signjwt", token).then(response => {
-              sessionStorage.setItem("token", response.data);
+              localStorage.setItem("token", response.data);
               console.log(
-                jwt.decode(sessionStorage.getItem("token", response.data))
+                jwt.decode(localStorage.getItem("token", response.data))
               );
               this.dialog = false;
               this.$refs.form.resetValidation();

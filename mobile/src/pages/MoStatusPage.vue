@@ -60,8 +60,8 @@
             <v-card-text class="text">{{notification.notiMessage}}</v-card-text>
           </v-flex>
           <v-flex xs4>
-              <v-card-text v-if="notification.status===0" class="text">Waiting</v-card-text>
-              <v-card-text v-if="notification.status===1" class="text">Finish</v-card-text>
+            <v-card-text v-if="notification.status===0" class="text">Waiting</v-card-text>
+            <v-card-text v-if="notification.status===1" class="text">Finish</v-card-text>
           </v-flex>
         </v-layout>
       </v-card>
@@ -79,7 +79,7 @@ import NavBar from "../components/NavBar";
 import { store } from "../store/store";
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import {host} from './data'
+import { host } from "./data";
 export default {
   name: "MoStatusPage",
   components: {
@@ -92,7 +92,7 @@ export default {
       perPage: 5,
       orders: [],
       noti: [],
-      token:'',
+      token: "",
       columns: [
         {
           field: "menuName",
@@ -114,27 +114,23 @@ export default {
     };
   },
   created() {
-    if (sessionStorage.getItem("token") === null) {
+    if (localStorage.getItem("token") === null) {
       this.$router.push("/MoLanding");
     }
     this.$store.commit("setNamePages", "Status");
-    this.token = jwt.decode(sessionStorage.getItem('token'))
-    axios
-      .get(
-        host+"getorderbybillid/" +
-          this.token.billId
-      )
-      .then(response => {
-        this.orders = response.data;
-      });
-    axios
-      .get(
-        host+"getnotificationbybillid/" +
-          this.token.billId
-      )
-      .then(response => {
-        this.noti = response.data;
-      });
+    this.token = jwt.decode(localStorage.getItem("token"));
+    setInterval(() => {
+      axios
+        .get(host + "getorderbybillid/" + this.token.billId)
+        .then(response => {
+          this.orders = response.data;
+        });
+      axios
+        .get(host + "getnotificationbybillid/" + this.token.billId)
+        .then(response => {
+          this.noti = response.data;
+        });
+    }, 5000);
   }
 };
 </script>

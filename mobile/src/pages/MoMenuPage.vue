@@ -87,8 +87,8 @@ export default {
     next() {
       this.order = this.foodMenu.filter(food => food.amount > 0);
       if (this.order.length != 0) {
-        sessionStorage.setItem("orders", JSON.stringify(this.order));
-        sessionStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
+        localStorage.setItem("orders", JSON.stringify(this.order));
+        localStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
         this.$router.push("/Moorder");
       } else {
         this.$dialog.alert({
@@ -109,15 +109,15 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem("token") === null) {
+    if (localStorage.getItem("token") === null) {
       this.$router.push("/MoLanding");
     }
     this.$store.commit("setNamePages", "Menu");
-    this.token = jwt.decode(sessionStorage.getItem("token"));
+    this.token = jwt.decode(localStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
 
-    if (JSON.parse(sessionStorage.getItem("foodMenu")) != null) {
-      this.foodMenu = JSON.parse(sessionStorage.getItem("foodMenu"));
+    if (JSON.parse(localStorage.getItem("foodMenu")) != null) {
+      this.foodMenu = JSON.parse(localStorage.getItem("foodMenu"));
     } else {
       if (this.typeOfService.typePrice != null) {
         axios

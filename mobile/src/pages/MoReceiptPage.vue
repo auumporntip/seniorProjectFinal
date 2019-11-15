@@ -160,11 +160,11 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem("token") === null) {
+    if (localStorage.getItem("token") === null) {
       this.$router.push("/MoLanding");
     }
     this.$store.commit("setNamePages", "Receipt");
-    this.token = jwt.decode(sessionStorage.getItem("token"));
+    this.token = jwt.decode(localStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
     axios.get(host + "getorderbybillid/" + this.token.billId).then(response => {
       this.orders = response.data;

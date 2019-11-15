@@ -120,7 +120,7 @@ export default {
   },
   created() {
     this.$store.commit("setNamePages", "CallEmployee");
-    this.token = jwt.decode(sessionStorage.getItem("token"));
+    this.token = jwt.decode(localStorage.getItem("token"));
     this.billId = this.token.billId;
     this.tableNo = this.token.tableNumber;
   }

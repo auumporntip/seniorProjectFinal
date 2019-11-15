@@ -45,7 +45,7 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem("token") === null) {
+    if (localStorage.getItem("token") === null) {
       this.$router.push("/MoLanding");
     }
     this.$store.commit("setNamePages", "Waiting Employee");

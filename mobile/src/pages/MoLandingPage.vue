@@ -40,7 +40,7 @@ export default {
       if (this.billId != "") {
         axios.post(host + "verifybill/" + this.billId).then(response => {
           if (response.data.login === true) {
-            sessionStorage.setItem("token", response.data.token);
+            localStorage.setItem("token", response.data.token);
             this.$router.push("/Momenu");
           } else {
             Swal.fire({

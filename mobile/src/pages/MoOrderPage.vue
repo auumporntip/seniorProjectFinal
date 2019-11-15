@@ -77,7 +77,7 @@ export default {
           .then(response => {
             console.log(response.data);
             this.$router.push("/Mostatus");
-            sessionStorage.setItem("foodMenu", null);
+            localStorage.setItem("foodMenu", null);
           });
       }
     }
@@ -91,12 +91,12 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem("token") === null) {
+    if (localStorage.getItem("token") === null) {
       this.$router.push("/MoLanding");
     }
     this.$store.commit("setNamePages", "Order");
-    this.token = jwt.decode(sessionStorage.getItem('token'))
-    this.orders = JSON.parse(sessionStorage.getItem("orders"));
+    this.token = jwt.decode(localStorage.getItem('token'))
+    this.orders = JSON.parse(localStorage.getItem("orders"));
   }
 };
 </script>
