@@ -3,150 +3,24 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium"
-          >STATISTICS</v-card-title
-        >
-        <!-- <div id="boxright">
-        <div id="static">-->
-
+        <v-card-title class="headline font-weight-medium">STATISTICS</v-card-title>
         <div>
-          <!-- <v-layout row> -->
-          <!-- <v-flex xs3>
-              <b-card no-body class="bg-primary">
-                <b-dropdown class="float-right" variant="transparent p-0" right>
-                  <template slot="button-content"></template>
-                  <b-dropdown-item>Action</b-dropdown-item>
-                  <b-dropdown-item>Another action</b-dropdown-item>
-                  <b-dropdown-item>Something else here...</b-dropdown-item>
-                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                </b-dropdown>
-                <h4 style="color:white; padding-left:10%;">9.823</h4>
-                <p style="color:white; padding-left:10%;">Members online1</p>
-
-                <card-line1-chart-example
-                  chartId="card-chart-01"
-                  class="chartjs-render-monitor"
-                  style="height:70px;width:194px;display:block;"
-                  height="70"
-                  width="194"
-                />
-                <div id></div>
-
-                <card-line1-chart-example chartId="card-chart-01" class="chart-wrapper px-3" style="height:70px;" :height="70"/>
-              </b-card>
-            </v-flex>
-            <v-flex xs3>
-              <b-card no-body class="bg-info">
-                <b-card-body class="pb-0">
-                  <b-dropdown class="float-right" variant="transparent p-0" right no-caret>
-                    <template slot="button-content"></template>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Another action</b-dropdown-item>
-                    <b-dropdown-item>Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                  <h4 style="color:white; padding-left:10%;">9.823</h4>
-                  <p style="color:white; padding-left:10%;">Members online2</p>
-                </b-card-body>
-                <card-line2-chart-example
-                  chartId="card-chart-02"
-                  style="height:70px;width:194px;display:block;"
-                  height="70"
-                  width="194"
-                />
-              </b-card>
-            </v-flex>
-            <v-flex xs3>
-              <b-card no-body class="bg-warning">
-                <b-card-body class="pb-0">
-                  <b-dropdown class="float-right" variant="transparent p-0" right>
-                    <template slot="button-content"></template>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Another action</b-dropdown-item>
-                    <b-dropdown-item>Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                  <h4 style="color:white; padding-left:10%;">9.823</h4>
-                  <p style="color:white; padding-left:10%;">Members online3</p>
-                </b-card-body>
-                <card-line3-chart-example
-                  chartId="card-chart-03"
-                  style="height:70px;width:194px;display:block;"
-                  height="70"
-                  width="194"
-                />
-              </b-card>
-            </v-flex>
-            <v-flex xs3>
-              <b-card no-body class="bg-danger">
-                <b-card-body class="pb-0">
-                  <b-dropdown class="float-right" variant="transparent p-0" right>
-                    <template slot="button-content"></template>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Another action</b-dropdown-item>
-                    <b-dropdown-item>Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                  <h4 style="color:white; padding-left:10%;">9.823</h4>
-                  <p style="color:white; padding-left:10%;">Members online4</p>
-                </b-card-body>
-                <card-bar-chart-example
-                  style="height:70px;width:194px;display:block;"
-                  height="70"
-                  width="194"
-                />
-              </b-card>
-            </v-flex>-->
-          <!-- </v-layout> -->
-
-          <!-- <b-card> -->
-          <!-- <b-row>
-              <b-col sm="5">
-                <center>
-                  <h4 id="traffic">Restaurant Chart</h4>
-                </center>
-              </b-col>
-              <b-col id="tab">
-                <v-tabs v-model="tab">
-                  <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
-                  <v-tabs-items v-model="tab">
-                    <v-tab-item v-for="item in items" :key="item">
-                      <v-card flat color="basil">
-                        <main-chart-example
-                          chartId="main-chart-01"
-                          class="chart-wrapper"
-                          style="height:300px;margin-top:40px;"
-                          height="300"
-                        ></main-chart-example>
-                      </v-card>
-                    </v-tab-item>
-                  </v-tabs-items>
-                </v-tabs>
-              </b-col>
-            </b-row>-->
           <div class="container">
             <v-layout row wrap>
               <v-flex xs2 id="first">
-                <h1>Total Price of all restaurant</h1>
+                <h1>Total Price of restaurant</h1>
+                <br />
                 {{ numberOfCustomer }}
                 <strong>{{ totalPrice }} Bath</strong>
-                <v-progress-linear
-                  color="#4dbd74"
-                  :value="100"
-                ></v-progress-linear>
+                <v-progress-linear color="#4dbd74" :value="100"></v-progress-linear>
               </v-flex>
-              <!-- <v-flex xs2 id="second">
-                  <h2>All Customer</h2>
-                  <strong>{{numberOfCust}} Users</strong>
-                  <v-progress-linear color="#20a8d8" :value="100"></v-progress-linear>
-                </v-flex> -->
               <v-flex xs2 id="third">
                 <h3>The total of buffet customer</h3>
-                <strong
-                  >{{ numberOfCustBuffet }} Users ({{
-                    (numberOfCustBuffet / numberOfCust) * 100
-                  }}%)</strong
-                >
+                <strong>
+                  {{ numberOfCustBuffet }} Users ({{
+                  (numberOfCustBuffet / numberOfCust) * 100
+                  }}%)
+                </strong>
                 <v-progress-linear
                   color="#f86c6b"
                   :value="(numberOfCustBuffet / numberOfCust) * 100"
@@ -154,11 +28,11 @@
               </v-flex>
               <v-flex xs2 id="forth">
                 <h4>The total of a-la-carte customer</h4>
-                <strong
-                  >{{ numberOfCustAlacarte }} Users ({{
-                    (numberOfCustAlacarte / numberOfCust) * 100
-                  }}%)</strong
-                >
+                <strong>
+                  {{ numberOfCustAlacarte }} Users ({{
+                  (numberOfCustAlacarte / numberOfCust) * 100
+                  }}%)
+                </strong>
                 <v-progress-linear
                   color="#f9b115"
                   :value="(numberOfCustAlacarte / numberOfCust) * 100"
@@ -166,71 +40,34 @@
               </v-flex>
               <v-flex xs2 id="fifth">
                 <h5>The total price of buffet service</h5>
-                <strong
-                  >{{ buffetPrice }} ({{
-                    (buffetPrice / totalPrice) * 100
-                  }}%)</strong
-                >
-                <v-progress-linear
-                  color="#4b0082"
-                  :value="(buffetPrice / totalPrice) * 100"
-                ></v-progress-linear>
+                <strong>
+                  {{ buffetPrice }} ({{
+                  (buffetPrice / totalPrice) * 100
+                  }}%)
+                </strong>
+                <v-progress-linear color="#4b0082" :value="(buffetPrice / totalPrice) * 100"></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="second">
                 <h5>The total of a-la-carte price</h5>
-                <strong
-                  >{{ alacartePrice }} ({{
-                    (alacartePrice / totalPrice) * 100
-                  }}%)</strong
-                >
-                <v-progress-linear
-                  color="#4b0082"
-                  :value="(alacartePrice / totalPrice) * 100"
-                ></v-progress-linear>
+                <strong>
+                  {{ alacartePrice }} ({{
+                  (alacartePrice / totalPrice) * 100
+                  }}%)
+                </strong>
+                <v-progress-linear color="#4b0082" :value="(alacartePrice / totalPrice) * 100"></v-progress-linear>
               </v-flex>
             </v-layout>
           </div>
 
-          <!-- <v-flex xs2>
-              <b-card no-body class="bg-primary">
-                <b-dropdown class="float-right" variant="transparent p-0" right>
-                  <template slot="button-content"></template>
-                  <b-dropdown-item>Action</b-dropdown-item>
-                  <b-dropdown-item>Another action</b-dropdown-item>
-                  <b-dropdown-item>Something else here...</b-dropdown-item>
-                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                </b-dropdown>
-                <h4 style="color:white; padding-left:10%;">9.823</h4>
-                <p style="color:white; padding-left:10%;">Members online1</p>
-
-                <card-line1-chart-example
-                  chartId="card-chart-01"
-                  class="chartjs-render-monitor"
-                  style="height:70px;width:194px;display:block;"
-                  height="70"
-                  width="194"
-                />
-                <div id></div>
-
-              </b-card>
-            </v-flex> -->
           <v-layout row>
             <v-flex xs2>
               <div class="col-6 col-lg-3">
                 <v-card width="300" class="styleTop3Table">
-                  <b-table
-                    :data="data"
-                    :columns="columns"
-                    style="padding-top:5em;"
-                  ></b-table>
+                  <b-table :data="sortMenu" :columns="columns" style="padding-top:5em;"></b-table>
                 </v-card>
                 <v-card width="250" class="styleTop3">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Top 3 the best selling</v-card-text
-                  >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">The best selling</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
                 </v-card>
               </div>
             </v-flex>
@@ -241,37 +78,33 @@
               <div class="col-6 col-lg-3">
                 <v-card width="300" class="styleCategoryHeader">
                   <v-tabs
-                    v-model="tab"
+                    v-model="tabBestSelling"
                     color="#84A295"
                     fixed-tabs
                     style="padding-top:5em;"
                   >
                     <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-                    <v-tab>a</v-tab>
-                    <v-tab>b</v-tab>
-                    <v-tab>c</v-tab>
+                    <v-tab v-for="data in distinctCategory" :key="data" @click="test">{{data}}</v-tab>
                     <!-- <v-tab
                     class="white--text"
                     v-for="category in category"
                     :key="category.categoryId"
                     >{{ category.categoryName }}</v-tab
-                  > -->
+                    >-->
 
                     <v-tab-item>
                       <v-card>
-                        <b-table :data="data" :columns="columns"></b-table>
+                        <b-table :data="bestSellerMenuByCategory" :columns="columns"></b-table>
                       </v-card>
                     </v-tab-item>
                   </v-tabs>
                 </v-card>
 
                 <v-card width="250" class="styleCategory">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Top 3 the most selling</v-card-text
-                  >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
+                  <v-card-text
+                    style="font-size:1.5em; padding-bottom:0px;"
+                  >The most selling by category</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
                 </v-card>
               </div>
             </v-flex>
@@ -281,31 +114,26 @@
               <div class="col-6 col-lg-3">
                 <v-card width="300" class="styleCategoryHeader2">
                   <v-tabs
-                    v-model="tab"
+                    v-model="tabWorseSelling"
                     color="#84A295"
                     fixed-tabs
                     style="padding-top:5em;"
                   >
                     <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-                    <v-tab>a</v-tab>
-                    <v-tab>b</v-tab>
-                    <v-tab>c</v-tab>
-
+                    <v-tab v-for="data in distinctCategory" :key="data">{{data}}</v-tab>
                     <v-tab-item>
                       <v-card>
-                        <b-table :data="data" :columns="columns"></b-table>
+                        <b-table :data="worseSellerMenuByCategory" :columns="columns"></b-table>
                       </v-card>
                     </v-tab-item>
                   </v-tabs>
                 </v-card>
 
                 <v-card width="250" class="styleCategory2">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Top 3 the most selling</v-card-text
-                  >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
+                  <v-card-text
+                    style="font-size:1.5em; padding-bottom:0px;"
+                  >Top 3 the worse selling by category</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
                 </v-card>
               </div>
             </v-flex>
@@ -315,332 +143,47 @@
             <div class="col-6 col-lg-3">
               <v-card width="700" class="styleTrans">
                 <b-table
-                  :data="data"
-                  :columns="columns"
+                  :data="tenTransaction"
+                  :columns="columnsForTransaction"
                   style="padding-top:5em;"
                 ></b-table>
               </v-card>
               <v-card width="650" class="styleTransHeader">
-                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                  >Transaction</v-card-text
-                >
-                <v-card-text style="font-size:1em; padding-top:0px;"
-                  >On 14 November 2019</v-card-text
-                >
+                <v-card-text style="font-size:1.5em; padding-bottom:0px;">Transaction</v-card-text>
+                <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
               </v-card>
             </div>
           </v-flex>
 
-        <v-layout row>
-          <v-flex xs2>
-            <div class="col-6 col-lg-3">
-              <v-card width="450" class="styleGraphMenu"
-                ><b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
-                  <canvas id="my-chart"></canvas> </b-card
-              ></v-card>
-              <v-card width="400" class="styleGraphMenuHeader">
-                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                  >Menu graph</v-card-text
-                >
-                <v-card-text style="font-size:1em; padding-top:0px;"
-                  >On 14 November 2019</v-card-text
-                >
-              </v-card>
-            </div>
-          </v-flex>
-
-          <v-flex xs2>
-            <div class="col-6 col-lg-3">
-              <v-card width="450" class="styleGraphPrice"
-                ><b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
-                  <canvas id="price"></canvas> </b-card
-              ></v-card>
-              <v-card width="400" class="styleGraphPriceHeader">
-                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                  >Menu graph</v-card-text
-                >
-                <v-card-text style="font-size:1em; padding-top:0px;"
-                  >On 14 November 2019</v-card-text
-                >
-              </v-card>
-            </div>
-          </v-flex>
-          </v-layout>
-
-          <!-- graph -->
-          <!-- <v-layout row>
+          <v-layout row>
             <v-flex xs2>
               <div class="col-6 col-lg-3">
-                <v-card width="450" class="styleGraphHeader">
-                  <canvas
-                    class="chart chartjs-render-monitor"
-                    id="card-chart4"
-                    height="70"
-                    width="194"
-                    style="display: block; width: 194px; height: 70px;"
-                  ></canvas>
+                <v-card width="450" class="styleGraphMenu">
+                  <b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
+                    <canvas id="my-chart"></canvas>
+                  </b-card>
                 </v-card>
-
-                <v-card width="400" class="styleGraph">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Menu graph</v-card-text
-                  >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
-                </v-card>
-              </div>
-            </v-flex> -->
-
-          <!-- graph-->
-          <!-- <v-flex xs2>
-              <div class="col-6 col-lg-3">
-                <v-card width="450" class="styleCategoryHeader2">
-                  <v-tabs
-                    v-model="tab"
-                    color="#84A295"
-                    fixed-tabs
-                    style="padding-top:5em;"
-                  >
-                    <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-                    <v-tab>a</v-tab>
-                    <v-tab>b</v-tab>
-                    <v-tab>c</v-tab>
-
-                    <v-tab-item>
-                      <v-card>
-                        <b-table :data="data" :columns="columns"></b-table>
-                      </v-card>
-                    </v-tab-item>
-                  </v-tabs>
-                </v-card>
-
-                <v-card width="400" class="styleCategory2">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Top 3 the most selling</v-card-text
-                  >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
+                <v-card width="400" class="styleGraphMenuHeader">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">Menu graph</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
                 </v-card>
               </div>
             </v-flex>
-          </v-layout> -->
-          <!-- <div class="container">
-              <hr />
-              <v-layout row wrap>
-                <v-flex xs3>
-                  <Callout variant="info">
-                    <small class="text-muted">New Clients</small>
-                    <br />
-                    <strong class="h4">9,123</strong>
-                  </Callout>
-                </v-flex>
-                <v-flex xs3>
-                  <Callout variant="danger">
-                    <small class="text-muted">Recurring Clients</small>
-                    <br />
-                    <strong class="h4">22,643</strong>
-                  </Callout>
-                </v-flex>
-                <v-flex xs3>
-                  <Callout variant="warning">
-                    <small class="text-muted">Pageviews</small>
-                    <br />
-                    <strong class="h4">78,623</strong>
-                  </Callout>
-                </v-flex>
-                <v-flex xs3>
-                  <Callout variant="success">
-                    <small class="text-muted">Organic</small>
-                    <br />
-                    <strong class="h4">49,123</strong>
-                  </Callout>
-                </v-flex>
-              </v-layout>
-              <hr />
 
-              <v-layout>
-                <v-container>
-                  <v-row>
-                    <v-flex xs9>
-                      <div class="aaa">
-                        <span class="progress-group-text">Monday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                        <span class="progress-group-text">Tuesday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                        <span class="progress-group-text">Wednesday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                        <span class="progress-group-text">Thursday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                        <span class="progress-group-text">Friday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                        <span class="progress-group-text">Saturday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                        <span class="progress-group-text">Sunday</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            color="#20a8d8"
-                            :value="50"
-                            height="4"
-                          />
-                          <v-progress-linear
-                            color="#f86c6b"
-                            :value="10"
-                            height="4"
-                          />
-                        </span>
-                      </div>
-                    </v-flex>
-                  </v-row>
-                </v-container>
-                <v-row>
-                  <v-flex xs3>
-                    <div class="bbb">
-                      <span class="progress-group">
-                        <span>Male</span>
-                        <span class="ml-auto font-weight-bold">43%</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            :value="43"
-                            color="#FFFF00"
-                            height="4"
-                          ></v-progress-linear>
-                        </span>
-                      </span>
-                      <span class="progress-group mb-5">
-                        <span>Female</span>
-                        <span class="ml-auto font-weight-bold">37%</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            :value="37"
-                            color="#FFFF00"
-                            height="4"
-                          ></v-progress-linear>
-                        </span>
-                      </span>
-                    </div>
-                  </v-flex>
-                </v-row>
-                <v-row>
-                  <v-flex xs3>
-                    <div class="ccc">
-                      <span class="progress-group">
-                        <span>Organic Search</span>
-                        <span class="ml-auto font-weight-bold">43%</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            :value="43"
-                            color="#0f4e06 "
-                            height="4"
-                          ></v-progress-linear>
-                        </span>
-                      </span>
-                      <span class="progress-group mb-5">
-                        <span>Facebook</span>
-                        <span class="ml-auto font-weight-bold">37%</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            :value="37"
-                            color="#0f4e06 "
-                            height="4"
-                          ></v-progress-linear>
-                        </span>
-                      </span>
-                      <span class="progress-group mb-5">
-                        <span>Twitter</span>
-                        <span class="ml-auto font-weight-bold">58%</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            :value="58"
-                            color="#0f4e06 "
-                            height="4"
-                          ></v-progress-linear>
-                        </span>
-                      </span>
-                      <span class="progress-group mb-5">
-                        <span>LinkedIn</span>
-                        <span class="ml-auto font-weight-bold">92%</span>
-                        <span class="progress-group-bars">
-                          <v-progress-linear
-                            :value="92"
-                            color="#0f4e06"
-                            height="4"
-                          ></v-progress-linear>
-                        </span>
-                      </span>
-                    </div>
-                  </v-flex>
-                </v-row>
-              </v-layout>
-            </div> -->
-          <!-- </b-card> -->
+            <!-- <v-flex xs2>
+              <div class="col-6 col-lg-3">
+                <v-card width="450" class="styleGraphPrice">
+                  <b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
+                    <canvas id="price"></canvas>
+                  </b-card>
+                </v-card>
+                <v-card width="400" class="styleGraphPriceHeader">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">Menu graph</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
+                </v-card>
+              </div>
+            </v-flex>-->
+          </v-layout>
         </div>
       </section>
     </div>
@@ -677,20 +220,7 @@ export default {
   },
   data() {
     return {
-      data: [
-        {
-          menuName: "BAcon",
-          total: 200
-        },
-        {
-          menuName: "BAcon",
-          total: 200
-        },
-        {
-          menuName: "BAcon",
-          total: 200
-        }
-      ],
+      data: [],
       columns: [
         {
           field: "menuName",
@@ -698,14 +228,38 @@ export default {
           width: "200"
         },
         {
-          field: "total",
-          label: "Total",
+          field: "amount",
+          label: "Amount",
           numeric: true,
           width: "100"
         }
       ],
+      columnsForTransaction: [
+        {
+          field: "menuName",
+          label: "Menu name",
+          width: "150"
+        },
+        {
+          field: "amount",
+          label: "Amount",
+          numeric: true,
+          width: "100"
+        },
+        {
+          field: "categoryName",
+          label: "Category",
+          width: "100"
+        },
+        {
+          field: "totalPrice",
+          label: "Total price",
+          width: "100"
+        }
+      ],
       selected: [],
-      tab: null,
+      tabBestSelling: 0,
+      tabWorseSelling: 0,
       items: ["Day", "Month", "Year"],
       transaction: [],
       transactionCacel: "",
@@ -716,65 +270,28 @@ export default {
       distinctCategory: [],
       bestSellerMenu: "",
       buffetPrice: 0,
-      alacartePrice: 0
+      alacartePrice: 0,
+      sortMenu: [],
+      bestSellerMenuByCategory: [],
+      worseSellerMenuByCategory: [],
+      tenTransaction: [],
+      labelsAllMenu: [],
+      dataAllMenu: [],
+      backgroundColor: []
     };
   },
-  mounted: function() {
-    var ctx = document.getElementById("my-chart");
-    var myBarChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["bacon", "fish", "a", "b"],
-        datasets: [
-          {
-            label: "all menu",
-            data: [61, 122, 107, 73],
-            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"]
-          }
-        ]
-      },
-      options: {
-        responsive: true
-      }
-    });
-    var ctx = document.getElementById("price");
-    var myBarChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["a-la-carte", "buffet", "a", "b"],
-        datasets: [
-          {
-            label: "peaktime",
-            data: ["11.30", "12.00", "18.00", "15.00"],
-            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"]
-          }
-        ]
-      },
-      options: {
-        responsive: true
-      }
-    });
-  },
   methods: {
-    variant(value) {
-      let $variant;
-      if (value <= 25) {
-        $variant = "info";
-      } else if (value > 25 && value <= 50) {
-        $variant = "success";
-      } else if (value > 50 && value <= 75) {
-        $variant = "warning";
-      } else if (value > 75 && value <= 100) {
-        $variant = "danger";
-      }
-      return $variant;
-    },
-    flag(value) {
-      return "flag-icon flag-icon-" + value;
-    },
     getTransaction() {
+      this.tenTransaction = [];
       axios.get(host + "gettransactionfinish").then(response => {
         this.transaction = response.data;
+        for (
+          let index = this.transaction.length - 1;
+          this.transaction.length - 11 < index;
+          index--
+        ) {
+          this.tenTransaction.push(this.transaction[index]);
+        }
       });
     },
     getTransactionCancel() {
@@ -789,6 +306,7 @@ export default {
       return transactionByCategory;
     },
     findBestSellerMenuByCategoryName(categoryName) {
+      this.bestSellerMenuByCategory = [];
       const transaction = this.filterMenuFromCategoryName(categoryName);
       const distinctMenu = [
         ...new Set(transaction.map(items => items.menuName))
@@ -811,9 +329,17 @@ export default {
           bestSellerMenu.push(distinctMenu[index]);
         }
       }
-      return { bestSellerMenu: bestSellerMenu, count: count };
+      if (bestSellerMenu.length != 0) {
+        for (let index = 0; index < bestSellerMenu.length; index++) {
+          this.bestSellerMenuByCategory.push({
+            menuName: bestSellerMenu[index][0],
+            amount: count
+          });
+        }
+      }
     },
     findWorseSellerMenuByCategoryName(categoryName) {
+      this.worseSellerMenuByCategory = [];
       const transaction = this.filterMenuFromCategoryName(categoryName);
       const distinctMenu = [
         ...new Set(transaction.map(items => items.menuName))
@@ -838,27 +364,88 @@ export default {
           worseSellerMenu.push(distinctMenu[index]);
         }
       }
-      return { worseSellerMenu: worseSellerMenu, count: count };
+      if (worseSellerMenu.length != 0) {
+        for (let index = 0; index < worseSellerMenu.length; index++) {
+          this.worseSellerMenuByCategory.push({
+            menuName: worseSellerMenu[index][0],
+            amount: count
+          });
+        }
+      }
     },
     sortMenuBestSeller() {
       const distinctMenuName = [
         ...new Set(this.transaction.map(items => items.menuName))
       ];
       var menuAndAmount = [];
-      for (let index = 0; index < distinctMenuName.length; index++) {
-        var menu = this.transaction.filter(
-          items => items.menuName === distinctMenuName[index]
-        );
-        var amount = 0;
-        for (let index = 0; index < menu.length; index++) {
-          amount += menu[index].amount;
+      if (distinctMenuName.length != 0) {
+        for (let index = 0; index < distinctMenuName.length; index++) {
+          var menu = this.transaction.filter(
+            items => items.menuName === distinctMenuName[index]
+          );
+          var amount = 0;
+          for (let index = 0; index < menu.length; index++) {
+            amount += menu[index].amount;
+          }
+          menuAndAmount.push([distinctMenuName[index], amount]);
         }
-        menuAndAmount.push([distinctMenuName[index], amount]);
       }
-      var sortmenu = menuAndAmount.sort(function(a, b) {
+      var sortMenu = menuAndAmount.sort(function(a, b) {
         return b[1] - a[1];
       });
-      return sortmenu;
+      if (sortMenu.length != 0) {
+        this.sortMenu = [
+          {
+            menuName: sortMenu[0][0],
+            amount: sortMenu[0][1]
+          },
+          {
+            menuName: sortMenu[1][0],
+            amount: sortMenu[1][1]
+          },
+          {
+            menuName: sortMenu[2][0],
+            amount: sortMenu[2][1]
+          }
+        ];
+
+        for (let index = 0; index < sortMenu.length; index++) {
+          this.labelsAllMenu.push(sortMenu[index][0]);
+          this.dataAllMenu.push(sortMenu[index][1]);
+          this.backgroundColor.push(this.randomColor());
+        }
+        this.charts();
+      }
+    },
+    test() {
+      console.log(this.tabBestSelling, this.tabWorseSelling);
+    },
+    charts() {
+      var ctx = document.getElementById("my-chart");
+      var myBarChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: this.labelsAllMenu,
+          datasets: [
+            {
+              label: "all menu",
+              data: this.dataAllMenu,
+              backgroundColor: this.backgroundColor
+            }
+          ]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    },
+    randomColor() {
+      var letters = "0123456789ABCDEF";
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     }
   },
   created() {
@@ -872,25 +459,19 @@ export default {
       this.numberOfCustBuffet = 0;
       this.numberOfCustAlacarte = 0;
 
-      const distinctCategoryName = [
+      var distinctCategoryName = [
         ...new Set(this.transaction.map(items => items.categoryName))
       ];
 
-      // console.log(this.sortMenuBestSeller(), "top3");
+      this.distinctCategory = distinctCategoryName;
 
-      for (let index = 0; index < distinctCategoryName.length; index++) {
-        // console.log(
-        //   this.findBestSellerMenuByCategoryName(distinctCategoryName[index]),
-        //   distinctCategoryName[index]
-        // );
-      }
-
-      for (let index = 0; index < distinctCategoryName.length; index++) {
-        // console.log(
-        //   this.findWorseSellerMenuByCategoryName(distinctCategoryName[index]),
-        //   distinctCategoryName[index]
-        // );
-      }
+      this.sortMenuBestSeller();
+      this.findBestSellerMenuByCategoryName(
+        this.distinctCategory[this.tabBestSelling]
+      );
+      this.findWorseSellerMenuByCategoryName(
+        this.distinctCategory[this.tabWorseSelling]
+      );
 
       for (let index = 0; index < this.transaction.length; index++) {
         if (this.transaction[index].service === "buffet") {
