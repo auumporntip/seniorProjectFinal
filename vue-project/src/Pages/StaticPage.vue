@@ -127,9 +127,9 @@
           <div class="container">
             <v-layout row wrap>
               <v-flex xs2 id="first">
-                <h1>Total Price</h1>
+                <h1>Total Price of all restaurant</h1>
                 {{ numberOfCustomer }}
-                <strong>{{ totalPrice }}</strong>
+                <strong>{{ totalPrice }} Bath</strong>
                 <v-progress-linear
                   color="#4dbd74"
                   :value="100"
@@ -165,7 +165,7 @@
                 ></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="fifth">
-                <h5>The total of buffet price</h5>
+                <h5>The total price of buffet service</h5>
                 <strong
                   >{{ buffetPrice }} ({{
                     (buffetPrice / totalPrice) * 100
@@ -177,7 +177,7 @@
                 ></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="second">
-                <h5>The total of a-la-carte rice</h5>
+                <h5>The total of a-la-carte price</h5>
                 <strong
                   >{{ alacartePrice }} ({{
                     (alacartePrice / totalPrice) * 100
@@ -312,26 +312,60 @@
           </v-layout>
 
           <v-flex xs2>
-              <div class="col-6 col-lg-3">
-                <v-card width="700" class="styleTrans">
-                  <b-table
-                    :data="data"
-                    :columns="columns"
-                    style="padding-top:5em;"
-                  ></b-table>
-                </v-card>
-                <v-card width="650" class="styleTransHeader">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Transaction</v-card-text
-                  >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
-                </v-card>
-              </div>
-            </v-flex>
+            <div class="col-6 col-lg-3">
+              <v-card width="700" class="styleTrans">
+                <b-table
+                  :data="data"
+                  :columns="columns"
+                  style="padding-top:5em;"
+                ></b-table>
+              </v-card>
+              <v-card width="650" class="styleTransHeader">
+                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                  >Transaction</v-card-text
+                >
+                <v-card-text style="font-size:1em; padding-top:0px;"
+                  >On 14 November 2019</v-card-text
+                >
+              </v-card>
+            </div>
+          </v-flex>
 
+        <v-layout row>
+          <v-flex xs2>
+            <div class="col-6 col-lg-3">
+              <v-card width="450" class="styleGraphMenu"
+                ><b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
+                  <canvas id="my-chart"></canvas> </b-card
+              ></v-card>
+              <v-card width="400" class="styleGraphMenuHeader">
+                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                  >Menu graph</v-card-text
+                >
+                <v-card-text style="font-size:1em; padding-top:0px;"
+                  >On 14 November 2019</v-card-text
+                >
+              </v-card>
+            </div>
+          </v-flex>
 
+          <v-flex xs2>
+            <div class="col-6 col-lg-3">
+              <v-card width="450" class="styleGraphPrice"
+                ><b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
+                  <canvas id="price"></canvas> </b-card
+              ></v-card>
+              <v-card width="400" class="styleGraphPriceHeader">
+                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                  >Menu graph</v-card-text
+                >
+                <v-card-text style="font-size:1em; padding-top:0px;"
+                  >On 14 November 2019</v-card-text
+                >
+              </v-card>
+            </div>
+          </v-flex>
+          </v-layout>
 
           <!-- graph -->
           <!-- <v-layout row>
@@ -626,6 +660,7 @@ import MainChartExample from "./MainChartExample";
 import SocialBoxChartExample from "./SocialBoxChartExample";
 import CalloutChartExample from "./CalloutChartExample";
 import axios from "axios";
+import Chart from "chart.js";
 
 export default {
   name: "StaticPage",
@@ -683,6 +718,42 @@ export default {
       buffetPrice: 0,
       alacartePrice: 0
     };
+  },
+  mounted: function() {
+    var ctx = document.getElementById("my-chart");
+    var myBarChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["bacon", "fish", "a", "b"],
+        datasets: [
+          {
+            label: "all menu",
+            data: [61, 122, 107, 73],
+            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"]
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+    var ctx = document.getElementById("price");
+    var myBarChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["a-la-carte", "buffet", "a", "b"],
+        datasets: [
+          {
+            label: "peaktime",
+            data: ["11.30", "12.00", "18.00", "15.00"],
+            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"]
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
   },
   methods: {
     variant(value) {
@@ -965,16 +1036,43 @@ export default {
   margin-top: -21.5em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
 }
-.styleTransHeader{
+.styleTransHeader {
   background-color: #f60b46;
   margin-left: 98%;
   margin-top: -18em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
-  
 }
-.styleTrans{
+.styleTrans {
   margin-top: 20em;
   margin-left: 85%;
+}
+.styleGraphMenuHeader {
+  background-color: #8a96ff;
+  margin-left: 24%;
+  margin-top: -25em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+}
+.styleGraphMenu {
+  margin-top: 18em;
+  margin-left: 10%;
+  padding-top: 5em;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+}
+.styleGraphPriceHeader {
+  background-color: #8a96ff;
+  margin-left: 27em;
+  margin-top: -25em;
+  box-shadow: 7px 7px 7px rgb(224, 224, 224);
+}
+.styleGraphPrice {
+  margin-top: 18em;
+  margin-left: 25em;
+  padding-top: 5em;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
 }
 /* .styleGraphHeader {
   margin-top: 22em;
