@@ -22,7 +22,7 @@
           <v-tab ripple>Others</v-tab>
           <v-tab-item>
             <b-table
-              :data="checkbillData"
+              :data="itemsCheckBill"
               :paginated="isPaginated"
               :per-page="perPage"
               aria-next-label="Next page"
@@ -50,7 +50,7 @@
           <!-- <b-tab-item label="Others"> -->
             <v-tab-item>
             <b-table
-              :data="otherData"
+              :data="itemsOther"
               :paginated="isPaginated"
               :per-page="perPage"
               aria-next-label="Next page"
@@ -136,9 +136,33 @@ export default {
       });
     }
   },
+  computed: {
+    itemsCheckBill() {
+      if (this.keyword != "") {
+        return this.checkbillData.filter(items =>
+          items.tableNumber.toLowerCase().includes(this.keyword.toLowerCase())
+        );
+      } else {
+        return this.checkbillData;
+      }
+    },
+    itemsOther() {
+      if (this.keyword != "") {
+        return this.otherData.filter(items =>
+          items.tableNumber.toLowerCase().includes(this.keyword.toLowerCase()) ||
+          items.notiMessage.toLowerCase().includes(this.keyword.toLowerCase())
+        );
+      } else {
+        return this.otherData;
+      }
+    }
+  },
   created() {
+    setInterval(() => {
+      
     this.getCheckBillNotification();
     this.getOtherNotification();
+    }, 5000);
   }
 };
 </script>
