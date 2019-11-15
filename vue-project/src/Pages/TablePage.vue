@@ -70,7 +70,7 @@
                 </v-card>
                 <v-icon class="iconClose" @click="deleteButton(table.tableId)">cancel</v-icon>
               </v-flex>
-              <v-dialog max-width="450" v-model="editTableDialog" data-app persistent>
+              <v-dialog max-width="350" v-model="editTableDialog" data-app persistent>
                 <v-card>
                   <v-card-title style="padding-bottom:0%;">
                     <span class="nameDialog">Table</span>
@@ -79,7 +79,7 @@
                     <v-form ref="form1">
                       <v-container>
                         <v-layout row>
-                          <v-flex xs6 order-md3 order-xs3>
+                          <v-flex xs12 order-md3 order-xs3>
                             <v-text-field
                               label="Table number"
                               prepend-icon="restaurant"
@@ -155,7 +155,7 @@ export default {
       //edit table form
       editTableDialog: false,
       editTableNumber: [
-        v => !!v || "Table number is required",
+         v => !!v || "Table number is required",
         v => (v && this.editCheckName()) || "This table number has already"
       ]
     };
@@ -179,10 +179,10 @@ export default {
         return true;
       }
     },
-    checkName(tableNumber) {
+    checkName() {
       for (let index = 0; index < this.tableData.length; index++) {
         if (
-          tableNumber.toLowerCase() ===
+          this.newTable.tableNumber.toLowerCase() ===
           this.tableData[index].tableNumber.toLowerCase()
         ) {
           return false;
@@ -324,5 +324,8 @@ export default {
   margin-left: 57%;
   position: absolute;
   margin-top: -1%;
+}
+div.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

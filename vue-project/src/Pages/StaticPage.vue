@@ -3,7 +3,9 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium">STATISTICS</v-card-title>
+        <v-card-title class="headline font-weight-medium"
+          >STATISTICS</v-card-title
+        >
         <div>
           <div class="container">
             <v-layout row wrap>
@@ -12,13 +14,16 @@
                 <br />
                 {{ numberOfCustomer }}
                 <strong>{{ totalPrice }} Bath</strong>
-                <v-progress-linear color="#4dbd74" :value="100"></v-progress-linear>
+                <v-progress-linear
+                  color="#4dbd74"
+                  :value="100"
+                ></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="third">
                 <h3>The total of buffet customer</h3>
                 <strong>
                   {{ numberOfCustBuffet }} Users ({{
-                  (numberOfCustBuffet / numberOfCust) * 100
+                    (numberOfCustBuffet / numberOfCust) * 100
                   }}%)
                 </strong>
                 <v-progress-linear
@@ -30,7 +35,7 @@
                 <h4>The total of a-la-carte customer</h4>
                 <strong>
                   {{ numberOfCustAlacarte }} Users ({{
-                  (numberOfCustAlacarte / numberOfCust) * 100
+                    (numberOfCustAlacarte / numberOfCust) * 100
                   }}%)
                 </strong>
                 <v-progress-linear
@@ -41,20 +46,24 @@
               <v-flex xs2 id="fifth">
                 <h5>The total price of buffet service</h5>
                 <strong>
-                  {{ buffetPrice }} ({{
-                  (buffetPrice / totalPrice) * 100
-                  }}%)
+                  {{ buffetPrice }} ({{ (buffetPrice / totalPrice) * 100 }}%)
                 </strong>
-                <v-progress-linear color="#4b0082" :value="(buffetPrice / totalPrice) * 100"></v-progress-linear>
+                <v-progress-linear
+                  color="#4b0082"
+                  :value="(buffetPrice / totalPrice) * 100"
+                ></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="second">
                 <h5>The total of a-la-carte price</h5>
                 <strong>
                   {{ alacartePrice }} ({{
-                  (alacartePrice / totalPrice) * 100
+                    (alacartePrice / totalPrice) * 100
                   }}%)
                 </strong>
-                <v-progress-linear color="#4b0082" :value="(alacartePrice / totalPrice) * 100"></v-progress-linear>
+                <v-progress-linear
+                  color="#4b0082"
+                  :value="(alacartePrice / totalPrice) * 100"
+                ></v-progress-linear>
               </v-flex>
             </v-layout>
           </div>
@@ -63,11 +72,19 @@
             <v-flex xs2>
               <div class="col-6 col-lg-3">
                 <v-card width="300" class="styleTop3Table">
-                  <b-table :data="sortMenu" :columns="columns" style="padding-top:5em;"></b-table>
+                  <b-table
+                    :data="sortMenu"
+                    :columns="columns"
+                    style="padding-top:5em;"
+                  ></b-table>
                 </v-card>
                 <v-card width="250" class="styleTop3">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">The best selling</v-card-text>
-                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >The best selling</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
                 </v-card>
               </div>
             </v-flex>
@@ -84,7 +101,12 @@
                     style="padding-top:5em;"
                   >
                     <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-                    <v-tab v-for="data in distinctCategory" :key="data" @click="test">{{data}}</v-tab>
+                    <v-tab
+                      v-for="data in distinctCategory"
+                      :key="data"
+                      @click="test"
+                      >{{ data }}</v-tab
+                    >
                     <!-- <v-tab
                     class="white--text"
                     v-for="category in category"
@@ -94,17 +116,22 @@
 
                     <v-tab-item>
                       <v-card>
-                        <b-table :data="bestSellerMenuByCategory" :columns="columns"></b-table>
+                        <b-table
+                          :data="bestSellerMenuByCategory"
+                          :columns="columns"
+                        ></b-table>
                       </v-card>
                     </v-tab-item>
                   </v-tabs>
                 </v-card>
 
                 <v-card width="250" class="styleCategory">
-                  <v-card-text
-                    style="font-size:1.5em; padding-bottom:0px;"
-                  >The most selling by category</v-card-text>
-                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
+                  <v-card-text style="font-size:1.3em; padding-bottom:0px;"
+                    >The most selling by category</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
                 </v-card>
               </div>
             </v-flex>
@@ -120,20 +147,27 @@
                     style="padding-top:5em;"
                   >
                     <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-                    <v-tab v-for="data in distinctCategory" :key="data">{{data}}</v-tab>
+                    <v-tab v-for="data in distinctCategory" :key="data">{{
+                      data
+                    }}</v-tab>
                     <v-tab-item>
                       <v-card>
-                        <b-table :data="worseSellerMenuByCategory" :columns="columns"></b-table>
+                        <b-table
+                          :data="worseSellerMenuByCategory"
+                          :columns="columns"
+                        ></b-table>
                       </v-card>
                     </v-tab-item>
                   </v-tabs>
                 </v-card>
 
                 <v-card width="250" class="styleCategory2">
-                  <v-card-text
-                    style="font-size:1.5em; padding-bottom:0px;"
-                  >Top 3 the worse selling by category</v-card-text>
-                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
+                  <v-card-text style="font-size:1.3em; padding-bottom:0px;"
+                    >The worst selling by category</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
                 </v-card>
               </div>
             </v-flex>
@@ -149,8 +183,12 @@
                 ></b-table>
               </v-card>
               <v-card width="650" class="styleTransHeader">
-                <v-card-text style="font-size:1.5em; padding-bottom:0px;">Transaction</v-card-text>
-                <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
+                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                  >Transaction</v-card-text
+                >
+                <v-card-text style="font-size:1em; padding-top:0px;"
+                  >On 14 November 2019</v-card-text
+                >
               </v-card>
             </div>
           </v-flex>
@@ -159,13 +197,20 @@
             <v-flex xs2>
               <div class="col-6 col-lg-3">
                 <v-card width="450" class="styleGraphMenu">
-                  <b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
+                  <b-card
+                    no-body
+                    style="padding-top:1em; backgroundColor:#dcdffa;"
+                  >
                     <canvas id="my-chart"></canvas>
                   </b-card>
                 </v-card>
                 <v-card width="400" class="styleGraphMenuHeader">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">Menu graph</v-card-text>
-                  <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
+                    >Menu graph</v-card-text
+                  >
+                  <v-card-text style="font-size:1em; padding-top:0px;"
+                    >On 14 November 2019</v-card-text
+                  >
                 </v-card>
               </div>
             </v-flex>
@@ -414,6 +459,7 @@ export default {
           this.dataAllMenu.push(sortMenu[index][1]);
           this.backgroundColor.push(this.randomColor());
         }
+        console.log(this.labelsAllMenu, this.dataAllMenu, this.backgroundColor);
         this.charts();
       }
     },
@@ -598,29 +644,29 @@ export default {
   margin-left: 10%;
 }
 .styleCategoryHeader {
-  margin-top: 2em;
+  margin-top: 3.5em;
   margin-left: 12em;
 }
 .styleCategory {
   background-color: #53ff8d;
   margin-left: 14em;
-  margin-top: -21.5em;
+  margin-top: -18em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
 }
 .styleCategoryHeader2 {
-  margin-top: 2em;
+  margin-top: 3.5em;
   margin-left: 23em;
 }
 .styleCategory2 {
   background-color: #5389ff;
   margin-left: 25em;
-  margin-top: -21.5em;
+  margin-top: -18em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
 }
 .styleTransHeader {
   background-color: #f60b46;
   margin-left: 98%;
-  margin-top: -18em;
+  margin-top: -36em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
 }
 .styleTrans {
@@ -634,7 +680,7 @@ export default {
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
 }
 .styleGraphMenu {
-  margin-top: 18em;
+  margin-top: 38em;
   margin-left: 10%;
   padding-top: 5em;
   padding-right: 15px;
