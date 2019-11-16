@@ -1,36 +1,71 @@
 <template>
   <v-content>
+    <v-dialog max-width="290" v-model="detailDialog" class="styleDialog">
+      <v-card>
+        <v-container fluid>
+          <v-card-title class="nameDialog">Bill Detail</v-card-title>
+          <v-card-text
+            ><span>Type of service: {{ this.typeOfService.typeName }} </span></br>
+            <span>Amount of customer: {{ 2 }} </span></br>
+            <span>Duration: {{ this.typeOfService.typeTime}} </span>
+          </v-card-text>
+        </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#305378" flat @click="detailDialog = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-toolbar class="tabBar" fixed>
       <Bar></Bar>
       <v-tabs v-model="tab" color="#84A295" fixed-tabs>
         <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-        <v-tab class="white--text" v-for="category in category" :key="category.categoryId">{{ category.categoryName }}</v-tab>
+        <v-tab
+          class="white--text"
+          v-for="category in category"
+          :key="category.categoryId"
+          >{{ category.categoryName }}</v-tab
+        >
       </v-tabs>
     </v-toolbar>
     <v-card color="white" class="cardMenu">
-      <v-flex xs12 v-for="(menu) in items" :key="menu.menuId">
+      <v-flex xs12 v-for="menu in items" :key="menu.menuId">
         <v-layout>
           <v-flex xs6 class="box">
-            <div v-if="menu.menuPathImage!=null">
+            <div v-if="menu.menuPathImage != null">
               <v-img :src="menu.menuPathImage" aspect-ratio="1.8"></v-img>
             </div>
             <div v-else>
-              <v-img :src="require('../assets/1.png')" aspect-ratio="1.8"></v-img>
+              <v-img
+                :src="require('../assets/1.png')"
+                aspect-ratio="1.8"
+              ></v-img>
             </div>
           </v-flex>
           <v-flex xs6 class="spaceText">
             <v-content>
-              <div class="subheading">{{menu.menuName}}</div>
-              <div class="subheading">{{menu.menuPrice}} ฿</div>
+              <div class="subheading">{{ menu.menuName }}</div>
+              <div class="subheading">{{ menu.menuPrice }} ฿</div>
               <div class="iconBtn">
-                <v-btn v-if="menu.amount>0" @click="menu.amount--" outline small color="black">
+                <v-btn
+                  v-if="menu.amount > 0"
+                  @click="menu.amount--"
+                  outline
+                  small
+                  color="black"
+                >
                   <v-icon class="body-1">remove</v-icon>
                 </v-btn>
                 <v-btn v-else outline small disabled color="black">
                   <v-icon class="body-1">remove</v-icon>
                 </v-btn>
-                {{menu.amount}}
-                <v-btn @click="addMenu(menu.menuId)" outline small color="black">
+                {{ menu.amount }}
+                <v-btn
+                  @click="addMenu(menu.menuId)"
+                  outline
+                  small
+                  color="black"
+                >
                   <v-icon class="body-1">add</v-icon>
                 </v-btn>
               </div>
@@ -38,8 +73,31 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-btn @click="next" class="white--text" color="#B7CDC2" block id="spaceNext">NEXT</v-btn>
+      <v-btn
+        @click="next"
+        class="white--text"
+        color="#B7CDC2"
+        block
+        id="spaceNext"
+        >VIEW ORDER DETAIL</v-btn
+      >
     </v-card>
+    <v-dialog v-model="errorDialog" persistent data-app>
+      <v-card max-width="290" style="margin:0%;"
+        ><v-icon
+          color="red lighten-1"
+          style="font-size:70px; margin-left:1.55em; margin-top: 0.3em;"
+          >error</v-icon
+        >
+        <v-card-text class="nameDialog"
+          >Please add some menu at least one</v-card-text
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#305378" flat @click="errorDialog = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <navBar></navBar>
   </v-content>
 </template>
@@ -52,7 +110,7 @@ import axios from "axios";
 import { store } from "../store/store";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
-import {host} from './data'
+import { host } from "./data";
 
 export default {
   name: "MoMenuPage",
@@ -68,7 +126,9 @@ export default {
       foodMenu: [],
       category: null,
       order: [],
-      token: ""
+      token: "",
+      detailDialog: false,
+      errorDialog: false
     };
   },
   methods: {
@@ -91,11 +151,7 @@ export default {
         localStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
         this.$router.push("/Moorder");
       } else {
-        this.$dialog.alert({
-          title: "Error",
-          message: "Please add some menu at lease one",
-          type: "is-warning"
-        });
+        this.errorDialog = true;
       }
     }
   },
@@ -115,16 +171,14 @@ export default {
     this.$store.commit("setNamePages", "Menu");
     this.token = jwt.decode(localStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
+    this.detailDialog = true;
 
     if (JSON.parse(localStorage.getItem("foodMenu")) != null) {
       this.foodMenu = JSON.parse(localStorage.getItem("foodMenu"));
     } else {
       if (this.typeOfService.typePrice != null) {
         axios
-          .get(
-            host+"getmenubytypeofserviceid/" +
-              this.typeOfService.typeId
-          )
+          .get(host + "getmenubytypeofserviceid/" + this.typeOfService.typeId)
           .then(response => {
             this.foodMenu = response.data;
             this.foodMenu.forEach(element => {
@@ -132,17 +186,15 @@ export default {
             });
           });
       } else {
-        axios
-          .get(host+"getallmenu/" + 1)
-          .then(response => {
-            this.foodMenu = response.data;
-            this.foodMenu.forEach(element => {
-              element.amount = 0;
-            });
+        axios.get(host + "getallmenu/" + 1).then(response => {
+          this.foodMenu = response.data;
+          this.foodMenu.forEach(element => {
+            element.amount = 0;
           });
+        });
       }
     }
-    axios.get(host+"getcategory/" + 1).then(response => {
+    axios.get(host + "getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }
@@ -196,6 +248,14 @@ export default {
 }
 .tabBar {
   padding-top: 4em;
-  background-color: #84A295;
+  background-color: #84a295;
+}
+.nameDialog {
+  margin-left: 2%;
+  font-size: 1.5em;
+  padding-top: 0%;
+}
+.styleDialog{
+  margin: 0px;
 }
 </style>
