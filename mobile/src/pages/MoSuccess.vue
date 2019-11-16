@@ -5,9 +5,9 @@
       </div>
       <div class="text"><center> <p> Payment successful !! </p> 
       <p> Thank you for your ordered. </p></center></div>
-    
+<!--     
     <v-btn @click="done" class="white--text" color="#cd9575" block id="spaceNext">DONE</v-btn>
-    
+     -->
   </v-content>
 </template>
 

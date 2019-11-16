@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <sidebar></sidebar>
@@ -121,6 +120,7 @@ export default {
     },
     changeStatus(notiId) {
       axios.put(host + "changeStatusNotification/" + notiId).then(() => {
+        // axios.put(host+"updatebill",)
         this.getCheckBillNotification();
         this.getOtherNotification();
       });
@@ -128,6 +128,8 @@ export default {
     getCheckBillNotification() {
       axios.get(host + "getcheckbillnotification").then(response => {
         this.checkbillData = response.data;
+        console.log(this.checkbillData);
+        
       });
     },
     getOtherNotification() {
@@ -159,7 +161,6 @@ export default {
   },
   created() {
     setInterval(() => {
-      
     this.getCheckBillNotification();
     this.getOtherNotification();
     }, 5000);

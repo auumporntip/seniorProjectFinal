@@ -173,7 +173,6 @@ export default {
 
     axios.get(host + "getbillbybillid/" + this.token.billId).then(response => {
       this.bill = response.data;
-
       this.date = dayjs(this.bill[0].created_at).format("YYYY/MM/DD");
       this.time = dayjs(this.bill[0].created_at).format("HH:mm:ss");
       this.bill[0].typeName = this.typeOfService.typeName;

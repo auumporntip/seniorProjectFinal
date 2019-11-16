@@ -17,22 +17,22 @@ export default {
     };
   },
   created() {    
-    if (sessionStorage.getItem("token") != null) {
-      axios
-        .post("http://localhost:3000/api/verifytoken", {
-          token: sessionStorage.getItem("token")
-        })
-        .then(response => {
-          console.log(response.data);
+    // if (localStorage.getItem("token") != null) {
+    //   axios
+    //     .post("http://localhost:3000/api/verifytoken", {
+    //       token: sessionStorage.getItem("token")
+    //     })
+    //     .then(response => {
+    //       console.log(response.data);
 
-          if (response.data.tokenValid === false) {
-            sessionStorage.clear();
-            localStorage.clear();
-            this.$store.replaceState({});
-            this.$router.push("/Molanding");
-          }
-        });
-    }
+    //       if (response.data.tokenValid === false) {
+    //         sessionStorage.clear();
+    //         localStorage.clear();
+    //         this.$store.replaceState({});
+    //         this.$router.push("/Molanding");
+    //       }
+    //     });
+    // }
   }
 };
 </script>

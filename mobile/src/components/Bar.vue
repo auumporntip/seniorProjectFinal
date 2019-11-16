@@ -13,7 +13,10 @@
       <v-btn v-else @click="goBack" flat icon color="white">
         <v-icon>arrow_back</v-icon>
       </v-btn>
-      <v-toolbar-title class="headline-text white--text" style="margin-left:5px;">{{this.$store.getters.namePages}}</v-toolbar-title>
+      <v-toolbar-title
+        class="headline-text white--text"
+        style="margin-left:5px;"
+      >{{this.$store.getters.namePages}}</v-toolbar-title>
       <v-spacer></v-spacer>
       {{time}}
     </v-toolbar>
@@ -98,48 +101,51 @@ export default {
       }
     }
   },
-  created() {
-    var token = jwt.decode(sessionStorage.getItem("token"));
-    this.billId = token.billId;
-    this.tableNumber = token.tableNumber;
-    this.typeOfService = token.typeOfService;
+  created() {    
+    if (sessionStorage.getItem("token") != null) {
+      var token = jwt.decode(sessionStorage.getItem("token"));
+      this.billId = token.billId;
+      this.tableNumber = token.tableNumber;
+      this.typeOfService = token.typeOfService;
 
-    if (
-      this.$store.getters.namePages != "TypeOfService" &&
-      this.typeOfService.service === "buffet"
-    ) {
-      var front = this.typeOfService.typeTime.substring(
-        0,
-        this.typeOfService.typeTime.indexOf(".")
-      );
-      var back = this.typeOfService.typeTime.substring(
-        this.typeOfService.typeTime.indexOf(".") + 1
-      );
-      axios.get(host + "getbillbybillid/" + this.billId).then(response => {
-        this.bill = response.data;
-        var date1 = moment(moment(this.bill[0].created_at)._d).unix();
-        // this.checkTimeEnd(this.time.substring(0,2),this.time.substring(3,5),this.time.substring(6,8))
-        setInterval(() => {
-          var date2 = moment(new Date()).unix();
-          var date3 = moment.unix(date2 - date1);
-          var date4 = momentT(date3._d);
-          var time = date4.tz("Asia/Bangkok").format("hh:mm:ss");
-          if (time.charAt(0) != "0") {
-            var index = parseInt(time.substring(0, 2)) - 7;
+      if (
+        this.$store.getters.namePages != "TypeOfService" &&
+        this.typeOfService.service === "buffet"
+      ) {
+        var front = this.typeOfService.typeTime.substring(
+          0,
+          this.typeOfService.typeTime.indexOf(".")
+        );
+        var back = this.typeOfService.typeTime.substring(
+          this.typeOfService.typeTime.indexOf(".") + 1
+        );
+        axios.get(host + "getbillbybillid/" + this.billId).then(response => {
+          this.bill = response.data;
+          var date1 = moment(moment(this.bill[0].created_at)._d).unix();
+          // this.checkTimeEnd(this.time.substring(0,2),this.time.substring(3,5),this.time.substring(6,8))
+          setInterval(() => {
+            var date2 = moment(new Date()).unix();
+            var date3 = moment.unix(date2 - date1);
+            var date4 = momentT(date3._d);
+            var time = date4.tz("Asia/Bangkok").format("hh:mm:ss");
+            if (time.charAt(0) != "0") {
+              var index = parseInt(time.substring(0, 2)) - 7;
 
-            this.time = "0" + index + time.substring(2, 8);
-          } else {
-            var index1 = parseInt(time.charAt(1)) - 7;
-            this.time = "0" + index1 + time.substring(2, 8);
-          }
-
-          this.checkTimeEnd(
-            this.time.substring(0, 2),
-            this.time.substring(3, 5),
-            this.time.substring(6, 8)
-          );
-        }, 1000);
-      });
+              this.time = "0" + index + time.substring(2, 8);
+            } else {
+              var index1 = parseInt(time.charAt(1)) - 7;
+              this.time = "0" + index1 + time.substring(2, 8);
+            }
+            console.log(this.time);
+            
+            this.checkTimeEnd(
+              this.time.substring(0, 2),
+              this.time.substring(3, 5),
+              this.time.substring(6, 8)
+            );
+          }, 1000);
+        });
+      }
     }
   }
 };

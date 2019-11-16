@@ -3,7 +3,7 @@
     <Bar></Bar>
     <div class="wrapper">
       <!--menu-->
-      <v-card color="primary" class="elevation-1">
+      <v-card color="primary" class="elevation-1" v-if="orders != 0">
         <v-layout row>
           <v-flex xs6>
             <v-card-text class="textHead">Menu</v-card-text>
@@ -37,7 +37,7 @@
       </v-card>
 
       <!--noti-->
-      <v-card color="primary" class="elevation-1">
+      <v-card color="primary" class="elevation-1" v-if="noti.length!=0" >
         <v-layout row>
           <v-flex xs6>
             <v-card-text class="textHead">Call Employee</v-card-text>
@@ -60,8 +60,8 @@
             <v-card-text class="text">{{notification.notiMessage}}</v-card-text>
           </v-flex>
           <v-flex xs4>
-            <v-card-text v-if="notification.status===0" class="text">Waiting</v-card-text>
-            <v-card-text v-if="notification.status===1" class="text">Finish</v-card-text>
+            <v-card-text v-if="notification.notiStatus===0" class="text">Waiting</v-card-text>
+            <v-card-text v-if="notification.notiStatus===1" class="text">Finish</v-card-text>
           </v-flex>
         </v-layout>
       </v-card>

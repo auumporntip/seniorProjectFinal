@@ -139,7 +139,7 @@ export default {
       t: "",
       deleteDialog: false,
       tableId: "",
-      host: "https://patrestaurantmobile.web.app/",
+      host: "https://patrestaurantmobile.web.app/motype/",
       value: "",
       size: 100,
       tableData: [],
@@ -261,7 +261,7 @@ export default {
     items() {
       if (this.keyword != "") {
         return this.tableData.filter(items =>
-          items.tableName.toLowerCase().includes(this.keyword.toLowerCase())
+          items.tableNumber.toLowerCase().includes(this.keyword.toLowerCase())
         );
       } else {
         return this.tableData;
