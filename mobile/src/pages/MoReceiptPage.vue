@@ -11,7 +11,7 @@
           <p class="styleText">Date : {{ date }}</p>
           <p class="styleText">Time Start : {{ time }}</p>
           <p class="styleText">Time End : {{ timeEnd }}</p>
-        </v-flex> -->
+        </v-flex>-->
       </v-layout>
 
       <b-table :data="bill" :columns="columns"></b-table>
@@ -203,9 +203,7 @@ export default {
     this.typeOfService = this.token.typeOfService;
     axios.get(host + "getorderbybillid/" + this.token.billId).then(response => {
       this.orders = response.data;
-    });
-
-    await axios
+     axios
       .get(host + "getbillbybillid/" + this.token.billId)
       .then(response => {
         this.bill = response.data;
@@ -225,6 +223,8 @@ export default {
           this.bill[0].totalPrice = price;
         }
       });
+    });
+
   }
 };
 </script>

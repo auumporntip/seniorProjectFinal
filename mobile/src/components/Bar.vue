@@ -18,7 +18,10 @@
         style="margin-left:5px;"
       >{{this.$store.getters.namePages}}</v-toolbar-title>
       <v-spacer></v-spacer>
+      <div v-if="this.typeOfService.service === 'buffet'">
+      Duration : 
       {{time}}
+      </div>
     </v-toolbar>
   </div>
 </template>
