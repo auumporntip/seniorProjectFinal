@@ -66,10 +66,8 @@ async function checkTable(tableNumber) {
 async function verifyBill(billId) {
     try {
         var b = await bill.getBillByBillId(billId)
-        console.log(b[0]);
-        if (b != '') {
+        if (b.length != 0 && b[0].billStatus != 1) {
             var type = await typeOfService.getAllTypeOfServiceByTypeId(b[0].typeId)
-            console.log(type[0]);
             var data = {
                 typeOfService: type[0],
                 tableNumber: b[0].tableNumber,
@@ -129,7 +127,6 @@ async function login(id, password) {
         }
 
     } catch (error) {
-        console.log(error);
         return { login: false }
     }
 }

@@ -9,6 +9,8 @@ import { store } from "./store/store";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import { host } from "../src/pages/data";
+
 export default {
   name: "App",
   data() {
@@ -16,23 +18,27 @@ export default {
       time: 0
     };
   },
-  created() {    
-    // if (localStorage.getItem("token") != null) {
-    //   axios
-    //     .post("http://localhost:3000/api/verifytoken", {
-    //       token: sessionStorage.getItem("token")
-    //     })
-    //     .then(response => {
-    //       console.log(response.data);
+  created() {
+    if (localStorage.getItem("token") != null) {
+      var token = jwt.decode(localStorage.getItem("token"));
+      var bill = [];
+      axios
+        .post("http://localhost:3000/api/verifytoken", {
+          token: localStorage.getItem("token")
+        })
+        .then(response => {
+          axios.get(host + "getbillbybillId/" + token.billId).then(response => {
+            bill = response.data[0];
 
-    //       if (response.data.tokenValid === false) {
-    //         sessionStorage.clear();
-    //         localStorage.clear();
-    //         this.$store.replaceState({});
-    //         this.$router.push("/Molanding");
-    //       }
-    //     });
-    // }
+            if (response.data.tokenValid === false || bill.billStatus != 0) {
+              sessionStorage.clear();
+              localStorage.clear();
+              this.$store.replaceState({});
+              this.$router.push("/Molanding");
+            }
+          });
+        });
+    }
   }
 };
 </script>

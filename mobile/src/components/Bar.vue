@@ -99,11 +99,20 @@ export default {
           confirmButtonText: "Close"
         });
       }
+      if (dayjs(Date()).format("HH:mm:ss") === this.bill[0].eatTimeEnd) {
+        Swal.fire({
+          title: "Warning",
+          text: "Time End Please checkbill",
+          type: "warning",
+          confirmButtonColor: "#cd9575",
+          confirmButtonText: "Close"
+        });
+      }
     }
   },
-  created() {    
-    if (sessionStorage.getItem("token") != null) {
-      var token = jwt.decode(sessionStorage.getItem("token"));
+  created() {
+    if (localStorage.getItem("token") != null) {
+      var token = jwt.decode(localStorage.getItem("token"));
       this.billId = token.billId;
       this.tableNumber = token.tableNumber;
       this.typeOfService = token.typeOfService;
@@ -122,14 +131,13 @@ export default {
         axios.get(host + "getbillbybillid/" + this.billId).then(response => {
           this.bill = response.data;
           var date1 = moment(moment(this.bill[0].created_at)._d).unix();
-          // this.checkTimeEnd(this.time.substring(0,2),this.time.substring(3,5),this.time.substring(6,8))
           setInterval(() => {
             var date2 = moment(new Date()).unix();
             var date3 = moment.unix(date2 - date1);
             var date4 = momentT(date3._d);
             var time = date4.tz("Asia/Bangkok").format("hh:mm:ss");
             if (time.charAt(0) != "0") {
-              var index = parseInt(time.substring(0, 2)) - 7;
+              var index = parseInt(time.substring(0, 2)) - 12;
 
               this.time = "0" + index + time.substring(2, 8);
             } else {
@@ -137,7 +145,7 @@ export default {
               this.time = "0" + index1 + time.substring(2, 8);
             }
             console.log(this.time);
-            
+
             this.checkTimeEnd(
               this.time.substring(0, 2),
               this.time.substring(3, 5),

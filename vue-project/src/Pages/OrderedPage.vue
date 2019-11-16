@@ -411,6 +411,8 @@ export default {
     }
   },
   created: function() {
+      this.getOrderData();
+      this.getOrderSameMenu();
     setInterval(() => {
       this.getOrderData();
       this.getOrderSameMenu();

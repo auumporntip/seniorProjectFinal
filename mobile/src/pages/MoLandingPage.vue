@@ -3,7 +3,7 @@
     <v-card class="bg">
       <v-flex xs4>
           <v-img
-            :src="require('../assets/landing.jpg')"
+            :src="require('../assets/loginCircle.jpg')"
             aspect-radio="1.2"
             class="pic"
           ></v-img
@@ -46,6 +46,7 @@ export default {
     next() {
       if (this.billId != "") {
         axios.post(host + "verifybill/" + this.billId).then(response => {
+          
           if (response.data.login === true) {
             localStorage.setItem("token", response.data.token);
             this.$router.push("/Momenu");

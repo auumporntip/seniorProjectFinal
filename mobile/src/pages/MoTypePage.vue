@@ -78,13 +78,86 @@ export default {
       this.$refs.form.resetValidation();
     },
     clickNext() {
+      localStorage.setItem('first',0)
       const totalPrice = 0;
+      var timeStart = dayjs(Date()).format("HH:mm:ss");
+      var timeEnd = 0;
+
+      var hourStart = parseInt(timeStart.substring(0, 2));
+      var minuteStart = parseInt(timeStart.substring(3, 5));
+      var secondStart = parseInt(timeStart.substring(6, 8));
+      var hourTypeOfService = parseInt(
+        this.selectService.typeTime.substring(
+          0,
+          this.selectService.typeTime.indexOf(".")
+        )
+      );
+      var minuteTypeOfService = parseInt(
+        this.selectService.typeTime.substring(
+          this.selectService.typeTime.indexOf(".") + 1
+        )
+      );
+      
+      var hourEnd = 0
+      var minuteEnd = 0
+      if (minuteStart+minuteTypeOfService > 60) {
+        hourEnd = hourStart+hourTypeOfService+1
+        minuteEnd = minuteStart+minuteTypeOfService-60
+        if (hourEnd>=24) {
+          hourEnd = hourEnd-24
+          if (hourEnd>9 && minuteEnd>9) {
+            timeEnd = hourEnd+':'+minuteEnd+':'+secondStart
+          }else if (hourEnd>9 && minuteEnd<9) {
+            timeEnd = hourEnd+':0'+minuteEnd+':'+secondStart
+          }else if (hourEnd<9 && minuteEnd>9) {
+            timeEnd = '0'+hourEnd+':'+minuteEnd+':'+secondStart
+          }{
+            timeEnd = '0'+hourEnd+':0'+minuteEnd+':'+secondStart
+          }
+        }else{
+          if (hourEnd>9 && minuteEnd>9) {
+            timeEnd = hourEnd+':'+minuteEnd+':'+secondStart
+          }else if (hourEnd>9 && minuteEnd<9) {
+            timeEnd = hourEnd+':0'+minuteEnd+':'+secondStart
+          }else if (hourEnd<9 && minuteEnd>9) {
+            timeEnd = '0'+hourEnd+':'+minuteEnd+':'+secondStart
+          }{
+            timeEnd = '0'+hourEnd+':0'+minuteEnd+':'+secondStart
+          }
+        }
+      }else if (minuteStart+minuteTypeOfService < 60) {
+        hourEnd = hourStart+hourTypeOfService
+        minuteEnd = minuteStart+minuteTypeOfService
+        if (hourEnd>=24) {
+          hourEnd = hourEnd-24
+          if (hourEnd>9 && minuteEnd>9) {
+            timeEnd = hourEnd+':'+minuteEnd+':'+secondStart
+          }else if (hourEnd>9 && minuteEnd<9) {
+            timeEnd = hourEnd+':0'+minuteEnd+':'+secondStart
+          }else if (hourEnd<9 && minuteEnd>9) {
+            timeEnd = '0'+hourEnd+':'+minuteEnd+':'+secondStart
+          }else{
+            timeEnd = '0'+hourEnd+':0'+minuteEnd+':'+secondStart
+          }
+        }else{
+          if (hourEnd>9 && minuteEnd>9) {
+            timeEnd = hourEnd+':'+minuteEnd+':'+secondStart
+          }else if (hourEnd>9 && minuteEnd<9) {
+            timeEnd = hourEnd+':0'+minuteEnd+':'+secondStart
+          }else if (hourEnd<9 && minuteEnd>9) {
+            timeEnd = '0'+hourEnd+':'+minuteEnd+':'+secondStart
+          }else{
+            timeEnd = '0'+hourEnd+':0'+minuteEnd+':'+secondStart
+          }
+        }
+      }
+      
       if (this.$refs.form.validate()) {
         axios
           .post(host + "insertbill", {
             totalPrice: this.newCust.numOfCust * this.selectService.typePrice,
-            eatTimeEnd: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
-            eatTimeStart: dayjs(Date()).format("YYYY-MM-DD HH:mm:ss"),
+            eatTimeEnd: timeEnd,
+            eatTimeStart: timeStart,
             numOfCust: this.newCust.numOfCust,
             typeId: this.selectService.typeId,
             tableNumber: this.$route.params.tableNumber,
@@ -100,9 +173,6 @@ export default {
             };
             axios.post(host + "signjwt", token).then(response => {
               localStorage.setItem("token", response.data);
-              console.log(
-                jwt.decode(localStorage.getItem("token", response.data))
-              );
               this.dialog = false;
               this.$refs.form.resetValidation();
               this.$router.push("/Momenu");
@@ -139,5 +209,4 @@ div.error--text {
 .bg {
   background-color: #f7f6ee;
 }
-
 </style>

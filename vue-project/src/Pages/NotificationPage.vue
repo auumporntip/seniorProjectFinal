@@ -36,6 +36,7 @@
                 >&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.notiId}}</b-table-column>
                 <b-table-column label="Notification Message" width="200">{{props.row.notiMessage}}</b-table-column>
                 <b-table-column label="Table No" width="100">{{props.row.tableNumber}}</b-table-column>
+                <b-table-column label="Price" width="100">{{props.row.totalPrice}}</b-table-column>
                 <b-table-column label="Change Status" width="50">
                   <v-btn small outline color="green" @click="check(props.row.notiId,props.row)">
                     <v-icon>check</v-icon>DONE
@@ -172,6 +173,8 @@ export default {
     }
   },
   created() {
+      this.getCheckBillNotification();
+      this.getOtherNotification();
     setInterval(() => {
       this.getCheckBillNotification();
       this.getOtherNotification();

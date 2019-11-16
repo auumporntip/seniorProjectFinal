@@ -137,6 +137,7 @@ export default {
     }
   },
   created: function() {
+      this.getOrderData();
     setInterval(() => {
       this.getOrderData();
     }, 5000);

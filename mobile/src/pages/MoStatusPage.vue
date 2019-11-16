@@ -111,15 +111,10 @@ export default {
           label: "Status"
         }
       ]
-    };
-  },
-  created() {
-    if (localStorage.getItem("token") === null) {
-      this.$router.push("/MoLanding");
     }
-    this.$store.commit("setNamePages", "Status");
-    this.token = jwt.decode(localStorage.getItem("token"));
-    setInterval(() => {
+  },
+  methods: {
+    getOrderAndNoti(){
       axios
         .get(host + "getorderbybillid/" + this.token.billId)
         .then(response => {
@@ -130,6 +125,17 @@ export default {
         .then(response => {
           this.noti = response.data;
         });
+    }
+  },
+  created() {
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/MoLanding");
+    }
+    this.$store.commit("setNamePages", "Status");
+    this.token = jwt.decode(localStorage.getItem("token"));
+    this.getOrderAndNoti()
+    setInterval(() => {
+      this.getOrderAndNoti()
     }, 5000);
   }
 };

@@ -7,7 +7,7 @@
     <v-card color="#F9F9F9" >-->
     <div class="logo">
       <center>
-        <img src="../assets/video-conference.png" @click="click" height="60%" width="60%" />
+        <img src="../assets/video-conference.png" height="60%" width="60%" />
         <!-- videoconference -->
       </center>
     </div>
@@ -38,11 +38,6 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    click() {
-      this.$router.push("MoSuccess");
-    }
-  },
   created() {
     this.$store.commit("setNamePages", "Waiting Employee");
     if (localStorage.getItem("token") === null) {
@@ -54,12 +49,13 @@ export default {
     var bill = [];
     var noti = [];
     var checkNoti = [];
-    setInterval(() => {
+    var waitPage = setInterval(() => {
       axios
         .get(host + "getbillbybillid/" + token.billId)
         .then(response => {
           var bill = response.data
           if (bill[0].billStatus === 1) {
+            clearInterval(waitPage)
             this.$router.push("MoSuccess");
           }
         });

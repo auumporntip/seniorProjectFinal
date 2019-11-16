@@ -5,7 +5,7 @@
       <v-icon color="white">call</v-icon>
     </v-btn>
 
-    <v-btn v-if="this.$store.getters.namePages === 'Status'" color="white" flat value="status" href="/Momenu">
+    <v-btn v-if="this.$store.getters.namePages === 'Status' || this.$store.getters.namePages === 'Receipt'" color="white" flat value="status" href="/Momenu">
       <span class="white--text">Menu</span>
       <v-icon color="white">list</v-icon>
     </v-btn>
