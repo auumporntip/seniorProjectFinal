@@ -15,9 +15,9 @@
           ></v-text-field>
         </v-card-title>
         <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
-          <!-- <b-tab-item label="Checkbill"> -->
-            <v-tabs v-model="activeTab" color="#B7CDC2" slider-color="#EAE6DA" class="tabStyle">
-             <v-tab ripple>Check Bill</v-tab>
+        <!-- <b-tab-item label="Checkbill"> -->
+        <v-tabs v-model="activeTab" color="#B7CDC2" slider-color="#EAE6DA" class="tabStyle">
+          <v-tab ripple>Check Bill</v-tab>
           <v-tab ripple>Others</v-tab>
           <v-tab-item>
             <b-table
@@ -37,7 +37,7 @@
                 <b-table-column label="Notification Message" width="200">{{props.row.notiMessage}}</b-table-column>
                 <b-table-column label="Table No" width="100">{{props.row.tableNumber}}</b-table-column>
                 <b-table-column label="Change Status" width="50">
-                  <v-btn small outline color="green" @click="check(props.row.notiId)">
+                  <v-btn small outline color="green" @click="check(props.row.notiId,props.row)">
                     <v-icon>check</v-icon>DONE
                   </v-btn>
                 </b-table-column>
@@ -47,7 +47,7 @@
           <!-- </b-tab-item> -->
           <!--other-->
           <!-- <b-tab-item label="Others"> -->
-            <v-tab-item>
+          <v-tab-item>
             <b-table
               :data="itemsOther"
               :paginated="isPaginated"
@@ -68,9 +68,9 @@
                 </b-table-column>
               </template>
             </b-table>
-            </v-tab-item>
-            </v-tabs>
-          <!-- </b-tab-item> -->
+          </v-tab-item>
+        </v-tabs>
+        <!-- </b-tab-item> -->
         <!-- </b-tabs> -->
       </section>
     </div>
@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       //search
-      keyword:"",
+      keyword: "",
 
       nameOfStatus: "All Status",
       dialog: false,
@@ -109,27 +109,36 @@ export default {
     };
   },
   methods: {
-    check(notiId) {
-      this.changeStatus(notiId);
-      Swal.fire("Good job!", "Payment successful", "success");
-      S;
+    check(notiId, bill) {
+      this.changeStatus(notiId, bill);
     },
     checkOther(notiId) {
       this.changeStatus(notiId);
       Swal.fire("Good job!", "", "success");
     },
-    changeStatus(notiId) {
+    changeStatus(notiId, bill) {
       axios.put(host + "changeStatusNotification/" + notiId).then(() => {
-        // axios.put(host+"updatebill",)
-        this.getCheckBillNotification();
-        this.getOtherNotification();
+        axios
+          .put(host + "updatebill", {
+            billId: bill.billId,
+            totalPrice: bill.totalPrice,
+            eatTimeStart: bill.eatTimeStart,
+            eatTimeEnd: bill.eatTimeEnd,
+            numOfCust: bill.numOfCust,
+            typeId: bill.typeId,
+            tableNumber: bill.tableNumber,
+            billStatus: 1
+          })
+          .then(response => {
+            this.getCheckBillNotification();
+            this.getOtherNotification();
+            Swal.fire("Good job!", "Payment successful", "success");
+          });
       });
     },
     getCheckBillNotification() {
       axios.get(host + "getcheckbillnotification").then(response => {
         this.checkbillData = response.data;
-        console.log(this.checkbillData);
-        
       });
     },
     getOtherNotification() {
@@ -150,9 +159,12 @@ export default {
     },
     itemsOther() {
       if (this.keyword != "") {
-        return this.otherData.filter(items =>
-          items.tableNumber.toLowerCase().includes(this.keyword.toLowerCase()) ||
-          items.notiMessage.toLowerCase().includes(this.keyword.toLowerCase())
+        return this.otherData.filter(
+          items =>
+            items.tableNumber
+              .toLowerCase()
+              .includes(this.keyword.toLowerCase()) ||
+            items.notiMessage.toLowerCase().includes(this.keyword.toLowerCase())
         );
       } else {
         return this.otherData;
@@ -161,8 +173,8 @@ export default {
   },
   created() {
     setInterval(() => {
-    this.getCheckBillNotification();
-    this.getOtherNotification();
+      this.getCheckBillNotification();
+      this.getOtherNotification();
     }, 5000);
   }
 };
@@ -171,12 +183,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
-  background-color: #F7F6EE;
+  background-color: #f7f6ee;
   border-radius: 20px;
   padding: 1%;
 }
 #bigbox {
-  background-color: #84A295;
+  background-color: #84a295;
   height: 800px;
   padding: 2%;
   margin-top: -800px;

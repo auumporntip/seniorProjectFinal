@@ -44,6 +44,7 @@ export default {
     }
   },
   created() {
+    this.$store.commit("setNamePages", "Waiting Employee");
     if (localStorage.getItem("token") === null) {
       this.$router.push("/MoLanding");
     }
@@ -55,21 +56,14 @@ export default {
     var checkNoti = [];
     setInterval(() => {
       axios
-        .get(host + "getnotificationbybillid/" + token.billId)
+        .get(host + "getbillbybillid/" + token.billId)
         .then(response => {
-          noti = response.data;
-          console.log(noti);
-          checkNoti = noti.filter(items => items.notiMessage === "check bill");
-          console.log(checkNoti[0].notiStatus);
-          if (checkNoti[0].notiStatus === 1) {
-            sessionStorage.clear();
-            localStorage.clear();
-            this.$store.replaceState({});
+          var bill = response.data
+          if (bill[0].billStatus === 1) {
             this.$router.push("MoSuccess");
           }
         });
     }, 5000);
-    this.$store.commit("setNamePages", "Waiting Employee");
   }
 };
 </script>
