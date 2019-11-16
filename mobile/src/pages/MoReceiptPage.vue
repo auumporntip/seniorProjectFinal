@@ -4,34 +4,49 @@
     <div class="wrapper">
       <v-layout class="space">
         <v-flex xs5>
-          <p class="subheading">Bill : {{token.billId}}</p>
-          <p class="subheading">Table : {{token.tableNumber}}</p>
+          <p class="styleText">Bill : {{ token.billId }}</p>
+          <p class="styleText">Table : {{ token.tableNumber }}</p>
         </v-flex>
         <v-flex xs7>
-          <p class="subheading">Date : {{date}}</p>
-          <p class="subheading">Time Start : {{time}}</p>
+          <p class="styleText">Date : {{ date }}</p>
+          <p class="styleText">Time Start : {{ time }}</p>
         </v-flex>
       </v-layout>
 
       <b-table :data="bill" :columns="columns"></b-table>
     </div>
+<v-layout row>
+    <v-btn color="#B7CDC2" id="spaceNext" @click="orderDialog = true"
+      >Ordered detail</v-btn
+    >
 
-    <v-btn color="#B7CDC2" id="spaceNext" @click="orderDialog=true">Ordered detail</v-btn>
-
-    <v-btn color="#B7CDC2" @click="dialog=true" style="margin-left:2%;">Check Bill</v-btn>
-
+    <v-btn color="#B7CDC2" @click="dialog = true" style="margin-left:5%;"
+      >Check Bill</v-btn
+    >
+</v-layout>
     <v-row justify="center">
       <v-dialog v-model="dialog" max-width="290" data-app>
         <v-card class="dialogCheckbill">
           <v-icon
             color="red lighten-1"
             style="font-size:70px; margin-left:1.55em; margin-top: 0.3em;"
-          >error</v-icon>
-          <v-card-text class="nameDialog">Are you sure you want to check bill?</v-card-text>
+            >error</v-icon
+          >
+          <v-card-text class="nameDialog"
+            >Are you sure you want to check bill?</v-card-text
+          >
           <v-card-actions>
             <div class="flex-grow-1"></div>
-            <v-btn color="#7d7a73" flat @click="dialog=false" class="cancelBtn">NO</v-btn>
-            <v-btn color="#305378" flat @click="okDialog" class="okBtn">YES</v-btn>
+            <v-btn
+              color="#7d7a73"
+              flat
+              @click="dialog = false"
+              class="cancelBtn"
+              >NO</v-btn
+            >
+            <v-btn color="#305378" flat @click="okDialog" class="okBtn"
+              >YES</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -40,17 +55,17 @@
     <v-dialog max-width="490" v-model="orderDialog" data-app>
       <v-card>
         <v-form ref="form">
-          <v-container fluid>
-            <v-card color="primary" class="elevation-1">
+          <v-container grid-list-md>
+            <v-card >
               <v-layout row>
                 <v-flex xs4>
-                  <v-card-text class="textHead">Menu</v-card-text>
+                  <v-card-text class="styleText">Menu</v-card-text>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card-text class="textHead">Amount</v-card-text>
+                  <v-card-text class="styleText">Amount</v-card-text>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card-text class="textHead">Price</v-card-text>
+                  <v-card-text class="styleText">Price</v-card-text>
                 </v-flex>
               </v-layout>
             </v-card>
@@ -64,20 +79,28 @@
             >
               <v-layout row>
                 <v-flex xs4>
-                  <v-card-text class="text">{{order.menuName}}</v-card-text>
+                  <v-card-text class="text">{{ order.menuName }}</v-card-text>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card-text class="text">{{order.amount}}</v-card-text>
+                  <v-card-text class="text">{{ order.amount }}</v-card-text>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card-text class="text">{{order.menuPrice*order.amount}}</v-card-text>
+                  <v-card-text class="text">{{
+                    order.menuPrice * order.amount
+                  }}</v-card-text>
                 </v-flex>
               </v-layout>
             </v-card>
           </v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#305378" flat @click="orderDialog = false" class="closeBtn">BACK</v-btn>
+            <v-btn
+              color="#305378"
+              flat
+              @click="orderDialog = false"
+              class="closeBtn"
+              >BACK</v-btn
+            >
           </v-card-actions>
         </v-form>
       </v-card>
@@ -116,7 +139,7 @@ export default {
   },
   data() {
     return {
-      bill: [ ],
+      bill: [],
       token: "",
       date: "",
       time: "",
@@ -199,10 +222,10 @@ export default {
 .wrapper {
   margin: 15px;
   padding-bottom: 15px;
-  padding-top: 20%;
+  padding-top: 3em;
 }
 #spaceNext {
-  margin-left: 8%;
+  margin-left: 13%;
 }
 .textHead {
   font-weight: 1000;
@@ -222,7 +245,10 @@ export default {
   font-size: 1.5em;
   padding-top: 0%;
 }
-.dialogCheckbill{
+.dialogCheckbill {
   border-radius: 5%;
+}
+.styleText {
+  font-size: 1.2em;
 }
 </style>

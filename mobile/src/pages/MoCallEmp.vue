@@ -2,15 +2,7 @@
   <v-content>
     <Bar></Bar>
     <div class="wrapper">
-      <v-layout class="space">
-        <v-flex xs4>
-          <p class="subheading">Bill : {{this.billId}}</p>
-        </v-flex>
-        <v-flex xs8>
-          <p class="subheading">Table : {{this.tableNo}}</p>
-        </v-flex>
-      </v-layout>
-      <v-card class="mx-auto" max-width="344" outlined>
+      
         <v-card-text>
           <v-radio-group v-model="radios" :disabled="false" :mandatory="false">
             <v-layout align-center>
@@ -23,17 +15,24 @@
             </v-layout>
             <v-layout align-center>
               <v-radio hide-details class="shrink mr-2" value="2"></v-radio>
-              <v-text-field :disabled="radios !='2'" label="Others" id="/" v-model="others"></v-text-field>
+              <v-text-field
+                :disabled="radios != '2'"
+                label="Others"
+                id="/"
+                v-model="others"
+              ></v-text-field>
             </v-layout>
           </v-radio-group>
         </v-card-text>
-      </v-card>
+
     </div>
-    <v-btn @click="done" color="#B7CDC2" block id="spaceNext">Call</v-btn>
+    <v-btn @click="done" color="#B7CDC2" block id="spaceNext">CALL EMPLOYEE</v-btn>
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="290">
         <v-card>
-          <v-card-title class="headline">Are you sure to send message</v-card-title>
+          <v-card-title class="headline"
+            >Are you sure to send message</v-card-title
+          >
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="#7d7a73" flat @click="dialog = false">NO</v-btn>
@@ -45,7 +44,7 @@
     <NavBar></NavBar>
   </v-content>
 </template>
-<script >
+<script>
 import Bar from "../components/Bar";
 import NavBar from "../components/NavBar";
 import { store } from "../store/store";
@@ -53,7 +52,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
-import {host} from './data'
+import { host } from "./data";
 
 export default {
   name: "MoCallEmp",
@@ -93,16 +92,16 @@ export default {
         }
       } else {
         Swal.fire({
-            title: "",
-            text: "Please select problem",
-            type: "warning",
-            confirmButtonColor: "#cd9575"
-          });
+          title: "",
+          text: "Please select problem",
+          type: "warning",
+          confirmButtonColor: "#cd9575"
+        });
       }
     },
     confirmDialog() {
       axios
-        .post(host+"insertnotification", {
+        .post(host + "insertnotification", {
           notiMessage: this.message,
           restaurantId: 1,
           billId: this.billId
@@ -134,9 +133,16 @@ export default {
 .wrapper {
   margin: 15px;
   padding-bottom: 15px;
-  padding-top: 20%;
+  padding-top: 3em;
 }
 .text {
   padding-top: 3%;
+}
+#spaceNext {
+  margin-bottom: 15%;
+  margin-left: 2em;
+  margin-right: 2em;
+  width: 85%;;
+  margin-top: -15%;
 }
 </style>

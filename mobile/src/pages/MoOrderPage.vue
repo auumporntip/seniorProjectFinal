@@ -4,13 +4,13 @@
     <div class="wrapper">
       <v-card color="primary" class="elevation-1" >
         <v-layout row>
-          <v-flex xs4>
-            <v-card-text class="textHead">Menu</v-card-text>
+          <v-flex xs6>
+            <v-card-text class="textHeadMenu">Menu</v-card-text>
           </v-flex>
-          <v-flex xs4>
+          <v-flex xs3>
             <v-card-text class="textHead">Amount</v-card-text>
           </v-flex>
-          <v-flex xs4>
+          <v-flex xs3>
             <v-card-text class="textHead">Price</v-card-text>
           </v-flex>
         </v-layout>
@@ -18,21 +18,21 @@
 
       <v-card color="primary" class="elevation-1" outline v-for="order in orders" :key="order.orderId">
         <v-layout row>
-          <v-flex xs4>
-            <v-card-text class="text">{{order.menuName}}</v-card-text>
+          <v-flex xs6>
+            <v-card-text class="textMenu">{{order.menuName}}</v-card-text>
           </v-flex>
-          <v-flex xs4>
+          <v-flex xs3>
             <v-card-text class="text">{{order.amount}}</v-card-text>
           </v-flex>
-          <v-flex xs4>
-            <v-card-text class="text">{{order.menuPrice}}</v-card-text>
+          <v-flex xs3>
+            <v-card-text class="text">{{order.menuPrice * order.amount}}</v-card-text>
           </v-flex>
         </v-layout>
       </v-card>
 
       <v-card height="auto" flat>
         <v-card-title>
-          <strong class="subheading black--text">Total Prices: {{sumTotalPrice}} ฿</strong>
+          <strong class="text">Total Prices: {{sumTotalPrice}} ฿</strong>
           <v-btn @click="confirm" color="#B7CDC2" id="confirmBtn">Confirm</v-btn>
         </v-card-title>
       </v-card>
@@ -104,19 +104,29 @@ export default {
 <style scoped>
 .wrapper {
   margin: 15px;
-  padding-top: 20%;
-  
+  padding-top: 20%;  
   margin-bottom: 20%;
 }
 .textHead {
-  font-weight: 1000;
+  font-size: 1.4em;
+  text-align: center;
+  font-weight: bold;
 }
 .text {
-  text-align: left;
-  font-weight: 500;
+  text-align: center;
+  font-size: 1.2em;
 }
 #confirmBtn{
   margin-left: 10%;
+}
+.textHeadMenu {
+  font-size: 1.4em;
+  text-align: left;
+  font-weight: bold;
+}
+.textMenu {
+  text-align: left;
+  font-size: 1.2em;
 }
 
 </style>

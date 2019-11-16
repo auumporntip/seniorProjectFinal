@@ -1,21 +1,5 @@
 <template>
   <v-content>
-    <v-dialog max-width="290" v-model="detailDialog" class="styleDialog">
-      <v-card>
-        <v-container fluid>
-          <v-card-title class="nameDialog">Bill Detail</v-card-title>
-          <v-card-text
-            ><span>Type of service: {{ this.typeOfService.typeName }} </span></br>
-            <span>Amount of customer: {{ 2 }} </span></br>
-            <span>Duration: {{ this.typeOfService.typeTime}} </span>
-          </v-card-text>
-        </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#305378" flat @click="detailDialog = false">OK</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <v-toolbar class="tabBar" fixed>
       <Bar></Bar>
       <v-tabs v-model="tab" color="#84A295" fixed-tabs>
@@ -28,7 +12,8 @@
         >
       </v-tabs>
     </v-toolbar>
-    <v-card color="white" class="cardMenu">
+    <!-- <v-card color="white" class="cardMenu"> -->
+      <div class="cardMenu">
       <v-flex xs12 v-for="menu in items" :key="menu.menuId">
         <v-layout>
           <v-flex xs6 class="box">
@@ -75,13 +60,12 @@
       </v-flex>
       <v-btn
         @click="next"
-        class="white--text"
         color="#B7CDC2"
-        block
         id="spaceNext"
         >VIEW ORDER DETAIL</v-btn
       >
-    </v-card>
+      </div>
+    <!-- </v-card> -->
     <v-dialog v-model="errorDialog" persistent data-app>
       <v-card max-width="290" style="margin:0%;"
         ><v-icon
@@ -99,6 +83,24 @@
       </v-card>
     </v-dialog>
     <navBar></navBar>
+
+    <!-- detail -->
+    <v-dialog max-width="290" v-model="detailDialog" style="margin:0%;">
+      <v-card style="border-radius: 5%;">
+        <v-card-title class="nameDialog">Bill Detail</v-card-title>
+        <v-container grid-list-md style="padding-top:0%; padding-left:2%;">
+          <v-card-text style="font-size:1.3em;"
+            ><span>Type of service: {{ this.typeOfService.typeName }} </span>
+            <span>Amount of customer: {{ 2 }} </span>
+            <span>Duration: {{ this.typeOfService.typeTime }} </span>
+          </v-card-text>
+        </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#305378" flat @click="detailDialog = false" style="margin-right:5%; margin-bottom:3%;" >OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-content>
 </template>
 
@@ -208,7 +210,6 @@ export default {
   padding-top: 15%;
 }
 .subheading {
-  margin: 0%;
   padding-left: 10%;
   padding-top: 6%;
 }
@@ -218,15 +219,15 @@ export default {
 .v-btn {
   min-width: 0;
 }
-.v-card {
-  margin: 5%;
-}
 .iconBtn {
   margin: 0%;
   padding-left: 5%;
 }
 #spaceNext {
-  margin-bottom: 20%;
+  margin-bottom: 15%;
+  margin-left: 2em;
+  margin-right: 2em;
+  width: 85%;;
 }
 .box {
   height: 120px;
@@ -238,7 +239,7 @@ export default {
   overflow: hidden;
 }
 .cardMenu {
-  padding-top: 40%;
+  padding-top: 10em;
   margin: 0px;
   padding-bottom: 5%;
   overscroll-behavior-y: inherit;
@@ -249,13 +250,16 @@ export default {
 .tabBar {
   padding-top: 4em;
   background-color: #84a295;
+  padding-left: 0%;
+  padding-right: 0%;
 }
 .nameDialog {
   margin-left: 2%;
-  font-size: 1.5em;
-  padding-top: 0%;
+  font-size: 1.8em;
+  padding-top: 4%;
+  padding-bottom: 0%;
 }
-.styleDialog{
+.styleDialog {
   margin: 0px;
 }
 </style>

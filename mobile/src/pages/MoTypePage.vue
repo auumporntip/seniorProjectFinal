@@ -6,7 +6,7 @@
         <v-dialog max-width="490" v-model="dialog" data-app>
           <v-card>
             <v-form ref="form">
-              <v-container fluid>
+              <v-container grid-list-md>
                 <v-text-field
                   label="Number of Customers"
                   prepend-icon="people"
@@ -60,7 +60,9 @@ export default {
 
       numRules: [
         v => !!v || "Number of customer is required",
-        v => v > 0 || "Number of customer must more than zero"
+        v => !isNaN(this.newCust.numOfCust) || "Please input number",
+        v => v > 0 || "Number of customer must more than zero",
+        v => v < 30 || "Number of customer must less than 30"
       ],
       tableRules: [v => !!v || "Table number is required"]
     };
@@ -137,4 +139,5 @@ div.error--text {
 .bg {
   background-color: #f7f6ee;
 }
+
 </style>

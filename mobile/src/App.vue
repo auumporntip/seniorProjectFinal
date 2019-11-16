@@ -43,6 +43,9 @@ export default {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+div.theme--light.v-messages {
+  color: rgba(255, 34, 34, 0.86);
+}
 </style>
 
 <style lang="stylus">

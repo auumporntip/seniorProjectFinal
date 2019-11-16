@@ -1,8 +1,14 @@
 <template>
   <v-content>
-    <v-parallax height="1000" :src="require('../assets/bg.jpg')" class="bg">
-      <v-flex>
-        <v-img :src="require('../assets/landing1.jpg')" max-width="300" class="pic"></v-img>
+    <v-card class="bg">
+      <v-flex xs4>
+          <v-img
+            :src="require('../assets/landing.jpg')"
+            aspect-radio="1.2"
+            class="pic"
+          ></v-img
+        >
+        </v-flex>
         <v-flex xs3>
           <v-form>
             <v-text-field
@@ -13,14 +19,15 @@
               v-model="billId"
             ></v-text-field>
           </v-form>
-          <v-btn depressed color="rgb(221, 221, 221)" class="btn" @click="next">NEXT</v-btn>
-        </v-flex>
+          <v-btn depressed color="rgb(221, 221, 221)" class="btn" @click="next"
+            >NEXT</v-btn
+          >
       </v-flex>
-    </v-parallax>
+    </v-card>
   </v-content>
 </template>
 
-<script >
+<script>
 import { store } from "../store/store";
 import axios from "axios";
 import { host } from "./data";
@@ -69,9 +76,12 @@ export default {
   height: 1000px;
   width: 1000px;
   position: fixed;
+  background-color: #84a295;
 }
 .pic {
-  margin-top: 4em;
+  display: table;
+margin: 0 auto;
+width: 80%;
 }
 .textInput {
   margin-top: 1em;
