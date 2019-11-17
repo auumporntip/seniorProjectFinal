@@ -84,16 +84,16 @@ export default {
           this.dialog = true;
         } else {
           Swal.fire({
-            title: "",
-            text: "Please input message for send to employee",
+            title: "Please input message for send to employee",
+            text: "",
             type: "warning",
             confirmButtonColor: "#cd9575"
           });
         }
       } else {
         Swal.fire({
-          title: "",
-          text: "Please select problem",
+          title: "Please select problem",
+          text: "",
           type: "warning",
           confirmButtonColor: "#cd9575"
         });

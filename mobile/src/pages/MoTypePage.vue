@@ -3,8 +3,8 @@
     <div class="bg">
       <Bar></Bar>
       <v-flex class="space">
-        <v-dialog max-width="490" v-model="dialog" data-app>
-          <v-card>
+        <v-dialog max-width="300" v-model="dialog" data-app>
+          <v-card style="border-radius:4%;">
             <v-form ref="form">
               <v-container grid-list-md>
                 <v-text-field
@@ -208,5 +208,8 @@ div.error--text {
 }
 .bg {
   background-color: #f7f6ee;
+}
+.v-messages.theme--light.error--text {
+  color: rgba(255, 34, 34, 0.86) !important;
 }
 </style>

@@ -8,7 +8,8 @@
           class="white--text"
           v-for="category in category"
           :key="category.categoryId"
-        >{{ category.categoryName }}</v-tab>
+          >{{ category.categoryName }}</v-tab
+        >
       </v-tabs>
     </v-toolbar>
     <!-- <v-card color="white" class="cardMenu"> -->
@@ -20,7 +21,10 @@
               <v-img :src="menu.menuPathImage" aspect-ratio="1.8"></v-img>
             </div>
             <div v-else>
-              <v-img :src="require('../assets/1.png')" aspect-ratio="1.8"></v-img>
+              <v-img
+                :src="require('../assets/1.png')"
+                aspect-ratio="1.8"
+              ></v-img>
             </div>
           </v-flex>
           <v-flex xs6 class="spaceText">
@@ -28,14 +32,25 @@
               <div class="subheading">{{ menu.menuName }}</div>
               <div class="subheading">{{ menu.menuPrice }} ฿</div>
               <div class="iconBtn">
-                <v-btn v-if="menu.amount > 0" @click="menu.amount--" outline small color="black">
+                <v-btn
+                  v-if="menu.amount > 0"
+                  @click="menu.amount--"
+                  outline
+                  small
+                  color="black"
+                >
                   <v-icon class="body-1">remove</v-icon>
                 </v-btn>
                 <v-btn v-else outline small disabled color="black">
                   <v-icon class="body-1">remove</v-icon>
                 </v-btn>
                 {{ menu.amount }}
-                <v-btn @click="addMenu(menu.menuId)" outline small color="black">
+                <v-btn
+                  @click="addMenu(menu.menuId)"
+                  outline
+                  small
+                  color="black"
+                >
                   <v-icon class="body-1">add</v-icon>
                 </v-btn>
               </div>
@@ -43,10 +58,12 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-btn @click="next" color="#B7CDC2" id="spaceNext">VIEW ORDER DETAIL</v-btn>
+      <v-btn @click="next" color="#B7CDC2" id="spaceNext"
+        >VIEW ORDER DETAIL</v-btn
+      >
     </div>
     <!-- </v-card> -->
-    <v-dialog v-model="errorDialog" persistent data-app>
+    <!-- <v-dialog v-model="errorDialog" persistent data-app>
       <v-card max-width="290" style="margin:0%;">
         <v-icon
           color="red lighten-1"
@@ -58,7 +75,7 @@
           <v-btn color="#305378" flat @click="errorDialog = false">OK</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
     <navBar></navBar>
 
     <!-- detail -->
@@ -66,19 +83,43 @@
       <v-card style="border-radius: 5%;">
         <v-card-title class="nameDialog">Bill Detail</v-card-title>
         <v-container grid-list-md style="padding-top:0%; padding-left:2%;">
-          <v-card-text style="font-size:1.3em;">
-            <span>Course: {{ typeOfService.typeName }}</span><br>
-            <span>Customer: {{ bill.numOfCust }}</span><br>
-            <span>Time Start: {{ bill.eatTimeStart }}</span><br>
-            <span>Time End: {{ bill.eatTimeEnd }}</span><br>
+          <v-card-text
+            v-if="typeOfService.service == 'alacarte'"
+            style="font-size:1.3em;"
+          >
+            <span>Course: {{ typeOfService.typeName }}</span
+            ><br />
+            <span>Customer: {{ bill.numOfCust }}</span
+            ><br />
+            <span>Time Start: {{ bill.eatTimeStart }}</span
+            ><br />
+            <span>Time End: - </span><br />
+          </v-card-text>
+          <v-card-text v-else style="font-size:1.3em;">
+            <span>Course: {{ typeOfService.typeName }}</span
+            ><br />
+            <span>Customer: {{ bill.numOfCust }}</span
+            ><br />
+            <span>Time Start: {{ bill.eatTimeStart }}</span
+            ><br />
+            <span>Time End: {{ bill.eatTimeEnd }}</span
+            ><br />
             <span>
-              Duration: {{ typeOfService.typeTime.substring(
-              0,
-              this.typeOfService.typeTime.indexOf(".")
-              ) }} hour {{this.typeOfService.typeTime.substring(
-              this.typeOfService.typeTime.indexOf(".") + 1
-              )}} minute
-            </span><br>
+              Duration:
+              {{
+                typeOfService.typeTime.substring(
+                  0,
+                  this.typeOfService.typeTime.indexOf(".")
+                )
+              }}
+              hour
+              {{
+                this.typeOfService.typeTime.substring(
+                  this.typeOfService.typeTime.indexOf(".") + 1
+                )
+              }}
+              minute </span
+            ><br />
           </v-card-text>
         </v-container>
         <v-card-actions>
@@ -88,7 +129,8 @@
             flat
             @click="detailDialog = false"
             style="margin-right:5%; margin-bottom:3%;"
-          >OK</v-btn>
+            >OK</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -145,7 +187,11 @@ export default {
         localStorage.setItem("foodMenu", JSON.stringify(this.foodMenu));
         this.$router.push("/Moorder");
       } else {
-        this.errorDialog = true;
+        Swal.fire({
+          title: "Please add some menu at least one order",
+          type: "warning",
+          confirmButtonColor: "#cd9575"
+        });
       }
     }
   },
@@ -165,7 +211,7 @@ export default {
     this.$store.commit("setNamePages", "Menu");
     this.token = jwt.decode(localStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
-    if (localStorage.getItem("first") === '0') {
+    if (localStorage.getItem("first") === "0") {
       this.detailDialog = true;
       localStorage.removeItem("first");
     }
