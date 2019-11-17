@@ -67,7 +67,7 @@
             <v-list-tile-content>
               <v-list-tile-title>
                 Notification
-                <v-badge color="red">
+                <v-badge v-if="this.$store.getters.notification !=0 " color="red">
                   <template v-slot:badge>
                     <span>!</span>
                   </template>
@@ -115,6 +115,8 @@
 <script>
 import { store } from "../store/store";
 import jwt from "jsonwebtoken";
+import axios from "axios";
+import { host } from "../Pages/data";
 export default {
   name: "sidebar",
   data() {
@@ -133,6 +135,17 @@ export default {
   },
   created() {
     this.account = jwt.decode(localStorage.getItem("token"));
+    setInterval(() => {
+      axios.get(host + "getallnotification").then(response => {
+        var notification = response.data.filter(items => items.notiStatus != 1);
+        if (notification.length != 0) {
+          this.$store.commit("setNotification", 1);
+        } else {
+          this.$store.commit("setNotification", 0);
+        }
+        console.log(this.$store.getters.notification);
+      });
+    }, 5000);
   }
 };
 </script>

@@ -183,6 +183,7 @@ import jwt from "jsonwebtoken";
 import { store } from "../../store/store";
 import axios from "axios";
 import { host } from "../data";
+import md5 from "md5"
 
 export default {
   name: "EmployeePage",
@@ -304,7 +305,7 @@ export default {
           .put(host+"updateAccount/", {
             accountId: this.editEmp.accountId,
             userName: this.editEmp.userName,
-            password: this.editEmp.password,
+            password: md5(this.editEmp.password),
             name: this.editEmp.name,
             surname: this.editEmp.surname,
             phone: this.editEmp.phone,

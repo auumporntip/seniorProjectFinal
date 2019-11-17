@@ -3,27 +3,25 @@
     <sidebar></sidebar>
     <div id="bigbox">
       <section class="bg">
-        <v-card-title class="headline font-weight-medium"
-          >STATISTICS</v-card-title
-        >
+        <v-card-title class="headline font-weight-medium">STATISTICS</v-card-title>
         <div>
           <div class="container">
             <v-layout row wrap>
               <v-flex xs2 id="first">
-                <h1>Total Price of restaurant</h1>
-                <br />
+                Total price & customer
                 {{ numberOfCustomer }}
-                <strong>{{ totalPrice }} Bath</strong>
-                <v-progress-linear
-                  color="#4dbd74"
-                  :value="100"
-                ></v-progress-linear>
+                <strong>
+                  {{ numberOfCust }} Users (100%)
+                  <br />
+                  {{ totalPrice }} Bath (100%)
+                </strong>
+                <v-progress-linear color="#4dbd74" :value="100"></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="third">
                 <h3>The total of buffet customer</h3>
                 <strong>
                   {{ numberOfCustBuffet }} Users ({{
-                    (numberOfCustBuffet / numberOfCust) * 100
+                  ((numberOfCustBuffet / numberOfCust) * 100).toFixed(2)
                   }}%)
                 </strong>
                 <v-progress-linear
@@ -35,7 +33,7 @@
                 <h4>The total of a-la-carte customer</h4>
                 <strong>
                   {{ numberOfCustAlacarte }} Users ({{
-                    (numberOfCustAlacarte / numberOfCust) * 100
+                  ((numberOfCustAlacarte / numberOfCust) * 100).toFixed(2)
                   }}%)
                 </strong>
                 <v-progress-linear
@@ -45,25 +43,17 @@
               </v-flex>
               <v-flex xs2 id="fifth">
                 <h5>The total price of buffet service</h5>
-                <strong>
-                  {{ buffetPrice }} ({{ (buffetPrice / totalPrice) * 100 }}%)
-                </strong>
-                <v-progress-linear
-                  color="#4b0082"
-                  :value="(buffetPrice / totalPrice) * 100"
-                ></v-progress-linear>
+                <strong>{{ buffetPrice }} Bath ({{ ((buffetPrice / totalPrice) * 100).toFixed(2) }}%)</strong>
+                <v-progress-linear color="#4b0082" :value="(buffetPrice / totalPrice) * 100"></v-progress-linear>
               </v-flex>
               <v-flex xs2 id="second">
                 <h5>The total of a-la-carte price</h5>
                 <strong>
-                  {{ alacartePrice }} ({{
-                    (alacartePrice / totalPrice) * 100
+                  {{ alacartePrice }} Bath ({{
+                  ((alacartePrice / totalPrice) * 100).toFixed(2)
                   }}%)
                 </strong>
-                <v-progress-linear
-                  color="#4b0082"
-                  :value="(alacartePrice / totalPrice) * 100"
-                ></v-progress-linear>
+                <v-progress-linear color="#799FB5" :value="(alacartePrice / totalPrice) * 100"></v-progress-linear>
               </v-flex>
             </v-layout>
           </div>
@@ -73,12 +63,10 @@
               <div class="col-6 col-lg-3">
                 <v-card width="300" class="styleTop3Table">
                   <div style="backgroundColor:#8cd3a4;">
-                    <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                      >The most selling by category</v-card-text
-                    >
-                    <v-card-text style="font-size:1em; padding-top:0px;"
-                      >On 14 November 2019</v-card-text
-                    >
+                    <v-card-text
+                      style="font-size:1.5em; padding-bottom:0px;"
+                    >The most selling by category</v-card-text>
+                    <v-card-text style="font-size:1em; padding-top:0px;"></v-card-text>
                   </div>
                   <b-table :data="sortMenu" :columns="columns"></b-table>
                 </v-card>
@@ -89,7 +77,7 @@
                   <v-card-text style="font-size:1em; padding-top:0px;"
                     >On 14 November 2019</v-card-text
                   >
-                </v-card> -->
+                </v-card>-->
               </div>
             </v-flex>
 
@@ -99,23 +87,17 @@
               <div class="col-6 col-lg-3">
                 <v-card width="300" class="styleCategoryHeader">
                   <div style="backgroundColor:#FC9D5D;">
-                    <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                      >The most selling by category</v-card-text
-                    >
+                    <v-card-text
+                      style="font-size:1.5em; padding-bottom:0px;"
+                    >The most selling by category</v-card-text>
                     <v-card-text
                       style="font-size:1em; padding-top:0px; padding-bottom:0px;"
-                      >On 14 November 2019</v-card-text
-                    >
+                    ></v-card-text>
                   </div>
 
                   <v-tabs v-model="tabBestSelling" color="#FC9D5D" fixed-tabs>
                     <v-tabs-slider color="#FFFFFF"></v-tabs-slider>
-                    <v-tab
-                      v-for="data in distinctCategory"
-                      :key="data"
-                      @click="test"
-                      >{{ data }}</v-tab
-                    >
+                    <v-tab v-for="data in distinctCategory" :key="data">{{ data }}</v-tab>
                     <!-- <v-tab
                     class="white--text"
                     v-for="category in category"
@@ -125,10 +107,7 @@
 
                     <v-tab-item v-for="data in distinctCategory" :key="data">
                       <v-card>
-                        <b-table
-                          :data="bestSellerMenuByCategory"
-                          :columns="columns"
-                        ></b-table>
+                        <b-table :data="bestSellerMenuByCategory" :columns="columns"></b-table>
                       </v-card>
                     </v-tab-item>
                   </v-tabs>
@@ -139,7 +118,7 @@
                     style="font-size:1.5em; padding-bottom:0px;"
                   >The most selling by category</v-card-text>
                   <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
-                </v-card> -->
+                </v-card>-->
               </div>
             </v-flex>
 
@@ -148,24 +127,23 @@
               <div class="col-6 col-lg-3">
                 <v-card width="330" class="styleCategoryHeader2">
                   <div style="backgroundColor:#799FB5;">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >The worst selling by category</v-card-text
-                  >
-                  <v-card-text
-                    style="font-size:1em; padding-top:0px; padding-bottom:0px;"
-                    >On 14 November 2019</v-card-text
-                  ></div>
+                    <v-card-text
+                      style="font-size:1.5em; padding-bottom:0px;"
+                    >The worst selling by category</v-card-text>
+                    <v-card-text
+                      style="font-size:1em; padding-top:0px; padding-bottom:0px;"
+                    ></v-card-text>
+                  </div>
                   <v-tabs v-model="tabWorseSelling" color="#799FB5" fixed-tabs>
                     <v-tabs-slider color="#FFFFFF"></v-tabs-slider>
-                    <v-tab v-for="data in distinctCategory" :key="data">{{
+                    <v-tab v-for="data in distinctCategory" :key="data">
+                      {{
                       data
-                    }}</v-tab>
-                    <v-tab-item>
+                      }}
+                    </v-tab>
+                    <v-tab-item v-for="data in distinctCategory" :key="data">
                       <v-card>
-                        <b-table
-                          :data="worseSellerMenuByCategory"
-                          :columns="columns"
-                        ></b-table>
+                        <b-table :data="worseSellerMenuByCategory" :columns="columns"></b-table>
                       </v-card>
                     </v-tab-item>
                   </v-tabs>
@@ -178,7 +156,7 @@
                   <v-card-text style="font-size:1em; padding-top:0px; padding-bottom:0px;"
                     >On 14 November 2019</v-card-text
                   >
-                </v-card> -->
+                </v-card>-->
               </div>
             </v-flex>
           </v-layout>
@@ -187,16 +165,10 @@
             <div class="col-6 col-lg-3">
               <v-card width="975" class="styleTrans">
                 <div style="backgroundColor:#FFD491;">
-                <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                  >Transaction</v-card-text
-                >
-                <v-card-text style="font-size:1em; padding-top:0px;"
-                  >On 14 November 2019</v-card-text
-                ></div>
-                <b-table
-                  :data="tenTransaction"
-                  :columns="columnsForTransaction"
-                ></b-table>
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">Transaction</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;"></v-card-text>
+                </div>
+                <b-table :data="tenTransaction" :columns="columnsForTransaction"></b-table>
               </v-card>
               <!-- <v-card width="650" class="styleTransHeader">
                 <v-card-text style="font-size:1.5em; padding-bottom:0px;"
@@ -205,36 +177,33 @@
                 <v-card-text style="font-size:1em; padding-top:0px;"
                   >On 14 November 2019</v-card-text
                 >
-              </v-card> -->
+              </v-card>-->
             </div>
           </v-flex>
 
-            <v-flex xs2>
-              <div class="col-6 col-lg-3">
-                <v-card width="975" class="styleGraphMenu">
-                  <div style="backgroundColor:#AB9C81;">
+          <v-flex xs2>
+            <div class="col-6 col-lg-3">
+              <v-card width="975" class="styleGraphMenu">
+                <div style="backgroundColor:#AB9C81;">
+                  <v-card-text style="font-size:1.5em; padding-bottom:0px;">Menu graph</v-card-text>
+                  <v-card-text style="font-size:1em; padding-top:0px;"></v-card-text>
+                </div>
+                <b-card no-body style="backgroundColor:#FFFFFF;">
+                  <canvas id="my-chart"></canvas>
+                </b-card>
+              </v-card>
+              <!-- <v-card width="400" class="styleGraphMenuHeader">
                   <v-card-text style="font-size:1.5em; padding-bottom:0px;"
                     >Menu graph</v-card-text
                   >
                   <v-card-text style="font-size:1em; padding-top:0px;"
                     >On 14 November 2019</v-card-text
-                  ></div>
-                  <b-card no-body style="backgroundColor:#FFFFFF;">
-                    <canvas id="my-chart"></canvas>
-                  </b-card>
-                </v-card>
-                <!-- <v-card width="400" class="styleGraphMenuHeader">
-                  <v-card-text style="font-size:1.5em; padding-bottom:0px;"
-                    >Menu graph</v-card-text
                   >
-                  <v-card-text style="font-size:1em; padding-top:0px;"
-                    >On 14 November 2019</v-card-text
-                  >
-                </v-card> -->
-              </div>
-            </v-flex>
+              </v-card>-->
+            </div>
+          </v-flex>
 
-            <!-- <v-flex xs2>
+          <!-- <v-flex xs2>
               <div class="col-6 col-lg-3">
                 <v-card width="450" class="styleGraphPrice">
                   <b-card no-body style="padding-top:1em; backgroundColor:#dcdffa;">
@@ -246,8 +215,7 @@
                   <v-card-text style="font-size:1em; padding-top:0px;">On 14 November 2019</v-card-text>
                 </v-card>
               </div>
-            </v-flex>-->
-     
+          </v-flex>-->
         </div>
       </section>
     </div>
@@ -315,7 +283,7 @@ export default {
           width: "100"
         },
         {
-          field: "totalPrice",
+          field: "transTotalPrice",
           label: "Total price",
           width: "100"
         }
@@ -340,14 +308,60 @@ export default {
       tenTransaction: [],
       labelsAllMenu: [],
       dataAllMenu: [],
-      backgroundColor: []
+      backgroundColor: [],
+      bill: [],
+      typeOfService: []
     };
   },
   methods: {
+    sumStatistic() {
+      this.totalPrice = 0;
+      this.numberOfCustBuffet = 0;
+      this.buffetPrice = 0;
+      this.numberOfCustAlacarte = 0;
+      this.alacartePrice = 0;
+      axios.get(host + "getalltypeofservice").then(response => {
+        this.typeOfService = response.data;
+        this.buffet = this.typeOfService.filter(
+          items => items.service === "buffet"
+        );
+        this.alacarte = this.typeOfService.filter(
+          items => items.service === "alacarte"
+        );
+        axios.get(host + "getallbill").then(response => {
+          this.bill = response.data.filter(items => items.billStatus === 1);
+          for (let index = 0; index < this.bill.length; index++) {
+            this.totalPrice += this.bill[index].totalPrice;
+            this.numberOfCust += this.bill[index].numOfCust;
+          }
+          for (let index = 0; index < this.buffet.length; index++) {
+            var bill = this.bill.filter(
+              items => items.typeId === this.buffet[index].typeId
+            );
+            for (let index = 0; index < bill.length; index++) {
+              this.numberOfCustBuffet += bill[index].numOfCust;
+              this.buffetPrice += bill[index].totalPrice;
+            }
+          }
+          for (let index = 0; index < this.alacarte.length; index++) {
+            var bill = this.bill.filter(
+              items => items.typeId === this.alacarte[index].typeId
+            );
+            for (let index = 0; index < bill.length; index++) {
+              this.numberOfCustAlacarte += bill[index].numOfCust;
+              this.alacartePrice += bill[index].totalPrice;
+            }
+          }
+        });
+      });
+    },
     getTransaction() {
       this.tenTransaction = [];
       axios.get(host + "gettransactionfinish").then(response => {
         this.transaction = response.data;
+        for (let index = 0; index < this.transaction.length; index++) {
+          this.transaction[index].transTotalPrice = this.transaction[index].amount*this.transaction[index].transPrice          
+        }
         for (
           let index = this.transaction.length - 1;
           this.transaction.length - 11 < index;
@@ -355,6 +369,19 @@ export default {
         ) {
           this.tenTransaction.push(this.transaction[index]);
         }
+        var distinctCategoryName = [
+          ...new Set(this.transaction.map(items => items.categoryName))
+        ];
+
+        this.distinctCategory = distinctCategoryName;
+
+        this.sortMenuBestSeller();
+        this.findBestSellerMenuByCategoryName(
+          this.distinctCategory[this.tabBestSelling]
+        );
+        this.findWorseSellerMenuByCategoryName(
+          this.distinctCategory[this.tabWorseSelling]
+        );
       });
     },
     getTransactionCancel() {
@@ -400,8 +427,6 @@ export default {
           });
         }
       }
-      console.log(this.bestSellerMenuByCategory);
-      
     },
     findWorseSellerMenuByCategoryName(categoryName) {
       this.worseSellerMenuByCategory = [];
@@ -437,8 +462,6 @@ export default {
           });
         }
       }
-      console.log(this.worseSellerMenuByCategory);
-      
     },
     sortMenuBestSeller() {
       const distinctMenuName = [
@@ -517,40 +540,15 @@ export default {
   created() {
     this.getTransaction();
     this.getTransactionCancel();
-  },
-  computed: {
-    numberOfCustomer() {
-      this.numberOfCust = 0;
-      this.totalPrice = 0;
-      this.numberOfCustBuffet = 0;
-      this.numberOfCustAlacarte = 0;
-
-      var distinctCategoryName = [
-        ...new Set(this.transaction.map(items => items.categoryName))
-      ];
-
-      this.distinctCategory = distinctCategoryName;
-
-      this.sortMenuBestSeller();
-      this.findBestSellerMenuByCategoryName(
-        this.distinctCategory[this.tabBestSelling]
-      );
-      this.findWorseSellerMenuByCategoryName(
-        this.distinctCategory[this.tabWorseSelling]
-      );
-
-      for (let index = 0; index < this.transaction.length; index++) {
-        if (this.transaction[index].service === "buffet") {
-          this.numberOfCustBuffet += this.transaction[index].numOfCust;
-          this.buffetPrice += this.transaction[index].totalPrice;
-        } else if (this.transaction[index].service === "alacarte") {
-          this.numberOfCustAlacarte += this.transaction[index].numOfCust;
-          this.alacartePrice += this.transaction[index].totalPrice;
+    this.sumStatistic();
+    setInterval(() => {
+      axios.get(host + "gettransactionfinish").then(response => {
+        this.transaction = response.data;
+        for (let index = 0; index < this.transaction.length; index++) {
+          this.transaction[index].transTotalPrice = this.transaction[index].amount*this.transaction[index].transPrice          
         }
-        this.numberOfCust += this.transaction[index].numOfCust;
-        this.totalPrice += this.transaction[index].totalPrice;
-      }
-    }
+      });
+    }, 5000);
   }
 };
 </script>
@@ -694,7 +692,7 @@ export default {
   margin-left: 1em;
 }
 .styleGraphMenuHeader {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin-left: 24%;
   margin-top: -25em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);
@@ -705,7 +703,7 @@ export default {
   padding-bottom: 15px;
 }
 .styleGraphPriceHeader {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin-left: 27em;
   margin-top: -25em;
   box-shadow: 7px 7px 7px rgb(224, 224, 224);

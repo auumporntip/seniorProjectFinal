@@ -19,9 +19,13 @@ export const store = new Vuex.Store({
         employee: {},
         position: [],
         //employee
-
+        
+        notification:0
     },
     mutations: {
+        setNotification(state,notification){
+            state.notification = notification
+        },
         //menu page
         setMenu(state,menu){
             state.menu = menu
@@ -60,6 +64,7 @@ export const store = new Vuex.Store({
         }
     },
     getters: {
+        notification: state => state.notification,
         //menu page
         menu: state=> state.menu,
         selectedMenu: state=> state.selectedMenu,

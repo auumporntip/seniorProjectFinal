@@ -17,8 +17,22 @@
         <!-- <b-tabs v-model="activeTab" size="1000px" class="block" type="is-toggle"> -->
         <!-- <b-tab-item label="Checkbill"> -->
         <v-tabs v-model="activeTab" color="#B7CDC2" slider-color="#EAE6DA" class="tabStyle">
-          <v-tab ripple>Check Bill</v-tab>
-          <v-tab ripple>Others</v-tab>
+          <v-tab ripple>
+            Check Bill 
+            <v-badge color="red" v-if="itemsCheckBill.length!=0">
+              <template v-slot:badge>
+                <span>!</span>
+              </template>
+            </v-badge>
+          </v-tab>
+          <v-tab ripple>
+            Others
+            <v-badge color="red" v-if="itemsOther.length !=0">
+              <template v-slot:badge>
+                <span>!</span>
+              </template>
+            </v-badge>
+          </v-tab>
           <v-tab-item>
             <b-table
               :data="itemsCheckBill"
@@ -173,8 +187,8 @@ export default {
     }
   },
   created() {
-      this.getCheckBillNotification();
-      this.getOtherNotification();
+    this.getCheckBillNotification();
+    this.getOtherNotification();
     setInterval(() => {
       this.getCheckBillNotification();
       this.getOtherNotification();

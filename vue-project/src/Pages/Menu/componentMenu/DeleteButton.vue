@@ -25,21 +25,24 @@ export default {
           onConfirm: () => {
             axios
               .delete(
-                host+"deletemenu/" +
+                host +
+                  "deletemenu/" +
                   this.$store.getters.selectedMenu.menuId +
                   "/" +
                   1
                 // this.$store.getters.restaurantId
               )
-              .then(() => {
-                this.$toast.open("delete success");
-                axios
-                  .get(host+"getallmenu/" + 1)
-                  .then(response => {
-                    this.$store.commit("setMenu", response.data);
-                    this.$store.commit("setCheckCategory", false);
-                    this.$store.commit("setSelectedMenu", null);
-                  });
+              .then(response => {
+                if (response.data === false) {
+                  this.$toast.open("cannot delete");
+                } else {
+                  this.$toast.open("delete success");
+                }
+                axios.get(host + "getallmenu/" + 1).then(response => {
+                  this.$store.commit("setMenu", response.data);
+                  this.$store.commit("setCheckCategory", false);
+                  this.$store.commit("setSelectedMenu", null);
+                });
               });
           }
         });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field
+    <!-- <v-text-field
       class="search"
       v-model="keyword"
       append-icon="search"
@@ -29,7 +29,8 @@
           @click="changeCategoryMenu"
         >{{option.categoryName}}</b-dropdown-item>
       </b-dropdown>
-    </v-layout>&nbsp;&nbsp;&nbsp;&nbsp;
+    </v-layout>&nbsp;&nbsp;&nbsp;&nbsp; -->
+    <br>
     <b-table
       :data="items"
       :selected.sync="selectedMenu"

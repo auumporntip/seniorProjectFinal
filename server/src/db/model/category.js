@@ -11,9 +11,14 @@ exports.getCategory = async (restaurantId) => {
 }
 
 exports.deleteCategory = async (categoryId) => {
-    await knex('category')
-        .where('categoryId', categoryId)
-        .del()
+    try {
+
+        await knex('category')
+            .where('categoryId', categoryId)
+            .del()
+    } catch (error) {
+        return false
+    }
 }
 
 exports.insertCategory = async (category) => {

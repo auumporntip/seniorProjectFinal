@@ -110,22 +110,29 @@
                   Edit Bill
                   <v-form v-for="bill in checkedRows" :key="bill.billId">
                     <v-container>
-                      <v-text-field
-                        label="BillId"
-                        v-model="bill.billId"
-                        disabled                        
-                      ></v-text-field>
+                      <v-text-field label="BillId" v-model="bill.billId" disabled></v-text-field>
                       <v-text-field
                         label="TableNumber"
                         v-model="bill.tableNumber"
                         :rules="tableRules"
                       ></v-text-field>
-                      <v-text-field
-                        label="NumOfCust"
-                        v-model="bill.numOfCust"
-                        :rules="amountRules"
-                      ></v-text-field>
-                      <v-text-field label="TypeId" v-model="bill.typeId" :rules="typeIdRules"></v-text-field>
+                      <v-text-field label="NumOfCust" v-model="bill.numOfCust" :rules="amountRules"></v-text-field>
+                      <v-select
+                        label="Select Category"
+                        v-model="bill.typeId"
+                        :items="typeOfService"
+                        item-text="typeName"
+                        item-value="typeId"
+                        :rules="categoryRules"
+                      ></v-select>
+                      <v-select
+                        label="Select Category"
+                        v-model="bill.billStatus"
+                        :items="status"
+                        item-text="status"
+                        item-value="billStatus"
+                        :rules="categoryRules"
+                      ></v-select>
                     </v-container>
                   </v-form>
                 </v-card-text>
@@ -166,7 +173,16 @@ export default {
     return {
       //search
       keyword: "",
-
+      status: [
+        {
+          status: "Done",
+          billStatus: 1
+        },
+        {
+          status: "In use",
+          billStatus: 0
+        }
+      ],
       billData: [],
       // Add
       addDialog: false,
@@ -225,7 +241,8 @@ export default {
           field: "typeName",
           label: "Course"
         }
-      ]
+      ],
+      typeOfService: []
     };
   },
   methods: {
@@ -298,6 +315,7 @@ export default {
       axios.get(host + "getallbillbyrestaurantId/" + 1).then(response => {
         this.billData = response.data;
       });
+      this.checkedRows = [];
     }
   },
   computed: {
@@ -316,6 +334,9 @@ export default {
     }
   },
   created() {
+    axios.get(host + "getalltypeofservice").then(response => {
+      this.typeOfService = response.data;
+    });
     this.reBill();
   }
 };

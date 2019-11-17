@@ -101,7 +101,11 @@
               <v-form ref="form1">
                 <v-container>
                   <v-text-field label="ID of category" disabled v-model="cat.categoryId"></v-text-field>
-                  <v-text-field label="Name of category" v-model="cat.categoryName" :rules="editRules"></v-text-field>
+                  <v-text-field
+                    label="Name of category"
+                    v-model="cat.categoryName"
+                    :rules="editRules"
+                  ></v-text-field>
                 </v-container>
               </v-form>
             </v-card-text>
@@ -177,9 +181,9 @@
             <v-dialog v-model="dialog" max-width="290">
               <v-card>
                 <v-icon
-            color="red lighten-1"
-            style="font-size:70px; margin-left:1.55em; margin-top: 0.3em;"
-          >error</v-icon>
+                  color="red lighten-1"
+                  style="font-size:70px; margin-left:1.55em; margin-top: 0.3em;"
+                >error</v-icon>
                 <v-card-title class="nameDialog1">Error!</v-card-title>
                 <v-card-text style="font-size:1.5em;">Please selected some menu row</v-card-text>
                 <v-card-actions>
@@ -218,11 +222,11 @@ export default {
       newCat: [],
       nameRules: [
         v => !!v || "Name is required",
-        v => (v && this.checkName()) || 'This name has already'
+        v => (v && this.checkName()) || "This name has already"
       ],
       editRules: [
         v => !!v || "Name is required",
-        v => (v && this.editCheckName()) || 'This name has already'
+        v => (v && this.editCheckName()) || "This name has already"
       ],
       restaurantId: 1,
 
@@ -243,7 +247,7 @@ export default {
       delDataDialog: false,
 
       //search
-      keyword:"",
+      keyword: ""
     };
   },
   methods: {
@@ -256,7 +260,7 @@ export default {
     addSave() {
       if (this.$refs.form.validate()) {
         axios
-          .post(host+"insertCategory", {
+          .post(host + "insertCategory", {
             categoryName: this.newCat.categoryName,
             restaurantId: 1
           })
@@ -278,7 +282,7 @@ export default {
       console.log(this.checkedRows);
       if (this.$refs.form1.validate()) {
         axios
-          .put(host+"updatecategory", {
+          .put(host + "updatecategory", {
             categoryId: this.cat.categoryId,
             categoryName: this.cat.categoryName
           })
@@ -287,11 +291,9 @@ export default {
             this.editDialog = false;
             this.categoryBtn = true;
             this.reCat();
-            axios
-              .get(host+"getallmenu/" + 1)
-              .then(response => {
-                this.$store.commit("setMenu", response.data);
-              });
+            axios.get(host + "getallmenu/" + 1).then(response => {
+              this.$store.commit("setMenu", response.data);
+            });
           });
       }
     },
@@ -300,14 +302,19 @@ export default {
       for (let index = 0; index < this.checkedRows.length; index++) {
         console.log(this.checkedRows);
         axios
-          .delete(
-            host+"deletecategory/" +
-              this.checkedRows[index].categoryId
-          )
-          .then(() => {
-            this.reCat();
-            this.checkedRows = [];
-            this.delDataDialog = false;
+          .delete(host + "deletecategory/" + this.checkedRows[index].categoryId)
+          .then(response => {
+            if (response.data === false) {
+              this.$toast.open("cannot delete");
+              this.reCat();
+              this.checkedRows = [];
+              this.delDataDialog = false;
+            } else {
+              this.$toast.open("delete success");
+              this.reCat();
+              this.checkedRows = [];
+              this.delDataDialog = false;
+            }
           });
       }
       this.categoryBtn = true;
@@ -334,7 +341,7 @@ export default {
       this.categoryBtn = true;
     },
     reCat() {
-      axios.get(host+"getallcategory").then(response => {
+      axios.get(host + "getallcategory").then(response => {
         this.category = response.data;
       });
     },
@@ -372,18 +379,17 @@ export default {
   computed: {
     items() {
       if (this.keyword != "") {
-        return this.category.filter(
-          items =>
-            items.categoryName.toLowerCase().includes(this.keyword.toLowerCase()) 
-            );
+        return this.category.filter(items =>
+          items.categoryName.toLowerCase().includes(this.keyword.toLowerCase())
+        );
       } else {
         return this.category;
       }
     }
   },
-  
+
   created: function() {
-    axios.get(host+"getcategory/" + 1).then(response => {
+    axios.get(host + "getcategory/" + 1).then(response => {
       this.category = response.data;
     });
   }
@@ -414,15 +420,15 @@ div.error--text {
   margin-left: 2%;
   font-size: 2em;
 }
-.addDialog{
-  margin-bottom:3%;
+.addDialog {
+  margin-bottom: 3%;
   overflow-x: hidden;
   margin-left: 3%;
 }
 .nameDialog1 {
   margin-left: 2%;
   font-size: 2.5em;
- justify-content: center;
+  justify-content: center;
   color: rgb(97, 97, 97);
   padding-top: 5%;
 }

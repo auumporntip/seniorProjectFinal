@@ -13,8 +13,8 @@ exports.getAllMenuByRestuarantId = async (restaurantId) => {
 
 exports.getMenuByTypeOfServiceId = async (typeId) => {
     return await knex('menuservice')
-        .join('menu','menu.menuId','=','menuservice.menuId')
-        .join('typeofservice','typeofservice.typeId','=','menuservice.typeId')
+        .join('menu', 'menu.menuId', '=', 'menuservice.menuId')
+        .join('typeofservice', 'typeofservice.typeId', '=', 'menuservice.typeId')
         .where('menuservice.typeId', '=', typeId)
 }
 
@@ -31,10 +31,14 @@ exports.getMenuByCategory = async (categoryId, restaurantId) => {
 }
 
 exports.deleteMenu = async (menuId, restaurantId) => {
-    await knex('menu')
-        .where('menuId', menuId)
-        .andWhere('restaurantId', restaurantId)
-        .del()
+    try {
+        await knex('menu')
+            .where('menuId', menuId)
+            .andWhere('restaurantId', restaurantId)
+            .del()
+    } catch (error) {
+        return false
+    }
 }
 
 exports.insertMenu = async (menu) => {
@@ -43,7 +47,7 @@ exports.insertMenu = async (menu) => {
         menuPrice: menu.menuPrice,
         menuPathImage: menu.menuPathImage,
         categoryId: menu.categoryId,
-        restaurantId: menu.restaurantId       
+        restaurantId: menu.restaurantId
     })
 }
 
