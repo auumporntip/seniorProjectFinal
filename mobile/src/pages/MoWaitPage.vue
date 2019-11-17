@@ -5,9 +5,28 @@
     <v-container>
     <v-dialog v-model="waitDialog">
     <v-card color="#F9F9F9" >-->
-    <div class="logo">
+    <div>
+      <v-toolbar color="#84A295" fixed>
+        <v-img
+          :src="image_src"
+          max-width="65px"
+          style="margin-left:-1em;"
+        ></v-img>
+        <v-toolbar-title
+          class="headline-text white--text"
+          style="margin-left:5px;"
+          >Waiting Employee</v-toolbar-title
+        ></v-toolbar
+      >
       <center>
-        <img src="../assets/video-conference.png" height="60%" width="60%" />
+        <v-progress-circular
+          :size="150"
+          :width="7"
+          color="#84A295"
+          indeterminate
+          style="margin-top:10em;"
+        ></v-progress-circular>
+        <!-- <img src="../assets/video-conference.png" height="60%" width="60%" /> -->
         <!-- videoconference -->
       </center>
     </div>
@@ -36,7 +55,7 @@ export default {
     NavBar
   },
   data() {
-    return {};
+    return { image_src: require("../assets/loginCircle.jpg") };
   },
   created() {
     this.$store.commit("setNamePages", "Waiting Employee");
@@ -50,15 +69,13 @@ export default {
     var noti = [];
     var checkNoti = [];
     var waitPage = setInterval(() => {
-      axios
-        .get(host + "getbillbybillid/" + token.billId)
-        .then(response => {
-          var bill = response.data
-          if (bill[0].billStatus === 1) {
-            clearInterval(waitPage)
-            this.$router.push("MoSuccess");
-          }
-        });
+      axios.get(host + "getbillbybillid/" + token.billId).then(response => {
+        var bill = response.data;
+        if (bill[0].billStatus === 1) {
+          clearInterval(waitPage);
+          this.$router.push("MoSuccess");
+        }
+      });
     }, 5000);
   }
 };
@@ -66,10 +83,10 @@ export default {
 
 <style scoped>
 .text {
-  font-size: 18px;
+  font-size: 1.5em;
   padding-left: 50px;
   padding-right: 20px;
-  padding-top: 50px;
+  padding-top: 4em;
   padding-bottom: 40px;
 }
 .logo {

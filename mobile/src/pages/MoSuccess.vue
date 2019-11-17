@@ -1,11 +1,24 @@
 <template>
   <v-content>
-    <div class="logo">
-      <img src="../assets/bill.png" height="100%" width="100%" />
+     <div class="logo">
+    <v-toolbar color="#84A295" fixed>
+        <v-img
+          :src="image_src"
+          max-width="65px"
+          style="margin-left:-1em;"
+        ></v-img>
+        <v-toolbar-title
+          class="headline-text white--text"
+          style="margin-left:5px;"
+          >Payment Successful</v-toolbar-title
+        ></v-toolbar
+      >
+   
+      <img src="../assets/checked.png" height="80%" width="80%" />
     </div>
     <div class="text">
       <center>
-        <p>Payment successful !!</p>
+        <p>Payment successful</p>
         <p>Thank you for your ordered.</p>
       </center>
     </div>
@@ -28,7 +41,7 @@ export default {
     Bar
   },
   data() {
-    return {};
+    return {image_src: require("../assets/loginCircle.jpg")};
   },
   methods: {
     done() {
@@ -47,19 +60,13 @@ export default {
 <style scoped>
 .logo {
   margin-top: 30%;
-  margin-left: 22%;
+  margin-left: 30%;
   margin-right: 20%;
-  margin-bottom: 20%;
+  margin-bottom: 10%;
 }
 .text {
   font-size: 20px;
   font-family: sans-serif;
-  margin-top: 20%;
 }
-.white--text {
-  margin-top: 15%;
-  margin-bottom: 0%;
-  position: relative;
-  display: flex;
-}
+
 </style>

@@ -22,7 +22,7 @@
           </v-container>
         </v-form>
         <v-card-actions>
-          <v-btn class="loginBtn" color="#cd9575" @click="login">Login</v-btn>
+          <v-btn class="loginBtn" color="#B7CDC2" @click="login">Login</v-btn>
         </v-card-actions>
       </v-flex>
     </v-card>
@@ -124,7 +124,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg {
-  background-color: darkslategray;
+  background-color: #84A295;
   background-size: cover;
   -webkit-background-size: cover;
   width: 100vw;
@@ -136,18 +136,19 @@ export default {
   width: 50%;
   margin: 8% 25%;
   padding: 0%;
+  border-radius: 5% 5% 5% 5%;
+  box-shadow: 7px 7px 7px rgb(117, 117, 117);
 }
 .loginBtn {
   width: 91%;
   margin-left: 5%;
-  color: white;
 }
 .loginText {
   font-size: 2.2em;
   margin-left: 35%;
   padding-top: 15%;
   font-weight: 600;
-  color: #cd9575;  
+  color: black;  
   padding-bottom: 0%;
 }
 .text {
