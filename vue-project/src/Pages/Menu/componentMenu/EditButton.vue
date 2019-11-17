@@ -5,69 +5,87 @@
         <!-- <v-btn color="black" outline v-on="on" @click="checkSelected()"> -->
         <v-icon @click="checkSelected()">edit</v-icon>
         <!-- </v-btn> -->
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog v-model="dialog" persistent max-width="600px" data-app>
           <v-card>
-            <v-card-title>
-              <span class="headline">Edit Menu</span>
+            <v-card-title style="padding-bottom:0%;">
+              <span class="nameDialog">Edit Menu</span>
             </v-card-title>
             <v-card-text>
               <v-form ref="form">
-                <v-container grid-list-md>
+                <v-container grid-list-md style="padding-top:0%;">
                   <v-layout wrap>
-                    <div v-if="image!=null">
-                      <img :src="image" width="100px" height="100px" />
+                    <div v-if="image != null">
+                      <v-img
+                        :src="image"
+                        aspect-ratio="1.5"
+                        width="150px"
+                        height="150px"
+                        style="margin-left:15%; margin-top:7%;"
+                      ></v-img>
                     </div>
-                    <div v-else-if="selectedMenu.menuPathImage==null">
-                      <img
-                        src="../../../assets/1.png"
-                        width="100px"
-                        height="100px"
-                        class="imageSize"
-                      />
+                    <div v-else-if="selectedMenu.menuPathImage == null">
+                      <v-img
+                        :src="require('../../../assets/1.png')"
+                        aspect-ratio="1.5"
+                        width="150px"
+                        height="150px"
+                        style="margin-left:15%; margin-top:7%;"
+                      ></v-img>
                     </div>
                     <div v-else>
-                      <img :src="selectedMenu.menuPathImage" width="100px" height="100px" />
+                      <v-img
+                        :src="selectedMenu.menuPathImage"
+                        aspect-ratio="1.5"
+                        width="150px"
+                        height="150px"
+                        style="margin-left:15%; margin-top:7%;"
+                      ></v-img>
                     </div>
-
-                    <v-flex xs7 sm6>
-                      <v-text-field
-                        class="name"
-                        label="Menu Name"
-                        v-model="selectedMenu.menuName"
-                        :rules="nameRules"
-                      ></v-text-field>
-                      <b-field class="file">
-                        <b-upload v-model="image" v-on:input="onFileChange" class="uploadBtn">
-                          <a class="button is-info" outlined>
-                            <b-icon icon="upload"></b-icon>
-                            <span>Click to upload</span>
-                          </a>
-                        </b-upload>
-                      </b-field>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-text-field
-                        label="Menu Price"
-                        v-model="selectedMenu.menuPrice"
-                        :rules="priceRules"
-                      ></v-text-field>
-                    </v-flex>
-                    <v-select
-                      label="Select Category"
-                      v-model="selectedCategory"
-                      :items="category"
-                      item-text="categoryName"
-                      item-value="categoryId"
-                      :rules="categoryRules"
-                    ></v-select>
-                  </v-layout>
+                    <b-field class="file">
+                      <b-upload
+                        v-model="image"
+                        v-on:input="onFileChange"
+                        class="uploadBtn"
+                      >
+                        <a class="button is-info" outlined>
+                          <b-icon icon="upload"></b-icon>
+                          <span>Click to upload image</span>
+                        </a>
+                      </b-upload>
+                    </b-field>
+                    <v-layout column style="margin-left:45%; margin-top:-45%;">
+                      <v-flex xs6>
+                        <v-text-field
+                          label="Menu Name"
+                          v-model="selectedMenu.menuName"
+                          :rules="nameRules"
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs6>
+                        <v-text-field
+                          label="Menu Price"
+                          v-model="selectedMenu.menuPrice"
+                          :rules="priceRules"
+                        ></v-text-field>
+                      </v-flex>
+                      <v-flex xs6>
+                        <v-select
+                          label="Select Category"
+                          v-model="selectedCategory"
+                          :items="category"
+                          item-text="categoryName"
+                          item-value="categoryId"
+                          :rules="categoryRules"
+                        ></v-select
+                      ></v-flex> </v-layout
+                  ></v-layout>
                 </v-container>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="closeDialog">Close</v-btn>
-              <v-btn color="blue darken-1" flat @click="confirmEdit">Save</v-btn>
+              <v-btn color="#7d7a73" flat @click="closeDialog">CANCEL</v-btn>
+              <v-btn color="#305378" flat @click="confirmEdit">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -87,7 +105,7 @@ export default {
     return {
       nameRules: [
         v => !!v || "Name is required",
-        v => (v && this.checkName()) || 'Name has already'
+        v => (v && this.checkName()) || "Name has already"
       ],
       priceRules: [
         v => !!v || "Price is required",
@@ -135,17 +153,15 @@ export default {
         this.selectedMenu = this.$store.getters.selectedMenu;
 
         this.name = this.$store.getters.selectedMenu.menuName;
-        axios
-          .get(host+"getcategory/" + this.restaurantId)
-          .then(response => {
-            this.category = response.data;
-          });
+        axios.get(host + "getcategory/" + this.restaurantId).then(response => {
+          this.category = response.data;
+        });
 
         this.selectedCategory = this.$store.getters.selectedMenu.categoryId;
       }
     },
     closeDialog() {
-      axios.get(host+"getallmenu/" + 1).then(response => {
+      axios.get(host + "getallmenu/" + 1).then(response => {
         this.$store.commit("setMenu", response.data);
         this.$store.commit("setCheckCategory", false);
         this.$store.commit("setSelectedMenu", null);
@@ -161,24 +177,18 @@ export default {
     },
     confirmEdit() {
       if (this.image == null) {
-        axios
-          .put(host+"updatemenu/", this.selectedMenu)
-          .then(() => {
-            this.closeDialog();
-          });
+        axios.put(host + "updatemenu/", this.selectedMenu).then(() => {
+          this.closeDialog();
+        });
       } else {
         var formData = new FormData();
         formData.append("file", this.imageForUpload);
-        axios
-          .post(host+"uploadFB", formData)
-          .then(response => {
-            this.selectedMenu.menuPathImage = response.data.url;
-            axios
-              .put(host+"updatemenu/", this.selectedMenu)
-              .then(() => {
-                this.closeDialog();
-              });
+        axios.post(host + "uploadFB", formData).then(response => {
+          this.selectedMenu.menuPathImage = response.data.url;
+          axios.put(host + "updatemenu/", this.selectedMenu).then(() => {
+            this.closeDialog();
           });
+        });
       }
       this.dialog = false;
     },
@@ -200,13 +210,11 @@ export default {
       }
     }
   },
-  
+
   created() {
-    axios
-      .get(host+"getallmenu/" + this.restaurantId)
-      .then(response => {
-        this.allMenu = response.data;
-      });
+    axios.get(host + "getallmenu/" + this.restaurantId).then(response => {
+      this.allMenu = response.data;
+    });
   }
 };
 </script>
@@ -215,13 +223,15 @@ div.error--text {
   color: rgba(255, 34, 34, 0.86) !important;
 }
 .uploadBtn {
-  padding-top: 5%;
-  padding-left: 25%;
-}
-.name {
-  padding-left: 25%;
+   padding-top: 100%;
+  margin-left: -80%;
 }
 .imageSize {
   margin-left: 4%;
+}
+.nameDialog {
+  margin-top: 1%;
+  margin-left: 3%;
+  font-size: 2em;
 }
 </style>

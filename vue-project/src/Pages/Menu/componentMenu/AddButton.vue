@@ -70,8 +70,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="#7d7a73" flat @click="closeDialog">Cancel</v-btn>
-              <v-btn color="#305378" flat @click="confirmAdd">Save</v-btn>
+              <v-btn color="#7d7a73" flat @click="closeDialog">CANCEL</v-btn>
+              <v-btn color="#305378" flat @click="confirmAdd">SAVE</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
