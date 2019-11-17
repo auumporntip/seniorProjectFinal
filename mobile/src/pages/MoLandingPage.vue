@@ -1,29 +1,27 @@
 <template>
   <v-content>
-    <v-card class="bg">
-      <v-flex xs4>
-          <v-img
-            :src="require('../assets/loginCircle.jpg')"
-            aspect-radio="1.2"
-            class="pic"
-          ></v-img
+    <div class="bg">
+      <v-img
+        :src="require('../assets/logo1.jpg')"
+        aspect-ratio="2"
+        contain
+        style="margin-top:3em;"
+      ></v-img>
+      <v-flex xs9>
+        <v-form>
+          <v-text-field
+            solo
+            label="Input your bill id"
+            :rules="inputRules"
+            class="textInput"
+            v-model="billId"
+          ></v-text-field>
+        </v-form>
+        <v-btn depressed color="#B7CDC2" class="btn" @click="next"
+          >NEXT</v-btn
         >
-        </v-flex>
-        <v-flex xs3>
-          <v-form>
-            <v-text-field
-              solo
-              label="Enter your code"
-              :rules="inputRules"
-              class="textInput"
-              v-model="billId"
-            ></v-text-field>
-          </v-form>
-          <v-btn depressed color="rgb(221, 221, 221)" class="btn" @click="next"
-            >NEXT</v-btn
-          >
       </v-flex>
-    </v-card>
+    </div>
   </v-content>
 </template>
 
@@ -46,7 +44,6 @@ export default {
     next() {
       if (this.billId != "") {
         axios.post(host + "verifybill/" + this.billId).then(response => {
-          
           if (response.data.login === true) {
             localStorage.setItem("token", response.data.token);
             this.$router.push("/Momenu");
@@ -75,25 +72,25 @@ export default {
 <style scoped>
 .bg {
   height: 1000px;
-  width: 1000px;
+  width: 100%;
   position: fixed;
   background-color: #84a295;
 }
-.pic {
-  display: table;
-margin: 0 auto;
-width: 80%;
-}
+
 .textInput {
   margin-top: 1em;
-  margin-left: 2.7em;
+  margin-left: 6em;
   border-radius: 1em;
 }
 .btn {
-  margin-left: 7em;
+  margin-left: 10em;
   border-radius: 0.2em;
 }
 .theme--light.v-messages {
   color: rgba(255, 34, 34, 0.86) !important;
+}
+.card {
+  background-position-x: center;
+  width: 30%;
 }
 </style>
