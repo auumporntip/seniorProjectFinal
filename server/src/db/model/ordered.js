@@ -93,7 +93,6 @@ exports.getOrderedByBillId = async (billId) => {
         .join('menu', 'menu.menuId', '=', 'ordered.menuId')
         .join('status', 'status.statusId', '=', 'ordered.statusId')
         .where('ordered.billId', '=', billId)
-        .andWhere('ordered.statusId','!=','5')
 }
 
 

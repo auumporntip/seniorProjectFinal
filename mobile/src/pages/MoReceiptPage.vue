@@ -110,7 +110,7 @@ export default {
   },
   data() {
     return {
-      timeEnd:'',
+      timeEnd: "",
       bill: [],
       token: "",
       date: "",
@@ -133,10 +133,12 @@ export default {
         {
           field: "eatTimeStart",
           label: "Time start"
-        },{
+        },
+        {
           field: "eatTimeEnd",
           label: "Time end"
-        },{
+        },
+        {
           field: "typeName",
           label: "Promotion"
         },
@@ -202,29 +204,37 @@ export default {
     this.token = jwt.decode(localStorage.getItem("token"));
     this.typeOfService = this.token.typeOfService;
     axios.get(host + "getorderbybillid/" + this.token.billId).then(response => {
-      this.orders = response.data;
-     axios
-      .get(host + "getbillbybillid/" + this.token.billId)
-      .then(response => {
-        this.bill = response.data;
-        this.bill[0].date = dayjs(this.bill[0].created_at).format("YYYY/MM/DD");
-        this.time = this.bill[0].eatTimeStart;
-        this.timeEnd = this.bill[0].eatTimeEnd
-        this.bill[0].typeName = this.typeOfService.typeName;
-        if (this.typeOfService.service === "buffet") {
-          this.bill[0].totalPrice =
-            this.typeOfService.typePrice * this.bill[0].numOfCust;
-        } else {
-          var price = 0;
-          for (let index = 0; index < this.orders.length; index++) {
-            price +=
-              this.orders[index].amount * this.orders[index].pricePerPiece;
-          }
-          this.bill[0].totalPrice = price;
-        }
-      });
-    });
+      this.orders = response.data.filter(items => items.statusId != "5");
+      axios
+        .get(host + "getbillbybillid/" + this.token.billId)
+        .then(response => {
+          this.bill = response.data;
+          this.bill[0].date = dayjs(this.bill[0].created_at).format(
+            "YYYY/MM/DD"
+          );
+          this.time = this.bill[0].eatTimeStart;
+          this.timeEnd = this.bill[0].eatTimeEnd;
+          this.bill[0].typeName = this.typeOfService.typeName;
+          if (this.typeOfService.service === "buffet") {
+            var price = (this.typeOfService.typePrice * this.bill[0].numOfCust)
+              .toString()
+              .split(".");
+            price[0] = price[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+            this.bill[0].totalPrice = price.join(".");
+          } else {
+            var price = 0;
+            for (let index = 0; index < this.orders.length; index++) {
+              price +=
+                this.orders[index].amount * this.orders[index].pricePerPiece;
+            }
+            var price = price.toString().split(".");
+            price[0] = price[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            this.bill[0].totalPrice = price.join(".");
+          }
+        });
+    });
   }
 };
 </script>

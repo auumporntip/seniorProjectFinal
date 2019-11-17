@@ -84,7 +84,7 @@
                     style="padding-top:5em;"
                   >
                     <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
-                    <v-tab v-for="data in distinctCategory" :key="data" @click="test">{{data}}</v-tab>
+                    <v-tab v-for="data in distinctCategory" :key="data" >{{data}}</v-tab>
                     <!-- <v-tab
                     class="white--text"
                     v-for="category in category"
@@ -92,7 +92,7 @@
                     >{{ category.categoryName }}</v-tab
                     >-->
 
-                    <v-tab-item>
+                    <v-tab-item v-for="data in distinctCategory" :key="data">
                       <v-card>
                         <b-table :data="bestSellerMenuByCategory" :columns="columns"></b-table>
                       </v-card>
@@ -121,7 +121,8 @@
                   >
                     <v-tabs-slider color="#B7CDC2"></v-tabs-slider>
                     <v-tab v-for="data in distinctCategory" :key="data">{{data}}</v-tab>
-                    <v-tab-item>
+                    
+                    <v-tab-item v-for="data in distinctCategory" :key="data">
                       <v-card>
                         <b-table :data="worseSellerMenuByCategory" :columns="columns"></b-table>
                       </v-card>
@@ -332,11 +333,13 @@ export default {
       if (bestSellerMenu.length != 0) {
         for (let index = 0; index < bestSellerMenu.length; index++) {
           this.bestSellerMenuByCategory.push({
-            menuName: bestSellerMenu[index][0],
+            menuName: bestSellerMenu[index],
             amount: count
           });
         }
       }
+      console.log(this.bestSellerMenuByCategory);
+      
     },
     findWorseSellerMenuByCategoryName(categoryName) {
       this.worseSellerMenuByCategory = [];
@@ -367,11 +370,13 @@ export default {
       if (worseSellerMenu.length != 0) {
         for (let index = 0; index < worseSellerMenu.length; index++) {
           this.worseSellerMenuByCategory.push({
-            menuName: worseSellerMenu[index][0],
+            menuName: worseSellerMenu[index],
             amount: count
           });
         }
       }
+      console.log(this.worseSellerMenuByCategory);
+      
     },
     sortMenuBestSeller() {
       const distinctMenuName = [
@@ -408,7 +413,9 @@ export default {
             amount: sortMenu[2][1]
           }
         ];
-
+        this.labelsAllMenu = [];
+        this.dataAllMenu = [];
+        this.backgroundColor = [];
         for (let index = 0; index < sortMenu.length; index++) {
           this.labelsAllMenu.push(sortMenu[index][0]);
           this.dataAllMenu.push(sortMenu[index][1]);
@@ -416,9 +423,6 @@ export default {
         }
         this.charts();
       }
-    },
-    test() {
-      console.log(this.tabBestSelling, this.tabWorseSelling);
     },
     charts() {
       var ctx = document.getElementById("my-chart");
