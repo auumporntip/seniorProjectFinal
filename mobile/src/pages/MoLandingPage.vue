@@ -83,7 +83,7 @@ export default {
   border-radius: 1em;
 }
 .btn {
-  margin-left: 10em;
+  margin-left: 10.5em;
   border-radius: 0.2em;
 }
 .theme--light.v-messages {
