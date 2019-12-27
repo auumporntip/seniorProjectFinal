@@ -7,6 +7,7 @@
 <script>
 import { store } from "./store/store";
 import axios from "axios";
+import { host } from "../src/Pages/data";
 
 export default {
   name: "App",
@@ -20,7 +21,7 @@ export default {
     ) {
       if (localStorage.getItem("token") != null) {
         axios
-          .post("http://localhost:3000/api/verify", {
+          .post(host +"verify", {
             token: localStorage.getItem("token")
           })
           .then(response => {

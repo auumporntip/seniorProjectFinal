@@ -61,6 +61,7 @@
                   <v-img aspect-ratio="1.5">
                     <qrcode-vue :value="host+table.tableNumber" :size="size" class="sizeQrcode"></qrcode-vue>
                   </v-img>
+                  
                   <v-btn
                     class="subheading font-weight-medium"
                     block
@@ -139,7 +140,7 @@ export default {
       t: "",
       deleteDialog: false,
       tableId: "",
-      host: "https://patrestaurantmobile.web.app/motype/",
+      host: "http://localhost:8081/motype/",
       value: "",
       size: 100,
       tableData: [],
