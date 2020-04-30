@@ -22,7 +22,7 @@
     "bootstrap-vue": "^2.0.0-rc.21",
     "buefy": "^0.7.3",
     "dayjs": "^1.8.13",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.2.1",
     "mdbvue": "^5.4.0",
