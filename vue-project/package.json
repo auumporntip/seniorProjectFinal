@@ -23,7 +23,7 @@
     "buefy": "^0.7.3",
     "dayjs": "^1.8.13",
     "jquery": "^3.4.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "md5": "^2.2.1",
     "mdbvue": "^5.4.0",
     "popper.js": "^1.14.7",
